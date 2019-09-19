@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+</head>
+<body>
+
+<div th:each="msg:${errmsg}">
+    <p th:text="${msg}"></p>
+
+</div>
+
+
+<form method="post" th:action="@{/register}">
+    name <input type="text" name="username">
+    密码 <input type="password" name="password">
+    重复密码 <input type="password" name="repeatpassword">
+    <div><input type="submit" value="Sign In"/></div>
+
+</form>
+
+</body>
+</html>

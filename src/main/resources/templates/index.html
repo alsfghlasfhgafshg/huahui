@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+</head>
+<body>
+
+
+<div th:if="${#authentication.name=='anonymousUser'}">
+    <div>
+        <a th:href="@{/login}">登陆</a>
+        <a th:href="@{/register}">注册</a>
+    </div>
+</div>
+
+
+</body>
+</html>

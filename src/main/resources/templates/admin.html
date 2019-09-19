@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+
+<div th:each="msg:${errmsg}">
+    <p th:text="${msg}"></p>
+</div>
+
+
+<div th:each="adminuser:${adminUsers}">
+    <p th:text="${adminuser.name}"></p>
+    <a th:href="@{'/admin/deladminuser/'+${adminuser.id}}">del</a>
+</div>
+
+
+<hr>
+
+
+添加管理员
+<form th:action="@{/admin/addadminuser}" method="post">
+    用户名 ：<input type="text" name="name">
+    密码： <input type="password" name="password">
+    密码： <input type="password" name="repeatpassword">
+    <input type="submit">
+</form>
+</body>
+</html>
