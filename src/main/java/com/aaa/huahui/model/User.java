@@ -2,27 +2,25 @@ package com.aaa.huahui.model;
 
 import com.aaa.huahui.HuahuiApplication;
 import com.aaa.huahui.repository.UserRoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 
-public class NormalUser implements UserDetails {
+public class User implements UserDetails {
 
-    public NormalUser() {
+    public User() {
     }
-
 
     int id;
     String name;
-    String description;
-    String avatar;
-    String wxopenid;
     String password;
 
+    public User(int id, String name, String password) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -44,29 +42,6 @@ public class NormalUser implements UserDetails {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getWxopenid() {
-        return wxopenid;
-    }
-
-    public void setWxopenid(String wxopenid) {
-        this.wxopenid = wxopenid;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

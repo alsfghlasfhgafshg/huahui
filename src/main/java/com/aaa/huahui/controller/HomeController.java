@@ -1,6 +1,7 @@
 package com.aaa.huahui.controller;
 
-import com.aaa.huahui.model.NormalUser;
+import com.aaa.huahui.config.ROLE;
+import com.aaa.huahui.model.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +12,16 @@ public class HomeController {
     @GetMapping("/")
     public String indexpage(UsernamePasswordAuthenticationToken token) {
         if (token == null) return "index";
-        NormalUser normalUser = (NormalUser) token.getPrincipal();
+        User user = (User) token.getPrincipal();
 
-        if (normalUser != null && normalUser.hasRole("admin")) {
+        if (user != null && user.hasRole(ROLE.ADMIN)) {
             return "redirect:/admin";
-        } else if (normalUser != null && normalUser.hasRole("user")) {
-            return "redirect:/home";
+        } else if (user != null && user.hasRole(ROLE.BRAND)) {
+            return "redirect:/brand";
+        } else if (user != null && user.hasRole(ROLE.SHOP)) {
+            return "redirect:/shop";
+        } else if (user != null && user.hasRole(ROLE.STAFF)) {
+            return "redirect:/staff";
         }
 
         return "index";
@@ -26,10 +31,10 @@ public class HomeController {
     public String homepage(UsernamePasswordAuthenticationToken token) {
         if (token == null) return "redirect:/";
 
-        NormalUser normalUser = (NormalUser) token.getPrincipal();
-        if (normalUser != null && normalUser.hasRole("admin")) {
+        User user = (User) token.getPrincipal();
+        if (user != null && user.hasRole("admin")) {
             return "redirect:/admin";
-        } else if (normalUser != null && normalUser.hasRole("user")) {
+        } else if (user != null && user.hasRole("user")) {
             return "home";
         }
 

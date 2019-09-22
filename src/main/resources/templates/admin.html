@@ -18,6 +18,16 @@
     <a th:href="@{'/admin/deladminuser/'+${adminuser.id}}">del</a>
 </div>
 
+商家管理
+<br>
+添加商家
+<form th:action="@{/admin/addbranduser}" method="post">
+    商家名<input type="text" name="brandname">
+    密码<input type="password" name="brandpasswd">
+    重复密码<input type="password" name="repeatbrandpasswd">
+    <input type="submit">
+</form>
+
 
 <hr>
 

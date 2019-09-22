@@ -1,6 +1,8 @@
 package com.aaa.huahui.controller;
 
-import com.aaa.huahui.model.NormalUser;
+import com.aaa.huahui.config.ROLE;
+import com.aaa.huahui.config.exception.NewUserFailException;
+import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.repository.UserRoleRepository;
 import com.aaa.huahui.service.UserService;
@@ -30,10 +32,6 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-//    @GetMapping("/login")
-//    public String login() {
-//        return "login";
-//    }
 
     @GetMapping("/setting")
     public String settings(UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken,
@@ -41,9 +39,9 @@ public class UserController {
         if (usernamePasswordAuthenticationToken == null) {
             return "redirect:/";
         }
-        NormalUser u = (NormalUser) usernamePasswordAuthenticationToken.getPrincipal();
-        model.addAttribute("description", u.getDescription());
-        model.addAttribute("avatar", u.getAvatar());
+        User u = (User) usernamePasswordAuthenticationToken.getPrincipal();
+//        model.addAttribute("description", u.getDescription());
+//        model.addAttribute("avatar", u.getAvatar());
 
 
         return "setting";
@@ -54,8 +52,8 @@ public class UserController {
             @RequestParam("description") String description,
             UsernamePasswordAuthenticationToken token,
             Model model) {
-        NormalUser user = (NormalUser) token.getPrincipal();
-        user.setDescription(description);
+        User user = (User) token.getPrincipal();
+//        user.setDescription(description);
         userRepository.updateDescription(user);
 
         return "redirect:/home";
@@ -72,20 +70,13 @@ public class UserController {
                                @RequestParam("password") String password,
                                @RequestParam("repeatpassword") String repeatpassword,
                                Model model) {
-        ArrayList<String> errmsg = new ArrayList<>();
-        if (!password.equals(repeatpassword)) {
-            errmsg.add("密码不一致");
-            model.addAttribute("errmsg", errmsg);
+
+        try {
+            userService.newUser(username, password, repeatpassword, ROLE.ADMIN);
+            return "redirect:/login";
+        } catch (NewUserFailException e) {
+            model.addAttribute("errmsg", e.getErrors());
             return "register";
         }
-
-        if (userRepository.findByUsername(username) != null) {
-            errmsg.add("用户名已存在");
-            model.addAttribute("errmsg", errmsg);
-            return "register";
-        }
-        userService.newUser(username, password,false);
-
-        return "redirect:/login";
     }
 }
