@@ -14,7 +14,7 @@ public interface UserRepository {
     @Update("update user set avatar=#{filepath} where id=#{userid}")
     void updateAvatar(@Param("userid") int userid, @Param("filepath") String filepath);
 
-    @Select("select user.* from user,user_role,role where role.name='admin' and user_role.roleid=role.id and user_role.userid=user.id")
+    @Select("select user.* from user,user_role,role where role.name='ROLE_ADMIN' and user_role.roleid=role.id and user_role.userid=user.id")
     ArrayList<User> selectAllAdmin();
 
     @Select("select * from user where name=#{name}")

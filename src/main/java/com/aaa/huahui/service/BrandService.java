@@ -2,10 +2,13 @@ package com.aaa.huahui.service;
 
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.repository.BrandRepository;
 import com.aaa.huahui.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
@@ -14,8 +17,13 @@ import java.util.ArrayList;
 public class BrandService {
 
     @Autowired
+    FileService fileService;
+
+    @Autowired
     UserService userService;
 
+    @Autowired
+    BrandRepository brandRepository;
 
     @Value("${pageSize}")
     private int pageSize;
@@ -33,6 +41,23 @@ public class BrandService {
         return false;
     }
 
-
-
+    /**
+     * 新的品牌
+     * **/
+    @Transactional
+    public boolean newBrand(User user, String description, MultipartFile file) {
+        if (user == null) {
+            return false;
+        }
+        if (file != null) {
+            String avatarfile = fileService.uploadImage(file);
+            brandRepository.updateBrandAvatar(user.getId(), avatarfile);
+        }
+        int i = brandRepository.newBrand(user.getId(), description);
+        if (i == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

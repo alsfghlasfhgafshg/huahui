@@ -33,6 +33,8 @@ public class UserService implements UserDetailsService {
     UserRoleRepository userRoleRepository;
 
 
+
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
@@ -63,23 +65,41 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    /**
+     * 删除用户
+     **/
+    @Transactional
+    public boolean deleteUser(int userid, String role) {
+        int a, b;
+        String rolename = userRoleRepository.queryRoleNameByUserId(userid);
+        User u = userRepository.findById(userid);
+        if (rolename == null) {
+            return false;
+        } else if (u != null && rolename.equals(role)) {
+            a = userRepository.deleteUserById(userid);
+            b = userRoleRepository.deleteRoleById(userid);
+            switch (role) {
+                case ROLE.BRAND:
+
+                    break;
+                case ROLE.SHOP:
+                    break;
+                case ROLE.STAFF:
+                    break;
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     * 设置用户头像
+     **/
     public void setAvatar(int userid, MultipartFile file) {
         String filepath = fileService.uploadImage(file);
 
 
     }
 
-    public boolean deleteUser(String username) {
-        User u = userRepository.findByUsername(username);
-        if (u == null) return false;
-        else return deleteUserById(u.getId());
-    }
 
-    @Transactional
-    public boolean deleteUserById(int id) {
-        int a = userRepository.deleteUserById(id);
-        int b = userRoleRepository.deleteRoleById(id);
-        if (a == 1 && b == 1) return true;
-        else return false;
-    }
 }

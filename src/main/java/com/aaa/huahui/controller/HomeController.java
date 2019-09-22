@@ -11,7 +11,9 @@ public class HomeController {
 
     @GetMapping("/")
     public String indexpage(UsernamePasswordAuthenticationToken token) {
-        if (token == null) return "index";
+        if (token == null) {
+            return "index";
+        }
         User user = (User) token.getPrincipal();
 
         if (user != null && user.hasRole(ROLE.ADMIN)) {
@@ -22,6 +24,8 @@ public class HomeController {
             return "redirect:/shop";
         } else if (user != null && user.hasRole(ROLE.STAFF)) {
             return "redirect:/staff";
+        } else if (user != null && user.hasRole(ROLE.REPORTER)) {
+            return "redirect:/shop";
         }
 
         return "index";
@@ -29,7 +33,9 @@ public class HomeController {
 
     @GetMapping("/home")
     public String homepage(UsernamePasswordAuthenticationToken token) {
-        if (token == null) return "redirect:/";
+        if (token == null) {
+            return "redirect:/";
+        }
 
         User user = (User) token.getPrincipal();
         if (user != null && user.hasRole("admin")) {

@@ -4,6 +4,8 @@ import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.UserRepository;
+import com.aaa.huahui.repository.UserRoleRepository;
+import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.UserService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -22,6 +25,10 @@ public class AdminController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    BrandService brandService;
+
 
     @GetMapping("/admin")
     public String adminhomepage(Model model) {
@@ -40,11 +47,29 @@ public class AdminController {
 
     //删除admin
     @GetMapping("/admin/deladminuser/{userid}")
-    public String deladminuser(@PathVariable("userid") int userid, Model model) {
-        ArrayList<User> adminUsers = userRepository.selectAllAdmin();
-        model.addAttribute("adminUsers", adminUsers);
+    public @ResponseBody
+    JSONObject deladminuser(@PathVariable("userid") int userid, Model model) {
+        JSONObject responsejson = new JSONObject();
+        JSONArray msgs = new JSONArray();
 
-        return "admin";
+        User u = userRepository.findById(userid);
+        if (u != null && u.getName().equals("admin")) {
+            responsejson.put("error", 1);
+            msgs.add("不能删除admin");
+            responsejson.put("msg", msgs);
+            return responsejson;
+        } else {
+            if (userService.deleteUser(userid, ROLE.ADMIN) == true) {
+                responsejson.put("error", 0);
+                msgs.add("ok");
+                responsejson.put("msg", msgs);
+                return responsejson;
+            }
+            responsejson.put("error", 1);
+            msgs.add("删除失败");
+            responsejson.put("msg", msgs);
+            return responsejson;
+        }
     }
 
     //添加admin
@@ -80,19 +105,21 @@ public class AdminController {
     JSONObject addbrand(@RequestParam("brandname") String username,
                         @RequestParam("brandpasswd") String password,
                         @RequestParam("repeatbrandpasswd") String repeatpassword,
-                        RedirectAttributes model) {
+                        @RequestParam("description") String description,
+                        @RequestParam("file") MultipartFile file) {
         JSONObject responsejson = new JSONObject();
         JSONArray msgs = new JSONArray();
 
         try {
-            userService.newUser(username, password, repeatpassword, ROLE.BRAND);
+            User user = userService.newUser(username, password, repeatpassword, ROLE.BRAND);
+            brandService.newBrand(user, description, file);
+
             responsejson.put("error", 0);
             msgs.add("ok");
             responsejson.put("msg", msgs);
             return responsejson;
         } catch (NewUserFailException e) {
             e.printStackTrace();
-
             for (String error : e.getErrors()) {
                 msgs.add(error);
             }

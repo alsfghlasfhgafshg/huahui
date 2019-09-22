@@ -75,6 +75,15 @@ public class FileService {
         return uploadFile(file, "/img");
     }
 
+    /**
+     * 删除图片
+     * **/
+    public boolean deleteImage(String filename){
+        File f=new File(file_base_path+"/img/"+filename);
+        return f.delete();
+    }
+
+
     //上传视频
     public String uploadVideo(MultipartFile file) {
         return uploadFile(file, "/video");

@@ -14,7 +14,7 @@ public interface UserRoleRepository {
     @Select("select roleid from user_role where userid=#{userid}")
     int queryRoleId(@Param("userid") int userid);
 
-    @Select("select role.name from role,user_role where user_role.userid=#{userid} and role.name=user_role.roleid")
+    @Select("select role.name from role,user_role where user_role.userid=#{userid} and role.id=user_role.roleid")
     String queryRoleNameByUserId(@Param("userid") int userid);
 
     @Select("select name from role where id=#{id}")
