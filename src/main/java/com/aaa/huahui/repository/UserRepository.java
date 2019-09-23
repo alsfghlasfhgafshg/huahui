@@ -3,7 +3,6 @@ package com.aaa.huahui.repository;
 import com.aaa.huahui.model.User;
 import org.apache.ibatis.annotations.*;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.ArrayList;
 
 

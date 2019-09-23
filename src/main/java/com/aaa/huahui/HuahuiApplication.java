@@ -17,7 +17,6 @@ public class HuahuiApplication {
 
     public static void main(String[] args) {
         context = SpringApplication.run(HuahuiApplication.class, args);
-
     }
 
 }

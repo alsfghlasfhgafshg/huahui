@@ -1,6 +1,5 @@
 package com.aaa.huahui.service;
 
-import ch.qos.logback.classic.sift.AppenderFactoryUsingJoran;
 import com.aaa.huahui.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
