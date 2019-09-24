@@ -3,8 +3,7 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.User;
-import com.aaa.huahui.repository.UserRepository;
-import com.aaa.huahui.repository.UserRoleRepository;
+import com.aaa.huahui.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +20,21 @@ import java.util.ArrayList;
 public class UserService implements UserDetailsService {
 
     @Autowired
+    BrandRepository brandRepository;
+
+    @Autowired
+    ShopRepository shopRepository;
+
+    @Autowired
+    StaffRepository staffRepository;
+
+    @Autowired
+    StaffRepository staffRepository;
+
+    @Autowired
+    ReporterRepository reporterRepository;
+
+    @Autowired
     FileService fileService;
 
     @Autowired
@@ -33,6 +47,19 @@ public class UserService implements UserDetailsService {
     UserRoleRepository userRoleRepository;
 
 
+    public boolean changePassword(User u, String newPassword) {
+        return changePasswordByUserid(u.getId(), newPassword);
+    }
+
+    public boolean changePasswordByUserid(int userid, String newPassword) {
+        String encodepassword = bCryptPasswordEncoder.encode(newPassword);
+
+        if (userRepository.updatePassword(userid, encodepassword) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
     @Override
@@ -80,7 +107,6 @@ public class UserService implements UserDetailsService {
             b = userRoleRepository.deleteRoleById(userid);
             switch (role) {
                 case ROLE.BRAND:
-
                     break;
                 case ROLE.SHOP:
                     break;
@@ -92,14 +118,38 @@ public class UserService implements UserDetailsService {
 
     }
 
-    /**
-     * 设置用户头像
-     **/
-    public void setAvatar(int userid, MultipartFile file) {
-        String filepath = fileService.uploadImage(file);
-
-
+    @Transactional
+    boolean deleteBrandUser(int userid) {
+        userRoleRepository.deleteRoleById(userid);
+        brandRepository.deleteBrand(userid);
+        userRepository.deleteUserById(userid);
+        //TODO:delete shop
+        return true;
     }
+
+    @Transactional
+    boolean deleteShop(int shopid) {
+        if (shopRepository.deleteShop(shopid) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Transactional
+    boolean deleteAllShop(int brandid) throws Exception {
+        ArrayList<Integer> allShopId = shopRepository.selectAllShopId(brandid);
+        for (Integer i : allShopId) {
+            if (deleteShop(i) == false) {
+                throw new Exception();
+            }
+        }
+        return true;
+    }
+
+
+
+
 
 
 }

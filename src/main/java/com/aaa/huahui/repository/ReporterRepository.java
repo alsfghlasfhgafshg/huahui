@@ -3,6 +3,8 @@ package com.aaa.huahui.repository;
 import org.apache.ibatis.annotations.*;
 import org.springframework.security.access.method.P;
 
+import java.util.ArrayList;
+
 @Mapper
 public interface ReporterRepository {
 
@@ -16,5 +18,7 @@ public interface ReporterRepository {
     @Delete("delete from reporter where reporterid=#{reporterid}")
     int deleteReporter(@Param("reporterid") int reporterid);
 
+    @Select("select reporterid from reporter where shopid=#{shopid}")
+    ArrayList<Integer> selectAllReporter(@Param("shopid") int shopid);
 
 }

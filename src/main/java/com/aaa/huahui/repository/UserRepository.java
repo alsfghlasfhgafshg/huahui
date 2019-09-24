@@ -55,4 +55,7 @@ public interface UserRepository {
     @Select("select wxopenid from wx_user where userid=#{userid}")
     String queryWxopenid(@Param("userid") int userid);
 
+    @Update("update user set password=#{encodepassword} where id=#{userid}")
+    int updatePassword(@Param("userid") int userid, @Param("encodepassword") String encodepassword);
+
 }

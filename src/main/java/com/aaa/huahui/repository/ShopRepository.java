@@ -2,6 +2,8 @@ package com.aaa.huahui.repository;
 
 import org.apache.ibatis.annotations.*;
 
+import java.util.ArrayList;
+
 @Mapper
 public interface ShopRepository {
 
@@ -13,5 +15,8 @@ public interface ShopRepository {
 
     @Update("update shop set description=#{description},geo=#{geo} where shopid=#{shopid}")
     int updateShopInfo(@Param("shopid") int shopid, @Param("description") String description, @Param("geo") String geo);
+
+    @Select("select shopid from shop where brandid=#{brandid}")
+    ArrayList<Integer> selectAllShopId(@Param("brandid") int brandid);
 
 }
