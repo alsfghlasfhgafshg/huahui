@@ -28,6 +28,8 @@ public class AvatarService {
     @Autowired
     UserRoleRepository userRoleRepository;
 
+
+
     public String updateAvatar(int id, MultipartFile file) {
         String role = userRoleRepository.queryRoleNameByUserId(id);
         if (role == null) {

@@ -9,7 +9,6 @@ public interface StaffRepository {
     int updateStaffAvatar(@Param("staffid") int staffid, @Param("avatar") String avatar);
 
     @Insert("insert into staff (avatar,name,shopid)values(#{avatar},#{name},#{shopid})")
-    @Options(useGeneratedKeys = true, keyProperty = "staffid")
     int insertStaff(@Param("avatar")String avatar,@Param("name") String name, @Param("shopid") int shopid);
 
     @Delete("delete from staff where staffid=#{staffid}")

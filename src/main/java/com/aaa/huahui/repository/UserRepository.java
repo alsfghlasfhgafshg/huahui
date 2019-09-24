@@ -4,6 +4,7 @@ import com.aaa.huahui.model.User;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 @Mapper
@@ -44,5 +45,14 @@ public interface UserRepository {
 
     @Select("select user.* from user,user_role,role where user.id=user_role.userid and user_role.roleid=role.id and role.name=#{rolename} limit #{offset},#{num}")
     ArrayList<User> selectAllUserByRoleAndPage(@Param("rolename") String rolename, @Param("offset") int offset, @Param("num") int num);
+
+    @Insert("insert into wx_user(userid,wxopenid) values(#{userid},#{wxopenid}) ")
+    int insertWxOpenid(@Param("userid") int userid, @Param("wxopenid") String wxopenid);
+
+    @Update("update wx_user set wxopenid=#{wxopenid} where userid=#{userid}")
+    int updateWxopenid(@Param("userid") int userid, @Param("wxopenid") String wxopenid);
+
+    @Select("select wxopenid from wx_user where userid=#{userid}")
+    String queryWxopenid(@Param("userid") int userid);
 
 }

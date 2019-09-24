@@ -9,7 +9,6 @@ public interface ShopRepository {
     int deleteShop(@Param("shopid") int shopid);
 
     @Insert("insert into shop (shopid,description,geo,brandid)values(#{shopid},#{description},#{geo},#{brandid})")
-    @Options(useGeneratedKeys = true, keyProperty = "shopid")
     int insertShop(@Param("shopid") int shopid, @Param("description") String description, @Param("geo") String geo, @Param("brandid") int brandid);
 
     @Update("update shop set description=#{description},geo=#{geo} where shopid=#{shopid}")
