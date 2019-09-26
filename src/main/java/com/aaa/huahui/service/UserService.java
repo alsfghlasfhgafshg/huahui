@@ -91,7 +91,6 @@ public class UserService implements UserDetailsService {
         userRoleRepository.insertRole(user.getId(), userRoleRepository.selectRoleId(userrole));
         return user;
     }
-
     /**
      * 删除用户
      **/

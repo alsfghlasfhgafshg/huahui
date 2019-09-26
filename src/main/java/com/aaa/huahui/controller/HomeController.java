@@ -23,7 +23,7 @@ public class HomeController {
         } else if (user != null && user.hasRole(ROLE.SHOP)) {
             return "redirect:/shop";
         } else if (user != null && user.hasRole(ROLE.STAFF)) {
-            return "redirect:/staff";
+            return "redirect:/staff/";
         } else if (user != null && user.hasRole(ROLE.REPORTER)) {
             return "redirect:/shop";
         }
