@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>品牌</title>
 </head>
 <body>
 品牌管理
+<form method="post" th:action="@{/}">
+    username <input type="text" name="username">
+    密码 <input type="password" name="password">
+    重复密码 <input type="password" name="repeatpassword">
+    shop description <input type="text" name="description">
+    geo <input type="text" name="geo">
+    <div><input type="submit" value="新建shop"/></div>
 
+</form>
 </body>
 </html>

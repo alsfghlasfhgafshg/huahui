@@ -7,7 +7,6 @@ import com.aaa.huahui.model.User;
 import com.aaa.huahui.service.StaffService;
 import com.aaa.huahui.service.UserService;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,13 +26,14 @@ public class StaffController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/")
+    @GetMapping
     public String staffIndex() {
         return "staff";
     }
 
     @GetMapping("/allstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
+    @ResponseBody
     public JSONObject getAllStaff(Principal principal){
         JSONObject rejeson = new JSONObject();
         User shopController = (User) principal;
@@ -74,7 +74,7 @@ public class StaffController {
     @PostMapping("/edit/{staffid}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     @ResponseBody
-    public JSONObject updateStaff(@Param("staffid")int staffid,
+    public JSONObject updateStaff(@PathVariable("staffid")int staffid,
                                   @RequestParam("avatar") String avatar,
                                   @RequestParam("name")String name){
         JSONObject reobject = new JSONObject();
@@ -91,7 +91,8 @@ public class StaffController {
 
     @DeleteMapping("deletestaff/{staffid}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    public JSONObject deleteStaff(@Param("staffid")int staffId){
+    @ResponseBody
+    public JSONObject deleteStaff(@PathVariable("staffid")int staffId){
         JSONObject reobject = new JSONObject();
         try {
             staffService.deleteStaff(staffId);

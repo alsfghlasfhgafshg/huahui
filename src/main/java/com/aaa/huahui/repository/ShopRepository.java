@@ -1,5 +1,6 @@
 package com.aaa.huahui.repository;
 
+import com.aaa.huahui.model.Shop;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
@@ -19,4 +20,6 @@ public interface ShopRepository {
     @Select("select shopid from shop where brandid=#{brandid}")
     ArrayList<Integer> selectAllShopId(@Param("brandid") int brandid);
 
+    @Select("select * from shop where brandid=#{brandid}")
+    ArrayList<Shop> selectAllShop(int brandid);
 }
