@@ -29,9 +29,6 @@ public class UserService implements UserDetailsService {
     StaffRepository staffRepository;
 
     @Autowired
-    StaffRepository staffRepository;
-
-    @Autowired
     ReporterRepository reporterRepository;
 
     @Autowired

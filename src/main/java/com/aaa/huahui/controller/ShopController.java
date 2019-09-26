@@ -1,5 +1,7 @@
 package com.aaa.huahui.controller;
 
+import com.aaa.huahui.model.User;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -7,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ShopController {
 
     @GetMapping("/shop")
-    public String shopIndex(){
+    public String shopIndex(UsernamePasswordAuthenticationToken e){
+        ((User) e.getPrincipal()).getId();
+
         return "shop";
     }
 

@@ -1,5 +1,6 @@
 package com.aaa.huahui.service;
 
+import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,21 @@ public class RoleService {
 
     public String queryUserRole(int userid) {
         return userRoleRepository.queryRoleNameByUserId(userid);
+    }
+
+    public boolean inseretRole(User user, String rolename) {
+        if (user == null) {
+            return false;
+        }
+        return inseretRoleByUserId(user.getId(), rolename);
+    }
+
+    public boolean inseretRoleByUserId(int userid, String rolename) {
+        if (userRoleRepository.insertRole(userid, userRoleRepository.selectRoleId(rolename)) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

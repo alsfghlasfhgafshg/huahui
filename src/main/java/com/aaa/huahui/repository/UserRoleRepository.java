@@ -24,7 +24,7 @@ public interface UserRoleRepository {
     String queryRoleNameByUserName(@Param("username") String username);
 
     @Insert("insert into user_role(userid,roleid) values(#{userid},#{roleid})")
-    void insertRole(@Param("userid") int userid, @Param("roleid") int roleid);
+    int insertRole(@Param("userid") int userid, @Param("roleid") int roleid);
 
     @Select("select id from role where name=#{name}")
     int selectRoleId(@Param("name") String name);
