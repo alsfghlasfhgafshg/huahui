@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
+    static volatile Calendar calendar = Calendar.getInstance();
 
     public static Timestamp getTimeStampStart(int year, int month, int day) {
         return getTimeStampWithHHmmss(year, month, day, 0, 0, 0);
@@ -17,18 +18,36 @@ public class DateUtils {
         return getTimeStampWithHHmmss(year, month, day, 23, 59, 59);
     }
 
-    public static synchronized Timestamp getTimeStampWithHHmmss(int year, int month, int day, int hour, int minute, int second) {
-        String dateStr = String.format("%d-%d-%d %d:%d:%d", year, month, day, hour, minute, second);
-        Calendar calendar = Calendar.getInstance();
+    public static Timestamp getTimeStampWithHHmm(String yyyyMMddHHmm) {
+        yyyyMMddHHmm = yyyyMMddHHmm + ":0";
+        synchronized (calendar) {
 
-        try {
-            Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
-            calendar.setTime(d);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            try {
+                Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(yyyyMMddHHmm);
+                calendar.setTime(d);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Timestamp t = new Timestamp(calendar.getTimeInMillis());
+            return t;
         }
-        Timestamp t = new Timestamp(calendar.getTimeInMillis());
-        return t;
+    }
+
+
+    public static Timestamp getTimeStampWithHHmmss(int year, int month, int day, int hour, int minute, int second) {
+        String dateStr = String.format("%d-%d-%d %d:%d:%d", year, month, day, hour, minute, second);
+
+        synchronized (calendar) {
+            try {
+                Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
+                calendar.setTime(d);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Timestamp t = new Timestamp(calendar.getTimeInMillis());
+            return t;
+        }
+
     }
 
     public static int getLastDayOfMonth(int year, int month) {

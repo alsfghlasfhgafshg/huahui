@@ -34,4 +34,6 @@ public class ShopService {
     public ArrayList<Shop> selectAllShop(int brandid){
         return shopRepository.selectAllShop(brandid);
     }
+    public ArrayList<>
+
 }

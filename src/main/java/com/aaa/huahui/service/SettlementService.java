@@ -1,11 +1,13 @@
 package com.aaa.huahui.service;
 
 
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import com.aaa.huahui.model.PaymentMethod;
 import com.aaa.huahui.model.Settlement;
+import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.SettlementRepository;
 import com.aaa.huahui.utils.DateUtils;
 import com.alibaba.fastjson.JSONArray;
@@ -39,12 +41,61 @@ public class SettlementService {
         return false;
     }
 
-    public boolean UpdateSettlement(Settlement settlement) {
+    //是否可以操作
+    public boolean canOperate(User u, int settlementid) {
+        if (u == null) {
+            return false;
+        } else {
+            Settlement s = settlementRepository.selectSettlement(settlementid);
+            if (s == null) {
+                return false;
+            } else if (u.getId() == s.getShopid()) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    //获得一个
+    public Settlement getOneSettlement(User user, int settlementid) {
+        if (canOperate(user, settlementid) == false) {
+            return null;
+        } else {
+            return settlementRepository.selectSettlement(settlementid);
+        }
+    }
+
+    //获得一页
+    public ArrayList<Settlement> getOnePageSettlement(User user, int page) {
+        if (user == null) {
+            return null;
+        }
+        int offset = (page - 1) * pageSize;
+        return settlementRepository.selectSettlementWithLimit();
+
+    }
+
+    //修改一个
+    public boolean updateSettlement(User u, Settlement settlement) {
+        if (canOperate(u, settlement.getId())) {
+            return false;
+        }
         if (settlementRepository.updateSettlement(settlement) == 1) {
             return true;
         }
         return false;
     }
+
+    public boolean deleteSettlement(User u, Settlement settlement) {
+        if (canOperate(u, settlement.getId())) {
+            return false;
+        }
+        if (settlementRepository.deleteSettlement(settlement) == 1) {
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * page: page 从1 开始

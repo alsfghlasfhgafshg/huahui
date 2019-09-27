@@ -13,8 +13,11 @@ public interface SettlementRepository {
     @Select("select * from paymentmethod")
     ArrayList<PaymentMethod> selectAllPaymentMethod();
 
-    @Select("select * from settlement limit #{offset},#{limit}")
-    ArrayList<Settlement> selectSettlementWithLimit(int offset, int limit);
+    @Select("select * from settlement where shopid=#{shopid} limit #{offset},#{limit}")
+    ArrayList<Settlement> selectSettlementWithLimit(@Param("shopid") int shopid, @Param("offset") int offset, @Param("limit") int limit);
+
+    @Select("select * from settlement where id=#{settlementid}")
+    Settlement selectSettlement(@Param("settlementid") int settlementid);
 
     @Insert("insert into settlement (shopid,timestamp,customername,price,stffid,category2id,brandname,paymentmethod,consultant,reporterid )values(#{shopid},timestamp,#{customername},#{price},#{staffid},#{category2id},#{brandname},#{paymentmethod},#{consultant},#{reporterid })")
     int insertSettlement(Settlement settlement);
@@ -23,13 +26,13 @@ public interface SettlementRepository {
     int deleteSettlement(Settlement settlement);
 
     @Delete("delete from settlement where id=#{id}")
-    int deleteSettlementById(int id);
+    int deleteSettlementById(@Param("id") int id);
 
     @Update("update settlement set shopid=#{shopid},timestamp=#{timestamp},customername=#{customername},price=#{price},stffid=#{stffid},category2id=#{category2id},brandname=#{brandname},paymentmethod=#{paymentmethod},consultant=#{consultant},reporterid=#{reporterid} where id=#{id}")
     int updateSettlement(Settlement settlement);
 
     @Select("select count(*) from settlement where timestamp>=#{from} and timestamp<>>=#{to}")
-    int selectCustomer(Timestamp from, Timestamp to);
+    int selectCustomer(@Param("from") Timestamp from,@Param("to") Timestamp to);
 
     @Select("select distinct count(distinct customername) from settlement where timestamp between #{from} and #{to} and shopid=#{shopid}")
     int selectDistinctCountCustomer(@Param("shopid") int shopid, @Param("from") Timestamp from, @Param("to") Timestamp to);

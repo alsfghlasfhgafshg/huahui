@@ -73,4 +73,17 @@ public class BrandService {
             return false;
         }
     }
+
+    public boolean addCategory(int brandid, String categoryName) {
+        if (categoryRepository.insertCategory(brandid, categoryName) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean addCategory2(int id,int categoryid,int category2name){
+
+    }
+
 }
