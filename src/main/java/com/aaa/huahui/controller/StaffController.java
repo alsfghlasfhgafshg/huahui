@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.sql.Date;
 import java.util.ArrayList;
 
 @Controller
@@ -43,12 +44,24 @@ public class StaffController {
         return rejeson;
     }
 
+    //传值待加
     @GetMapping("/addstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     @ResponseBody
     public JSONObject addStaff(@RequestParam("username") String username,
-                         @RequestParam("password") String password,
-                         @RequestParam("repeatpassword") String repeatpassword,
+                               @RequestParam("password") String password,
+                               @RequestParam("repeatpassword") String repeatpassword,
+                                @RequestParam("avatar") String avatar,
+                                @RequestParam("name")String name,
+                                @RequestParam("male")int male,
+                                @RequestParam("birthday") Date birthday,
+                                @RequestParam("nation")String nation,
+                                @RequestParam("party")String party,
+                                @RequestParam("healthy")String healthy,
+                                @RequestParam("nativeplace")String nativeplace,
+                                @RequestParam("address")String address,
+                                @RequestParam("phone")String phone,
+                                @RequestParam("emergencyphone")String emergencyphone,
                          UsernamePasswordAuthenticationToken token){
         JSONObject rejeson = new JSONObject();
         User user = (User) token.getPrincipal();
@@ -61,7 +74,8 @@ public class StaffController {
             globalExceptionHandler.MissingServletRequestParameterException(e);
         }
         try {
-            staffService.addStaff(staffUser.getId(), "aaa", "dewitt", shopId);
+            Staff staff = new Staff(staffUser.getId(),avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,shopId);
+            staffService.addStaff(staff);
             rejeson.put("error",0);
             return rejeson;
         }catch (Exception e){
@@ -76,10 +90,21 @@ public class StaffController {
     @ResponseBody
     public JSONObject updateStaff(@PathVariable("staffid")int staffid,
                                   @RequestParam("avatar") String avatar,
-                                  @RequestParam("name")String name){
+                                  @RequestParam("name")String name,
+                                  @RequestParam("male")int male,
+                                  @RequestParam("birthday") Date birthday,
+                                  @RequestParam("nation")String nation,
+                                  @RequestParam("party")String party,
+                                  @RequestParam("healthy")String healthy,
+                                  @RequestParam("nativeplace")String nativeplace,
+                                  @RequestParam("address")String address,
+                                  @RequestParam("phone")String phone,
+                                  @RequestParam("emergencyphone")String emergencyphone,
+                                  @RequestParam("shopid")int shopid){
         JSONObject reobject = new JSONObject();
         try {
-            staffService.updateStaff(staffid, avatar, name);
+            Staff newStaff = new Staff(staffid,avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,shopid);
+            staffService.updateStaff(newStaff);
             reobject.put("error",0);
             return reobject;
         }catch (Exception e){

@@ -15,8 +15,8 @@ public class StaffService {
     @Autowired
     StaffRepository staffRepository;
 
-    public int addStaff(int staffid, String avatar, String name, int shopId){
-        return staffRepository.insertStaff(staffid,avatar,name,shopId);
+    public int addStaff(Staff staff){
+        return staffRepository.insertStaff(staff);
     }
 
     public ArrayList<Integer> allStaffId(int shopId){
@@ -31,8 +31,12 @@ public class StaffService {
         return staffRepository.updateStaffAvatar(staffId,avatar);
     }
 
-    public int updateStaff(int staffId,String avatar,String name){
-        return staffRepository.updateStaff(staffId,avatar,name);
+    public int updateStaff(Staff staff){
+        return staffRepository.updateStaff(staff);
+    }
+
+    public Staff selectOneStaff(int staffid){
+        return staffRepository.selectOne(staffid);
     }
 
     @Transactional
