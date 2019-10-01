@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.aaa.huahui.model.PaymentMethod;
 import com.aaa.huahui.model.Settlement;
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.repository.BrandRepository;
 import com.aaa.huahui.repository.SettlementRepository;
 import com.aaa.huahui.utils.DateUtils;
 import com.alibaba.fastjson.JSONArray;
@@ -27,6 +28,9 @@ public class SettlementService {
     private Integer pageSize;
 
     @Autowired
+    BrandRepository brandRepository;
+
+    @Autowired
     SettlementRepository settlementRepository;
 
     public ArrayList<PaymentMethod> getAllPayMentMethod() {
@@ -43,7 +47,7 @@ public class SettlementService {
         return false;
     }
 
-    //是否可以操作
+    //是否可以操作，传入User为shop/brand
     public boolean canOperate(User u, int settlementid) {
         if (u == null) {
             return false;
@@ -52,6 +56,9 @@ public class SettlementService {
             if (s == null) {
                 return false;
             } else if (u.getId() == s.getShopid()) {
+                return true;
+            } else if (brandRepository.selectBrandShop(u.getId(), s.getShopid()) >= 1) {
+                //如果这个settlement的shop属于brand也可以操作
                 return true;
             }
             return false;
@@ -106,8 +113,6 @@ public class SettlementService {
     @Transactional
     public JSONObject statistics(int shopid, Timestamp from, Timestamp to) {
         JSONObject j = new JSONObject();
-
-//        int offset = (page - 1) * pageSize;
 
         int distinctCountCustomer = settlementRepository.selectDistinctCountCustomer(shopid, from, to);
         int countCustomer = settlementRepository.selectCountCustomer(shopid, from, to);

@@ -29,6 +29,22 @@ public class AvatarService {
     UserRoleRepository userRoleRepository;
 
 
+    public String getAvatar(int userid) {
+        String role = userRoleRepository.queryRoleNameByUserId(userid);
+        if (role == null) {
+            return null;
+        }
+        switch (role) {
+            case ROLE.BRAND:
+                return brandRepository.queryAvatar(userid);
+            case ROLE.REPORTER:
+                return reporterRepository.queryAvatar(userid);
+            case ROLE.STAFF:
+                return staffRepository.queryAvatar(userid);
+            default:
+                return null;
+        }
+    }
 
     public String updateAvatar(int id, MultipartFile file) {
         String role = userRoleRepository.queryRoleNameByUserId(id);

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 @Mapper
 public interface StaffRepository {
 
+    @Select("select avatar from staff where staaffid=#{staffid}")
+    String queryAvatar(@Param("staffid") int staffid);
+
     @Update("update staff set avatar=#{avatar} where staffid=#{staffid}")
     int updateStaffAvatar(@Param("staffid") int staffid, @Param("avatar") String avatar);
 
@@ -28,7 +31,7 @@ public interface StaffRepository {
     int updateStaff(Staff staff);
 
     @Select("select * from staff where shopid=#{shopid}")
-    ArrayList<Staff> selectAllStaff(@Param("shopid")int shopid);
+    ArrayList<Staff> selectAllStaff(@Param("shopid") int shopid);
 
     @Select("select * from staff where staffid=#{staffid}")
     Staff selectOne(@Param("staffid") int staffid);

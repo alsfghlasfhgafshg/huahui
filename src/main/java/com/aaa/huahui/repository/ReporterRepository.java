@@ -8,6 +8,9 @@ import java.util.ArrayList;
 @Mapper
 public interface ReporterRepository {
 
+    @Select("select avatar from reporter where reporterid=#{reporterid}")
+    String queryAvatar(@Param("reporterid") int reporterid);
+
     @Update("update brand set avatar=#{avatar} where reporterid=#{reporterid}")
     int updateReporterAvatar(@Param("reporterid") int brandid, @Param("avatar") String avatar);
 

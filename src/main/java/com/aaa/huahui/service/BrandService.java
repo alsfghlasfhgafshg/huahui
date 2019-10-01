@@ -1,13 +1,10 @@
 package com.aaa.huahui.service;
 
 import com.aaa.huahui.config.ROLE;
-import com.aaa.huahui.model.Category;
-import com.aaa.huahui.model.Category2;
-import com.aaa.huahui.model.User;
-import com.aaa.huahui.repository.BrandRepository;
-import com.aaa.huahui.repository.Category2Repository;
-import com.aaa.huahui.repository.CategoryRepository;
-import com.aaa.huahui.repository.UserRepository;
+import com.aaa.huahui.model.*;
+import com.aaa.huahui.repository.*;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,9 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 @Service
 public class BrandService {
+
+
+    @Autowired
+    ShopRepository shopRepository;
+
+    @Autowired
+    AvatarService avatarService;
 
     @Autowired
     FileService fileService;
@@ -83,6 +89,31 @@ public class BrandService {
             return false;
         }
     }
+
+    //获得brand信息
+    public JSONObject getBrand(int brandid) {
+        JSONObject json = new JSONObject();
+
+        Brand brand = brandRepository.queryBrand(brandid);
+        int countShop = brandRepository.queryCountShop(brandid);
+
+        ArrayList<Shop> shops = shopRepository.selectAllShop(brandid);
+
+        JSONArray allshop = new JSONArray(Collections.singletonList(shops));
+        json.put("brand", brand);
+        json.put("countshop", countShop);
+        json.put("allshop", allshop);
+        return json;
+    }
+
+
+    //更新brand
+    public boolean updateBrand(int brandid, String description, MultipartFile file) {
+        brandRepository.updateBrandDescription(brandid, description);
+        avatarService.updateAvatar(brandid, file);
+        return true;
+    }
+
 
     public boolean addCategory(int brandid, String categoryName) {
         if (categoryRepository.insertCategory(brandid, categoryName) == 1) {
