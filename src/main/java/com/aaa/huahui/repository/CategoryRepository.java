@@ -3,6 +3,8 @@ package com.aaa.huahui.repository;
 import com.aaa.huahui.model.Category;
 import org.apache.ibatis.annotations.*;
 
+import java.util.ArrayList;
+
 @Mapper
 public interface CategoryRepository {
     @Insert("insert into category(brandid,name)values(#{brandid},#{name})")
@@ -27,4 +29,10 @@ public interface CategoryRepository {
 
     @Delete("delete from category2 where categoryid=#{id}")
     int deleteCategoryCategory2(@Param("id") int category);
+
+    @Select("select * from catagory where brandid=#{brandid}")
+    ArrayList<Category> selectAllCategory(@Param("brandid") int brandid);
+
+    @Select("select count(*) from category where id=#{id} and brandid=#{brandid}")
+    int selectCountByIdAndBrandId(@Param("brandid") int brandid, @Param("id") int id);
 }

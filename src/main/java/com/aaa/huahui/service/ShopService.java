@@ -19,21 +19,23 @@ public class ShopService {
         return shopRepository.deleteShop(shopid);
     }
 
+    //添加一个shop
     public int insertShop(int shopid, String description, String geo, int brandid){
         return shopRepository.insertShop(shopid,description,geo,brandid);
     }
-
+    //更改shop信息
     public int updateShopInfo( int shopid,  String description, String geo){
         return shopRepository.updateShopInfo(shopid,description,geo);
     }
 
+    //获得一个品牌的所有shopid
     public ArrayList<Integer> selectAllShopId(int brandid){
         return shopRepository.selectAllShopId(brandid);
     }
-
+    //获得所有shop
     public ArrayList<Shop> selectAllShop(int brandid){
         return shopRepository.selectAllShop(brandid);
     }
-    public ArrayList<>
+
 
 }

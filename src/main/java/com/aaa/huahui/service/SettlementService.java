@@ -33,6 +33,8 @@ public class SettlementService {
         return settlementRepository.selectAllPaymentMethod();
     }
 
+
+    //添加一个
     public boolean addSettlement(Settlement settlement) {
 
         if (settlementRepository.insertSettlement(settlement) == 1) {
@@ -71,7 +73,7 @@ public class SettlementService {
             return null;
         }
         int offset = (page - 1) * pageSize;
-        return settlementRepository.selectSettlementWithLimit();
+        return settlementRepository.selectSettlementWithLimit(user.getId(), offset, pageSize);
 
     }
 
@@ -86,11 +88,12 @@ public class SettlementService {
         return false;
     }
 
-    public boolean deleteSettlement(User u, Settlement settlement) {
-        if (canOperate(u, settlement.getId())) {
+    //删除一个settlement
+    public boolean deleteSettlement(User u, int settlementid) {
+        if (canOperate(u, settlementid)) {
             return false;
         }
-        if (settlementRepository.deleteSettlement(settlement) == 1) {
+        if (settlementRepository.deleteSettlementById(settlementid) == 1) {
             return true;
         }
         return false;
