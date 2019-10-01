@@ -17,6 +17,7 @@ public class ShopService {
     @Transactional
     public int deleteShop(int shopid){
         return shopRepository.deleteShop(shopid);
+        //TODO: 删除一个shopd 所有员工和员工家属
     }
 
     //添加一个shop

@@ -7,15 +7,17 @@
     <title>品牌</title>
 </head>
 <body>
-品牌管理
+
+添加店铺
 <form method="post" th:action="@{/}">
     username <input type="text" name="username">
     密码 <input type="password" name="password">
     重复密码 <input type="password" name="repeatpassword">
     shop description <input type="text" name="description">
-    geo <input type="text" name="geo">
-    <div><input type="submit" value="新建shop"/></div>
-
+    地理位置 <input type="text" name="geo">
+    <input type="submit" value="新建shop"/>
 </form>
+
+
 </body>
 </html>

@@ -19,6 +19,9 @@ public interface Category2Repository {
     @Delete("delete from category2 where category2id=#{category2id}")
     int deleteCatagory2(Category2 category2);
 
+//    @Delete("delete from category2 where category2id=#{category2id}")
+//    int deleteCatagory2By(String );
+
     @Select("select * from category2 where categoryid=#{category2}")
     ArrayList<Category2> selectAllCategory2(@Param("categoryid") int categoryid);
 

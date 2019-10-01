@@ -4,10 +4,12 @@ package com.aaa.huahui.controller;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.Brand;
+import com.aaa.huahui.model.Category;
 import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.UserService;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 @Controller
 public class BrandController {
@@ -30,9 +33,12 @@ public class BrandController {
 
     @GetMapping("/brand/getbrand")
     public JSONObject getBrand(@RequestParam("brandid") int brandid) {
-        JSONObject brand = brandService.getBrand(brandid);
-        brand.put("error", 0);
-        return brand;
+        Brand brand = brandService.getBrand(brandid);
+        JSONObject rejeson = new JSONObject();
+
+        rejeson.put("error", 0);
+        rejeson.put("brand", brand);
+        return rejeson;
     }
 
     @PostMapping("/brand/newbrand")
@@ -64,4 +70,68 @@ public class BrandController {
         rejeson.put("error", 0);
         return rejeson;
     }
+
+    @PostMapping("/brand/deletebrand")
+    public JSONObject deleteBrand(@RequestParam("brandid") int brandid) {
+        JSONObject rejeson = new JSONObject();
+
+        boolean result = brandService.deleteBrand(brandid);
+        if (result == true) {
+            rejeson.put("error", 0);
+        }
+        rejeson.put("error", 1);
+        rejeson.put("msg", "删除失败");
+        return rejeson;
+    }
+
+    //获得所有一级分类
+    @GetMapping("/brand/getallcategory")
+    public JSONObject getAllCategory(@RequestParam("brandid") int brandid) {
+        JSONObject rejeson = new JSONObject();
+        ArrayList<Category> categories = brandService.allCategory(brandid);
+        rejeson.put("error", 0);
+        JSONArray allcategories = new JSONArray(Collections.singletonList(categories));
+        rejeson.put("allcategories", allcategories);
+        return rejeson;
+    }
+
+    //添加一级分类
+    @PostMapping("/brand/addcategory")
+    public JSONObject addCategory(@RequestParam("brandid") int brandid,
+                                  @RequestParam("categoryname") String categoryName) {
+        JSONObject rejeson = new JSONObject();
+
+        boolean result = brandService.addCategory(brandid, categoryName);
+        if (result == true) {
+            rejeson.put("error", 0);
+        }
+        rejeson.put("error", 1);
+        rejeson.put("msg", "分类已存在");
+        return rejeson;
+    }
+
+    //删除一级分类
+    @PostMapping("/brand/deletecategory")
+    public JSONObject deleteCategory(@RequestParam("brandid") int brandid,
+                                     @RequestParam("categoryname") String categoryName) {
+        JSONObject rejeson = new JSONObject();
+
+        boolean result = brandService.deleteCategory(brandid, categoryName);
+        if (result == true) {
+            rejeson.put("error", 0);
+        }
+        rejeson.put("error", 1);
+        rejeson.put("msg", "分类已存在");
+        return rejeson;
+    }
+
+    //删除二级分类
+    @PostMapping("/brand/deletecategory2")
+    public JSONObject deleteCategory2(@RequestParam("brandid") int brandid,
+                                      @RequestParam("categoryname") int categoryName,
+                                      @RequestParam("category2name") String category2Name) {
+        return null;
+    }
+
+
 }

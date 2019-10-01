@@ -51,6 +51,24 @@ public class AvatarService {
         if (role == null) {
             return null;
         }
+
+        //file为空，直接返回原来的头像
+        if (file == null) {
+            switch (role) {
+                case ROLE.BRAND:
+                    return brandRepository.queryAvatar(id);
+
+                case ROLE.REPORTER:
+                    return reporterRepository.queryAvatar(id);
+
+                case ROLE.STAFF:
+                    return staffRepository.queryAvatar(id);
+
+                default:
+                    return "";
+            }
+        }
+
         String filepath = fileService.uploadImage(file);
         int a = 0;
         switch (role) {

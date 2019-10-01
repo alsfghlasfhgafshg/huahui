@@ -20,17 +20,40 @@
 
 商家管理
 <br>
-添加商家
-<form th:action="@{/admin/addbranduser}" method="post">
-    商家名<input type="text" name="brandname">
-    密码<input type="password" name="brandpasswd">
-    重复密码<input type="password" name="repeatbrandpasswd">
+添加品牌
+<form th:action="@{/brand/newbrand}" method="post">
+    商家名<input type="text" name="name">
+    描述<input type="text" name="description">
+    头像<input type="file" name="img">
+    密码<input type="password" name="password">
+    重复密码<input type="password" name="repeatpassword">
+    <input type="submit">
+</form>
+<hr>
+
+获得品牌的信息，包括所有店铺信息
+<a href="/brand/getbrand?brandid=11">/brand/getbrand?brandid=11</a>
+<hr>
+
+更新品牌信息，如果不变，为空
+<form th:action="@{/brand/updatebrand}">
+    id hidden<input type="text" name="brandid">
+    描述 <input type="text" name="description">
+    头像 <input type="text" name="img">
     <input type="submit">
 </form>
 
-
 <hr>
 
+<hr>
+删除店铺
+
+<form th:action="@{/brand/deletebrand}">
+    店铺id<input type="text" name="brandid">
+    <input type="submit">
+</form>
+
+<hr>
 
 添加管理员
 <form th:action="@{/admin/addadminuser}" method="post">
@@ -39,5 +62,7 @@
     密码： <input type="password" name="repeatpassword">
     <input type="submit">
 </form>
+
+
 </body>
 </html>

@@ -44,6 +44,9 @@ public class BrandService {
     CategoryRepository categoryRepository;
 
     @Autowired
+    ShopService shopService;
+
+    @Autowired
     Category2Repository category2Repository;
 
 
@@ -55,7 +58,11 @@ public class BrandService {
 
     //删除brand
     public boolean deleteBrand(int brandid) {
-        //删除boss的所有店，删除店里的所有员工
+        userService.deleteUser(brandid, ROLE.BRAND);
+        ArrayList<Integer> allShopId = shopService.selectAllShopId(brandid);
+        for (Integer i : allShopId) {
+            shopService.deleteShop(i);
+        }
         return false;
     }
 
@@ -91,39 +98,45 @@ public class BrandService {
     }
 
     //获得brand信息
-    public JSONObject getBrand(int brandid) {
-        JSONObject json = new JSONObject();
-
+    public Brand getBrand(int brandid) {
         Brand brand = brandRepository.queryBrand(brandid);
-        int countShop = brandRepository.queryCountShop(brandid);
-
-        ArrayList<Shop> shops = shopRepository.selectAllShop(brandid);
-
-        JSONArray allshop = new JSONArray(Collections.singletonList(shops));
-        json.put("brand", brand);
-        json.put("countshop", countShop);
-        json.put("allshop", allshop);
-        return json;
+        return brand;
     }
 
 
     //更新brand
     public boolean updateBrand(int brandid, String description, MultipartFile file) {
+        if (description == null || description.equals("")) {
+            return true;
+        }
         brandRepository.updateBrandDescription(brandid, description);
         avatarService.updateAvatar(brandid, file);
         return true;
     }
 
-
+    //添加一级分类
     public boolean addCategory(int brandid, String categoryName) {
-        if (categoryRepository.insertCategory(brandid, categoryName) == 1) {
-            return true;
-        } else {
+        if (categoryRepository.selectCountCategory(brandid, categoryName) == 1) {
             return false;
         }
+        categoryRepository.insertCategory(brandid, categoryName);
+        return true;
     }
 
-    //添加category2
+    //删除一级分类
+    public boolean deleteCategory(int brandid, String categoryName) {
+        categoryRepository.deleteCategoryByBrandidAndCategoryName(brandid, categoryName);
+        return true;
+    }
+
+
+    //获得所有一级分类
+    public ArrayList<Category> allCategory(int brandid) {
+        return categoryRepository.selectAllCategory(brandid);
+    }
+
+
+    //添加二级分类
     public boolean addCategory2(int brandid, int categoryid, String category2name) {
         int i = categoryRepository.selectCountByIdAndBrandId(brandid, categoryid);
         if (i == 0) {
@@ -133,6 +146,13 @@ public class BrandService {
             return true;
         }
         return false;
+    }
+
+    //删除二级分类
+    public boolean deleteCategory2(int brandid, int categoryid, String category2name) {
+
+        category2Repository.deleteCatagory2()
+        return true;
     }
 
     //获得所有category2

@@ -7,6 +7,14 @@ import java.util.ArrayList;
 
 @Mapper
 public interface CategoryRepository {
+
+
+    @Delete("delete from category where brandid=#{brandid} and name=#{name}")
+    int deleteCategoryByBrandidAndCategoryName(@Param("brandid") int brandid, @Param("name") String name);
+
+    @Select("select count(*) from category where brandid=#{brandid} and name=#{name}")
+    int selectCountCategory(@Param("brandid") int brandid, @Param("name") String name);
+
     @Insert("insert into category(brandid,name)values(#{brandid},#{name})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertCategory(@Param("brandid") int brandid, @Param("name") String name);
