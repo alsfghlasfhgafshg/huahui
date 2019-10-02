@@ -44,8 +44,8 @@ public class StaffController {
         return rejeson;
     }
 
-    //传值待加
-    @GetMapping("/addstaff")
+
+    @PostMapping("/addstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     @ResponseBody
     public JSONObject addStaff(@RequestParam("username") String username,
