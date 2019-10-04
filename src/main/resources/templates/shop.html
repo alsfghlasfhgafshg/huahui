@@ -10,7 +10,7 @@
 店铺管理
 </body>
 
-<form method="post" th:action="/staff/addstaff">
+<form method="post" th:action="@{/staff/addstaff}">
     username <input type="text" name="username">
     密码 <input type="password" name="password">
     重复密码 <input type="password" name="repeatpassword">
@@ -44,8 +44,15 @@
     <input type="text" name="consultant">
     <input type="text" name="reporterid">
 
-
 </form>
 
+
+
+结算
+<form th:action="@{/settlement/statistics}">
+    <input type="date" name="datefrom">
+    <input type="date" name="dateto">
+    <input type="submit">
+</form>
 
 </html>

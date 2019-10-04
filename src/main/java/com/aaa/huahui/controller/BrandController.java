@@ -30,7 +30,7 @@ public class BrandController {
     @Autowired
     UserService userService;
 
-
+    //获得一个brand
     @GetMapping("/brand/getbrand")
     public JSONObject getBrand(@RequestParam("brandid") int brandid) {
         Brand brand = brandService.getBrand(brandid);
@@ -41,6 +41,7 @@ public class BrandController {
         return rejeson;
     }
 
+    //新的brand
     @PostMapping("/brand/newbrand")
     public JSONObject newBrand(@RequestParam("name") String name,
                                @RequestParam("password") String password,
@@ -61,6 +62,7 @@ public class BrandController {
         return rejeson;
     }
 
+    //更新brand
     @PostMapping("/brand/updatebrand")
     public JSONObject updateBrand(@RequestParam("brandid") int brandid,
                                   @RequestParam("description") String description,
@@ -119,6 +121,7 @@ public class BrandController {
         boolean result = brandService.deleteCategory(brandid, categoryName);
         if (result == true) {
             rejeson.put("error", 0);
+            return rejeson;
         }
         rejeson.put("error", 1);
         rejeson.put("msg", "分类已存在");
@@ -128,9 +131,17 @@ public class BrandController {
     //删除二级分类
     @PostMapping("/brand/deletecategory2")
     public JSONObject deleteCategory2(@RequestParam("brandid") int brandid,
-                                      @RequestParam("categoryname") int categoryName,
-                                      @RequestParam("category2name") String category2Name) {
-        return null;
+                                      @RequestParam("categoryid") int categoryid,
+                                      @RequestParam("category2id") int category2id) {
+
+        JSONObject rejeson = new JSONObject();
+        boolean result = brandService.deleteCategory2(brandid, categoryid, category2id);
+        if (result == true) {
+            rejeson.put("error", 0);
+        }
+        rejeson.put("error", 1);
+        rejeson.put("msg", "删除失败");
+        return rejeson;
     }
 
 

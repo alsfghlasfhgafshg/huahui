@@ -1,5 +1,6 @@
 package com.aaa.huahui.controller;
 
+import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.Settlement;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.service.SettlementService;
@@ -21,6 +22,7 @@ public class SettlementController {
     @Autowired
     SettlementService settlementService;
 
+    //添加结算单
     @PostMapping("/settlement/add")
     public @ResponseBody
     JSONObject addSettlement(UsernamePasswordAuthenticationToken token,
@@ -56,6 +58,7 @@ public class SettlementController {
 
     }
 
+    //获得一个结算单
     @GetMapping("/settlement/getone")
     public @ResponseBody
     JSONObject addSettlement(UsernamePasswordAuthenticationToken token,
@@ -75,6 +78,7 @@ public class SettlementController {
         return reobject;
     }
 
+    //更新结算单
     @GetMapping("/settlement/updateone")
     public @ResponseBody
     JSONObject updateSettlement(UsernamePasswordAuthenticationToken token,
@@ -110,6 +114,43 @@ public class SettlementController {
             reobject.put("msg", "更新失败");
         }
         return reobject;
+    }
+
+    //统计结算单
+    @GetMapping("/settlement/statisticsrange")
+    public @ResponseBody
+    JSONObject updateSettlement(@RequestParam("shopid") int shopid,
+                                @RequestParam("datefrom") String datefrom,
+                                @RequestParam("dateto") String dateto,
+                                UsernamePasswordAuthenticationToken token) {
+        User user = (User) token.getPrincipal();
+        if (user.hasRole(ROLE.SHOP)) {
+            shopid = user.getId();
+        }
+        Timestamp stampStart = DateUtils.getTimeStampStart(datefrom);
+        Timestamp stampEnd = DateUtils.getTimeStampEnd(dateto);
+
+
+        return settlementService.statistics(shopid, stampStart, stampEnd);
+
+    }
+
+    //统计一天结算单
+    @GetMapping("/settlement/statisticsday")
+    public @ResponseBody
+    JSONObject updateSettlement(@RequestParam("shopid") int shopid,
+                                @RequestParam("datefrom") String date,
+                                UsernamePasswordAuthenticationToken token) {
+
+        Timestamp stampStart = DateUtils.getTimeStampStart(date);
+        Timestamp stampEnd = DateUtils.getTimeStampEnd(date);
+
+        User user = (User) token.getPrincipal();
+        if (user.hasRole(ROLE.SHOP)) {
+            shopid = user.getId();
+        }
+        return settlementService.statistics(shopid, stampStart, stampEnd);
+
     }
 
 

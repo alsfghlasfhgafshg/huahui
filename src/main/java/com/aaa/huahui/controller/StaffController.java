@@ -32,6 +32,7 @@ public class StaffController {
         return "staff";
     }
 
+    //获得所有staff
     @GetMapping("/allstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     @ResponseBody
@@ -44,7 +45,7 @@ public class StaffController {
         return rejeson;
     }
 
-
+    //添加staff
     @PostMapping("/addstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     @ResponseBody
@@ -85,7 +86,8 @@ public class StaffController {
         }
     }
 
-    @PostMapping("/edit/{staffid}")
+    //修改staff
+    @PostMapping("/editstaff/{staffid}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     @ResponseBody
     public JSONObject updateStaff(@PathVariable("staffid")int staffid,
@@ -114,6 +116,7 @@ public class StaffController {
         }
     }
 
+    //删除staff
     @DeleteMapping("deletestaff/{staffid}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     @ResponseBody

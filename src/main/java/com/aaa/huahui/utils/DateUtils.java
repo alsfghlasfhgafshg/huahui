@@ -9,15 +9,38 @@ import java.util.Date;
 public class DateUtils {
     static volatile Calendar calendar = Calendar.getInstance();
 
+    //开始 0：00
     public static Timestamp getTimeStampStart(int year, int month, int day) {
         return getTimeStampWithHHmmss(year, month, day, 0, 0, 0);
     }
 
+    public static Timestamp getTimeStampStart(String yyyyMMdd) {
+        int year,month,day;
 
+        String[] split = yyyyMMdd.split("-");
+        year = Integer.valueOf(split[0]);
+        month = Integer.valueOf(split[1]);
+        day = Integer.valueOf(split[2]);
+
+        return getTimeStampWithHHmmss(year, month, day, 0, 0, 0);
+    }
+
+    //结束 23：59
     public static Timestamp getTimeStampEnd(int year, int month, int day) {
         return getTimeStampWithHHmmss(year, month, day, 23, 59, 59);
     }
+    public static Timestamp getTimeStampEnd(String yyyyMMdd) {
+        int year,month,day;
 
+        String[] split = yyyyMMdd.split("-");
+        year = Integer.valueOf(split[0]);
+        month = Integer.valueOf(split[1]);
+        day = Integer.valueOf(split[2]);
+
+        return getTimeStampWithHHmmss(year, month, day, 23, 59, 59);
+    }
+
+    //获得时间
     public static Timestamp getTimeStampWithHHmm(String yyyyMMddHHmm) {
         yyyyMMddHHmm = yyyyMMddHHmm + ":0";
         synchronized (calendar) {
@@ -33,7 +56,7 @@ public class DateUtils {
         }
     }
 
-
+    //获得时间
     public static Timestamp getTimeStampWithHHmmss(int year, int month, int day, int hour, int minute, int second) {
         String dateStr = String.format("%d-%d-%d %d:%d:%d", year, month, day, hour, minute, second);
 
@@ -50,6 +73,7 @@ public class DateUtils {
 
     }
 
+    //获得月份最后一天
     public static int getLastDayOfMonth(int year, int month) {
         int[] monDays = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
         if (((year) % 4 == 0 && (year) % 100 != 0) || (year) % 400 == 0) {

@@ -58,12 +58,12 @@ public class BrandService {
 
     //删除brand
     public boolean deleteBrand(int brandid) {
-        userService.deleteUser(brandid, ROLE.BRAND);
         ArrayList<Integer> allShopId = shopService.selectAllShopId(brandid);
         for (Integer i : allShopId) {
             shopService.deleteShop(i);
         }
-        return false;
+        userService.deleteUser(brandid, ROLE.BRAND);
+        return true;
     }
 
     //新的4个category
@@ -149,9 +149,12 @@ public class BrandService {
     }
 
     //删除二级分类
-    public boolean deleteCategory2(int brandid, int categoryid, String category2name) {
-
-        category2Repository.deleteCatagory2()
+    public boolean deleteCategory2(int brandid, int categoryid, int category2id) {
+        int i = categoryRepository.selectCountByIdAndBrandId(brandid, categoryid);
+        if (i == 0) {
+            return false;
+        }
+        category2Repository.deleteCatagory2ByCategoryidAndCategoryname2(categoryid, category2id);
         return true;
     }
 

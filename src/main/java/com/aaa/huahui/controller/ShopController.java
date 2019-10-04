@@ -28,16 +28,17 @@ public class ShopController {
 
     @GetMapping
     public String shopIndex(UsernamePasswordAuthenticationToken e) {
-        ((User) e.getPrincipal()).getId();
+//        ((User) e.getPrincipal()).getId();
         return "shop";
     }
 
 
-    @GetMapping
-    public String shopIndex(){
-        return "shop";
-    }
+//    @GetMapping
+//    public String shopIndex(){
+//        return "shop";
+//    }
 
+    //获得所有shop
     @GetMapping("/allshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     @ResponseBody
@@ -50,6 +51,7 @@ public class ShopController {
         return rejeson;
     }
 
+    //添加shop
     @GetMapping("/addshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     @ResponseBody
@@ -80,7 +82,8 @@ public class ShopController {
         }
     }
 
-    @PostMapping("/edit/{shopid}")
+    //编辑shop
+    @PostMapping("/editshop/{shopid}")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     @ResponseBody
     public JSONObject updateStaff(@PathVariable("shopid")int shopid,
@@ -98,6 +101,7 @@ public class ShopController {
         }
     }
 
+    //删除shop
     @DeleteMapping("deleteshop/{shopid}")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     @ResponseBody

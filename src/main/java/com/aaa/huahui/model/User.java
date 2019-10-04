@@ -81,7 +81,9 @@ public class User implements UserDetails {
 
     public boolean hasRole(String rolemane) {
         for (GrantedAuthority authority : this.getAuthorities()) {
-            if (authority.getAuthority().equals(rolemane)) return true;
+            if (authority.getAuthority().equals(rolemane)) {
+                return true;
+            }
         }
         return false;
     }

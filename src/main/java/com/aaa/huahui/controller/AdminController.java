@@ -124,8 +124,28 @@ public class AdminController {
                 msgs.add(error);
             }
             responsejson.put("msg", msgs);
-            responsejson.put("error", 0);
+            responsejson.put("error", 1);
             return responsejson;
         }
+    }
+
+    //删除品牌
+    @PostMapping("/admin/deletebranduser")
+    public @ResponseBody
+    JSONObject deletebrand(@RequestParam("brandid") int brandid) {
+        JSONObject responsejson = new JSONObject();
+        JSONArray msgs = new JSONArray();
+
+        boolean result = brandService.deleteBrand(brandid);
+        if (result==true){
+            responsejson.put("error", 0);
+            msgs.add("ok");
+        }else {
+            msgs.add("删除失败");
+            responsejson.put("error", 0);
+            responsejson.put("msg", msgs);
+        }
+
+        return responsejson;
     }
 }
