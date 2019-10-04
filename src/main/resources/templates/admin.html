@@ -63,6 +63,31 @@
     <input type="submit">
 </form>
 
+<hr>
+
+所有admin
+<a href="/admin/alladmin?page=1">所有admin</a>
+
+<hr>
+删除管理员
+
+<form th:action="@{/admin/deladminuser}">
+    管理员id <input type="text" name="userid">
+    <input type="submit">
+</form>
+
+<hr>
+列出所有管理员
+<a href="/admin/alladmin">列出所有admin</a>
+
+<hr>
+所有用户通用,修改密码
+<form action="@{/user/changepssword}">
+    <input type="text" name="passwd">
+    <input type="text" name="repeatpasswd">
+    <input type="submit">
+</form>
+
 
 </body>
 </html>

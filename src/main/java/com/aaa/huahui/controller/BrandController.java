@@ -7,6 +7,7 @@ import com.aaa.huahui.model.Brand;
 import com.aaa.huahui.model.Category;
 import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.service.AvatarService;
 import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.UserService;
 import com.alibaba.fastjson.JSONArray;
@@ -28,7 +29,35 @@ public class BrandController {
     BrandService brandService;
 
     @Autowired
+    AvatarService avatarService;
+
+    @Autowired
     UserService userService;
+
+
+    //列出所有brand
+    @GetMapping("/brand/allbrand")
+    public JSONObject allBrand() {
+        JSONObject rejeson = new JSONObject();
+        rejeson.put("error", 0);
+
+        JSONArray array = new JSONArray();
+        ArrayList<User> users = userService.listAllUsers(ROLE.BRAND, -1);
+        for (User user : users) {
+            JSONObject temp = new JSONObject();
+
+            int userid = user.getId();
+            temp.put("id", userid);
+
+            Brand brand = brandService.getBrand(userid);
+            temp.put("avatar", brand.getAvatar());
+            temp.put("description", brand.getDescription());
+
+            array.add(brand);
+        }
+        rejeson.put("allbrand", array);
+        return rejeson;
+    }
 
     //获得一个brand
     @GetMapping("/brand/getbrand")
@@ -73,6 +102,7 @@ public class BrandController {
         return rejeson;
     }
 
+    //删除一个brand
     @PostMapping("/brand/deletebrand")
     public JSONObject deleteBrand(@RequestParam("brandid") int brandid) {
         JSONObject rejeson = new JSONObject();

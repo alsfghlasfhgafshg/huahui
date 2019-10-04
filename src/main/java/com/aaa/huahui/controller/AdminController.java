@@ -10,6 +10,7 @@ import com.aaa.huahui.service.UserService;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,10 +46,30 @@ public class AdminController {
         return "admin";
     }
 
-    //删除admin
-    @GetMapping("/admin/deladminuser/{userid}")
+    //列出所有admin
+    @GetMapping("/admin/alladmin")
     public @ResponseBody
-    JSONObject deladminuser(@PathVariable("userid") int userid, Model model) {
+    JSONObject getAllAdmin(@RequestParam(value = "page", defaultValue = "1") int page) {
+        JSONObject responsejson = new JSONObject();
+        ArrayList<User> users = userService.listAllUsers(ROLE.ADMIN, page);
+        JSONArray array = new JSONArray();
+
+        for (User user : users) {
+            JSONObject temp = new JSONObject();
+            temp.put("id", user.getId());
+            temp.put("name", user.getName());
+            array.add(temp);
+        }
+
+        responsejson.put("error", 0);
+        responsejson.put("admins", array);
+        return responsejson;
+    }
+
+    //删除admin
+    @PostMapping("/admin/deladminuser")
+    public @ResponseBody
+    JSONObject deladminuser(@RequestParam("userid") int userid, Model model) {
         JSONObject responsejson = new JSONObject();
         JSONArray msgs = new JSONArray();
 
@@ -137,10 +158,10 @@ public class AdminController {
         JSONArray msgs = new JSONArray();
 
         boolean result = brandService.deleteBrand(brandid);
-        if (result==true){
+        if (result == true) {
             responsejson.put("error", 0);
             msgs.add("ok");
-        }else {
+        } else {
             msgs.add("删除失败");
             responsejson.put("error", 0);
             responsejson.put("msg", msgs);

@@ -6,6 +6,7 @@ import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,10 @@ import java.util.ArrayList;
 
 @Service
 public class UserService implements UserDetailsService {
+
+
+    @Value("${pageSize}")
+    private int pageSize;
 
     @Autowired
     BrandRepository brandRepository;
@@ -44,6 +49,32 @@ public class UserService implements UserDetailsService {
     UserRoleRepository userRoleRepository;
 
 
+    //列出所有用户
+    public ArrayList<User> listAllUsers(String userrole, int page) {
+        int offset = (page - 1) * pageSize;
+
+        int pagesize = this.pageSize;
+
+        if (page == -1) {
+            offset = 0;
+            pagesize = -1;
+        }
+
+        switch (userrole) {
+            case ROLE.ADMIN:
+                return userRepository.selectAllUserByRoleAndPage(ROLE.ADMIN, offset, pagesize);
+            case ROLE.BRAND:
+                return userRepository.selectAllUserByRoleAndPage(ROLE.BRAND, offset, pagesize);
+            case ROLE.SHOP:
+                return userRepository.selectAllUserByRoleAndPage(ROLE.SHOP, offset, pagesize);
+            case ROLE.STAFF:
+                return userRepository.selectAllUserByRoleAndPage(ROLE.STAFF, offset, pagesize);
+            default:
+                return null;
+        }
+    }
+
+    //修改密码
     public boolean changePassword(User u, String newPassword) {
         return changePasswordByUserid(u.getId(), newPassword);
     }
@@ -88,6 +119,7 @@ public class UserService implements UserDetailsService {
         userRoleRepository.insertRole(user.getId(), userRoleRepository.selectRoleId(userrole));
         return user;
     }
+
     /**
      * 删除用户
      **/
@@ -142,10 +174,6 @@ public class UserService implements UserDetailsService {
         }
         return true;
     }
-
-
-
-
 
 
 }
