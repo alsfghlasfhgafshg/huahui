@@ -69,7 +69,7 @@ public class AdminController {
     //删除admin
     @PostMapping("/admin/deladminuser")
     public @ResponseBody
-    JSONObject deladminuser(@RequestParam("userid") int userid, Model model) {
+    JSONObject deladminuser(@RequestParam("userid") int userid) {
         JSONObject responsejson = new JSONObject();
         JSONArray msgs = new JSONArray();
 
@@ -127,7 +127,7 @@ public class AdminController {
                         @RequestParam("brandpasswd") String password,
                         @RequestParam("repeatbrandpasswd") String repeatpassword,
                         @RequestParam("description") String description,
-                        @RequestParam("file") MultipartFile file) {
+                        @RequestParam("img") MultipartFile file) {
         JSONObject responsejson = new JSONObject();
         JSONArray msgs = new JSONArray();
 

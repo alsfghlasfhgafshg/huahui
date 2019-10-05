@@ -133,7 +133,10 @@ public class UserService implements UserDetailsService {
         } else if (u != null && rolename.equals(role)) {
             a = userRepository.deleteUserById(userid);
             b = userRoleRepository.deleteRoleById(userid);
+
             switch (role) {
+                case ROLE.ADMIN:
+                    return true;
                 case ROLE.BRAND:
                     break;
                 case ROLE.SHOP:

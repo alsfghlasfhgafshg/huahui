@@ -16,7 +16,6 @@ public interface CategoryRepository {
     int selectCountCategory(@Param("brandid") int brandid, @Param("name") String name);
 
     @Insert("insert into category(brandid,name)values(#{brandid},#{name})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertCategory(@Param("brandid") int brandid, @Param("name") String name);
 
     @Delete("delete from category where id=#{id}")

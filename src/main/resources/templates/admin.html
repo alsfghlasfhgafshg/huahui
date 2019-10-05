@@ -21,7 +21,7 @@
 商家管理
 <br>
 添加品牌
-<form th:action="@{/brand/newbrand}" method="post">
+<form th:action="@{/brand/newbrand}" method="post" enctype="multipart/form-data">
     商家名<input type="text" name="name">
     描述<input type="text" name="description">
     头像<input type="file" name="img">
@@ -36,10 +36,10 @@
 <hr>
 
 更新品牌信息，如果不变，为空
-<form th:action="@{/brand/updatebrand}">
+<form th:action="@{/brand/updatebrandadmin}" method="post" enctype="multipart/form-data">
     id hidden<input type="text" name="brandid">
     描述 <input type="text" name="description">
-    头像 <input type="text" name="img">
+    头像 <input type="file" name="img">
     <input type="submit">
 </form>
 
@@ -57,7 +57,7 @@
 
 添加管理员
 <form th:action="@{/admin/addadminuser}" method="post">
-    用户名 ：<input type="text" name="name">
+    用户名 ：<input type="text" name="username">
     密码： <input type="password" name="password">
     密码： <input type="password" name="repeatpassword">
     <input type="submit">
@@ -71,7 +71,7 @@
 <hr>
 删除管理员
 
-<form th:action="@{/admin/deladminuser}">
+<form th:action="@{/admin/deladminuser}" method="post">
     管理员id <input type="text" name="userid">
     <input type="submit">
 </form>
@@ -81,13 +81,20 @@
 <a href="/admin/alladmin">列出所有admin</a>
 
 <hr>
-所有用户通用,修改密码
-<form action="@{/user/changepssword}">
-    <input type="text" name="passwd">
-    <input type="text" name="repeatpasswd">
+所有用户通用,修改当前已经的登录的账户的密码
+<form th:action="@{/user/changepssword}" method="post">
+    新密码<input type="text" name="passwd">
+    重复密码<input type="text" name="repeatpasswd">
     <input type="submit">
 </form>
 
+
+<hr>
+修改其他用户的密码，admin修改brand的，brand修改shop的
+<form th:action="@{/user/changeuserpssword}" method="post">
+
+
+</form>
 
 </body>
 </html>

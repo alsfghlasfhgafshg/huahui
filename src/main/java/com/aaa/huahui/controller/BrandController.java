@@ -40,6 +40,12 @@ public class BrandController {
     @Autowired
     UserService userService;
 
+    //index
+    @GetMapping("/brand")
+    public String brand() {
+        return "brand";
+    }
+
 
     //列出所有brand
     @GetMapping("/brand/allbrand")
@@ -95,17 +101,30 @@ public class BrandController {
             rejeson.put("error", 0);
         } catch (NewUserFailException e) {
             rejeson.put("error", 1);
+            rejeson.put("msgs", e.getErrors());
             e.printStackTrace();
         }
         return rejeson;
     }
 
     //更新brand
+    @PostMapping("/brand/updatebrandadmin")
+    public @ResponseBody
+    JSONObject adminUpdateBrand(@RequestParam("brandid") int brandid,
+                                @RequestParam("description") String description,
+                                @RequestParam("img") MultipartFile file) {
+
+        JSONObject rejeson = new JSONObject();
+        brandService.updateBrand(brandid, description, file);
+        rejeson.put("error", 0);
+        return rejeson;
+    }
+    //更新brand
     @PostMapping("/brand/updatebrand")
     public @ResponseBody
-    JSONObject updateBrand(UsernamePasswordAuthenticationToken token,
-                           @RequestParam("description") String description,
-                           @RequestParam("img") MultipartFile file) {
+    JSONObject brandUpdateBrand(UsernamePasswordAuthenticationToken token,
+                                @RequestParam("description") String description,
+                                @RequestParam("img") MultipartFile file) {
         int brandid = ((User) token.getPrincipal()).getId();
         JSONObject rejeson = new JSONObject();
         brandService.updateBrand(brandid, description, file);

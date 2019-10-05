@@ -1,8 +1,10 @@
 package com.aaa.huahui.service;
 
 import com.aaa.huahui.model.Shop;
+import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.ShopRepository;
+import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +19,22 @@ public class ShopService {
     ShopRepository shopRepository;
 
     @Autowired
+    StaffService staffService;
+
+    @Autowired
+    StaffRepository staffRepository;
+
+    @Autowired
     UserRepository userRepository;
 
     @Transactional
     public int deleteShop(int shopid) {
 
+        ArrayList<Staff> allstaff = staffRepository.selectAllStaff(shopid);
+        for (Staff staff : allstaff) {
+            staffService.deleteStaff(staff.getStaffid());
+        }
         return shopRepository.deleteShop(shopid);
-        //TODO: 删除一个shopd 所有员工和员工家属
     }
 
     //添加一个shop

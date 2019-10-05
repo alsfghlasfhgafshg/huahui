@@ -49,6 +49,7 @@ public class StaffService {
     //删除一个staff
     @Transactional
     public boolean deleteStaff(int staffid) {
+        //TODO: 删除safff家属关系
         if (staffRepository.deleteStaff(staffid) == 1) {
             return true;
         }

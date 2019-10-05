@@ -79,16 +79,18 @@ public class BrandService {
      **/
     @Transactional
     public boolean newBrand(User user, String description, MultipartFile file) {
-        if (user == null) {
+         if (user == null) {
             return false;
         }
+
+
+        int i = brandRepository.newBrand(user.getId(), description);
+        new4Category(user.getId());
 
         if (file != null) {
             String avatarfile = fileService.uploadImage(file);
             brandRepository.updateBrandAvatar(user.getId(), avatarfile);
         }
-        int i = brandRepository.newBrand(user.getId(), description);
-        new4Category(user.getId());
 
         if (i == 1) {
             return true;
