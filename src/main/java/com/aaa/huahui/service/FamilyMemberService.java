@@ -32,4 +32,6 @@ public class FamilyMemberService {
     public int updateFamilyMember(FamilyMember familyMember){
         return familyMemberRepository.updateFamilyMember(familyMember);
     }
+
+    public FamilyMember findOneFamilyMember(int memberid){return familyMemberRepository.findFamilyMember(memberid);}
 }

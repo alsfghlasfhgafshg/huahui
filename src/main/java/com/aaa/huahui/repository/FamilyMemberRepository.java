@@ -25,4 +25,7 @@ public interface FamilyMemberRepository {
     @Update("update familyrelationship set name=#{name},companyname=#{companyname},relationship=#{ralationship} age=#{age} where memberid=#{memberid}")
     int updateFamilyMember(FamilyMember familyMember);
 
+    @Select("select familyrelationship where memberid=#{memberid}")
+    FamilyMember findFamilyMember(int memberid);
+
 }

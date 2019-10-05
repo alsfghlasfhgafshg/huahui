@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -149,7 +148,7 @@ public class StaffController {
     }
 
     //删除staff
-    @DeleteMapping("deletestaff/{staffid}")
+    @DeleteMapping("/deletestaff/{staffid}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody JSONObject deleteStaff(@PathVariable("staffid")int staffId){
         JSONObject reobject = new JSONObject();
