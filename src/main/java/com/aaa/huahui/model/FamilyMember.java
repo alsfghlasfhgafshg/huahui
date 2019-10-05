@@ -22,6 +22,14 @@ public class FamilyMember {
         this.age = age;
     }
 
+    public FamilyMember(int staffid, String name, String campanyname, String relationship, int age) {
+        this.staffid = staffid;
+        this.name = name;
+        this.campanyname = campanyname;
+        this.relationship = relationship;
+        this.age = age;
+    }
+
     public int getMemberid() {
         return memberid;
     }
