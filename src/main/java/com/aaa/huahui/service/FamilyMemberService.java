@@ -13,23 +13,23 @@ public class FamilyMemberService {
     @Autowired
     FamilyMemberRepository familyMemberRepository;
 
-    int addFamilyMember(FamilyMember familyMember){
+    public int addFamilyMember(FamilyMember familyMember){
         return familyMemberRepository.insertFamilyMember(familyMember);
     }
 
-    ArrayList<FamilyMember> selectAllFamilyMember(int staffid){
+    public ArrayList<FamilyMember> selectAllFamilyMember(int staffid){
         return familyMemberRepository.selectAllFamilyMember(staffid);
     }
 
-    int deleteAllFamilyMember(int staffid){
+    public int deleteAllFamilyMember(int staffid){
         return familyMemberRepository.deleteAllStaffFamilyMember(staffid);
     }
 
-    int deleteFamilyMember(int memberid){
+    public int deleteFamilyMember(int memberid){
         return familyMemberRepository.deleteFamilyMember(memberid);
     }
 
-    int updateFamilyMember(FamilyMember familyMember){
+    public int updateFamilyMember(FamilyMember familyMember){
         return familyMemberRepository.updateFamilyMember(familyMember);
     }
 }

@@ -1,6 +1,7 @@
 package com.aaa.huahui.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Staff {
     int staffid;
@@ -17,7 +18,6 @@ public class Staff {
     String emergencyphone;
     int shopid;
 
-
     public Staff(int staffid, String avatar, String name, int male, Date birthday, String nation, String party, String healthy, String nativeplace, String address, String phone, String emergencyphone, int shopid) {
         this.staffid = staffid;
         this.avatar = avatar;
@@ -33,6 +33,7 @@ public class Staff {
         this.emergencyphone = emergencyphone;
         this.shopid = shopid;
     }
+
 
     public String getAvatar() {
         return avatar;
