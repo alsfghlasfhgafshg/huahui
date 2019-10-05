@@ -22,6 +22,23 @@ public class SettlementController {
     @Autowired
     SettlementService settlementService;
 
+
+    @PostMapping("/settlement/delete")
+    public @ResponseBody
+    JSONObject deleteSettlement(UsernamePasswordAuthenticationToken token,
+                                @RequestParam("settlementid") String settlementid) {
+
+
+        User u = ((User) token.getPrincipal());
+
+        JSONObject reobject = new JSONObject();
+        settlementService.deleteSettlement(u, Integer.valueOf(settlementid));
+        reobject.put("error", 0);
+
+        return reobject;
+    }
+
+
     //添加结算单
     @PostMapping("/settlement/add")
     public @ResponseBody
@@ -116,7 +133,7 @@ public class SettlementController {
         return reobject;
     }
 
-    //统计结算单
+    //统计结算单,日期范围
     @GetMapping("/settlement/statisticsrange")
     public @ResponseBody
     JSONObject updateSettlement(@RequestParam("shopid") int shopid,
@@ -129,10 +146,7 @@ public class SettlementController {
         }
         Timestamp stampStart = DateUtils.getTimeStampStart(datefrom);
         Timestamp stampEnd = DateUtils.getTimeStampEnd(dateto);
-
-
         return settlementService.statistics(shopid, stampStart, stampEnd);
-
     }
 
     //统计一天结算单

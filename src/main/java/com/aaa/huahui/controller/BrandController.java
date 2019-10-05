@@ -5,7 +5,6 @@ import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.Brand;
 import com.aaa.huahui.model.Category;
-import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.service.AvatarService;
 import com.aaa.huahui.service.BrandService;

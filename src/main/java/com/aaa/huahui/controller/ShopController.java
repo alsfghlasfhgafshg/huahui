@@ -1,5 +1,6 @@
 package com.aaa.huahui.controller;
 
+import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.advice.GlobalExceptionHandler;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.Shop;
@@ -41,79 +42,84 @@ public class ShopController {
     //获得所有shop
     @GetMapping("/allshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
-    @ResponseBody
-    public JSONObject getAllShop(Principal principal){
+    public @ResponseBody
+    JSONObject getAllShop(Principal principal) {
         JSONObject rejeson = new JSONObject();
-        User brandController = (User) principal;
-        ArrayList<Shop> list = shopService.selectAllShop(brandController.getId());
-        rejeson.put("error", 0);
-        rejeson.put("staffList", list);
+        User user = (User) principal;
+        if (user.hasRole(ROLE.BRAND)) {
+            ArrayList<Shop> list = shopService.selectAllShop(user.getId());
+            rejeson.put("error", 0);
+            rejeson.put("staffList", list);
+        } else {
+            rejeson.put("error", 1);
+            rejeson.put("msg", "无权限");
+        }
         return rejeson;
     }
 
     //添加shop
     @GetMapping("/addshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
-    @ResponseBody
-    public JSONObject addStaff(@RequestParam("username") String username,
-                               @RequestParam("password") String password,
-                               @RequestParam("repeatpassword") String repeatpassword,
-                               @RequestParam("description") String description,
-                               @RequestParam("geo") String geo,
-                               Principal principal){
+    public @ResponseBody
+    JSONObject addStaff(@RequestParam("username") String username,
+                        @RequestParam("password") String password,
+                        @RequestParam("repeatpassword") String repeatpassword,
+                        @RequestParam("description") String description,
+                        @RequestParam("geo") String geo,
+                        Principal principal) {
         JSONObject rejeson = new JSONObject();
-        User brandManager = (User)principal;
+        User brandManager = (User) principal;
         int brandId = brandManager.getId();
         User shopManager = null;
         try {
-            shopManager = userService.newUser(username,password,repeatpassword,"ROLE_SHOP");
+            shopManager = userService.newUser(username, password, repeatpassword, "ROLE_SHOP");
         } catch (NewUserFailException e) {
             GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
             globalExceptionHandler.MissingServletRequestParameterException(e);
         }
         try {
-            shopService.insertShop(shopManager.getId(), "aaa", "dewitt",brandId);
-            rejeson.put("error",0);
+            shopService.insertShop(shopManager.getId(), "aaa", "dewitt", brandId);
+            rejeson.put("error", 0);
             return rejeson;
-        }catch (Exception e){
-            rejeson.put("error",1);
-            rejeson.put("msg","shopManager is null");
+        } catch (Exception e) {
+            rejeson.put("error", 1);
+            rejeson.put("msg", "shopManager is null");
             return rejeson;
         }
     }
 
     //编辑shop
-    @PostMapping("/editshop/{shopid}")
+    @PostMapping("/editshop/")
     @PreAuthorize("hasRole('ROLE_BRAND')")
-    @ResponseBody
-    public JSONObject updateStaff(@PathVariable("shopid")int shopid,
-                                  @RequestParam("description") String description,
-                                  @RequestParam("geo")String geo){
+    public @ResponseBody
+    JSONObject updateStaff(@RequestParam("shopid") int shopid,
+                           @RequestParam("description") String description,
+                           @RequestParam("geo") String geo) {
         JSONObject reobject = new JSONObject();
         try {
-            shopService.updateShopInfo(shopid,description,geo);
-            reobject.put("error",0);
+            shopService.updateShopInfo(shopid, description, geo);
+            reobject.put("error", 0);
             return reobject;
-        }catch (Exception e){
-            reobject.put("error",1);
-            reobject.put("msg","shop update false");
+        } catch (Exception e) {
+            reobject.put("error", 1);
+            reobject.put("msg", "shop update false");
             return reobject;
         }
     }
 
     //删除shop
-    @DeleteMapping("deleteshop/{shopid}")
+    @PostMapping("/deleteshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
-    @ResponseBody
-    public JSONObject deleteStaff(@PathVariable("shop")int shopId){
+    public @ResponseBody
+    JSONObject deleteStaff(@RequestParam("shopid") int shopId) {
         JSONObject reobject = new JSONObject();
         try {
             shopService.deleteShop(shopId);
-            reobject.put("error",0);
+            reobject.put("error", 0);
             return reobject;
-        }catch (Exception e){
-            reobject.put("error",1);
-            reobject.put("msg","delete shop false");
+        } catch (Exception e) {
+            reobject.put("error", 1);
+            reobject.put("msg", "delete shop false");
             return reobject;
         }
     }

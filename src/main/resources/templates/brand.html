@@ -9,7 +9,7 @@
 <body>
 
 添加店铺
-<form method="post" th:action="@{/}">
+<form method="post" th:action="@{/shop/addshop}">
     username <input type="text" name="username">
     密码 <input type="password" name="password">
     重复密码 <input type="password" name="repeatpassword">
@@ -18,6 +18,29 @@
     <input type="submit" value="新建shop"/>
 </form>
 
+
+<hr>
+删除店铺
+<form th:action="@{/shop/allshop}" method="post">
+    <input type="text" name="shopid">
+    <input type="submit">
+</form>
+
+<hr>
+获取这个品牌的所有店铺
+<a href="/shop/allshop">所有店铺</a>
+
+
+<hr>
+
+<form action="@{/shop/editshop}">
+
+    shopid<input type="text" name="shopid">
+    描述 <input type="text" name="description">
+    地理位置 <input type="text" name="geo">
+    <input type="submit">
+
+</form>
 
 </body>
 </html>

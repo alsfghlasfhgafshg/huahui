@@ -104,7 +104,9 @@ public class StaffController {
         }
         try {
             Staff staff = new Staff(staffUser.getId(),avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,shopId);
-            for (FamilyMember familyMember:FamilyMemberList) familyMemberService.addFamilyMember(familyMember);
+            for (FamilyMember familyMember:FamilyMemberList) {
+                familyMemberService.addFamilyMember(familyMember);
+            }
             staffService.addStaff(staff);
             rejeson.put("error",0);
             return rejeson;
@@ -138,7 +140,9 @@ public class StaffController {
             Staff newStaff = new Staff(staffid,avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,shopid);
             staffService.updateStaff(newStaff);
             familyMemberService.deleteAllFamilyMember(staffid);
-            for (FamilyMember familyMember:FamilyMemberList)familyMemberService.updateFamilyMember(familyMember);
+            for (FamilyMember familyMember:FamilyMemberList) {
+                familyMemberService.updateFamilyMember(familyMember);
+            }
             reobject.put("error",0);
             return reobject;
         }catch (Exception e){
