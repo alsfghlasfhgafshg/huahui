@@ -159,7 +159,7 @@ public class BrandService {
     }
 
     //获得所有category2
-    public ArrayList<Category2> selectAllCategory2(int brandid) {
+    public ArrayList<Category2> allCategoryAndCategory2(int brandid) {
         ArrayList<Category> categories = categoryRepository.selectAllCategory(brandid);
         ArrayList<Category2> allcategory2 = new ArrayList<>();
 

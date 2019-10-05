@@ -42,8 +42,7 @@ public class StaffController {
     //获得所有staff
     @GetMapping("/allstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    @ResponseBody
-    public JSONObject getAllStaff(Principal principal){
+    public @ResponseBody JSONObject getAllStaff(Principal principal){
         JSONObject rejeson = new JSONObject();
         User shopController = (User) principal;
         ArrayList<Staff> list = staffService.allStaff(shopController.getId());
@@ -55,8 +54,7 @@ public class StaffController {
 
     //获取一个员工详细信息
     @GetMapping("/{id}")
-    @ResponseBody
-    public JSONObject showOneStaff(@PathVariable("id")int staffId){
+    public @ResponseBody JSONObject showOneStaff(@PathVariable("id")int staffId){
         JSONObject jsonObject = new JSONObject();
         try {
             Staff staff = staffService.selectOneStaff(staffId);
@@ -75,8 +73,7 @@ public class StaffController {
     //添加staff
     @PostMapping("/addstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    @ResponseBody
-    public JSONObject addStaff(@RequestParam("username") String username,
+    public @ResponseBody JSONObject addStaff(@RequestParam("username") String username,
                                @RequestParam("password") String password,
                                @RequestParam("repeatpassword") String repeatpassword,
                                @RequestParam("avatar") String avatar,
@@ -120,8 +117,7 @@ public class StaffController {
     //修改staff
     @PostMapping("/editstaff/{staffid}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    @ResponseBody
-    public JSONObject updateStaff(@PathVariable("staffid")int staffid,
+    public @ResponseBody JSONObject updateStaff(@PathVariable("staffid")int staffid,
                                   @RequestParam("avatar") String avatar,
                                   @RequestParam("name")String name,
                                   @RequestParam("male")int male,
@@ -155,8 +151,7 @@ public class StaffController {
     //删除staff
     @DeleteMapping("deletestaff/{staffid}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    @ResponseBody
-    public JSONObject deleteStaff(@PathVariable("staffid")int staffId){
+    public @ResponseBody JSONObject deleteStaff(@PathVariable("staffid")int staffId){
         JSONObject reobject = new JSONObject();
         try {
             staffService.deleteStaff(staffId);

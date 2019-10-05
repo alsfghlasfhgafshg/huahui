@@ -58,4 +58,6 @@ public interface UserRepository {
     @Update("update user set password=#{encodepassword} where id=#{userid}")
     int updatePassword(@Param("userid") int userid, @Param("encodepassword") String encodepassword);
 
+    @Select("select * from user where user.id=brand.brandid and brand.brandid=shop.brandid and shop.shopid=#{shopid} limit 1")
+    User shopBrand(@Param("shopid") int shopid);
 }

@@ -33,14 +33,71 @@
 
 <hr>
 
+更新店铺
 <form action="@{/shop/editshop}">
-
     shopid<input type="text" name="shopid">
     描述 <input type="text" name="description">
     地理位置 <input type="text" name="geo">
     <input type="submit">
 
 </form>
+
+
+<hr>
+更新本店
+
+<form th:action="@{//brand/updatebrand}">
+    <input type="text" name="description">
+    <input type="file" name="img">
+    <input type="submit">
+</form>
+
+
+<hr>
+<h2>商品分类</h2>
+
+查看所有一级分类
+<a href="/brand/getallcategory">获得所有一级分类</a>
+
+<hr>
+添加一级分类
+<form th:action="@{/brand/addcategory}">
+    <input type="text" name="categoryname">
+    <input type="submit">
+</form>
+
+<hr>
+删除一级分类
+<form action="">
+    <input type="text" name="categoryname">
+    <input type="submit">
+</form>
+
+
+
+
+<hr>
+查看所有二级分类
+<a href="/brand/querycategory2?categoryid=1">查看所有二级分类</a>
+
+<hr>
+删除二级分类
+<form th:action="@{/brand/deletecategory2}">
+    一级分类id<input type="text" name="categoryid">
+    二级分类id<input type="text" name="category2id">
+    <input type="submit">
+</form>
+
+
+<hr>
+添加二级分类
+<form th:action="@{/brand/addcategory2}">
+    <input type="text" name="categoryid">
+    <input type="text" name="category2name">
+    <input type="submit">
+</form>
+
+
 
 </body>
 </html>
