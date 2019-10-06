@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.ArrayList;
 
 @Controller
@@ -43,9 +42,9 @@ public class ShopController {
     @GetMapping("/allshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
-    JSONObject getAllShop(Principal principal) {
+    JSONObject getAllShop(UsernamePasswordAuthenticationToken token) {
         JSONObject rejeson = new JSONObject();
-        User user = (User) principal;
+        User user = (User) token.getPrincipal();
         if (user.hasRole(ROLE.BRAND)) {
             ArrayList<Shop> list = shopService.selectAllShop(user.getId());
             rejeson.put("error", 0);
@@ -66,9 +65,9 @@ public class ShopController {
                         @RequestParam("repeatpassword") String repeatpassword,
                         @RequestParam("description") String description,
                         @RequestParam("geo") String geo,
-                        Principal principal) {
+                        UsernamePasswordAuthenticationToken token) {
         JSONObject rejeson = new JSONObject();
-        User brandManager = (User) principal;
+        User brandManager = (User) token.getPrincipal();
         int brandId = brandManager.getId();
         User shopManager = null;
         try {
@@ -78,7 +77,7 @@ public class ShopController {
             globalExceptionHandler.MissingServletRequestParameterException(e);
         }
         try {
-            shopService.insertShop(shopManager.getId(), "aaa", "dewitt", brandId);
+            shopService.insertShop(shopManager.getId(), description, geo, brandId);
             rejeson.put("error", 0);
             return rejeson;
         } catch (Exception e) {

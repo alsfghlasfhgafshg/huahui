@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.security.Principal;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -41,9 +40,9 @@ public class StaffController {
     //获得所有staff
     @GetMapping("/allstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    public @ResponseBody JSONObject getAllStaff(Principal principal){
+    public @ResponseBody JSONObject getAllStaff(UsernamePasswordAuthenticationToken token){
         JSONObject rejeson = new JSONObject();
-        User shopController = (User) principal;
+        User shopController = (User) token.getPrincipal();
         ArrayList<Staff> list = staffService.allStaff(shopController.getId());
         rejeson.put("error", 0);
         rejeson.put("staffList", list);
