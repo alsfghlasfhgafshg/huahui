@@ -16,7 +16,7 @@ public interface StaffRepository {
     int updateStaffAvatar(@Param("staffid") int staffid, @Param("avatar") String avatar);
 
     @Insert("insert into staff (staffid,avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,shopid)" +
-            "values(#{staffid},#{avatar},#{name},#{male},#{birthday},#{nation},#{party},#{healthy},#{nativeplace},#{address},#{address},#{phone},#{emergencyphone},#{shopid})")
+            "values(#{staffid},#{avatar},#{name},#{male},#{birthday},#{nation},#{party},#{healthy},#{nativeplace},#{address},#{phone},#{emergencyphone},#{shopid})")
     int insertStaff(Staff staff);
 
     @Delete("delete from staff where staffid=#{staffid}")
