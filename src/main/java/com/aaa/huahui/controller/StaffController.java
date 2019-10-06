@@ -86,7 +86,7 @@ public class StaffController {
                                @RequestParam("address")String address,
                                @RequestParam("phone")String phone,
                                @RequestParam("emergencyphone")String emergencyphone,
-                               //@RequestParam("family") ArrayList<FamilyMember> FamilyMemberList,
+                               @RequestParam("family") ArrayList<FamilyMember> FamilyMemberList,
                                UsernamePasswordAuthenticationToken token){
         JSONObject rejeson = new JSONObject();
         User user = (User) token.getPrincipal();
@@ -100,9 +100,9 @@ public class StaffController {
         }
         try {
             Staff staff = new Staff(staffUser.getId(),avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,shopId);
-//            for (FamilyMember familyMember:FamilyMemberList) {
-//                familyMemberService.addFamilyMember(familyMember);
-//            }
+            for (FamilyMember familyMember:FamilyMemberList) {
+                familyMemberService.addFamilyMember(familyMember);
+            }
             staffService.addStaff(staff);
             rejeson.put("error",0);
             return rejeson;
