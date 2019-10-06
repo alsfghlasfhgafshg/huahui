@@ -4,7 +4,7 @@ public class FamilyMember {
     int memberid;
     int staffid;
     String name;
-    String campanyname;
+    String companyname;
     String relationship;
     int age;
 
@@ -17,7 +17,7 @@ public class FamilyMember {
         this.memberid = memberid;
         this.staffid = staffid;
         this.name = name;
-        this.campanyname = campanyname;
+        this.companyname = campanyname;
         this.relationship = relationship;
         this.age = age;
     }
@@ -25,7 +25,7 @@ public class FamilyMember {
     public FamilyMember(int staffid, String name, String campanyname, String relationship, int age) {
         this.staffid = staffid;
         this.name = name;
-        this.campanyname = campanyname;
+        this.companyname = campanyname;
         this.relationship = relationship;
         this.age = age;
     }
@@ -55,11 +55,11 @@ public class FamilyMember {
     }
 
     public String getCampanyname() {
-        return campanyname;
+        return companyname;
     }
 
     public void setCampanyname(String campanyname) {
-        this.campanyname = campanyname;
+        this.companyname = campanyname;
     }
 
     public String getRelationship() {

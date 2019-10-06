@@ -22,10 +22,10 @@ public interface FamilyMemberRepository {
     @Delete("delete from familyrelationship where memberid=#{memberid}")
     int deleteFamilyMember(@Param("memberid") int memberid);
 
-    @Update("update familyrelationship set name=#{name},companyname=#{companyname},relationship=#{ralationship} age=#{age} where memberid=#{memberid}")
+    @Update("update familyrelationship set name=#{name},companyname=#{companyname},relationship=#{relationship},age=#{age} where memberid=#{memberid}")
     int updateFamilyMember(FamilyMember familyMember);
 
-    @Select("select familyrelationship where memberid=#{memberid}")
+    @Select("select * from familyrelationship where memberid=#{memberid}")
     FamilyMember findFamilyMember(int memberid);
 
 }

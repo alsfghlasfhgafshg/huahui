@@ -38,12 +38,12 @@ public class FamilyMemberController {
     @PostMapping("/addFamilyMember/{id}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody JSONObject addFamilyMember(@RequestParam("name") String name,
-                                                    @RequestParam("campanyname") String campanyname,
+                                                    @RequestParam("companyname") String companyname,
                                                     @RequestParam("age") int age,
                                                     @RequestParam("relationship") String relationship,
                                                     @PathVariable("id")int staffId){
         JSONObject rejeson = new JSONObject();
-        FamilyMember familyMember = new FamilyMember(staffId,name,campanyname,relationship,age);
+        FamilyMember familyMember = new FamilyMember(staffId,name,companyname,relationship,age);
         int re = familyMemberService.addFamilyMember(familyMember);
         if (re==1)
             rejeson.put("error",0);
@@ -60,14 +60,14 @@ public class FamilyMemberController {
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody JSONObject updateStaff(@PathVariable("memberid")int memberid,
                                                 @RequestParam("name") String name,
-                                                @RequestParam("campanyname") String campanyname,
+                                                @RequestParam("companyname") String companyname,
                                                 @RequestParam("age") int age,
                                                 @RequestParam("relationship") String relationship){
         JSONObject reobject = new JSONObject();
         try {
             FamilyMember familyMember = familyMemberService.findOneFamilyMember(memberid);
             familyMember.setAge(age);
-            familyMember.setCampanyname(campanyname);
+            familyMember.setCampanyname(companyname);
             familyMember.setName(name);
             familyMember.setRelationship(relationship);
             familyMemberService.updateFamilyMember(familyMember);
