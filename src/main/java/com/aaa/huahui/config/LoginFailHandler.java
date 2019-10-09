@@ -1,5 +1,8 @@
 package com.aaa.huahui.config;
 
+import com.aaa.huahui.utils.ResponseGenerate;
+import com.aaa.huahui.utils.ResponseUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -16,13 +19,10 @@ import java.util.Enumeration;
 public class LoginFailHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
+                                        AuthenticationException exception) throws IOException {
 
-        PrintWriter writer = response.getWriter();
-        writer.write("login error");
-        writer.close();
 
-        Enumeration<String> attributeNames = request.getSession().getAttributeNames();
-        exception.getCause();
+        JSONObject jsonObject = ResponseGenerate.genFailResponse(1, "用户名或密码错误");
+        ResponseUtil.returnJsonU8(response, jsonObject);
     }
 }

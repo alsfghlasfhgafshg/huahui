@@ -1,0 +1,94 @@
+.detailsBox {
+  padding-bottom: 0.84rem;
+  width: 7.5rem;
+  height: 100vh;
+}
+
+/* 顶部部分 */
+.workJournalHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.3rem;
+  padding: 0.25rem 0.12rem 0.32rem;
+}
+.workJournalHeader .headerLeft {
+  margin-right: 0.32rem;
+}
+.workJournalHeader .herderRight {
+  display: flex;
+  font-size: 0.6rem;
+}
+/* 日历部分 */
+.date {
+  display: flex;
+  justify-content: center;
+  padding: 0.45rem 0;
+  font-size: 0.4rem;
+}
+/* 下面这是日历插件的样式 如果用的地方多的话而且样式一样可以把他摘出去写到公共的样式里*/
+.date .dateInput {
+  font-size: 0.3rem;
+  border: 0;
+  outline: none;
+  text-align: center;
+}
+.layui-laydate-main.laydate-main-list-0 {
+  width: 7.5rem;
+}
+.layui-laydate-main.laydate-main-list-0 .layui-laydate-content table {
+  margin-right: 0;
+  width: 100%;
+}
+/* 未完成部分 */
+.noFinish {
+  padding: 0 0.3rem 0.6rem;
+}
+.item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.18rem 0 0.18rem;
+}
+.item .item-top {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.15rem 0;
+}
+.item .item-top .shopTitle {
+  font-size: 0.28rem;
+  color: #0b0b0b;
+}
+.item .item-top .shopTitle-address {
+  font-size: 0.24rem;
+  color: #989a99;
+}
+.item .item-top .finishNum {
+  display: flex;
+  align-items: center;
+  color: #1de5a6;
+  font-size: 0.28rem;
+}
+.item .item-top .finishNum .jiantou{
+  color: #1de5a6;  
+}
+.item .item-top .finishNum > span {
+  margin-left: 0.12rem;
+  color: #000
+}
+.item .item-top .finishNum .weiwancheng {
+  color: #1de5a6;
+}
+.item .item-bot {
+  font-size: 0.24rem;
+  color: #909191;
+}
+/* 完成店铺 */
+.Finish-shop-title {
+  font-size: 0.28rem;
+  background-color: #f6f6f6;
+  padding: 0.3rem;
+  color: #707271;
+}
+/* 完成店铺详细 */
+.Finish-shop {
+  padding: 0 0.3rem;
+}

@@ -1,0 +1,110 @@
+<!-- 工作日志 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Journal</title>
+    <script src="./js/publicSize.js"></script>
+    <link rel="stylesheet" href="./css/public.css" />
+    <link rel="stylesheet" href="./css/iconfont.css" />
+    <link rel="stylesheet" href="./css/workJournal.css" />
+  </head>
+  <body>
+    <div class="JournalBox">
+      <!-- 顶部 部分 -->
+      <header class="workJournalHeader">
+        <div class="herderLeft">
+          <span class="iconfont icon-guanbi"></span>
+          <span>工作日志</span>
+        </div>
+        <div class="herderRight">
+          <span class="iconfont icon-gengduo"></span>
+        </div>
+      </header>
+      <!-- 日历部分 -->
+      <div class="date">
+        <span><</span>
+        <input class="dateInput" type="text" id="test-n1" />
+        <span>></span>
+      </div>
+      <!-- 数据简报 -->
+      <div class="dataBriefing ">
+        <span class="topTextTitle">数据简报</span>
+        <div class="dataBoxOverflow">
+          <div class="dataBox ">
+            <div class="dataLeft">
+              <span>生美项目操作(元)</span>
+              <span>今日：0.00</span>
+              <span>截至：0.00</span>
+            </div>
+            <div class="dataRight">
+              <span>项目实操数(个)</span>
+              <span>今日：0.00</span>
+              <span>截至：0.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 今日工作 -->
+      <div class="todayWorkBox dataBriefing">
+        <span class="topTextTitle"
+          >今日工作
+          <!--下面这里要放未完成的数量 -->
+          <span class="noComplete">（4项未完成）</span>
+        </span>
+        <div class="todayWork">
+          <div class="todayWorkItem">
+            <img src="./images/Journal_03.jpg" alt="" />
+            <span>提醒客户</span>
+            <span>
+              <!-- 定位用的盒子 -->
+            </span>
+          </div>
+          <div class="todayWorkItem">
+            <img src="./images/Journal_05.jpg" alt="" />
+            <span>记录服务</span>
+            <span>
+              <!-- 定位用的盒子 -->
+            </span>
+          </div>
+          <div class="todayWorkItem">
+            <img src="./images/Journal_07.jpg" alt="" />
+            <span>回访客户</span>
+            <span>
+              <!-- 定位用的盒子 -->
+            </span>
+          </div>
+          <div class="todayWorkItem">
+            <img src="./images/Journal_10.jpg" alt="" />
+            <span>服务备注</span>
+            <span>
+              <!-- 定位用的盒子 -->
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- 日报部分 -->
+      <div class="daily ">
+        <span class="topTextTitle">日报</span>
+        <ol>
+          <li>顾客恒丽做好客情服务，成交980自愈力</li>
+          <li>顾客蔡欣彤做好服务，成交498光电，成交980自愈力</li>
+          <li>新顾客崔玉茹成交9</li>
+          <li>电话邀约顾客</li>
+          <li>顾客档案入系统</li>
+        </ol>
+        <!-- <span class="dailyDate" id="dailyDate"></span> -->
+        <div class="dailyDate">
+          <input class="dateInput" type="text" id="test-n2" />
+          <input class="dateInput" type="text" id="test14" />
+        </div>
+      </div>
+      <!--  -->
+    </div>
+    <!-- js -->
+    <script src="./laydate/laydate.js"></script>
+    <script src="./js/data.js"></script>
+  </body>
+</html>

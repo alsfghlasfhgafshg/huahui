@@ -1,0 +1,108 @@
+.JournalListBox {
+  padding-bottom: 0.84rem;
+  width: 7.5rem;
+  height: 100vh;
+}
+
+/* 顶部部分 */
+.workJournalHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.3rem;
+  padding: 0.25rem 0.12rem 0.32rem;
+}
+.workJournalHeader .headerLeft {
+  margin-right: 0.32rem;
+}
+.workJournalHeader .herderRight {
+  display: flex;
+  font-size: 0.6rem;
+}
+/* 日历部分 */
+.date {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.45rem 0.3rem;
+  font-size: 0.4rem;
+  align-items: center;
+}
+.date > div:first-child {
+  display: flex;
+}
+.date .checkShop {
+  display: flex;
+  font-size: 0.24rem;
+  color: #3ce4a9;
+  margin-left: 1.04rem;
+}
+/* 下面这是日历插件的样式 如果用的地方多的话而且样式一样可以把他摘出去写到公共的样式里*/
+.date .dateInput {
+  font-size: 0.3rem;
+  border: 0;
+  outline: none;
+  text-align: center;
+  width: 2.62rem;
+}
+.layui-laydate-main.laydate-main-list-0 {
+  width: 7.5rem;
+}
+.layui-laydate-main.laydate-main-list-0 .layui-laydate-content table {
+  margin-right: 0;
+  width: 100%;
+}
+/* 未完成列表 */
+ul.jobList {
+  list-style: none;
+  padding: 0 0.3rem;
+}
+.jobList li {
+  box-shadow: 0 0 5px #e7e4e4;
+  display: flex;
+
+  padding: 0.34rem 0.2rem;
+  margin-bottom: 0.2rem;
+}
+.jobList li a {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+.jobList li:last-child {
+  margin-bottom: 0;
+}
+.jobList li .listLeft {
+  display: flex;
+  align-items: center;
+}
+.jobList li .listLeft img {
+  width: 0.8rem;
+  margin-right: 0.3rem;
+}
+
+.jobList li .listLeft .name {
+  font-size: 0.4rem;
+  color: #000;
+  margin-right: 0.15rem;
+}
+
+.jobList li .listLeft .job {
+  font-size: 0.3rem;
+  color: #a2a1a1;
+}
+/* 右面样式 */
+.jobList li .listRight {
+  display: flex;
+  font-size: 0.24rem;
+  color: #3ce4a9;
+  align-items: flex-end;
+}
+.jobList li .listRight span:first-child {
+  margin-right: 0.12rem;
+}
+/* 完成人员 */
+.finish-people {
+  font-size: 0.32rem;
+  color: #999b9a;
+  padding: 0.56rem 0.3rem;
+}

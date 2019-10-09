@@ -1,0 +1,152 @@
+.report {
+  padding-bottom: 0.84rem;
+  width: 7.5rem;
+}
+/* 顶部部分 */
+.report .reportHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.3rem;
+  padding: 0.25rem 0.12rem 0.32rem;
+}
+.report .reportHeader .headerLeft {
+  margin-right: 0.32rem;
+}
+.report .reportHeader .herderRight {
+  display: flex;
+  font-size: 0.6rem;
+}
+.report #btn {
+  text-align: right;
+  margin: 0 0.3rem 0.5rem 0;
+  font-size: 0.23rem;
+  color: #c8c8c8;
+}
+.report .time ul {
+  display: flex;
+  font-size: 0.27rem;
+  justify-content: space-between;
+  padding: 0 1.23rem;
+}
+.report .time ul li:first-child {
+  color: #06e39d;
+}
+.report .date {
+  margin-left: 0.3rem;
+}
+.report .date input {
+  width: 1.14rem;
+  height: 0.54rem;
+  border: 1px solid #a4fadf;
+  background-color: #cefaec;
+  color: #06e39d;
+  border-radius: 0.2rem;
+  text-align: center;
+}
+.report .qujian {
+  padding: 0 0.3rem;
+  margin-top: 0.42rem;
+  display: flex;
+  justify-content: space-between;
+}
+.report .qujian .left {
+  display: flex;
+  font-size: 0.23rem;
+  align-items: center;
+  color: #b5b5b5;
+}
+.report .qujian .right {
+  display: flex;
+  align-items: center;
+}
+.report .qujian .right input {
+  width: 1.14rem;
+  height: 0.54rem;
+  border: 1px solid #a4fadf;
+  color: #06e39d;
+  border-radius: 0.2rem;
+  text-align: center;
+}
+.report .qujian .right span {
+  font-size: 0.23rem;
+  margin: 0 0.25rem;
+  align-items: center;
+}
+.report .qujian .right button {
+  margin-left: 0.24rem;
+  border: none;
+  color: #06e39d;
+  background-color: #fff;
+}
+.report #main {
+  width: 6.06rem;
+  height: 4.85rem;
+  margin-left: 0.78rem;
+}
+.report #myChart {
+  width: 3rem;
+  height: 3rem;
+}
+.report .zhushi {
+  display: flex;
+  justify-content: space-between;
+  color: rgb(6, 277, 157);
+  font-size: 0.2rem;
+  padding: 0 0.6rem;
+}
+.report .zhushi .right {
+  display: flex;
+}
+.report .zhushi .right div {
+  display: flex;
+  align-items: center;
+}
+.report .zhushi .right .blue,
+.report .zhushi .right .yellow,
+.report .zhushi .right .red {
+  display: block;
+  width: 7pt;
+  height: 7pt;
+  background-color: rgb(6, 141, 227);
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.report .zhushi .right .yellow {
+  background-color: rgb(227, 188, 6);
+}
+.report .zhushi .right .red {
+  background-color: rgb(227, 84, 6);
+}
+.report .zhushi .right .word {
+  color: rgb(161, 165, 164);
+}
+.report .zhushi .right div {
+  margin-right: 10px;
+}
+.report .zhushi .right div:last-child {
+  margin-right: 0;
+}
+.report .btn {
+  margin-top: 0.87rem;
+}
+.report .btn button,
+.report .btn a {
+  display: block;
+  width: 2.57rem;
+  height: 0.64rem;
+  border-radius: 2rem 2rem 2rem 2rem;
+  margin: 0 auto;
+  background-color: #02b87f;
+  border: none;
+  color: #fff;
+  outline: none;
+  font-size: 0.27rem;
+  letter-spacing: 1px;
+}
+.report .btn a {
+  line-height: 0.64rem;
+  text-align: center;
+}
+.report .btn button:first-child {
+  margin-bottom: 0.26rem;
+}

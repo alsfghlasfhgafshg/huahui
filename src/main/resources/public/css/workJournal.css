@@ -1,0 +1,147 @@
+.JournalBox {
+  padding-bottom: 0.84rem;
+  width: 7.5rem;
+}
+/* 每一个板块的顶部标题 */
+.topTextTitle {
+  width: 100%;
+  font-size: 0.3rem;
+  padding: 0.1rem 0 0.47rem 0.3rem;
+}
+/* 顶部部分 */
+.workJournalHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.3rem;
+  padding: 0.25rem 0.12rem 0.32rem;
+}
+.workJournalHeader .headerLeft {
+  margin-right: 0.32rem;
+}
+.workJournalHeader .herderRight {
+  display: flex;
+  font-size: 0.6rem;
+}
+/* 日历部分 */
+.date {
+  display: flex;
+  justify-content: center;
+  padding: 0.45rem 0;
+  font-size: 0.4rem;
+}
+.laydate-theme-molv .layui-laydate-content,
+#layui-laydate1 .layui-laydate-header {
+  width: 100vw;
+}
+.laydate-theme-molv .layui-laydate-content {
+  background-color: #fff;
+}
+/* 下面这是日历插件的样式 如果用的地方多的话而且样式一样可以把他摘出去写到公共的样式里*/
+.date .dateInput,
+.dailyDate input {
+  font-size: 0.3rem;
+  border: 0;
+  outline: none;
+  text-align: center;
+}
+.layui-laydate-main.laydate-main-list-0 {
+  width: 7.5rem;
+}
+.layui-laydate-main.laydate-main-list-0 .layui-laydate-content table {
+  margin-right: 0;
+  width: 100%;
+}
+/* 数据简报部分 */
+
+.dataBriefing {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 3px solid #f3f4f4;
+  padding-bottom: 0.55rem;
+  /* width: 7.5rem; */
+}
+.dataBoxOverflow {
+  overflow: auto;
+  width: 100%;
+}
+.dataBriefing .dataBox {
+  display: flex;
+  width: 10rem;
+  padding-left: 0.3rem;
+}
+.dataBriefing .dataBox > div {
+  /* width: 4.12rem; */
+  margin-right: 0.7rem;
+  width: 800px;
+}
+/* .dataBriefing .dataBox .dataRight {
+  flex-grow: 1;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+} */
+.dataBriefing .dataBox > div {
+  background-color: #ddfdf2;
+  font-size: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.26rem;
+  border-radius: 0.1rem;
+  box-shadow: 0px 0px 8px #e6e6e6;
+}
+.dataBriefing .dataBox > div > span {
+  margin-bottom: 0.45rem;
+}
+.dataBriefing .dataBox > div > span:last-child {
+  margin: 0;
+}
+/* 今日工作部分 */
+.todayWorkBox {
+  padding: 0.46rem 0 0.55rem;
+}
+.todayWorkBox .todayWork {
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 0.07rem;
+}
+.todayWorkBox .todayWork .todayWorkItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.24rem;
+}
+.todayWorkBox .todayWork .todayWorkItem img {
+  width: 0.85rem;
+}
+/* 日报部分 */
+.daily {
+  display: flex;
+  flex-direction: column;
+  padding: 0.45rem 0 0;
+  font-size: 0.4rem;
+}
+.daily ol {
+  padding: 0 0.3rem;
+  list-style-position: inside;
+  font-size: 0.28rem;
+}
+.daily ol li {
+  padding: 0.14rem 0;
+  font-weight: normal;
+}
+.daily .dailyDate {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.33rem 0.3rem;
+  font-size: 0.28rem;
+  color: #babcbc;
+}
+.daily .dailyDate #test-n2,
+.daily .dailyDate #test14 {
+  width: 1.6rem;
+  color: #9d9d9d;
+}
+.daily .dailyDate #test14 {
+  width: 0.8rem;
+}

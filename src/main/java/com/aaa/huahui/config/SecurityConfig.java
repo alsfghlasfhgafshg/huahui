@@ -32,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    LogoutSuccessHandler logoutSuccessHandler;
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -47,6 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+
+        http.csrf().disable();
+
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/setting").permitAll();
 
         //测试
@@ -60,21 +66,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/login", "/register").permitAll();
 
         //基于 Form 表单登录验证
-        http.formLogin().loginPage("/login").failureUrl("/login?error=true")
+        http.formLogin().loginPage("/login")
                 .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailHandler)
                 .and().rememberMe().key(KEY)
                 .and().exceptionHandling().accessDeniedPage("/403");
         //监控
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/actuator/**").hasIpAddress("127.0.0.1");
-        http.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    authorizeRequests().antMatchers("/druid/**").hasIpAddress("127.0.0.1");
+        http.authorizeRequests().antMatchers("/druid/**").hasIpAddress("127.0.0.1");
 
         //注销登录
-        http.logout().logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true);
+        http.logout().logoutUrl("/logout")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .invalidateHttpSession(true);
 
         http.headers().frameOptions().sameOrigin();
 
         //在测试和上传文件时禁用 csrf
-        http.csrf().ignoringAntMatchers("/uploadimg", "/test**");
+//        http.csrf().ignoringAntMatchers("/uploadimg", "/test**");
+
     }
 
     @Autowired

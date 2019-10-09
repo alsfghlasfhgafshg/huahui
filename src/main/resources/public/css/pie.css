@@ -1,0 +1,90 @@
+.pie {
+  padding-bottom: 0.84rem;
+  width: 7.5rem;
+}
+/* 顶部部分 */
+.pie .reportHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.3rem;
+  padding: 0.25rem 0.12rem 0.32rem;
+}
+.pie .reportHeader .headerLeft {
+  margin-right: 0.32rem;
+}
+.pie .reportHeader .herderRight {
+  display: flex;
+  font-size: 0.6rem;
+}
+.pie #btn {
+  text-align: right;
+  margin: 0 0.3rem 0.5rem 0;
+  font-size: 0.23rem;
+  color: #c8c8c8;
+}
+.pie .time ul {
+  display: flex;
+  font-size: 0.27rem;
+  justify-content: space-between;
+  padding: 0 1.23rem;
+}
+.pie .time ul li:first-child {
+  color: #06e39d;
+}
+.pie .date {
+  margin-left: 0.3rem;
+}
+.pie .date input {
+  width: 1.14rem;
+  height: 0.54rem;
+  border: 1px solid #a4fadf;
+  background-color: #cefaec;
+  color: #06e39d;
+  border-radius: 0.2rem;
+  text-align: center;
+}
+.pie .qujian {
+  padding: 0 0.3rem;
+  margin-top: 0.42rem;
+  display: flex;
+  justify-content: space-between;
+}
+.pie .qujian .left {
+  display: flex;
+  font-size: 0.23rem;
+  align-items: center;
+  color: #b5b5b5;
+}
+.pie .qujian .right {
+  display: flex;
+  align-items: center;
+}
+.pie .qujian .right input {
+  width: 1.14rem;
+  height: 0.54rem;
+  border: 1px solid #a4fadf;
+  color: #06e39d;
+  border-radius: 0.2rem;
+  text-align: center;
+}
+.pie .qujian .right span {
+  font-size: 0.23rem;
+  margin: 0 0.25rem;
+  align-items: center;
+}
+.pie .qujian .right button {
+  margin-left: 0.24rem;
+  border: none;
+  color: #06e39d;
+  background-color: #fff;
+}
+.pie #main {
+  width: 7rem;
+  height: 7rem;
+  margin-left: 0.25rem;
+  text-align: center;
+}
+/* .pie #myChart {
+  width: 9rem;
+  height: 9rem;
+} */

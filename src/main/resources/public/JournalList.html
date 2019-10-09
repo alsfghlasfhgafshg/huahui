@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>JournalList</title>
+    <link rel="stylesheet" href="./css/public.css" />
+    <link rel="stylesheet" href="./css/iconfont.css" />
+    <link rel="stylesheet" href="./css/JournalList.css" />
+    <script src="./js/publicSize.js"></script>    
+    <link rel="stylesheet" href="./css/mask.css">
+  </head>
+  <body>
+    <div class="JournalListBox">
+      <!-- 顶部 部分 -->
+      <header class="workJournalHeader">
+        <div class="herderLeft">
+          <span class="iconfont icon-guanbi"></span>
+          <span>秦皇岛世纪港湾店</span>
+        </div>
+        <div class="herderRight">
+          <span class="iconfont icon-gengduo"></span>
+        </div>
+      </header>
+      <!-- 日历部分 -->
+      <div class="date">
+        <div>
+          <span><</span>
+          <input class="dateInput" type="text" id="test-n1" />
+          <span>></span>
+        </div>
+        <div class="checkShop" id="btn"><span>切换店铺</span></div>
+      </div>
+      
+      <!-- 未完成列表 -->
+      <div class="no-finishBox">
+        <ul class="jobList" id="no-finishList">
+          <!-- <li>
+            <div class="listLeft">
+              <img src="" alt="" />
+              <span class="name"></span>
+              <span class="job"></span>
+            </div>
+
+            <div class="listRight"><span></span><span>></span></div>
+          </li> -->
+        </ul>
+      </div>
+      <div class="finish-people">
+        <span>完成人员</span>
+      </div>
+      <!-- 完成列表 -->
+      <div>
+        <ul class="jobList" id="finishList"></ul>
+      </div>
+      <!--  -->
+      <!-- 蒙层 -->
+      <div class="mask" id="box" style="display: none">
+          <ul>
+            <li>花惠医学美容养生会馆（建设大街店）</li>
+            <li>花惠美容美体机构（博维店）</li>
+            <li>花惠美容美体机构（太阳城店）</li>
+            <li>花惠健康美学中心（世纪港湾）</li>
+          </ul>
+          </div>
+    </div>
+    <script src="./laydate/laydate.js"></script>
+    <script src="./js/mask.js"></script>
+
+    <script src="./js/data.js"></script>
+    <script>
+      
+      const finishList = [
+        //是否完成工作的数组
+        {
+          id: 1,
+          imgurl: "./images/touxiangUrl.png",
+          name: "陈坤方",
+          job: "高管",
+          isComplete: false
+        },
+        {
+          id: 2,
+          imgurl: "./images/touxiangUrl.png",
+          name: "陈坤方",
+          job: "高管",
+          isComplete: false
+        },
+        {
+          id: 3,
+          imgurl: "./images/touxiangUrl.png",
+          name: "陈坤方",
+          job: "高管",
+          isComplete: false
+        },
+        {
+          id: 4,
+          imgurl: "./images/touxiangUrl.png",
+          name: "陈坤方",
+          job: "高管",
+          isComplete: true
+        },
+        {
+          id: 5,
+          imgurl: "./images/touxiangUrl.png",
+          name: "陈坤方",
+          job: "高管",
+          isComplete: true
+        }
+      ];
+      finishList.forEach(ele => {
+        let li = document.createElement("li");
+        if (ele.isComplete == false) {
+          let noFinishUl = document.querySelector("#no-finishList");
+
+          li.innerHTML = `<a href="./workJournal.html"><div class="listLeft">
+              <img src="${ele.imgurl}" alt="" />
+              <span class="name">${ele.name}</span>
+              <span class="job">${ele.job}</span>
+            </div>
+            <div class="listRight"><span>${
+              ele.isComplete ? "完成" : "未完成"
+            }</span><span>></span></div></a>`;
+          noFinishUl.appendChild(li);
+        } else {
+          let finishUl = document.querySelector("#finishList");
+          li.innerHTML = `<a href="./workJournal.html"><div class="listLeft">
+              <img src="${ele.imgurl}" alt="" />
+              <span class="name">${ele.name}</span>
+              <span class="job">${ele.job}</span>
+            </div>
+            <div class="listRight" style='color:#a2a1a1'><span>${
+              ele.isComplete ? "完成" : "未完成"
+            }</span><span>></span></div></a>`;
+          finishUl.appendChild(li);
+          console.log(li);
+        }
+      });
+    </script>
+  </body>
+</html>

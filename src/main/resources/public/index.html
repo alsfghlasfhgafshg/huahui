@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>home</title>
+    <script src="./js/publicSize.js"></script>    
+    <link rel="stylesheet" href="./css/iconfont.css" />
+    <link rel="stylesheet" href="./css/public.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/mask.css">
+    <script src="./js/echarts.min.js"></script>
+  </head>
+  <body>
+    <div class="home">
+      <div class="user">
+        <header class="workJournalHeader">
+          <div class="herderLeft">
+            <span class="iconfont icon-guanbi"></span>
+            <span>首页</span>
+          </div>
+          <div class="herderRight">
+            <span class="iconfont icon-gengduo"></span>
+          </div>
+        </header>
+        <!-- 用户 -->
+        <div class="bot">
+          <img
+            class="touxiang"
+            src="./images/ef6bce096af645a45192935b6f5e282.jpg"
+            alt
+          />
+          <div class="information">
+            <p>花惠の小铺</p>
+            <span>ID:10201351</span>
+            <div class="position">
+              <img src="./images/weizhi_28.png" alt />
+              <span>花惠健康美学中心(世纪港湾店)</span>
+            </div>
+          </div>
+          <button class="change" id="btn">切换店铺</button>
+        </div>
+      </div>
+      <!-- 蒙层 -->
+      <div class="mask" id="box" style="display: none">
+        <ul>
+          <li>花惠医学美容养生会馆（建设大街店）</li>
+          <li>花惠美容美体机构（博维店）</li>
+          <li>花惠美容美体机构（太阳城店）</li>
+          <li>花惠健康美学中心（世纪港湾）</li>
+        </ul>
+      </div>
+      <!-- 营业额 -->
+      <div class="yingye">
+        <div class="title">
+          <div class="today">今日营业额</div>
+          <a href="./report.html" class="more">查看更多收入数据>></a>
+        </div>
+        <!-- 柱形图 -->
+        <div id="main"></div>
+        <div class="zhushi">
+          <div class="left">
+            <span>单位：/万元</span>
+          </div>
+          <div class="right">
+            <div>
+              <span class="blue"></span>
+              <span class="word">现金</span>
+            </div>
+            <div>
+              <span class="yellow"></span>
+              <span class="word">卡扣</span>
+            </div>
+            <div>
+              <span class="red"></span>
+              <span class="word">赠送</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn">
+        <button class="shenhe" id="weishen">审核今日收入</button>
+        <button class="yishen" id="yishen">今日收入已审</button>
+      </div>
+      <a href="./details.html" class="rizhi"
+        ><img src="./images/home (5).jpg" alt=""
+      /></a>
+      <div class="line"></div>
+      <!-- 店员 -->
+      <div class="mine">
+        <p class="dianyuan">我的店员</p>
+        <div class="person">
+          <img src="./images/home (3).jpg" alt="" />
+          <div class="right">
+            <span class="false">偷得浮生半日闲</span>
+            <span class="true">王天天</span>
+            <p class="id">ID:12534861</p>
+          </div>
+        </div>
+        <div class="person">
+          <img src="./images/首页_16.png" alt="" />
+          <div class="right">
+            <span class="false">恍若晨曦</span>
+            <span class="true">江厌离</span>
+            <p class="id">ID:12534861</p>
+          </div>
+        </div>
+        <div class="person">
+          <img src="./images/首页_18.png" alt="" />
+          <div class="right">
+            <span class="false">少年如梦</span>
+            <span class="true">付世博</span>
+            <p class="id">ID:12534861</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./js/bar.js"></script>
+    <script src="./js/mask.js"></script>
+    <script type="text/javascript">
+      var oWeishen = document.getElementById("weishen");
+      var oYishen = document.getElementById("yishen");
+      oWeishen.onclick = function() {
+        oWeishen.style.backgroundColor = "rgb(218, 222, 220)";
+        oYishen.style.backgroundColor = "#02b77e";
+      };
+    </script>
+  </body>
+</html>
