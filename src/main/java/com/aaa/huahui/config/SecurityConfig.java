@@ -21,6 +21,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private String KEY = "dewitt";
 
     @Autowired
+    LoginFailHandler loginFailHandler;
+
+    @Autowired
     LoginSuccessHandler loginSuccessHandler;
 
     @Autowired
@@ -59,11 +62,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //基于 Form 表单登录验证
         http.formLogin().loginPage("/login").failureUrl("/login-error")
                 .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailHandler)
                 .and().rememberMe().key(KEY)
                 .and().exceptionHandling().accessDeniedPage("/403");
         //监控
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/actuator/**").hasIpAddress("127.0.0.1");
-        http.authorizeRequests().antMatchers("/druid/**").hasIpAddress("127.0.0.1");
+        http.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    authorizeRequests().antMatchers("/druid/**").hasIpAddress("127.0.0.1");
 
         //注销登录
         http.logout().logoutUrl("/logout").logoutSuccessUrl("/").invalidateHttpSession(true);
