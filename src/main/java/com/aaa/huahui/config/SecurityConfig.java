@@ -60,9 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/login", "/register").permitAll();
 
         //基于 Form 表单登录验证
-        http.formLogin().loginPage("/login").failureUrl("/login-error")
+        http.formLogin().loginPage("/login").failureUrl("/login?error=true")
                 .successHandler(loginSuccessHandler)
-                .failureHandler(loginFailHandler)
                 .and().rememberMe().key(KEY)
                 .and().exceptionHandling().accessDeniedPage("/403");
         //监控
