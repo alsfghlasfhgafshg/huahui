@@ -1,5 +1,7 @@
 package com.aaa.huahui.config.advice;
 
+import com.aaa.huahui.utils.ResponseGenerate;
+import com.aaa.huahui.utils.ResponseUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -15,16 +17,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
     public @ResponseBody
     JSONObject MissingServletRequestParameterException(Exception e) {
-        JSONObject responsejson = new JSONObject();
-        responsejson.put("error", 1);
 
-        JSONArray msgs = new JSONArray();
-        msgs.add("输入的参数不能为空");
-
-        responsejson.put("error", 1);
-        responsejson.put("msg", msgs);
-
-        return responsejson;
+        JSONObject jsonObject = ResponseGenerate.genFailResponse(-1, "输入参数不能为空");
+        return jsonObject;
     }
 
 }

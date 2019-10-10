@@ -9,7 +9,12 @@ public class NewUserFailException extends Exception {
         this.errors = errors;
     }
 
-    public ArrayList<String> getErrors() {
-        return errors;
+    public String getErrors() {
+        StringBuilder stringBuilder=new StringBuilder();
+        for (String error : errors) {
+            stringBuilder.append(error);
+            stringBuilder.append(" ");
+        }
+        return stringBuilder.toString();
     }
 }

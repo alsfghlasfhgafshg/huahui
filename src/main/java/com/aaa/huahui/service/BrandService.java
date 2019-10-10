@@ -68,10 +68,10 @@ public class BrandService {
 
     //新的4个category
     public void new4Category(int brandid) {
-        categoryRepository.insertCategory(brandid, "面部");
-        categoryRepository.insertCategory(brandid, "身体");
-        categoryRepository.insertCategory(brandid, "产品");
-        categoryRepository.insertCategory(brandid, "现金卡项目");
+        categoryRepository.insertCategory(new Category(brandid, "面部"));
+        categoryRepository.insertCategory(new Category(brandid, "身体"));
+        categoryRepository.insertCategory(new Category(brandid, "产品"));
+        categoryRepository.insertCategory(new Category(brandid, "现金卡项目"));
     }
 
     /**
@@ -79,7 +79,7 @@ public class BrandService {
      **/
     @Transactional
     public boolean newBrand(User user, String description, MultipartFile file) {
-         if (user == null) {
+        if (user == null) {
             return false;
         }
 
@@ -117,18 +117,26 @@ public class BrandService {
     }
 
     //添加一级分类
-    public boolean addCategory(int brandid, String categoryName) {
+    public Category addCategory(int brandid, String categoryName) {
         if (categoryRepository.selectCountCategory(brandid, categoryName) == 1) {
-            return false;
+            return null;
         }
-        categoryRepository.insertCategory(brandid, categoryName);
-        return true;
+        Category category = new Category();
+        category.setBrandid(brandid);
+        category.setName(categoryName);
+        categoryRepository.insertCategory(category);
+        return category;
     }
 
     //删除一级分类
-    public boolean deleteCategory(int brandid, String categoryName) {
-        categoryRepository.deleteCategoryByBrandidAndCategoryName(brandid, categoryName);
-        return true;
+    public boolean deleteCategory(int brandid, int categoryid) {
+        int i = categoryRepository.deleteCategoryByBrandidAndCategoryName(brandid, categoryid);
+
+        if (i == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -139,15 +147,16 @@ public class BrandService {
 
 
     //添加二级分类
-    public boolean addCategory2(int brandid, int categoryid, String category2name) {
+    public Category2 addCategory2(int brandid, int categoryid, String category2name) {
         int i = categoryRepository.selectCountByIdAndBrandId(brandid, categoryid);
         if (i == 0) {
-            return false;
+            return null;
         }
-        if (category2Repository.insertCategory2(categoryid, category2name) == 1) {
-            return true;
+        Category2 category2 = new Category2(categoryid, category2name);
+        if (category2Repository.insertCategory2(category2) == 1) {
+            return category2;
         }
-        return false;
+        return null;
     }
 
     //删除二级分类

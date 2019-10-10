@@ -1,4 +1,4 @@
-package com.aaa.huahui.config;
+package com.aaa.huahui.config.authenticationhandler;
 
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.utils.ResponseGenerate;

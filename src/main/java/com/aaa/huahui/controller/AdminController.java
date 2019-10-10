@@ -7,6 +7,7 @@ import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.repository.UserRoleRepository;
 import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.xml.ws.Response;
 import java.util.ArrayList;
 
 @Controller
@@ -50,7 +52,6 @@ public class AdminController {
     @GetMapping("/admin/alladmin")
     public @ResponseBody
     JSONObject getAllAdmin(@RequestParam(value = "page", defaultValue = "1") int page) {
-        JSONObject responsejson = new JSONObject();
         ArrayList<User> users = userService.listAllUsers(ROLE.ADMIN, page);
         JSONArray array = new JSONArray();
 
@@ -61,35 +62,36 @@ public class AdminController {
             array.add(temp);
         }
 
-        responsejson.put("error", 0);
-        responsejson.put("admins", array);
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
         return responsejson;
     }
 
     //删除admin
     @PostMapping("/admin/deladminuser")
     public @ResponseBody
-    JSONObject deladminuser(@RequestParam("userid") int userid) {
+    JSONObject deladminuser(@RequestParam("userid") int userid, UsernamePasswordAuthenticationToken token) {
+
         JSONObject responsejson = new JSONObject();
-        JSONArray msgs = new JSONArray();
 
         User u = userRepository.findById(userid);
         if (u != null && u.getName().equals("admin")) {
-            responsejson.put("error", 1);
-            msgs.add("不能删除admin");
-            responsejson.put("msg", msgs);
+
+
+            responsejson.put("code", 1);
+            responsejson.put("msg", "不能删除admin");
+
+            return responsejson;
+        } else if (((User) token.getPrincipal()).getId() == userid) {
+            responsejson = ResponseGenerate.genFailResponse(1, "不能删除自己");
             return responsejson;
         } else {
             if (userService.deleteUser(userid, ROLE.ADMIN) == true) {
-                responsejson.put("error", 0);
-                msgs.add("ok");
-                responsejson.put("msg", msgs);
+                responsejson = ResponseGenerate.genSuccessResponse("删除成功");
+                return responsejson;
+            } else {
+                responsejson = ResponseGenerate.genFailResponse(1, "删除失败失败，用户不是管理员");
                 return responsejson;
             }
-            responsejson.put("error", 1);
-            msgs.add("删除失败");
-            responsejson.put("msg", msgs);
-            return responsejson;
         }
     }
 
@@ -104,18 +106,12 @@ public class AdminController {
         JSONArray msgs = new JSONArray();
         try {
             userService.newUser(username, password, repeatpassword, ROLE.ADMIN);
-            responsejson.put("error", 0);
-            msgs.add("ok");
-            responsejson.put("msg", msgs);
+            responsejson = ResponseGenerate.genSuccessResponse("创建成功");
             return responsejson;
         } catch (NewUserFailException e) {
+            responsejson = ResponseGenerate.genFailResponse(1, e.getErrors());
             e.printStackTrace();
             model.addAttribute("errmsg", e.getErrors());
-            for (String error : e.getErrors()) {
-                msgs.add(error);
-            }
-            responsejson.put("msg", msgs);
-            responsejson.put("error", 0);
             return responsejson;
         }
     }
@@ -135,17 +131,13 @@ public class AdminController {
             User user = userService.newUser(username, password, repeatpassword, ROLE.BRAND);
             brandService.newBrand(user, description, file);
 
-            responsejson.put("error", 0);
-            msgs.add("ok");
-            responsejson.put("msg", msgs);
+            JSONObject data = new JSONObject();
+            data.put("brandid", user.getId());
+            responsejson = ResponseGenerate.genSuccessResponse("创建成功", data);
             return responsejson;
         } catch (NewUserFailException e) {
             e.printStackTrace();
-            for (String error : e.getErrors()) {
-                msgs.add(error);
-            }
-            responsejson.put("msg", msgs);
-            responsejson.put("error", 1);
+            responsejson = ResponseGenerate.genFailResponse(1, e.getErrors());
             return responsejson;
         }
     }
@@ -159,14 +151,13 @@ public class AdminController {
 
         boolean result = brandService.deleteBrand(brandid);
         if (result == true) {
-            responsejson.put("error", 0);
-            msgs.add("ok");
+            responsejson= ResponseGenerate.genSuccessResponse("删除成功");
         } else {
-            msgs.add("删除失败");
-            responsejson.put("error", 0);
-            responsejson.put("msg", msgs);
+            responsejson=ResponseGenerate.genSuccessResponse("删除失败");
         }
 
         return responsejson;
     }
+
+
 }

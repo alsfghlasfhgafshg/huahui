@@ -15,6 +15,11 @@ public class Category {
     public Category() {
     }
 
+    public Category(int brandid, String name) {
+        this.brandid = brandid;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

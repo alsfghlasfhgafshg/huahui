@@ -57,7 +57,7 @@ public class UserService implements UserDetailsService {
 
         if (page == -1) {
             offset = 0;
-            pagesize = -1;
+            pagesize = Integer.MAX_VALUE;
         }
 
         switch (userrole) {

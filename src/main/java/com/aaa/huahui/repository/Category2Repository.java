@@ -11,7 +11,7 @@ public interface Category2Repository {
 
     @Insert("insert into category2(categoryid,name)values(#{categoryid},#{name})")
     @Options(useGeneratedKeys = true, keyProperty = "category2id")
-    int insertCategory2(@Param("categoryid") int categoryid, @Param("name") String name);
+    int insertCategory2(Category2 category2);
 
     @Delete("delete from category2 where category2id=#{category2id}")
     int deleteCatagory2ById(@Param("category2id") int category2id);

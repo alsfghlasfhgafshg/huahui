@@ -11,6 +11,7 @@ import com.aaa.huahui.service.AvatarService;
 import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,7 @@ public class BrandController {
     @GetMapping("/brand/allbrand")
     public @ResponseBody
     JSONObject allBrand() {
-        JSONObject rejeson = new JSONObject();
-        rejeson.put("error", 0);
+        JSONObject rejeson = null;
 
         JSONArray array = new JSONArray();
         ArrayList<User> users = userService.listAllUsers(ROLE.BRAND, -1);
@@ -61,14 +61,15 @@ public class BrandController {
 
             int userid = user.getId();
             temp.put("id", userid);
+            temp.put("name", user.getName());
 
             Brand brand = brandService.getBrand(userid);
             temp.put("avatar", brand.getAvatar());
             temp.put("description", brand.getDescription());
 
-            array.add(brand);
+            array.add(temp);
         }
-        rejeson.put("allbrand", array);
+        rejeson = ResponseGenerate.genSuccessResponse(array);
         return rejeson;
     }
 
@@ -79,8 +80,9 @@ public class BrandController {
         Brand brand = brandService.getBrand(brandid);
         JSONObject rejeson = new JSONObject();
 
-        rejeson.put("error", 0);
-        rejeson.put("brand", brand);
+        rejeson.put("code", 0);
+        rejeson.put("msg", "成功");
+        rejeson.put("data", brand);
         return rejeson;
     }
 
@@ -116,9 +118,10 @@ public class BrandController {
 
         JSONObject rejeson = new JSONObject();
         brandService.updateBrand(brandid, description, file);
-        rejeson.put("error", 0);
+        rejeson = ResponseGenerate.genSuccessResponse("成功");
         return rejeson;
     }
+
     //更新brand
     @PostMapping("/brand/updatebrand")
     public @ResponseBody
@@ -159,11 +162,12 @@ public class BrandController {
             brandid = shopService.shopBrand(brandid).getId();
         }
 
-        JSONObject rejeson = new JSONObject();
+        JSONObject rejeson = null;
         ArrayList<Category> categories = brandService.allCategory(brandid);
-        rejeson.put("error", 0);
+
         JSONArray allcategories = new JSONArray(Collections.singletonList(categories));
-        rejeson.put("allcategories", allcategories);
+        rejeson = ResponseGenerate.genSuccessResponse(allcategories);
+
         return rejeson;
     }
 
@@ -175,12 +179,15 @@ public class BrandController {
         int brandid = ((User) token.getPrincipal()).getId();
         JSONObject rejeson = new JSONObject();
 
-        boolean result = brandService.addCategory(brandid, categoryName);
-        if (result == true) {
-            rejeson.put("error", 0);
+        Category category = brandService.addCategory(brandid, categoryName);
+        if (category != null) {
+
+            JSONObject data = new JSONObject();
+            data.put("id", category.getId());
+            rejeson = ResponseGenerate.genSuccessResponse("成功", data);
+        } else {
+            rejeson = ResponseGenerate.genFailResponse(1, "分类已存在");
         }
-        rejeson.put("error", 1);
-        rejeson.put("msg", "分类已存在");
         return rejeson;
     }
 
@@ -188,17 +195,16 @@ public class BrandController {
     @PostMapping("/brand/deletecategory")
     public @ResponseBody
     JSONObject deleteCategory(UsernamePasswordAuthenticationToken token,
-                              @RequestParam("categoryname") String categoryName) {
+                              @RequestParam("categoryid") int categoryId) {
         int brandid = ((User) token.getPrincipal()).getId();
         JSONObject rejeson = new JSONObject();
 
-        boolean result = brandService.deleteCategory(brandid, categoryName);
+        boolean result = brandService.deleteCategory(brandid, categoryId);
         if (result == true) {
-            rejeson.put("error", 0);
+            rejeson = ResponseGenerate.genSuccessResponse("删除成功");
             return rejeson;
         }
-        rejeson.put("error", 1);
-        rejeson.put("msg", "分类已存在");
+        rejeson = ResponseGenerate.genFailResponse(1, "删除失败");
         return rejeson;
     }
 
@@ -228,13 +234,16 @@ public class BrandController {
                             @RequestParam("categoryid") int categoryid,
                             @RequestParam("category2name") String category2name) {
         int brandid = ((User) token.getPrincipal()).getId();
-        boolean result = brandService.addCategory2(brandid, categoryid, category2name);
-        JSONObject rejeson = new JSONObject();
-        if (result == true) {
-            rejeson.put("error", 0);
+        Category2 category2 = brandService.addCategory2(brandid, categoryid, category2name);
+
+        JSONObject rejeson = null;
+        if (category2 != null) {
+            JSONObject data = new JSONObject();
+            data.put("category2id", category2.getCategory2id());
+            rejeson = ResponseGenerate.genSuccessResponse("成功", data);
+        } else {
+            rejeson = ResponseGenerate.genFailResponse(1, "添加失败");
         }
-        rejeson.put("error", 1);
-        rejeson.put("msg", "添加失败");
         return rejeson;
     }
 

@@ -9,14 +9,15 @@ import java.util.ArrayList;
 public interface CategoryRepository {
 
 
-    @Delete("delete from category where brandid=#{brandid} and name=#{name}")
-    int deleteCategoryByBrandidAndCategoryName(@Param("brandid") int brandid, @Param("name") String name);
+    @Delete("delete from category where brandid=#{brandid} and id=#{id}")
+    int deleteCategoryByBrandidAndCategoryName(@Param("brandid") int brandid, @Param("id") int id);
 
     @Select("select count(*) from category where brandid=#{brandid} and name=#{name}")
     int selectCountCategory(@Param("brandid") int brandid, @Param("name") String name);
 
     @Insert("insert into category(brandid,name)values(#{brandid},#{name})")
-    int insertCategory(@Param("brandid") int brandid, @Param("name") String name);
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int insertCategory(Category category);
 
     @Delete("delete from category where id=#{id}")
     int deleteCategory(Category category);
@@ -37,7 +38,7 @@ public interface CategoryRepository {
     @Delete("delete from category2 where categoryid=#{id}")
     int deleteCategoryCategory2(@Param("id") int category);
 
-    @Select("select * from catagory where brandid=#{brandid}")
+    @Select("select * from category where brandid=#{brandid}")
     ArrayList<Category> selectAllCategory(@Param("brandid") int brandid);
 
     @Select("select count(*) from category where id=#{id} and brandid=#{brandid}")

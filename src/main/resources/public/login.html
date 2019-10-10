@@ -49,13 +49,12 @@
 
         $('#loginbtn').on('click', function () {
 
-            var rememberme;
+            var rememberme = "off";
 
             if ($('#J_radio').is(":checked")) {
                 rememberme = "on";
-            } else {
-                rememberme = "off";
             }
+
             $.ajax({
                 method: "POST",
                 url: "/login",
@@ -65,17 +64,17 @@
                     "remember-me": rememberme
                 },
                 success: function (data) {
-                    if (data["code"]==0){
+                    if (data["code"] == 0) {
                         var role = data["data"]["role"];
-                        if (role=="admin"){
-                            window.location="/manage/admin.html"
-                        }else if(role=="brand"){
-                            window.location="/manage/brand.html"
-                        }else if(role=="shop"){
-                            window.location="/manage/shop.html"
+                        if (role == "admin") {
+                            window.location = "/manage/admin.html"
+                        } else if (role == "brand") {
+                            window.location = "/manage/brand.html"
+                        } else if (role == "shop") {
+                            window.location = "/manage/shop.html"
                         }
 
-                    }else {
+                    } else {
                         alert(data["msg"])
                     }
                 },

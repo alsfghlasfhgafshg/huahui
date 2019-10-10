@@ -6,6 +6,7 @@ import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.repository.UserRoleRepository;
 import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -97,20 +98,18 @@ public class UserController {
 
         User user = (User) token.getPrincipal();
         if (!passwd.equals(repeatpasswd)) {
-            responsejson.put("error", 1);
-            responsejson.put("msg", "密码不一致");
+            responsejson= ResponseGenerate.genFailResponse(1,"密码不一致");
             return responsejson;
         }
         if (user == null) {
-            responsejson.put("error", 1);
-            responsejson.put("msg", "错误");
+            responsejson= ResponseGenerate.genFailResponse(1,"无权限");
             return responsejson;
         }
 
         int userid = user.getId();
         boolean result = userService.changePasswordByUserid(userid, passwd);
 
-        responsejson.put("error", 0);
+        responsejson=ResponseGenerate.genSuccessResponse("修改成功");
         return responsejson;
     }
 
