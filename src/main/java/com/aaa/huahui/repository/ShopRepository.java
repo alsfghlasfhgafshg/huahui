@@ -22,4 +22,11 @@ public interface ShopRepository {
 
     @Select("select * from shop where brandid=#{brandid}")
     ArrayList<Shop> selectAllShop(int brandid);
+
+    @Select("select * from shop where shopid=#{shopid}")
+    Shop selectById(@Param("shopid") int shopid);
+
+    @Select("select count(*) from shop where shopid=#{shopid} and brandid=#{brandid}")
+    int selectCountBrandShop(@Param("shopid") int shopid, @Param("brandid") int brandid);
+
 }

@@ -60,7 +60,7 @@ public class BrandService {
     public boolean deleteBrand(int brandid) {
         ArrayList<Integer> allShopId = shopService.selectAllShopId(brandid);
         for (Integer i : allShopId) {
-            shopService.deleteShop(i);
+            shopService.deleteShop(brandid,i);
         }
         userService.deleteUser(brandid, ROLE.BRAND);
         return true;

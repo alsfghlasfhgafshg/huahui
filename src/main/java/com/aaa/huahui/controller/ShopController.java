@@ -7,6 +7,7 @@ import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,7 +58,7 @@ public class ShopController {
     }
 
     //添加shop
-    @GetMapping("/addshop")
+    @PostMapping("/addshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
     JSONObject addStaff(@RequestParam("username") String username,
@@ -70,57 +71,65 @@ public class ShopController {
         User brandManager = (User) token.getPrincipal();
         int brandId = brandManager.getId();
         User shopManager = null;
+
         try {
             shopManager = userService.newUser(username, password, repeatpassword, "ROLE_SHOP");
         } catch (NewUserFailException e) {
-            GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
-            globalExceptionHandler.MissingServletRequestParameterException(e);
-        }
-        try {
-            shopService.insertShop(shopManager.getId(), description, geo, brandId);
-            rejeson.put("error", 0);
-            return rejeson;
-        } catch (Exception e) {
-            rejeson.put("error", 1);
-            rejeson.put("msg", "shopManager is null");
+            e.printStackTrace();
+            rejeson = ResponseGenerate.genFailResponse(1, e.getErrors());
             return rejeson;
         }
+
+
+        int i = shopService.insertShop(shopManager.getId(), description, geo, brandId);
+        if (i == 1) {
+            JSONObject data = new JSONObject();
+            data.put("shopid", shopManager.getId());
+            rejeson = ResponseGenerate.genSuccessResponse("添加成功", data);
+        } else {
+            rejeson = ResponseGenerate.genFailResponse(1, "添加失败");
+        }
+        return rejeson;
     }
 
     //编辑shop
-    @PostMapping("/editshop/")
+    @PostMapping("/editshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
-    JSONObject updateStaff(@RequestParam("shopid") int shopid,
-                           @RequestParam("description") String description,
-                           @RequestParam("geo") String geo) {
+    JSONObject updateStaff(UsernamePasswordAuthenticationToken token,
+                           @RequestParam("shopid") int shopid,
+                           @RequestParam(value = "description", defaultValue = "") String description,
+                           @RequestParam(value = "geo", defaultValue = "") String geo) {
         JSONObject reobject = new JSONObject();
-        try {
-            shopService.updateShopInfo(shopid, description, geo);
-            reobject.put("error", 0);
-            return reobject;
-        } catch (Exception e) {
-            reobject.put("error", 1);
-            reobject.put("msg", "shop update false");
+        int brandid = ((User) token.getPrincipal()).getId();
+
+
+        boolean result = shopService.updateShopInfo(brandid, shopid, description, geo);
+        if (result == true) {
+            reobject = ResponseGenerate.genSuccessResponse("修改成功");
             return reobject;
         }
+        reobject = ResponseGenerate.genFailResponse(1, "修改失败");
+        return reobject;
+
     }
 
     //删除shop
     @PostMapping("/deleteshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
-    JSONObject deleteStaff(@RequestParam("shopid") int shopId) {
+    JSONObject deleteStaff(UsernamePasswordAuthenticationToken token,
+                           @RequestParam("shopid") int shopId) {
         JSONObject reobject = new JSONObject();
-        try {
-            shopService.deleteShop(shopId);
-            reobject.put("error", 0);
-            return reobject;
-        } catch (Exception e) {
-            reobject.put("error", 1);
-            reobject.put("msg", "delete shop false");
-            return reobject;
+        int userid = ((User) token.getPrincipal()).getId();
+
+        boolean b = shopService.deleteShop(userid, shopId);
+        if (b == true) {
+            reobject = ResponseGenerate.genSuccessResponse("删除成功");
+        } else {
+            reobject = ResponseGenerate.genFailResponse(1, "删除失败");
         }
+        return reobject;
     }
 
 

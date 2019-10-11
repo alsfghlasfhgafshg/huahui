@@ -10,6 +10,7 @@ import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 @Controller
 public class UserController {
@@ -34,6 +37,18 @@ public class UserController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @GetMapping("/role")
+    public String getRole(UsernamePasswordAuthenticationToken token) {
+        Collection<GrantedAuthority> authorities = token.getAuthorities();
+        Iterator<GrantedAuthority> iterator = authorities.iterator();
+        String roles = "";
+        while (iterator.hasNext()) {
+            GrantedAuthority next = iterator.next();
+            roles = roles + next.getAuthority() + ", ";
+        }
+        return roles;
+    }
 
 
     //设置
@@ -98,18 +113,18 @@ public class UserController {
 
         User user = (User) token.getPrincipal();
         if (!passwd.equals(repeatpasswd)) {
-            responsejson= ResponseGenerate.genFailResponse(1,"密码不一致");
+            responsejson = ResponseGenerate.genFailResponse(1, "密码不一致");
             return responsejson;
         }
         if (user == null) {
-            responsejson= ResponseGenerate.genFailResponse(1,"无权限");
+            responsejson = ResponseGenerate.genFailResponse(1, "无权限");
             return responsejson;
         }
 
         int userid = user.getId();
         boolean result = userService.changePasswordByUserid(userid, passwd);
 
-        responsejson=ResponseGenerate.genSuccessResponse("修改成功");
+        responsejson = ResponseGenerate.genSuccessResponse("修改成功");
         return responsejson;
     }
 

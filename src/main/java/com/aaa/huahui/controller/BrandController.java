@@ -256,13 +256,13 @@ public class BrandController {
                                @RequestParam("category2id") int category2id) {
         int brandid = ((User) token.getPrincipal()).getId();
 
-        JSONObject rejeson = new JSONObject();
+        JSONObject rejeson = null;
         boolean result = brandService.deleteCategory2(brandid, categoryid, category2id);
         if (result == true) {
-            rejeson.put("error", 0);
+            rejeson = ResponseGenerate.genSuccessResponse("删除成功");
+        } else {
+            rejeson = ResponseGenerate.genFailResponse(1, "删除失败");
         }
-        rejeson.put("error", 1);
-        rejeson.put("msg", "删除失败");
         return rejeson;
     }
 }

@@ -27,7 +27,7 @@
 -------
 
 
-## 标题
+## 添加一级分类
 
 **url:** /brand/addcategory
 
@@ -65,7 +65,7 @@ id:添加成功后的一级分类的id
 -------
 
 
-## 标题
+## 删除一级分类
 
 **url:** /brand/deletecategory
 
@@ -128,3 +128,144 @@ category2id:添加成功后的二级分类id
 
 ```
 
+
+-------
+
+
+## 删除二级分类
+
+**url:** /brand/deletecategory2
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+categoryid|int|一级分类id
+category2id|int|二级分类id
+
+**返回格式:** json
+
+**返回内容:**
+```
+成功
+{
+    "msg": "删除成功",
+    "code": 0
+}
+失败
+{
+    "msg": "删除失败",
+    "code": 1
+}
+```
+
+
+-------
+
+
+## 为当前登录的品牌添加一个分店商店
+
+**url:** /shop/addshop
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+username|string|用户名
+password|string|密码
+repeatpassword|string|重复密码
+description|string|分店简介
+geo|内容|地理位置
+
+**返回格式:** json
+
+**返回内容:**
+```
+成功
+shopid:添加的分店商店的id
+{
+    "msg": "添加成功",
+    "code": 0,
+    "data": {
+        "shopid": 30
+    }
+}
+失败
+{
+    "msg": "添加失败",
+    "code": 1,
+}
+
+```
+
+-------
+
+
+## 编辑分店
+
+**url:** /shop/editshop
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+shopid|int|分店名称
+description|string|分店简介，非必须参数，如不修改保持原参数或者为空
+geo|string|分店地理位置，非必须参数，如不修改，保持原来参数或为空
+
+**返回格式:** json
+
+**返回内容:**
+```
+成功
+{
+    "msg": "修改成功",
+    "code": 0
+}
+失败
+{
+    "msg": "修改失败",
+    "code": 1
+}
+
+```
+
+
+-------
+
+
+## 删除品牌的分店
+
+**url:** /shop/deleteshop
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+shopid|int|分店id
+
+**返回格式:** json
+
+**返回内容:**
+```
+成功
+{
+    "msg": "删除成功",
+    "code": 0
+}
+
+失败
+{
+    "msg": "删除失败",
+    "code": 1
+}
+
+```

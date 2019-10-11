@@ -28,13 +28,18 @@ public class ShopService {
     UserRepository userRepository;
 
     @Transactional
-    public int deleteShop(int shopid) {
+    public boolean deleteShop(int brandid, int shopid) {
+        int i = shopRepository.selectCountBrandShop(shopid, brandid);
+        if (i == 0) {
+            return false;
+        }
 
         ArrayList<Staff> allstaff = staffRepository.selectAllStaff(shopid);
         for (Staff staff : allstaff) {
             staffService.deleteStaff(staff.getStaffid());
         }
-        return shopRepository.deleteShop(shopid);
+        shopRepository.deleteShop(shopid);
+        return true;
     }
 
     //添加一个shop
@@ -43,8 +48,25 @@ public class ShopService {
     }
 
     //更改shop信息
-    public int updateShopInfo(int shopid, String description, String geo) {
-        return shopRepository.updateShopInfo(shopid, description, geo);
+    public boolean updateShopInfo(int brandid, int shopid, String description, String geo) {
+
+        if (shopRepository.selectCountBrandShop(shopid, brandid) == 0) {
+            return false;
+        }
+
+        Shop shop = shopRepository.selectById(shopid);
+        if (description == null || description.equals("")) {
+            description = shop.getDescription();
+        }
+        if (geo == null || description.equals("")) {
+            geo = shop.getGeo();
+        }
+
+        int i = shopRepository.updateShopInfo(shopid, description, geo);
+        if (i == 1) {
+            return true;
+        }
+        return false;
     }
 
     //获得一个品牌的所有shopid
