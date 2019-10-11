@@ -39,7 +39,8 @@ public class UserController {
     PasswordEncoder passwordEncoder;
 
     @GetMapping("/role")
-    public String getRole(UsernamePasswordAuthenticationToken token) {
+    public @ResponseBody
+    String getRole(UsernamePasswordAuthenticationToken token) {
         Collection<GrantedAuthority> authorities = token.getAuthorities();
         Iterator<GrantedAuthority> iterator = authorities.iterator();
         String roles = "";
@@ -50,6 +51,38 @@ public class UserController {
         return roles;
     }
 
+    @GetMapping("/info")
+    public String getInfo(UsernamePasswordAuthenticationToken token) {
+
+        User user = (User) token.getPrincipal();
+
+        String userName = user.getName();
+        Collection<GrantedAuthority> authorities = token.getAuthorities();
+        Iterator<GrantedAuthority> iterator = authorities.iterator();
+
+        GrantedAuthority next = iterator.next();
+        String authority = next.getAuthority();
+
+        JSONObject responsejson = null;
+        JSONObject data = new JSONObject();
+        data.put("username", userName);
+
+        switch (authority) {
+            case ROLE.ADMIN:
+
+
+                break;
+            case ROLE.BRAND:
+
+
+                break;
+
+            case ROLE.SHOP:
+                break;
+        }
+        return null;
+
+    }
 
     //设置
     @GetMapping("/setting")

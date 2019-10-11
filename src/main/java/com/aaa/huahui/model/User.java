@@ -61,6 +61,9 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
+        if (getPassword() == null || getPassword().equals("")) {
+            return false;
+        }
         return true;
     }
 

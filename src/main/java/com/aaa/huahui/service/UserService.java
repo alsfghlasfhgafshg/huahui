@@ -93,9 +93,9 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        if (user==null){
+        if (user == null) {
             throw new UsernameNotFoundException("用户名未找到");
-        }else {
+        } else {
             return user;
         }
     }
@@ -119,7 +119,11 @@ public class UserService implements UserDetailsService {
         User user = new User();
         user.setName(username);
 
-        user.setPassword(bCryptPasswordEncoder.encode(password));
+        String encode = bCryptPasswordEncoder.encode(password);
+        if (password.equals("")||password==null) {
+            encode = "";
+        }
+        user.setPassword(encode);
         userRepository.insertUser(user);
         userRoleRepository.insertRole(user.getId(), userRoleRepository.selectRoleId(userrole));
         return user;

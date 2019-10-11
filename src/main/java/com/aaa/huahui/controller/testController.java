@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 @RestController
 public class testController {
@@ -35,5 +36,10 @@ public class testController {
             responseString = responseString + cookie.getName() + ": " + cookie.getValue() + "\n";
         }
         return responseString;
+    }
+
+    @PostMapping("/testarray")
+    public String testArrayList(@RequestParam("array") ArrayList<Integer> arrayList) {
+        return "array";
     }
 }

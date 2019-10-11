@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -74,7 +75,7 @@ public class StaffController {
     public @ResponseBody JSONObject addStaff(@RequestParam("username") String username,
                                @RequestParam("password") String password,
                                @RequestParam("repeatpassword") String repeatpassword,
-                               @RequestParam("avatar") String avatar,
+                               @RequestParam("avatar") File avatar,
                                @RequestParam("name")String name,
                                @RequestParam("male")int male,
                                @RequestParam("birthday") Date birthday,
@@ -98,7 +99,7 @@ public class StaffController {
             globalExceptionHandler.MissingServletRequestParameterException(e);
         }
         try {
-            Staff staff = new Staff(staffUser.getId(),avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,shopId);
+            Staff staff = new Staff(staffUser.getId(),"",name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,shopId);
             for (FamilyMember familyMember:FamilyMemberList) {
                 familyMemberService.addFamilyMember(familyMember);
             }
@@ -149,7 +150,7 @@ public class StaffController {
     //删除staff
     @DeleteMapping("/deletestaff/{staffid}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    public @ResponseBody JSONObject deleteStaff(@PathVariable("staffid")int staffId){
+    public @ResponseBody JSONObject deleteStaff(UsernamePasswordAuthenticationToken token,@PathVariable("staffid")int staffId){
         JSONObject reobject = new JSONObject();
         try {
             staffService.deleteStaff(staffId);

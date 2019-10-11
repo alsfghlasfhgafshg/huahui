@@ -29,4 +29,6 @@ public interface ShopRepository {
     @Select("select count(*) from shop where shopid=#{shopid} and brandid=#{brandid}")
     int selectCountBrandShop(@Param("shopid") int shopid, @Param("brandid") int brandid);
 
+    @Select("select count(*) from shop where brandid=#{brandid}")
+    int selectCountShop(@Param("brandid") int brandid);
 }
