@@ -47,9 +47,9 @@ public class StaffController {
 
     //获得所有staff
     @GetMapping("/allstaff")
-    public @ResponseBody JSONObject getAllStaff(UsernamePasswordAuthenticationToken token){
+    public @ResponseBody JSONObject getAllStaff(UsernamePasswordAuthenticationToken token,@RequestParam(value = "page", defaultValue = "1") int page){
         User shopController = (User) token.getPrincipal();
-        ArrayList<Staff> list = staffService.allStaff(shopController.getId());
+        ArrayList<Staff> list = staffService.allStaff(shopController.getId(),page);
         JSONArray array = new JSONArray();
 
         for (Staff staff : list) {
