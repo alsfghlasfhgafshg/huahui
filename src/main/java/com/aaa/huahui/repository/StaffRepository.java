@@ -31,8 +31,11 @@ public interface StaffRepository {
             " where staffid=#{staffid}")
     int updateStaff(Staff staff);
 
+    @Select("select * from staff where shopid=#{shopid} limit #{offset},#{num}")
+    ArrayList<Staff> selectAllStaff(@Param("shopid") int shopid,@Param("offset") int offset, @Param("num") int num);
+
     @Select("select * from staff where shopid=#{shopid}")
-    ArrayList<Staff> selectAllStaff(@Param("shopid") int shopid);
+    ArrayList<Staff> AllStaff(@Param("shopid") int shopid);
 
     @Select("select * from staff where staffid=#{staffid}")
     Staff selectOne(@Param("staffid") int staffid);

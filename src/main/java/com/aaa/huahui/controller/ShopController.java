@@ -1,7 +1,6 @@
 package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.ROLE;
-import com.aaa.huahui.config.advice.GlobalExceptionHandler;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.User;
@@ -43,11 +42,11 @@ public class ShopController {
     @GetMapping("/allshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
-    JSONObject getAllShop(UsernamePasswordAuthenticationToken token) {
+    JSONObject getAllShop(UsernamePasswordAuthenticationToken token,@RequestParam(value = "page", defaultValue = "1") int page) {
         JSONObject rejeson = new JSONObject();
         User user = (User) token.getPrincipal();
         if (user.hasRole(ROLE.BRAND)) {
-            ArrayList<Shop> list = shopService.selectAllShop(user.getId());
+            ArrayList<Shop> list = shopService.selectAllShop(user.getId(),page);
             rejeson.put("error", 0);
             rejeson.put("staffList", list);
         } else {
