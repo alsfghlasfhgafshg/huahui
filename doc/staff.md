@@ -18,14 +18,22 @@ page|int|页数,每页10个,可选参数默认值1
 
 **返回内容:**
 ```
-data为array,每一项:admin name ,admin的id
+data为array
 {
     "msg": "成功",
     "code": 0,
     "data": [
         {
-            "name": "admin",
-            "id": 1
+            "name": "dewitt",
+            "male": 0,
+            "birthday":"1998-02-21",
+            "nation":"中国",
+            "party":"共产党",
+            "healthy":"健康",
+            "nativeplace":"河北",
+            "address","海港区52号",
+            "phone","15603382139",
+            "emergencyphone","15603382139"
         }
     ]
 }
@@ -36,17 +44,16 @@ data为array,每一项:admin name ,admin的id
 -------
 
 
-## 删除admin
+## 删除staff
 
-**url:** /admin/deladminuser
+**url:** /staff/deletestaff/{staffid}
 
-**HTTP请求方式:** POST
+**HTTP请求方式:** DELETE
 
 **请求参数:**
 
 参数名称|类型|描述
 ---|:--:|---:
-userid|int|要删除的admin用户id
 
 **返回格式:** json
 
@@ -69,9 +76,9 @@ userid|int|要删除的admin用户id
 -------
 
 
-## 添加admin
+## 添加staff
 
-**url:** /admin/addadminuser
+**url:** /staff/addstaff
 
 **HTTP请求方式:** POST
 
@@ -80,8 +87,26 @@ userid|int|要删除的admin用户id
 参数名称|类型|描述
 ---|:--:|---:
 username|String|用户名
-password|String|用户密码
-repeatpassword|String|重复用户密码
+avatar|MultipartFile|用户头像
+name|String|姓名
+male|int|员工性别
+birthday|Date|员工生日
+nation|String|员工籍贯
+party|String|政治面貌
+healthy|String|健康状况
+nativeplace|String|籍贯
+address|String|现住址
+phone|String|电话
+emergencyphone|String|紧急电话
+p1name|String|家庭成员1姓名
+p1male|int|家庭成员1性别
+p1company|String|家庭成员1工作单位
+p1relationship|String|家庭成员1与本人关系
+p2name|String|家庭成员2姓名
+p2male|int|家庭成员2性别
+p2company|String|家庭成员2工作单位
+p2relationship|String|家庭成员2与本人关系
+
 
 
 **返回格式:** json
@@ -105,21 +130,16 @@ repeatpassword|String|重复用户密码
 -------
 
 
-## 标题
+## 获取一个员工的详细信息
 
-**url:** /admin/addbranduser
+**url:** /staff/{id}
 
-**HTTP请求方式:** POST enctype=multipart/form-data
+**HTTP请求方式:** GET
 
 **请求参数:**
 
 参数名称|类型|描述
 ---|:--:|---:
-brandname|String|品牌名
-brandpasswd|String|密码
-repeatbrandpasswd|String|重复密码
-description|String|简介
-img|blob|头像文件二进制
 
 **返回格式:** json
 
@@ -127,8 +147,32 @@ img|blob|头像文件二进制
 ```
 成功
 {
-    "msg": "创建成功",
+    "msg": "成功",
     "code": 0,
+    "data": [
+        {
+            "staffid":"1",
+            "avatar","XXXX",
+            "name": "dewitt",
+            "male": 0,
+            "birthday":"1998-02-21",
+            "nation":"中国",
+            "party":"共产党",
+            "healthy":"健康",
+            "nativeplace":"河北",
+            "address","海港区52号",
+            "phone","15603382139",
+            "emergencyphone","15603382139",
+            "p1name","p1name",
+            "p1male","0",
+            "p1company","公司",
+            "p1relationship","父子",
+            "p2name","p2name",
+            "p2male","0",
+            "p2company","公司",
+            "p2relationship","父子",
+        }
+    ]
 }
 失败:
 {
@@ -142,9 +186,9 @@ img|blob|头像文件二进制
 -------
 
 
-## 删除品牌
+## 修改staff
 
-**url:** /admin/deletebranduser
+**url:** /staff/editstaff/{staffid}
 
 **HTTP请求方式:** POST
 
@@ -152,7 +196,26 @@ img|blob|头像文件二进制
 
 参数名称|类型|描述
 ---|:--:|---:
-brandid|int|品牌id
+avatar|MultipartFile|用户头像
+name|String|姓名
+male|int|员工性别
+birthday|Date|员工生日
+nation|String|员工籍贯
+party|String|政治面貌
+healthy|String|健康状况
+nativeplace|String|籍贯
+address|String|现住址
+phone|String|电话
+emergencyphone|String|紧急电话
+p1name|String|家庭成员1姓名
+p1male|int|家庭成员1性别
+p1company|String|家庭成员1工作单位
+p1relationship|String|家庭成员1与本人关系
+p2name|String|家庭成员2姓名
+p2male|int|家庭成员2性别
+p2company|String|家庭成员2工作单位
+p2relationship|String|家庭成员2与本人关系
+shopid|int|店家的id
 
 **返回格式:** json
 
@@ -160,7 +223,7 @@ brandid|int|品牌id
 ```
 成功
 {
-    "msg": "删除成功",
+    "msg": "modify success",
     "code": 0,
 }
 失败:
@@ -172,99 +235,3 @@ brandid|int|品牌id
 ```
 
 -------
-
-
-## 列出所有品牌
-
-**url:** /brand/allbrand
-
-**HTTP请求方式:** GET
-
-**请求参数:** 无
-
-**返回格式:** json
-
-**返回内容:**
-```
-
-data为阿所有品牌的array,每一项:name品牌名,description品牌描述,id品牌id,avatar品牌头像
-{
-    "msg": "成功",
-    "code": 0,
-    "data": [
-        {
-            "name": "1111",
-            "description": "1111",
-            "id": 19,
-            "avatar": null
-        },
-        {
-            "name": "qw",
-            "description": "esdfgdf",
-            "id": 21,
-            "avatar": "/file/img/2a32928e-cd81-4f46-8ac2-09b9a93fe89c.jpg"
-        }
-    ]
-}
-```
-
-
--------
-
-
-## 获得一个品牌的信息
-
-**url:** /brand/getbrand
-
-**HTTP请求方式:** GET
-
-**请求参数:**
-
-参数名称|类型|描述
----|:--:|---:
-brandid|int|品牌的id
-
-**返回格式:** json
-
-**返回内容:**
-```
-{
-    "msg": "成功",
-    "code": 0,
-    "data": [
-        {
-            "name": "1111",
-            "description": "1111",
-            "avatar": null
-        }
-    ]
-}
-
-```
-
-
--------
-
-
-## 更新品牌信息
-
-**url:** /brand/updatebrandadmin
-
-**HTTP请求方式:** POST
-
-**请求参数:**
-
-参数名称|类型|描述
----|:--:|---:
-brandid|int|品牌id
-description|String|描述
-img|blob|头像
-
-**返回格式:** json
-
-**返回内容:**
-```
-sdfa
-
-```
-

@@ -120,7 +120,7 @@ public class StaffController {
         int success = staffService.addStaff(staff);
         if (success==1) {
             avatarService.updateAvatar(staffUser.getId(),avatar);
-            return ResponseGenerate.genSuccessResponse(staff);
+            return ResponseGenerate.genSuccessResponse("创建成功");
         }else {
             return ResponseGenerate.genFailResponse(1,"generate new staff fail");
         }
