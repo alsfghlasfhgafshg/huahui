@@ -33,7 +33,8 @@ data为array
             "nativeplace":"河北",
             "address","海港区52号",
             "phone","15603382139",
-            "emergencyphone","15603382139"
+            "emergencyphone","15603382139",
+            "role","beautician"
         }
     ]
 }
@@ -46,7 +47,7 @@ data为array
 
 ## 删除staff
 
-**url:** /staff/deletestaff/{staffid}
+**url:** /staff/deletestaff
 
 **HTTP请求方式:** POST
 
@@ -54,6 +55,7 @@ data为array
 
 参数名称|类型|描述
 ---|:--:|---:
+staffid|int|员工id
 
 **返回格式:** json
 
@@ -106,7 +108,7 @@ p2name|String|家庭成员2姓名
 p2male|int|家庭成员2性别
 p2company|String|家庭成员2工作单位
 p2relationship|String|家庭成员2与本人关系
-role|String|员工角色
+role|String|员工角色("consultant","beautician")
 
 
 
@@ -172,6 +174,7 @@ role|String|员工角色
             "p2male","0",
             "p2company","公司",
             "p2relationship","父子",
+            "role","beautician"
         }
     ]
 }
