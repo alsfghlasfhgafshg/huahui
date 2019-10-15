@@ -20,8 +20,8 @@ public interface ShopRepository {
     @Select("select shopid from shop where brandid=#{brandid}")
     ArrayList<Integer> selectAllShopId(@Param("brandid") int brandid);
 
-    @Select("select * from shop where brandid=#{brandid}")
-    ArrayList<Shop> selectAllShop(int brandid);
+    @Select("select * from shop where brandid=#{brandid} limit #{offset},#{num}")
+    ArrayList<Shop> selectAllShop(@Param("brandid") int brandid,@Param("offset") int offset,@Param("num")int num);
 
     @Select("select * from shop where shopid=#{shopid}")
     Shop selectById(@Param("shopid") int shopid);

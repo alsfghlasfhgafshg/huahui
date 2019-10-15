@@ -1,13 +1,14 @@
 package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.ROLE;
-import com.aaa.huahui.config.advice.GlobalExceptionHandler;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.Shop;
+import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.UserService;
 import com.aaa.huahui.utils.ResponseGenerate;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,19 +44,20 @@ public class ShopController {
     @GetMapping("/allshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
-    JSONObject getAllShop(UsernamePasswordAuthenticationToken token) {
-        JSONObject rejeson = new JSONObject();
+    JSONObject getAllShop(UsernamePasswordAuthenticationToken token,@RequestParam(value = "page", defaultValue = "1") int page) {
         User user = (User) token.getPrincipal();
-        if (user.hasRole(ROLE.BRAND)) {
-            ArrayList<Shop> list = shopService.selectAllShop(user.getId());
-            rejeson.put("error", 0);
-            rejeson.put("staffList", list);
-        } else {
-            rejeson.put("error", 1);
-            rejeson.put("msg", "无权限");
+        ArrayList<Shop> list = shopService.selectAllShop(user.getId(),page);
+        JSONArray array = new JSONArray();
+
+        for (Shop shop : list) {
+            JSONObject temp = new JSONObject();
+            temp.put("description",shop.getDescription());
+            temp.put("geo",shop.getGeo());
+            array.add(temp);
         }
-        return rejeson;
-    }
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
+        return responsejson;
+   }
 
     //添加shop
     @PostMapping("/addshop")

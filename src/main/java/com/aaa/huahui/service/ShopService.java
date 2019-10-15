@@ -7,6 +7,7 @@ import com.aaa.huahui.repository.ShopRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,9 @@ import java.util.ArrayList;
 
 @Service
 public class ShopService {
+
+    @Value("${pageSize}")
+    private int pageSize;
 
     @Autowired
     ShopRepository shopRepository;
@@ -34,7 +38,7 @@ public class ShopService {
             return false;
         }
 
-        ArrayList<Staff> allstaff = staffRepository.selectAllStaff(shopid);
+        ArrayList<Staff> allstaff = staffRepository.AllStaff(shopid);
         for (Staff staff : allstaff) {
             staffService.deleteStaff(staff.getStaffid());
         }
@@ -75,8 +79,16 @@ public class ShopService {
     }
 
     //获得所有shop
-    public ArrayList<Shop> selectAllShop(int brandid) {
-        return shopRepository.selectAllShop(brandid);
+    public ArrayList<Shop> selectAllShop(int brandid,int page) {
+        int offset = (page - 1) * pageSize;
+
+        int pagesize = this.pageSize;
+
+        if (page == -1) {
+            offset = 0;
+            pagesize = Integer.MAX_VALUE;
+        }
+        return shopRepository.selectAllShop(brandid,offset,pagesize);
     }
 
     //获得shop的brand

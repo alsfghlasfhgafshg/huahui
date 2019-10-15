@@ -6,6 +6,7 @@ import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.FamilyMemberRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,9 @@ import java.util.ArrayList;
 
 @Service
 public class StaffService {
+
+    @Value("${pageSize}")
+    private int pageSize;
 
     @Autowired
     FamilyMemberRepository familyMemberRepository;
@@ -28,8 +32,16 @@ public class StaffService {
         return staffRepository.selectAllStaffId(shopId);
     }
 
-    public ArrayList<Staff> allStaff(int shopId) {
-        return staffRepository.selectAllStaff(shopId);
+    public ArrayList<Staff> allStaff(int shopId,int page) {
+        int offset = (page - 1) * pageSize;
+
+        int pagesize = this.pageSize;
+
+        if (page == -1) {
+            offset = 0;
+            pagesize = Integer.MAX_VALUE;
+        }
+        return staffRepository.selectAllStaff(shopId,offset,pagesize);
     }
 
     public int updateStaffAvatar(int staffId, String avatar) {
