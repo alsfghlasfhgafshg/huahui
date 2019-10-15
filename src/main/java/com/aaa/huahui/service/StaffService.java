@@ -58,6 +58,9 @@ public class StaffService {
         return staffRepository.selectOne(staffid);
     }
 
+    //查看所有role员工
+    public ArrayList<Staff> selectAllOneRoleStaff(String role){return staffRepository.selectOneRoleStaff(role);}
+
     //删除一个staff
     @Transactional
     public boolean deleteStaff(int staffid) {

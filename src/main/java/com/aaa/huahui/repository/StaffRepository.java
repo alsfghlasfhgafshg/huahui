@@ -39,4 +39,7 @@ public interface StaffRepository {
 
     @Select("select * from staff where staffid=#{staffid}")
     Staff selectOne(@Param("staffid") int staffid);
+
+    @Select("select * from staff where role=#{role}")
+    ArrayList<Staff> selectOneRoleStaff(String role);
 }
