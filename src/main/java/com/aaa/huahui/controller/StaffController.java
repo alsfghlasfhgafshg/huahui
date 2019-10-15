@@ -168,7 +168,7 @@ public class StaffController {
     }
 
     //删除staff
-    @DeleteMapping("/deletestaff/{staffid}")
+    @PostMapping("/deletestaff/{staffid}")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody JSONObject deleteStaff(UsernamePasswordAuthenticationToken token,@PathVariable("staffid")int staffId){
         User user = (User) token.getPrincipal();

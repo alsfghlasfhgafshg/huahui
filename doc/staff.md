@@ -48,7 +48,7 @@ data为array
 
 **url:** /staff/deletestaff/{staffid}
 
-**HTTP请求方式:** DELETE
+**HTTP请求方式:** POST
 
 **请求参数:**
 
