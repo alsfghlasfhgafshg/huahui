@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.huahui.repository.SettlementRepository">
+
+
+    <resultMap id="SettlementVO" type="com.aaa.huahui.vo.SettlementVO">
+
+        <id column="settlementid" property="id"/>
+        <result column="shopid" property="shopid"/>
+        <result column="createtime" property="createtime"/>
+        <result column="customername" property="customername"/>
+        <result column="paymentmethodname" property="paymentmethod"/>
+        <result column="consultant" property="consultant"/>
+        <result column="roomname" property="roomname"/>
+
+
+        <collection property="settlementItems" ofType="com.aaa.huahui.vo.SettlementItemVO">
+            <result property="settlementid" column="settlementid" javaType="int"/>
+            <result property="id" column="settlementitemid" javaType="int"/>
+            <result property="category2name" column="category2name" javaType="string"/>
+            <result property="times" column="times" javaType="int"/>
+            <result property="price" column="price" javaType="int"/>
+            <result property="staff1name" column="staff1name" javaType="string"/>
+            <result property="staff2name" column="staff2name" javaType="string"/>
+        </collection>
+
+    </resultMap>
+
+
+    <select id="selectSettlementById" resultMap="SettlementVO">
+
+
+    select settlement.id           settlementid,
+           settlement.shopid       shopid,
+           settlement.roomname     roomname,
+           settlement.createtime   createtime,
+           settlement.customername customername,
+           paymentmethod.name      paymentmethodname,
+
+           consultanttable.name    consultant,
+
+           settlementitem.id       settlementitemid,
+           settlementitem.times    times,
+           settlementitem.price    price,
+
+           category2.name          category2name,
+
+           staff1.name             staff1name,
+           staff2.name             staff2name
+
+    from settlementitem settlementitem
+             left join
+         settlement settlement on settlement.id = settlementitem.settlementid
+             left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+             left join staff consultanttable
+                       on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
+             left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+             left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+             left join category2 category2 on category2.category2id = settlementitem.category2id
+
+            where settlement.id = #{id}
+
+        </select>
+
+
+    <select id="selectSettlementByIdWithPage" resultMap="SettlementVO">
+
+    select settlement.id           settlementid,
+           settlement.shopid       shopid,
+           settlement.roomname     roomname,
+           settlement.createtime   createtime,
+           settlement.customername customername,
+           paymentmethod.name      paymentmethodname,
+
+           consultanttable.name    consultant,
+
+           settlementitem.id       settlementitemid,
+           settlementitem.times    times,
+           settlementitem.price    price,
+
+           category2.name          category2name,
+
+           staff1.name             staff1name,
+           staff2.name             staff2name
+
+    from settlementitem settlementitem
+             left join
+         settlement settlement on settlement.id = settlementitem.settlementid
+             left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+             left join staff consultanttable
+                       on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
+             left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+             left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+             left join category2 category2 on category2.category2id = settlementitem.category2id
+
+    where settlement.shopid = #{shopid}
+      and settlement.createtime between #{from} and #{to}
+    order by createtime desc
+    limit #{offset},#{limit}
+
+    </select>
+</mapper>
+

@@ -4,13 +4,17 @@ package com.aaa.huahui.service;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.aaa.huahui.model.PaymentMethod;
 import com.aaa.huahui.model.Settlement;
+import com.aaa.huahui.model.SettlementItem;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.BrandRepository;
+import com.aaa.huahui.repository.SettlementItemRepository;
 import com.aaa.huahui.repository.SettlementRepository;
 import com.aaa.huahui.utils.DateUtils;
+import com.aaa.huahui.vo.SettlementVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonAlias;
@@ -33,18 +37,23 @@ public class SettlementService {
     @Autowired
     SettlementRepository settlementRepository;
 
+    @Autowired
+    SettlementItemRepository settlementItemRepository;
+
     public ArrayList<PaymentMethod> getAllPayMentMethod() {
         return settlementRepository.selectAllPaymentMethod();
     }
 
-
     //添加一个
-    public boolean addSettlement(Settlement settlement) {
-
+    public Settlement addSettlement(Settlement settlement, List<SettlementItem> settlementProjectItems) {
         if (settlementRepository.insertSettlement(settlement) == 1) {
-            return true;
+            for (SettlementItem settlementItem : settlementProjectItems) {
+                settlementItem.setSettlementid(settlement.getId());
+                settlementItemRepository.insertSettlementItem(settlementItem);
+            }
+            return settlement;
         }
-        return false;
+        return null;
     }
 
     //是否可以操作，传入User为shop/brand
@@ -66,11 +75,11 @@ public class SettlementService {
     }
 
     //获得一个
-    public Settlement getOneSettlement(User user, int settlementid) {
+    public SettlementVO getOneSettlementVO(User user, int settlementid) {
         if (canOperate(user, settlementid) == false) {
             return null;
         } else {
-            return settlementRepository.selectSettlement(settlementid);
+            return settlementRepository.selectSettlementById(settlementid);
         }
     }
 

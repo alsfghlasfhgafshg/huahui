@@ -28,4 +28,7 @@ public interface Category2Repository {
     @Select("select * from category2 where categoryid=#{category2}")
     ArrayList<Category2> selectAllCategory2(@Param("categoryid") int categoryid);
 
+    @Select("select count(*) from category2, category where category2.categoryid = category.id and category2.category2id = #{category2id}  and category.brandid = #{brandid}")
+    int selectCountCategory2Brand(@Param("category2id") int categoryid2id, @Param("brandid") int brandid);
+
 }

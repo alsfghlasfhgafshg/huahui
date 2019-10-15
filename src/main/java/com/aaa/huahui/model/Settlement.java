@@ -1,39 +1,44 @@
 package com.aaa.huahui.model;
 
 import java.sql.Timestamp;
+import java.util.List;
+
 
 public class Settlement {
     int id;
     int shopid;
-    Timestamp timestamp;
+    Timestamp createtime;
     String customername;
-    int price;
-    int staffid;
-    int category2id;
-    String brandname;
-    int paymentmethod;
-    String consultant;
-    int reporterid;
 
-    public Settlement() {
+    int peoplenum;
+    String roomname;
+    int consultantid;
+    int paymentmethod;
+    List<SettlementItem> settlementItems;
+
+    int sumprice;
+
+    public int getSumprice() {
+        if (settlementItems == null) {
+            return 0;
+        } else {
+            int sumprice = 0;
+            for (SettlementItem settlementItem : settlementItems) {
+                sumprice = sumprice + settlementItem.getPrice();
+            }
+            return sumprice;
+        }
     }
 
-    public Settlement(int id, int shopid, Timestamp timestamp,
-                      String customername, int price, int staffid,
-                      int category2id, String brandname, int paymentmethod,
-                      String consultant, int reporterid) {
-        this.id = id;
+    public List<SettlementItem> getSettlementItems() {
+        return settlementItems;
+    }
 
-        this.shopid = shopid;
-        this.timestamp = timestamp;
-        this.customername = customername;
-        this.price = price;
-        this.staffid = staffid;
-        this.category2id = category2id;
-        this.brandname = brandname;
-        this.paymentmethod = paymentmethod;
-        this.consultant = consultant;
-        this.reporterid = reporterid;
+    public void setSettlementItems(List<SettlementItem> settlementItems) {
+        this.settlementItems = settlementItems;
+    }
+
+    public Settlement() {
     }
 
     public int getId() {
@@ -52,12 +57,12 @@ public class Settlement {
         this.shopid = shopid;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Timestamp getCreatetime() {
+        return createtime;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setCreatetime(Timestamp createtime) {
+        this.createtime = createtime;
     }
 
     public String getCustomername() {
@@ -68,36 +73,52 @@ public class Settlement {
         this.customername = customername;
     }
 
-    public int getPrice() {
-        return price;
+    public int getPeoplenum() {
+        return peoplenum;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPeoplenum(int peoplenum) {
+        this.peoplenum = peoplenum;
     }
 
-    public int getStaffid() {
-        return staffid;
+    public String getRoomname() {
+        return roomname;
     }
 
-    public void setStaffid(int staffid) {
-        this.staffid = staffid;
+    public void setRoomname(String roomname) {
+        this.roomname = roomname;
     }
 
-    public int getCategory2id() {
-        return category2id;
+    public int getConsultantid() {
+        return consultantid;
     }
 
-    public void setCategory2id(int category2id) {
-        this.category2id = category2id;
+    public void setConsultantid(int consultantid) {
+        this.consultantid = consultantid;
     }
 
-    public String getBrandname() {
-        return brandname;
+
+    public Settlement(int shopid, Timestamp createtime, String customername, int peoplenum,
+                      String roomname, int consultantid, int paymentmethod) {
+        this.shopid = shopid;
+        this.createtime = createtime;
+        this.customername = customername;
+        this.peoplenum = peoplenum;
+        this.roomname = roomname;
+        this.consultantid = consultantid;
+        this.paymentmethod = paymentmethod;
     }
 
-    public void setBrandname(String brandname) {
-        this.brandname = brandname;
+    public Settlement(int id, int shopid, Timestamp createtime, String customername,
+                      int peoplenum, String roomname, int consultantid, int paymentmethod) {
+        this.id = id;
+        this.shopid = shopid;
+        this.createtime = createtime;
+        this.customername = customername;
+        this.peoplenum = peoplenum;
+        this.roomname = roomname;
+        this.consultantid = consultantid;
+        this.paymentmethod = paymentmethod;
     }
 
     public int getPaymentmethod() {
@@ -106,21 +127,5 @@ public class Settlement {
 
     public void setPaymentmethod(int paymentmethod) {
         this.paymentmethod = paymentmethod;
-    }
-
-    public String getConsultant() {
-        return consultant;
-    }
-
-    public void setConsultant(String consultant) {
-        this.consultant = consultant;
-    }
-
-    public int getReporterid() {
-        return reporterid;
-    }
-
-    public void setReporterid(int reporterid) {
-        this.reporterid = reporterid;
     }
 }

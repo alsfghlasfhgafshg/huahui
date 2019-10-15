@@ -6,6 +6,8 @@ import com.aaa.huahui.repository.SettlementRepository;
 import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.service.SettlementService;
 import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.utils.DateUtils;
+import com.aaa.huahui.vo.SettlementVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -41,6 +44,17 @@ public class DataBaseTest {
     public void newUser() {
 //        userService.newUser("23","234",ROLE.ADMIN);
     }
+
+
+    @Test
+    public void asdfa() {
+        List<SettlementVO> settlementVOS = settlementRepository.selectSettlementByIdWithPage(12, 0, 10,
+                DateUtils.getTimeStampStart(2019, 5, 01), DateUtils.getTimeStampEnd(2019, 10, 1));
+        System.out.println("end");
+
+
+    }
+
 
     @Test
     public void newSettlement() {
