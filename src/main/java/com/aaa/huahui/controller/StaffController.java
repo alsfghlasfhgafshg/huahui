@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -62,6 +61,7 @@ public class StaffController {
             temp.put("address",staff.getAddress());
             temp.put("phone",staff.getPhone());
             temp.put("emergencyphone",staff.getEmergencyphone());
+            temp.put("role",staff.getRole());
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);

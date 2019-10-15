@@ -58,8 +58,11 @@ public class StaffService {
         return staffRepository.selectOne(staffid);
     }
 
-    //查看所有role员工
-    public ArrayList<Staff> selectAllOneRoleStaff(String role){return staffRepository.selectOneRoleStaff(role);}
+    //查看所有美容师
+    public ArrayList<Staff> selectAllBeautician(){return staffRepository.selectAllBeautician();}
+
+    //查看所有顾问
+    public ArrayList<Staff> selectAllConsultant(){return staffRepository.selectAllConsultant();}
 
     //删除一个staff
     @Transactional
