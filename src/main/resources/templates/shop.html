@@ -12,9 +12,7 @@
 
 <form method="post" th:action="@{/staff/addstaff}">
     username <input type="text" name="username">
-    密码 <input type="password" name="password">
-    重复密码 <input type="password" name="repeatpassword">
-    avatar <input type="text" name="avatar">
+    avatar <input type="file" name="avatar">
     name <input type="text" name="name">
     male <input type="text" name="male">
     birthday <input type="text" name="birthday">
@@ -25,6 +23,14 @@
     address<input type="text" name="address">
     phone<input type="text" name="phone">
     emergencyphone<input type="text" name="emergencyphone">
+    p1name<input type="text" name="p1name">
+    p1male<input type="text" name="p1male">
+    p1company<input type="text" name="p1company">
+    p1relationship<input type="text" name="p1relationship">
+    p2name<input type="text" name="p2name">
+    p2male<input type="text" name="p2male">
+    p2company<input type="text" name="p2company">
+    p2relationship<input type="text" name="p2relationship">
     <div><input type="submit" value="生成员工"/></div>
 </form>
 

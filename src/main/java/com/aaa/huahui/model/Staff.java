@@ -25,9 +25,10 @@ public class Staff {
     private int p2male;//0男
     private String p2company;
     private String p2relationship;
+    private String role;
     private int shopid;
 
-    public Staff(int staffid, String name, int male, Date birthday, String nation, String party, String healthy, String nativeplace, String address, String phone, String emergencyphone, String p1name, int p1male, String p1company, String p1relationship, String p2name, int p2male, String p2company, String p2relationship, int shopid) {
+    public Staff(int staffid, String name, int male, Date birthday, String nation, String party, String healthy, String nativeplace, String address, String phone, String emergencyphone, String p1name, int p1male, String p1company, String p1relationship, String p2name, int p2male, String p2company, String p2relationship,String role, int shopid) {
         this.staffid = staffid;
         this.name = name;
         this.male = male;
@@ -48,6 +49,15 @@ public class Staff {
         this.p2company = p2company;
         this.p2relationship = p2relationship;
         this.shopid = shopid;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getAvatar() {

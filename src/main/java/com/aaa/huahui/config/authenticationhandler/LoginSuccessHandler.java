@@ -4,7 +4,6 @@ import com.aaa.huahui.model.User;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.aaa.huahui.utils.ResponseUtil;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.javafx.UnmodifiableArrayList;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
