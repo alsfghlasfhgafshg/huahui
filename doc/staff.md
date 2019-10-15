@@ -106,6 +106,7 @@ p2name|String|家庭成员2姓名
 p2male|int|家庭成员2性别
 p2company|String|家庭成员2工作单位
 p2relationship|String|家庭成员2与本人关系
+role|String|员工角色
 
 
 
@@ -215,6 +216,7 @@ p2name|String|家庭成员2姓名
 p2male|int|家庭成员2性别
 p2company|String|家庭成员2工作单位
 p2relationship|String|家庭成员2与本人关系
+role|String|员工角色
 shopid|int|店家的id
 
 **返回格式:** json
