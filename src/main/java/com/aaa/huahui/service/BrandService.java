@@ -66,6 +66,7 @@ public class BrandService {
     }
 
     //新的4个category
+    @Transactional
     public void new5CategoryCategory2(int brandid) {
         Category shicaolei = new Category(brandid, "实操类");
         categoryRepository.insertCategory(shicaolei);
@@ -77,9 +78,9 @@ public class BrandService {
         Category chanpinlei = new Category(brandid, "产品类");
         categoryRepository.insertCategory(chanpinlei);
 
-        category2Repository.insertCategory2(new Category2(chanpinlei.getId(), "美容"));
-        category2Repository.insertCategory2(new Category2(chanpinlei.getId(), "美容"));
-        category2Repository.insertCategory2(new Category2(chanpinlei.getId(), "美容"));
+        category2Repository.insertCategory2(new Category2(chanpinlei.getId(), "卡扣产品"));
+        category2Repository.insertCategory2(new Category2(chanpinlei.getId(), "现金产品"));
+        category2Repository.insertCategory2(new Category2(chanpinlei.getId(), "赠送产品"));
 
 
         Category xianjinlei = new Category(brandid, "现金类");
@@ -214,12 +215,21 @@ public class BrandService {
         return allcategory2;
     }
 
+    //获取所有project
     public ArrayList<Project> allProject(int category2id) {
         ArrayList<Project> projects = projectRepository.selectByCategory2id(category2id);
         return projects;
     }
 
-    public Project addProject(Project project) {
+    //添加project
+    public Project addProject(User user, Project project) {
+        if (user.hasRole(ROLE.BRAND) == false) {
+            return null;
+        }
+        if (category2Repository.selectCountCategory2Brand(project.getCategory2id(), user.getId()) == 0) {
+            return null;
+        }
+
         int i = projectRepository.insertProject(project);
         if (i == 1) {
             return project;
@@ -228,7 +238,8 @@ public class BrandService {
         }
     }
 
-    public boolean deleteProject(Project project) {
+    //删除project
+    private boolean deleteProject(Project project) {
         int i = projectRepository.deleteProject(project.getId());
         if (i == 1) {
             return true;

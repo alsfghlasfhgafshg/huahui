@@ -3,10 +3,7 @@ package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
-import com.aaa.huahui.model.Brand;
-import com.aaa.huahui.model.Category;
-import com.aaa.huahui.model.Category2;
-import com.aaa.huahui.model.User;
+import com.aaa.huahui.model.*;
 import com.aaa.huahui.service.AvatarService;
 import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.ShopService;
@@ -212,7 +209,7 @@ public class BrandController {
     //查看二级分类
     @GetMapping("/brand/querycategory2")
     public @ResponseBody
-    JSONObject addCategory2(UsernamePasswordAuthenticationToken token) {
+    JSONObject queryCategory2(UsernamePasswordAuthenticationToken token) {
         JSONObject rejeson = new JSONObject();
         User user = ((User) token.getPrincipal());
         int brandid = user.getId();
@@ -265,4 +262,68 @@ public class BrandController {
         }
         return rejeson;
     }
+
+
+    //查看三级分类
+    @GetMapping("/brand/allproject")
+    public @ResponseBody
+    JSONObject addCategory2(@RequestParam("category2id") int category2id,
+                            UsernamePasswordAuthenticationToken token) {
+        JSONObject rejeson = new JSONObject();
+        User user = ((User) token.getPrincipal());
+        int brandid = user.getId();
+
+        if (user.hasRole(ROLE.SHOP)) {
+            brandid = shopService.shopBrand(brandid).getId();
+        }
+
+        ArrayList<Project> category2s = brandService.allProject(brandid);
+        rejeson.put("error", 0);
+        rejeson.put("allprojects", category2s);
+        return rejeson;
+    }
+
+    //添加3级分类
+    @PostMapping("/brand/addproject")
+    public @ResponseBody
+    JSONObject addProject(UsernamePasswordAuthenticationToken token,
+                          @RequestParam("category2id") int category2id,
+                          @RequestParam("projecetname") String projecetname) {
+        User user = (User) token.getPrincipal();
+        int brandid = user.getId();
+
+        Project project = new Project(category2id, projecetname);
+        Project r = brandService.addProject(user, project);
+
+
+        JSONObject rejeson = null;
+        if (r != null) {
+            JSONObject data = new JSONObject();
+            data.put("projectid", r.getId());
+            rejeson = ResponseGenerate.genSuccessResponse("成功", data);
+        } else {
+            rejeson = ResponseGenerate.genFailResponse(1, "添加失败");
+        }
+        return rejeson;
+    }
+
+
+    //删除3级分类
+    @PostMapping("/brand/deleteproject")
+    public @ResponseBody
+    JSONObject deleteCategory2(UsernamePasswordAuthenticationToken token,
+                               @RequestParam("projectid") int projectid) {
+        User user = (User) token.getPrincipal();
+        int brandid = user.getId();
+
+        JSONObject rejeson = null;
+        boolean result = brandService.deleteProject(user,projectid);
+        if (result == true) {
+            rejeson = ResponseGenerate.genSuccessResponse("删除成功");
+        } else {
+            rejeson = ResponseGenerate.genFailResponse(1, "删除失败");
+        }
+        return rejeson;
+    }
+
 }

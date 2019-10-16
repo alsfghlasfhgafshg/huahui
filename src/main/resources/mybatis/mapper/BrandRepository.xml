@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.huahui.repository.BrandRepository">
+    <resultMap id="Category" type="com.aaa.huahui.model.Category">
+
+<!--        <id column="id" property="id"/>-->
+<!--        <result column="brandid" property="shopid"/>-->
+
+
+<!--        <collection property="settlementItems" ofType="com.aaa.huahui.vo.SettlementItemVO">-->
+<!--            <result property="settlementid" column="settlementid" javaType="int"/>-->
+<!--            <collection property=""-->
+
+<!--        </collection>-->
+
+    </resultMap>
+    <select id="selectCategoryStructure" resultType="com.aaa.huahui.model.Category">
+
+
+    select category.id           categoryid,
+           category.brandid      categorybrandid,
+           category.name         categoryname,
+
+           category2.category2id category2category2id,
+           category2.categoryid  category2categoryid,
+           category2.name        category2name,
+
+           project.id            projectid,
+           project.category2id   projectcategory2id,
+           project.name          projectname
+
+    from category
+             left join category2 on category.id = category2.categoryid
+             left join project on project.category2id = category2.category2id
+    where category.brandid = #{brandid};
+
+
+    </select>
+
+
+
+</mapper>

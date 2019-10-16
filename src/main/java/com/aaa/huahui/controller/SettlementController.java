@@ -48,7 +48,6 @@ public class SettlementController {
     JSONObject addSettlement(UsernamePasswordAuthenticationToken token,
                              @RequestBody JSONObject data) {
 
-
         User u = ((User) token.getPrincipal());
 
         JSONObject responsejson = null;
@@ -93,10 +92,6 @@ public class SettlementController {
 
         return responsejson;
     }
-
-
-
-
 
 
     //获得一个结算单

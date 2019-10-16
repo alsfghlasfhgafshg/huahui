@@ -165,6 +165,116 @@ category2id|int|二级分类id
 -------
 
 
+## 添加三级分类（具体项目）
+
+**url:** /brand/addproject
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+category2id|int|二级分类id
+projecetname|string|三级分类名称
+
+**返回格式:** json
+
+**返回内容:**
+```
+成功
+projectid:返回添加成功的项目id
+{
+    "msg": "成功",
+    "code": 0,
+    projectid:123
+}
+失败
+{
+    "msg": "添加失败",
+    "code": 1
+}
+
+```
+
+
+-------
+
+
+## 删除三级分类
+
+**url:** /brand/deleteproject
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+projectid|int|三级分类id
+
+**返回格式:** json
+
+**返回内容:**
+```
+成功
+{
+    "msg": "删除成功",
+    "code": 0
+}
+失败
+{
+    "msg": "删除失败",
+    "code": 1
+}
+
+```
+
+-------
+
+
+## 标题
+
+**url:** /brand/allproject
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+category2id|int|二级分类id
+
+**返回格式:** json
+
+**返回内容:**
+```
+
+allprojects：所有三级分类
+
+{
+    "msg": "成功",
+    "code": 0,
+    "allprojects":[
+    {
+        "id":1,
+        "category2id":"12",
+        "name":"XXX"
+    },
+    {
+        "id":1,
+        "category2id":"12",
+        "name":"XXX"
+    }
+    ]
+
+}
+
+```
+
+-------
+
+
 ## 为当前登录的品牌添加一个分店商店
 
 **url:** /shop/addshop

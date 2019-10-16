@@ -4,6 +4,7 @@ import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.SettlementRepository;
 import com.aaa.huahui.repository.UserRepository;
+import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.SettlementService;
 import com.aaa.huahui.service.UserService;
 import com.aaa.huahui.utils.DateUtils;
@@ -17,10 +18,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DataBaseTest {
+
+    @Autowired
+    BrandService brandService;
+
     @Autowired
     UserService userService;
 
@@ -42,7 +48,6 @@ public class DataBaseTest {
 
     @Test
     public void newUser() {
-//        userService.newUser("23","234",ROLE.ADMIN);
     }
 
 
@@ -58,13 +63,27 @@ public class DataBaseTest {
 
     @Test
     public void newSettlement() {
-//        Timestamp timeStamp = settlementService.getTimeStamp(2019, 07, 05);
-//        settlementRepository.insertSettlement(timeStamp,11,"dsf",1);
 
+
+    }
+
+
+    @Test
+    public void asdfasdf() {
+
+        List<Map<String, String>> java11 = settlementRepository.selectConsultantCategory2SumCountAndSumPrice(12, "java11",
+                DateUtils.getTimeStampStart(2019, 5, 01), DateUtils.getTimeStampEnd(2019, 10, 1));
+        int a1=124;
     }
 
     @Test
     public void setavatar() {
         userRepository.updateAvatar(8, "asdf");
     }
+
+    @Test
+    public void sadf() {
+        brandService.new5CategoryCategory2(121);
+    }
+
 }

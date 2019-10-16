@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SettlementRepository {
@@ -54,5 +55,77 @@ public interface SettlementRepository {
 
     @Select("select sum(price) from from settlement where createtime between #{from} and #{to} and shopid=#{shopid} and paymentmethod=#{paymentmethod}")
     int sumPriceByPayMentMethod(@Param("shopid") int shopid, @Param("paymentmethod") int paymentmethod, @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+
+    //2
+    List<Map<String, Integer>> selectCountCustomerTimes(@Param("shopid") int shopid,
+                                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    List<Map<String, Integer>> selectCountCustomerPrice(@Param("shopid") int shopid,
+                                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    int selectCountCustomerGreaterOrEq(@Param("mintimes") Integer mintimes, @Param("shopid") int shopid,
+                                                @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+
+    //3
+    Map<String, Integer> selectProjectSumPrice(@Param("shopid") int shopid,
+                                               @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    Map<String, Integer> selectProjectCount(@Param("shopid") int shopid,
+                                            @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+
+    Map<String, Integer> selectProjectBeauticianCount(@Param("shopid") int shopid, @Param("beauticianname") String beauticianname,
+                                                      @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+
+    //-3
+    Map<String, Integer> selectCategory2SumPrice(@Param("shopid") int shopid,
+                                                 @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    Map<String, Integer> selectCategory2SumCount(@Param("shopid") int shopid,
+                                                 @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    List<Map<String, String>> selectCategory2SumCountAndSumPrice(@Param("shopid") int shopid,
+                                                                 @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+
+    //-2
+    Map<String, Integer> selectConsultantCategory2SumPrice(@Param("shopid") int shopid, @Param("consultantname") String consultantname,
+                                                           @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    Map<String, Integer> selectConsultantCategory2SumCount(@Param("shopid") int shopid, @Param("consultantname") String consultantname,
+                                                           @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    List<Map<String, String>> selectConsultantCategory2SumCountAndSumPrice(@Param("shopid") int shopid, @Param("consultantname") String consultantname,
+                                                                           @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+
+    //-1
+    Map<String, Integer> selecteauticianCategory2SumPrice(@Param("shopid") int shopid, @Param("beauticianname") String beauticianname,
+                                                          @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    Map<String, Integer> selectbBeauticianCategory2SumCount(@Param("shopid") int shopid, @Param("beauticianname") String beauticianname,
+                                                            @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    List<Map<String, String>> selectbBeauticianCategory2SumCountAndSumPrice(@Param("shopid") int shopid, @Param("beauticianname") String beauticianname,
+                                                                            @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+
+    Map<String, Integer> selectbBeauticianCustomer(@Param("shopid") int shopid, @Param("beauticianname") String beauticianname,
+                                                   @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+
+    //1
+    List<Map<String, String>> selctProductProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
+                                                                  @Param("to") Timestamp to);
+
+    List<Map<String, String>> selctBeautyProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
+                                                                 @Param("to") Timestamp to);
+
+    List<Map<String, String>> selctBodyProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
+                                                               @Param("to") Timestamp to);
+
 
 }

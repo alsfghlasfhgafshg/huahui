@@ -1,7 +1,12 @@
 package com.aaa.huahui.repository;
 
 import com.aaa.huahui.model.Brand;
+import com.aaa.huahui.model.Category;
 import org.apache.ibatis.annotations.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BrandRepository {
@@ -29,5 +34,9 @@ public interface BrandRepository {
 
     @Select("select count(*) from shop where  brandid=#{brandid} and shopid=#{shopid}")
     int selectBrandShop(@Param("brandid") int brandid, @Param("shopid") int shopid);
+
+
+    ArrayList<Category> selectCategoryStructure(@Param("brandid") int brandid);
+
 
 }

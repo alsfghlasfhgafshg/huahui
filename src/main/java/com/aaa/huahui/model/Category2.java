@@ -1,10 +1,13 @@
 package com.aaa.huahui.model;
 
+import java.util.List;
+
 public class Category2 {
 
     int category2id;
     int categoryid;
     String name;
+    List<Project> projects;
 
     public Category2() {
     }
@@ -18,6 +21,14 @@ public class Category2 {
         this.category2id = category2id;
         this.categoryid = categoryid;
         this.name = name;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
     public int getCategory2id() {
