@@ -32,523 +32,570 @@
     <select id="selectSettlementById" resultMap="SettlementVO">
 
 
-    select settlement.id           settlementid,
-           settlement.shopid       shopid,
-           settlement.roomname     roomname,
-           settlement.createtime   createtime,
-           settlement.customername customername,
-           paymentmethod.name      paymentmethodname,
+        select settlement.id settlementid,
+        settlement.shopid shopid,
+        settlement.roomname roomname,
+        settlement.createtime createtime,
+        settlement.customername customername,
+        paymentmethod.name paymentmethodname,
 
-           consultanttable.name    consultant,
+        consultanttable.name consultant,
 
-           settlementitem.id       settlementitemid,
-           settlementitem.times    times,
-           settlementitem.price    price,
+        settlementitem.id settlementitemid,
+        settlementitem.times times,
+        settlementitem.price price,
 
-           category2.name          category2name,
+        category2.name category2name,
 
-           staff1.name             staff1name,
-           staff2.name             staff2name
+        staff1.name staff1name,
+        staff2.name staff2name
 
-    from settlementitem settlementitem
-             left join
-         settlement settlement on settlement.id = settlementitem.settlementid
-             left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-             left join staff consultanttable
-                       on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
-             left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-             left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-             left join category2 category2 on category2.category2id = settlementitem.projectid
+        from settlementitem settlementitem
+        left join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
+        left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        left join category2 category2 on category2.category2id = settlementitem.projectid
 
-            where settlement.id = #{id}
+        where settlement.id = #{id}
 
-        </select>
+    </select>
 
 
     <select id="selectSettlementByIdWithPage" resultMap="SettlementVO">
 
-    select settlement.id           settlementid,
-           settlement.shopid       shopid,
-           settlement.roomname     roomname,
-           settlement.createtime   createtime,
-           settlement.customername customername,
-           paymentmethod.name      paymentmethodname,
+        select settlement.id settlementid,
+        settlement.shopid shopid,
+        settlement.roomname roomname,
+        settlement.createtime createtime,
+        settlement.customername customername,
+        paymentmethod.name paymentmethodname,
 
-           consultanttable.name    consultant,
+        consultanttable.name consultant,
 
-           settlementitem.id       settlementitemid,
-           settlementitem.times    times,
-           settlementitem.price    price,
+        settlementitem.id settlementitemid,
+        settlementitem.times times,
+        settlementitem.price price,
 
-           category2.name          category2name,
+        category2.name category2name,
 
-           staff1.name             staff1name,
-           staff2.name             staff2name
+        staff1.name staff1name,
+        staff2.name staff2name
 
-    from settlementitem settlementitem
-             left join
-         settlement settlement on settlement.id = settlementitem.settlementid
-             left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-             left join staff consultanttable
-                       on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
-             left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-             left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-             left join category2 category2 on category2.category2id = settlementitem.projectid
+        from settlementitem settlementitem
+        left join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
+        left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        left join category2 category2 on category2.category2id = settlementitem.projectid
 
-    where settlement.shopid = #{shopid}
-      and settlement.createtime between #{from} and #{to}
-    order by createtime desc
-    limit #{offset},#{limit}
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        order by createtime desc
+        limit #{offset},#{limit}
 
     </select>
 
     <select id="selectCountCustomerTimes" resultType="java.util.Map">
 
-    select customername, count(customername) count
-    from settlement
-    where shopid = #{shopid}
-      and settlement.createtime between #{from} and #{to}
-      group by customername
-    order by count desc
+        select customername, count(customername) count
+        from settlement
+        where shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        group by customername
+        order by count desc
     </select>
 
 
     <select id="selectCountCustomerPrice" resultType="java.util.Map">
-    select customername, sum(price) countprice
-    from (
-             select
-                    settlement.createtime   createtime,
-                    settlement.customername customername,
+        select customername, sum(price) countprice
+        from (
+        select
+        settlement.createtime createtime,
+        settlement.customername customername,
 
-                    settlementitem.price    price
+        settlementitem.price price
 
-             from settlementitem settlementitem
-                      left join
-                  settlement settlement on settlement.id = settlementitem.settlementid
-                      left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        from settlementitem settlementitem
+        inner join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
 
 
-             where settlement.shopid = #{shopid}
-               and settlement.createtime between #{from} and #{to}
-             order by createtime desc
-         ) t
-    group by customername
-    order by countprice desc ;
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        order by createtime desc
+        ) t
+        group by customername
+        order by countprice desc ;
     </select>
 
 
     <select id="selectCountCustomerGreaterOrEq" resultType="java.lang.Integer">
 
-    select count(customername) count
-    from (
-             select customername, count(customername) count
-             from settlement
-             where shopid = #{shopid}
-               and settlement.createtime between #{from} and #{to}
-             group by customername
-             order by count
-         )t where count>=#{mintimes}
+        select count(customername) count
+        from (
+        select customername, count(customername) count
+        from settlement
+        where shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        group by customername
+        order by count
+        )t where count>=#{mintimes}
     </select>
 
 
     <select id="selectProjectSumPrice" resultType="java.util.Map">
 
-    select projectname, sum(price) sumprice
-    from (
-             select settlement.createtime createtime,
-                    project.name          projectname,
-                    settlementitem.price  price
-             from settlementitem settlementitem
-                      left join settlement settlement on settlement.id = settlementitem.settlementid
-                      left join category2 category2 on category2.category2id = settlementitem.projectid
-                      left join project on category2.category2id = project.category2id
+        select projectname, sum(price) sumprice
+        from (
+        select settlement.createtime createtime,
+        project.name projectname,
+        settlementitem.price price
+        from settlementitem settlementitem
+        left join settlement settlement on settlement.id = settlementitem.settlementid
+        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project on category2.category2id = project.category2id
 
-             where settlement.shopid = #{shopid}
-               and settlement.createtime between #{from} and #{to}
-             order by createtime desc
-         ) t
-    group by projectname
-    order by sumprice desc
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        order by createtime desc
+        ) t
+        group by projectname
+        order by sumprice desc
 
     </select>
 
 
     <select id="selectProjectCount" resultType="java.util.Map">
-    select projectname, count(projectname) projectcount
-    from (
-             select settlement.createtime createtime,
-                    project.name          projectname
-             from settlementitem settlementitem
-                      left join settlement settlement on settlement.id = settlementitem.settlementid
-                      left join category2 category2 on category2.category2id = settlementitem.projectid
-                      left join project on category2.category2id = project.category2id
+        select projectname, count(projectname) projectcount
+        from (
+        select settlement.createtime createtime,
+        project.name projectname
+        from settlementitem settlementitem
+        left join settlement settlement on settlement.id = settlementitem.settlementid
+        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project on category2.category2id = project.category2id
 
-             where settlement.shopid = #{shopid}
-               and settlement.createtime between #{from} and #{to}
-             order by createtime desc
-         ) t
-    group by projectname
-    order by projectcount desc
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        order by createtime desc
+        ) t
+        group by projectname
+        order by projectcount desc
     </select>
 
-    <select id="selectProjectBeauticianCount" resultType="java.util.Map">
 
-
-    </select>
     <select id="selectCategory2SumPrice" resultType="java.util.Map">
-    select category2name, sum(price) sumprice
-    from (
-             select
-                    settlementitem.price    price,
-                    category2.name          category2name
+        select category2name, sum(price) sumprice
+        from (
+        select
+        settlementitem.price price,
+        category2.name category2name
 
-             from settlementitem settlementitem
-                      left join
-                  settlement settlement on settlement.id = settlementitem.settlementid
-                      left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                      left join staff consultanttable
-                                on consultanttable.staffid = settlement.consultantid and
-                                   consultanttable.role = 'consultant'
-                      left join staff staff1
-                                on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                      left join staff staff2
-                                on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.projectid
+        from settlementitem settlementitem
+        left join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant'
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        left join category2 category2 on category2.category2id = settlementitem.projectid
 
 
-             where settlement.shopid = #{shopid}
-               and settlement.createtime between #{from} and #{to}
-         ) t
-    group by category2name
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by category2name
 
     </select>
 
     <select id="selectCategory2SumCount" resultType="java.util.Map">
-    select category2name, count (category2name) sumcount
-    from (
-             select
-                    settlementitem.price    price,
-                    category2.name          category2name
+        select category2name, count (category2name) sumcount
+        from (
+        select
+        settlementitem.price price,
+        category2.name category2name
 
-             from settlementitem settlementitem
-                      left join
-                  settlement settlement on settlement.id = settlementitem.settlementid
-                      left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                      left join staff consultanttable
-                                on consultanttable.staffid = settlement.consultantid and
-                                   consultanttable.role = 'consultant'
-                      left join staff staff1
-                                on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                      left join staff staff2
-                                on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.projectid
+        from settlementitem settlementitem
+        left join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant'
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        left join category2 category2 on category2.category2id = settlementitem.projectid
 
 
-             where settlement.shopid = #{shopid}
-               and settlement.createtime between #{from} and #{to}
-         ) t
-    group by category2name
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by category2name
 
     </select>
 
 
     <select id="selectCategory2SumCountAndSumPrice" resultType="java.util.Map">
+    select category.name                categoryname,
+       allcategory2.category2name   category2name,
+       ifnull(t2.sumprice, 0)       sumprice,
+       ifnull(t3.countcategory2, 0) sumcount
+from category
+         inner join (
+    select category2.name category2name, category2.category2id category2id, category.id categoryid
+    from brand,
+         shop,
+         category,
+         category2
+    where shopid = #{shopid}
+      and shop.brandid = brand.brandid
+      and category.brandid = brand.brandid
+      and category2.categoryid = category.id
+) allcategory2 on category.id = allcategory2.categoryid
 
-    select t1.category2name, sumcount, sumprice
+         left join (
+    select category2name, sum(price) sumprice
     from (
-             select category2name, sum(price) sumprice
-             from (
-                      select settlementitem.price price,
-                             category2.name       category2name
+             select settlementitem.price price,
+                    category2.name       category2name
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant'
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid
+             from settlementitem settlementitem
+                      inner join
+                  settlement settlement on settlement.id = settlementitem.settlementid
+                      left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+                      left join staff consultanttable
+                                on consultanttable.staffid = settlement.consultantid and
+                                   consultanttable.role = 'consultant'
+                      left join staff staff1
+                                on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+                      left join staff staff2
+                                on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+                      inner join project project on project.id = settlementitem.projectid
+                      inner join category2 on category2.category2id = project.category2id
 
+             where settlement.shopid = #{shopid}
+               and settlement.createtime between #{from} and #{to}
+         ) t
+    group by category2name
+) t2 on allcategory2.category2name = t2.category2name
 
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by category2name
-         ) t1,
-         (
-             select category2name, count(category2name) sumcount
-             from (
-                      select settlementitem.price price,
-                             category2.name       category2name
+         left join (
+    select category2name, count(category2name) countcategory2
+    from (
+             select settlementitem.price price,
+                    category2.name       category2name
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant'
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid
+             from settlementitem settlementitem
+                      inner join
+                  settlement settlement on settlement.id = settlementitem.settlementid
+                      left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+                      left join staff consultanttable
+                                on consultanttable.staffid = settlement.consultantid and
+                                   consultanttable.role = 'consultant'
+                      left join staff staff1
+                                on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+                      left join staff staff2
+                                on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+                      inner join project project on project.id = settlementitem.projectid
+                      inner join category2 on category2.category2id = project.category2id
 
-
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by category2name
-         ) t2
-
-
-    where t1.category2name = t2.category2name
+             where settlement.shopid = #{shopid}
+               and settlement.createtime between #{from} and #{to}
+         ) t
+    group by category2name
+) t3 on allcategory2.category2name = t3.category2name
+;
 
     </select>
 
 
     <select id="selectConsultantCategory2SumPrice" resultType="java.util.Map">
 
-    select category2name, sum(price) sumprice
-    from (
-             select
+        select category2name, sum(price) sumprice
+        from (
+        select
 
-                 settlementitem.price    price,
+        settlementitem.price price,
 
-                 category2.name          category2name
+        category2.name category2name
 
-             from settlementitem settlementitem
-                      left join
-                  settlement settlement on settlement.id = settlementitem.settlementid
-                      left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                      left join staff consultanttable
-                                on consultanttable.staffid = settlement.consultantid and
-                                   consultanttable.role = 'consultant' and consultanttable.name=#{consultantname}
-                      left join staff staff1
-                                on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                      left join staff staff2
-                                on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.projectid
+        from settlementitem settlementitem
+        left join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant' and consultanttable.name=#{consultantname}
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        left join category2 category2 on category2.category2id = settlementitem.projectid
 
-             where settlement.shopid = #{shopid}
-               and settlement.createtime between #{from} and #{to}
-         ) t
-    group by category2name
-
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by category2name
 
 
     </select>
 
 
     <select id="selectConsultantCategory2SumCount" resultType="java.util.Map">
-    select category2name, count (category2name) countcategory2name
-    from (
-             select
-                 category2.name          category2name
+        select category2name, count (category2name) countcategory2name
+        from (
+        select
+        category2.name category2name
 
-             from settlementitem settlementitem
-                      left join
-                  settlement settlement on settlement.id = settlementitem.settlementid
-                      left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                      left join staff consultanttable
-                                on consultanttable.staffid = settlement.consultantid and
-                                   consultanttable.role = 'consultant' and consultanttable.name=#{consultantname}
-                      left join staff staff1
-                                on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                      left join staff staff2
-                                on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.projectid
+        from settlementitem settlementitem
+        left join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant' and consultanttable.name=#{consultantname}
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        left join category2 category2 on category2.category2id = settlementitem.projectid
 
-             where settlement.shopid = #{shopid} 
-               and settlement.createtime between #{from} and #{to}
-         ) t
-    group by category2name
+        where settlement.shopid = #{shopid} 
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by category2name
 
     </select>
 
 
     <select id="selectConsultantCategory2SumCountAndSumPrice" resultType="java.util.Map">
-    select t1.category2name, countcategory2name, sumprice
-    from (
-             select category2name, count(category2name) countcategory2name
-             from (
-                      select category2.name category2name
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant' and consultanttable.name = #{consultantname}
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid
+    select category.name                categoryname,
+           allcategory2.category2name   category2name,
+           ifnull(t2.sumprice, 0)       sumprice,
+           ifnull(t3.countcategory2, 0) sumcount
+    from category
+             inner join (
+        select category2.name category2name, category2.category2id category2id, category.id categoryid
+        from brand,
+             shop,
+             category,
+             category2
+        where shopid = #{shopid}
+          and shop.brandid = brand.brandid
+          and category.brandid = brand.brandid
+          and category2.categoryid = category.id
+    ) allcategory2 on category.id = allcategory2.categoryid
 
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by category2name
-         ) t1,
-         (
-             select category2name, sum(price) sumprice
-             from (
-                      select settlementitem.price price,
+             left join (
+        select category2name, sum(price) sumprice
+        from (
+                 select settlementitem.price price,
+                        category2.name       category2name
 
-                             category2.name       category2name
+                 from settlementitem settlementitem
+                          inner join
+                      settlement settlement on settlement.id = settlementitem.settlementid
+                          left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+                          inner join staff consultanttable
+                                     on consultanttable.staffid = settlement.consultantid and
+                                        consultanttable.role = 'consultant' and consultanttable.name = #{consultantname}
+                          left join staff staff1
+                                    on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+                          left join staff staff2
+                                    on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+                          inner join project project on project.id = settlementitem.projectid
+                          inner join category2 on category2.category2id = project.category2id
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant' and consultanttable.name = #{consultantname}
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid
+                 where settlement.shopid = #{shopid}
+                   and settlement.createtime between #{from} and #{to}
+             ) t
+        group by category2name
+    ) t2 on allcategory2.category2name = t2.category2name
 
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by category2name
-         ) t2
-    where t1.category2name = t2.category2name
+             left join (
+        select category2name, count(category2name) countcategory2
+        from (
+                 select settlementitem.price price,
+                        category2.name       category2name
+
+                 from settlementitem settlementitem
+                          inner join
+                      settlement settlement on settlement.id = settlementitem.settlementid
+                          left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+                          inner join staff consultanttable
+                                     on consultanttable.staffid = settlement.consultantid and
+                                        consultanttable.role = 'consultant' and consultanttable.name = #{consultantname}
+                          left join staff staff1
+                                    on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+                          left join staff staff2
+                                    on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+                          inner join project project on project.id = settlementitem.projectid
+                          inner join category2 on category2.category2id = project.category2id
+
+                 where settlement.shopid = #{shopid}
+                   and settlement.createtime between #{from} and #{to}
+             ) t
+        group by category2name
+    ) t3 on allcategory2.category2name = t3.category2name
+    ;
+
+
+
     </select>
 
 
     <select id="selecteauticianCategory2SumPrice" resultType="java.util.Map">
-    select category2name, sum(price) sumprice
-    from (
-             select settlement.createtime createtime,
+        select category2name, sum(price) sumprice
+        from (
+        select settlement.createtime createtime,
 
-                    settlementitem.price  price,
+        settlementitem.price price,
 
-                    category2.name        category2name,
+        category2.name category2name,
 
-                    staff1.name           staff1name,
-                    staff2.name           staff2name
+        staff1.name staff1name,
+        staff2.name staff2name
 
-             from settlementitem settlementitem
-                      left join
-                  settlement settlement on settlement.id = settlementitem.settlementid
-                      left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                      left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                      left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.projectid
-                      left join project on category2.category2id = project.category2id
+        from settlementitem settlementitem
+        left join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project on category2.category2id = project.category2id
 
-             where settlement.shopid = #{shopid}
-               and settlement.createtime between #{from} and #{to}
-             order by createtime desc
-         ) t
-    where staff1name =#{beauticianname}
-       or staff2name =#{beauticianname}
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        order by createtime desc
+        ) t
+        where staff1name =#{beauticianname}
+        or staff2name =#{beauticianname}
     </select>
 
     <select id="selectbBeauticianCategory2SumCount" resultType="java.util.Map">
 
- select category2name, count(category2name) countcategory2name
-    from (
-             select settlement.createtime createtime,
+        select category2name, count(category2name) countcategory2name
+        from (
+        select settlement.createtime createtime,
 
-                    settlementitem.price  price,
+        settlementitem.price price,
 
-                    category2.name        category2name,
+        category2.name category2name,
 
-                    staff1.name           staff1name,
-                    staff2.name           staff2name
+        staff1.name staff1name,
+        staff2.name staff2name
 
-             from settlementitem settlementitem
-                      left join
-                  settlement settlement on settlement.id = settlementitem.settlementid
-                      left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                      left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                      left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.projectid
-                      left join project on category2.category2id = project.category2id
+        from settlementitem settlementitem
+        left join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project on category2.category2id = project.category2id
 
-             where settlement.shopid = #{shopid}
-               and settlement.createtime between #{from} and #{to}
-             order by createtime desc
-         ) t
-    where staff1name =#{beauticianname}
-       or staff2name =#{beauticianname}
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        order by createtime desc
+        ) t
+        where staff1name =#{beauticianname}
+        or staff2name =#{beauticianname}
     </select>
 
 
     <select id="selectbBeauticianCategory2SumCountAndSumPrice" resultType="java.util.Map">
 
-    select t1.category2name, countcategory2name, sumprice
-    from (select category2name, count(category2name) countcategory2name
-          from (
-                   select settlement.createtime createtime,
 
-                          settlementitem.price  price,
+    select category.name                categoryname,
+           allcategory2.category2name   category2name,
+           ifnull(t2.sumprice, 0)       sumprice,
+           ifnull(t3.countcategory2, 0) sumcount
+    from category
+             inner join (
+        select category2.name category2name, category2.category2id category2id, category.id categoryid
+        from brand,
+             shop,
+             category,
+             category2
+        where shopid = #{shopid}
+          and shop.brandid = brand.brandid
+          and category.brandid = brand.brandid
+          and category2.categoryid = category.id
+    ) allcategory2 on category.id = allcategory2.categoryid
 
-                          category2.name        category2name,
+             left join (
+        select category2name, sum(price) sumprice
+        from (
+                 select settlementitem.price price,
+                        category2.name       category2name
 
-                          staff1.name           staff1name,
-                          staff2.name           staff2name
+                 from settlementitem settlementitem
+                          inner join
+                      settlement settlement on settlement.id = settlementitem.settlementid
+                          left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+                          inner join staff consultanttable
+                                     on consultanttable.staffid = settlement.consultantid and
+                                        consultanttable.role = 'consultant'
+                          left join staff staff1
+                                    on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+                          left join staff staff2
+                                    on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+                          inner join project project on project.id = settlementitem.projectid
+                          inner join category2 on category2.category2id = project.category2id
 
-                   from settlementitem settlementitem
-                            left join
-                        settlement settlement on settlement.id = settlementitem.settlementid
-                            left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                            left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                            left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                            left join category2 category2 on category2.category2id = settlementitem.projectid
-                            left join project on category2.category2id = project.category2id
-
-                   where settlement.shopid = #{shopid}
-                     and settlement.createtime between #{from} and #{to}
-                   order by createtime desc
-               ) t
-          where staff1name =#{beauticianname}
-        or staff2name  =#{beauticianname}
+                 where settlement.shopid = #{shopid}
+                   and settlement.createtime between #{from} and #{to}
+                   and (staff1.name =  #{beauticianname} or staff2.name =  #{beauticianname})
+             ) t
         group by category2name
-        ) t1,
-         (
-             select category2name, sum(price) sumprice
-             from (
-                      select settlement.createtime createtime,
+    ) t2 on allcategory2.category2name = t2.category2name
 
-                             settlementitem.price  price,
+             left join (
+        select category2name, count(category2name) countcategory2
+        from (
+                 select settlementitem.price price,
+                        category2.name       category2name
 
-                             category2.name        category2name,
+                 from settlementitem settlementitem
+                          inner join
+                      settlement settlement on settlement.id = settlementitem.settlementid
+                          left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+                          inner join staff consultanttable
+                                     on consultanttable.staffid = settlement.consultantid and
+                                        consultanttable.role = 'consultant'
+                          left join staff staff1
+                                    on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+                          left join staff staff2
+                                    on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+                          inner join project project on project.id = settlementitem.projectid
+                          inner join category2 on category2.category2id = project.category2id
 
-                             staff1.name           staff1name,
-                             staff2.name           staff2name
+                 where settlement.shopid = #{shopid}
+                   and settlement.createtime between #{from} and #{to}
+                   and (staff1.name =  #{beauticianname} or staff2.name = #{beauticianname})
+             ) t
+        group by category2name
+    ) t3 on allcategory2.category2name = t3.category2name
+    ;
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid
-                               left join project on category2.category2id = project.category2id
 
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                      order by createtime desc
-                  ) t
-             where staff1name = #{beauticianname}
-                or staff2name = #{beauticianname}
-                group by category2name
-         ) t2
-    where t1.category2name = t2.category2name;
+
 
     </select>
 
@@ -582,289 +629,283 @@
 
 
     <select id="selctProductProjectSumPriceAndCount" resultType="java.util.Map">
-    select t1.projectname projectname, t1.sumprice sumprice, t2.countprojectname countprojectname
-    from (
-             select projectname projectname, sum(price) sumprice
-             from (
-                      select settlement.id           settlementid,
-                             settlement.shopid       shopid,
-                             settlement.roomname     roomname,
-                             settlement.createtime   createtime,
-                             settlement.customername customername,
-                             paymentmethod.name      paymentmethodname,
-                             project.name            projectname,
+
+        select t1.projectname projectname, t1.sumprice sumprice, t2.countprojectname countprojectname
+        from (
+        select projectname projectname, sum(price) sumprice
+        from (
+        select settlement.id settlementid,
+        settlement.shopid shopid,
+        settlement.roomname roomname,
+        settlement.createtime createtime,
+        settlement.customername customername,
+        paymentmethod.name paymentmethodname,
+        project.name projectname,
 
 
-                             consultanttable.name    consultant,
+        consultanttable.name consultant,
 
-                             settlementitem.id       settlementitemid,
-                             settlementitem.times    times,
-                             settlementitem.price    price,
+        settlementitem.id settlementitemid,
+        settlementitem.times times,
+        settlementitem.price price,
 
-                             category2.name          category2name,
+        category2.name category2name,
 
-                             staff1.name             staff1name,
-                             staff2.name             staff2name
+        staff1.name staff1name,
+        staff2.name staff2name
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant'
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid
-                               left join category category on category.id = category2.categoryid and category.name = "产品"
+        from settlementitem settlementitem
+        inner join settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant'
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        inner join project project on project.id = settlementitem.projectid
+        inner join category2 on category2.category2id = project.category2id
+        inner join category category on category.id = category2.categoryid and category.name = "产品类"
 
-                               left join project on category2.category2id = project.category2id
-
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by t.projectname
-         ) t1,
-         (
-             select projectname projectname, count(projectname) countprojectname
-             from (
-                      select settlement.id           settlementid,
-                             settlement.shopid       shopid,
-                             settlement.roomname     roomname,
-                             settlement.createtime   createtime,
-                             settlement.customername customername,
-                             paymentmethod.name      paymentmethodname,
-                             project.name            projectname,
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by t.projectname
+        ) t1,
+        (
+        select projectname projectname, count(projectname) countprojectname
+        from (
+        select settlement.id settlementid,
+        settlement.shopid shopid,
+        settlement.roomname roomname,
+        settlement.createtime createtime,
+        settlement.customername customername,
+        paymentmethod.name paymentmethodname,
+        project.name projectname,
 
 
-                             consultanttable.name    consultant,
+        consultanttable.name consultant,
 
-                             settlementitem.id       settlementitemid,
-                             settlementitem.times    times,
-                             settlementitem.price    price,
+        settlementitem.id settlementitemid,
+        settlementitem.times times,
+        settlementitem.price price,
 
-                             category2.name          category2name,
+        category2.name category2name,
 
-                             staff1.name             staff1name,
-                             staff2.name             staff2name
+        staff1.name staff1name,
+        staff2.name staff2name
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant'
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid
-                               left join project on category2.category2id = project.category2id
+        from settlementitem settlementitem
+        inner join settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant'
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        inner join project project on project.id = settlementitem.projectid
+        inner join category2 on category2.category2id = project.category2id
+        inner join category category on category.id = category2.categoryid and category.name = "产品类"
 
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by t.projectname
-         ) t2
-    where t1.projectname = t2.projectname
-    order by sumprice, countprojectname
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by t.projectname
+        ) t2
+        where t1.projectname = t2.projectname
+        order by sumprice, countprojectname
+
 
     </select>
-
-
-
 
 
     <select id="selctBeautyProjectSumPriceAndCount" resultType="java.util.Map">
-
-         select t1.projectname projectname, t1.sumprice sumprice, t2.countprojectname countprojectname
-    from (
-             select projectname projectname, sum(price) sumprice
-             from (
-                      select settlement.id           settlementid,
-                             settlement.shopid       shopid,
-                             settlement.roomname     roomname,
-                             settlement.createtime   createtime,
-                             settlement.customername customername,
-                             paymentmethod.name      paymentmethodname,
-                             project.name            projectname,
-
-
-                             consultanttable.name    consultant,
-
-                             settlementitem.id       settlementitemid,
-                             settlementitem.times    times,
-                             settlementitem.price    price,
-
-                             category2.name          category2name,
-
-                             staff1.name             staff1name,
-                             staff2.name             staff2name
-
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant'
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid and category2.name="美容"
-                               left join project on category2.category2id = project.category2id
-
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by t.projectname
-         ) t1,
-         (
-             select projectname projectname, count(projectname) countprojectname
-             from (
-                      select settlement.id           settlementid,
-                             settlement.shopid       shopid,
-                             settlement.roomname     roomname,
-                             settlement.createtime   createtime,
-                             settlement.customername customername,
-                             paymentmethod.name      paymentmethodname,
-                             project.name            projectname,
+        select t1.projectname projectname, t1.sumprice sumprice, t2.countprojectname countprojectname
+        from (
+        select projectname projectname, sum(price) sumprice
+        from (
+        select settlement.id settlementid,
+        settlement.shopid shopid,
+        settlement.roomname roomname,
+        settlement.createtime createtime,
+        settlement.customername customername,
+        paymentmethod.name paymentmethodname,
+        project.name projectname,
 
 
-                             consultanttable.name    consultant,
+        consultanttable.name consultant,
 
-                             settlementitem.id       settlementitemid,
-                             settlementitem.times    times,
-                             settlementitem.price    price,
+        settlementitem.id settlementitemid,
+        settlementitem.times times,
+        settlementitem.price price,
 
-                             category2.name          category2name,
+        category2.name category2name,
 
-                             staff1.name             staff1name,
-                             staff2.name             staff2name
+        staff1.name staff1name,
+        staff2.name staff2name
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant'
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid and category2.name="美容"
-                               left join project on category2.category2id = project.category2id
+        from settlementitem settlementitem
+        inner join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant'
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        inner join project on project.id = settlementitem.projectid
+        inner join category2 category2
+        on category2.category2id = project.category2id and category2.name = "美容"
 
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by t.projectname
-         ) t2
-    where t1.projectname = t2.projectname
-    order by sumprice, countprojectname
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by t.projectname
+        ) t1,
+        (
+        select projectname projectname, count(projectname) countprojectname
+        from (
+        select settlement.id settlementid,
+        settlement.shopid shopid,
+        settlement.roomname roomname,
+        settlement.createtime createtime,
+        settlement.customername customername,
+        paymentmethod.name paymentmethodname,
+        project.name projectname,
 
+
+        consultanttable.name consultant,
+
+        settlementitem.id settlementitemid,
+        settlementitem.times times,
+        settlementitem.price price,
+
+        category2.name category2name,
+
+        staff1.name staff1name,
+        staff2.name staff2name
+
+        from settlementitem settlementitem
+        inner join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant'
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        inner join project on project.id = settlementitem.projectid
+        inner join category2 category2
+        on category2.category2id = project.category2id and category2.name = "美容"
+
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by t.projectname
+        ) t2
+        where t1.projectname = t2.projectname
+        order by sumprice, countprojectname
     </select>
-
-
-
-
 
 
     <select id="selctBodyProjectSumPriceAndCount" resultType="java.util.Map">
 
-         select t1.projectname projectname, t1.sumprice sumprice, t2.countprojectname countprojectname
-    from (
-             select projectname projectname, sum(price) sumprice
-             from (
-                      select settlement.id           settlementid,
-                             settlement.shopid       shopid,
-                             settlement.roomname     roomname,
-                             settlement.createtime   createtime,
-                             settlement.customername customername,
-                             paymentmethod.name      paymentmethodname,
-                             project.name            projectname,
+        select t1.projectname projectname, t1.sumprice sumprice, t2.countprojectname countprojectname
+        from (
+        select projectname projectname, sum(price) sumprice
+        from (
+        select settlement.id settlementid,
+        settlement.shopid shopid,
+        settlement.roomname roomname,
+        settlement.createtime createtime,
+        settlement.customername customername,
+        paymentmethod.name paymentmethodname,
+        project.name projectname,
 
 
-                             consultanttable.name    consultant,
+        consultanttable.name consultant,
 
-                             settlementitem.id       settlementitemid,
-                             settlementitem.times    times,
-                             settlementitem.price    price,
+        settlementitem.id settlementitemid,
+        settlementitem.times times,
+        settlementitem.price price54,
 
-                             category2.name          category2name,
+        category2.name category2name,
 
-                             staff1.name             staff1name,
-                             staff2.name             staff2name
+        staff1.name staff1name,
+        staff2.name staff2name
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant'
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid and category2.name="美体"
-                               left join project on category2.category2id = project.category2id
+        from settlementitem settlementitem
+        inner join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant'
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        inner join project on project.id = settlementitem.projectid
+        inner join category2 category2
+        on category2.category2id = project.category2id and category2.name = "美体"
 
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by t.projectname
-         ) t1,
-         (
-             select projectname projectname, count(projectname) countprojectname
-             from (
-                      select settlement.id           settlementid,
-                             settlement.shopid       shopid,
-                             settlement.roomname     roomname,
-                             settlement.createtime   createtime,
-                             settlement.customername customername,
-                             paymentmethod.name      paymentmethodname,
-                             project.name            projectname,
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by t.projectname
+        ) t1,
+        (
+        select projectname projectname, count(projectname) countprojectname
+        from (
+        select settlement.id settlementid,
+        settlement.shopid shopid,
+        settlement.roomname roomname,
+        settlement.createtime createtime,
+        settlement.customername customername,
+        paymentmethod.name paymentmethodname,
+        project.name projectname,
 
 
-                             consultanttable.name    consultant,
+        consultanttable.name consultant,
 
-                             settlementitem.id       settlementitemid,
-                             settlementitem.times    times,
-                             settlementitem.price    price,
+        settlementitem.id settlementitemid,
+        settlementitem.times times,
+        settlementitem.price price,
 
-                             category2.name          category2name,
+        category2.name category2name,
 
-                             staff1.name             staff1name,
-                             staff2.name             staff2name
+        staff1.name staff1name,
+        staff2.name staff2name
 
-                      from settlementitem settlementitem
-                               left join
-                           settlement settlement on settlement.id = settlementitem.settlementid
-                               left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
-                               left join staff consultanttable
-                                         on consultanttable.staffid = settlement.consultantid and
-                                            consultanttable.role = 'consultant'
-                               left join staff staff1
-                                         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
-                               left join staff staff2
-                                         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.projectid and category2.name="美体"
-                               left join project on category2.category2id = project.category2id
+        from settlementitem settlementitem
+        inner join
+        settlement settlement on settlement.id = settlementitem.settlementid
+        left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
+        left join staff consultanttable
+        on consultanttable.staffid = settlement.consultantid and
+        consultanttable.role = 'consultant'
+        left join staff staff1
+        on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
+        left join staff staff2
+        on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
+        inner join project on project.id = settlementitem.projectid
+        inner join category2 category2
+        on category2.category2id = project.category2id and category2.name = "美体"
 
-                      where settlement.shopid = #{shopid}
-                        and settlement.createtime between #{from} and #{to}
-                  ) t
-             group by t.projectname
-         ) t2
-    where t1.projectname = t2.projectname
-    order by sumprice, countprojectname
-
+        where settlement.shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        ) t
+        group by t.projectname
+        ) t2
+        where t1.projectname = t2.projectname
+        order by sumprice, countprojectname
 
     </select>
 

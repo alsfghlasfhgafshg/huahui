@@ -251,7 +251,7 @@ public class SettlementService {
         Timestamp timeStampStart = DateUtils.getTimeStampStart(startyear, startmonth, startday);
         Timestamp timeStampEnd = DateUtils.getTimeStampEnd(endyear, endmonth, endday);
 
-        List<Map<String, String>> category2SumCountAndSumPrice = settlementRepository.selectCategory2SumCountAndSumPrice(shopid, timeStampStart, timeStampEnd);
+        List<Map> category2SumCountAndSumPrice = settlementRepository.selectCategory2SumCountAndSumPrice(shopid, timeStampStart, timeStampEnd);
 
         j.put("category2SumCountAndSumPrice", category2SumCountAndSumPrice);
 
@@ -264,7 +264,7 @@ public class SettlementService {
                                                              Timestamp timeStampEnd) {
         JSONObject j = new JSONObject();
 
-        List<Map<String, String>> category2SumCountAndSumPrice = settlementRepository.selectCategory2SumCountAndSumPrice(shopid, timeStampStart, timeStampEnd);
+        List<Map> category2SumCountAndSumPrice = settlementRepository.selectCategory2SumCountAndSumPrice(shopid, timeStampStart, timeStampEnd);
 
         j.put("category2SumCountAndSumPrice", category2SumCountAndSumPrice);
 
@@ -364,18 +364,6 @@ public class SettlementService {
         return j;
     }
 
-    //1
-    public JSONObject statisticsProjectByBrand(int brandid, int shopid,
-                                               int startyear, int startmonth, int startday,
-                                               int endyear, int endmonth, int endday) {
-
-        if (shopRepository.selectCountBrandShop(shopid, brandid) == 0) {
-            return null;
-        }
-        return statisticsProjectByShop(shopid, startyear, startmonth, startday, endyear, endmonth, endday);
-
-    }
-
 
     //1
     public JSONObject statisticsProjectByShop(int shopid,
@@ -383,35 +371,33 @@ public class SettlementService {
 
         JSONObject j = new JSONObject();
 
-        List<Map<String, String>> productProjectSumPriceAndCount = settlementRepository.selctProductProjectSumPriceAndCount(shopid, starttime, endtime);
-        List<Map<String, String>> beautyProjectSumPriceAndCount = settlementRepository.selctBeautyProjectSumPriceAndCount(shopid, starttime, endtime);
-        List<Map<String, String>> bodyProjectSumPriceAndCount = settlementRepository.selctBodyProjectSumPriceAndCount(shopid, starttime, endtime);
+        List<Map> productProjectSumPriceAndCount = settlementRepository.selctProductProjectSumPriceAndCount(shopid, starttime, endtime);
+        List<Map> beautyProjectSumPriceAndCount = settlementRepository.selctBeautyProjectSumPriceAndCount(shopid, starttime, endtime);
+        List<Map> bodyProjectSumPriceAndCount = settlementRepository.selctBodyProjectSumPriceAndCount(shopid, starttime, endtime);
+
+        //1-1total
+        JSONObject totalProductProjectSumPriceAndCount = new JSONObject();
+        int totalcount = 0;
+        int totalprice = 0;
+        for (Map<String, String> i : productProjectSumPriceAndCount) {
+            totalcount += Integer.valueOf(i.get("countprojectname"));
+            totalprice += Integer.valueOf(i.get("sumprice"));
+        }
+        totalProductProjectSumPriceAndCount.put("totalcount", totalcount);
+        totalProductProjectSumPriceAndCount.put("totalprice", totalprice);
+
+
+
 
         j.put("productProjectSumPriceAndCount", productProjectSumPriceAndCount);
+        j.put("productTotal", totalProductProjectSumPriceAndCount);
+
+
         j.put("beautyProjectSumPriceAndCount", beautyProjectSumPriceAndCount);
         j.put("bodyProjectSumPriceAndCount", bodyProjectSumPriceAndCount);
 
         return j;
     }
 
-    //1
-    public JSONObject statisticsProjectByShop(int shopid,
-                                              int startyear, int startmonth, int startday,
-                                              int endyear, int endmonth, int endday) {
-        JSONObject j = new JSONObject();
-
-        Timestamp timeStampStart = DateUtils.getTimeStampStart(startyear, startmonth, startday);
-        Timestamp timeStampEnd = DateUtils.getTimeStampEnd(endyear, endmonth, endday);
-
-        List<Map<String, String>> productProjectSumPriceAndCount = settlementRepository.selctProductProjectSumPriceAndCount(shopid, timeStampStart, timeStampEnd);
-        List<Map<String, String>> beautyProjectSumPriceAndCount = settlementRepository.selctBeautyProjectSumPriceAndCount(shopid, timeStampStart, timeStampEnd);
-        List<Map<String, String>> bodyProjectSumPriceAndCount = settlementRepository.selctBodyProjectSumPriceAndCount(shopid, timeStampStart, timeStampEnd);
-
-        j.put("productProjectSumPriceAndCount", productProjectSumPriceAndCount);
-        j.put("beautyProjectSumPriceAndCount", beautyProjectSumPriceAndCount);
-        j.put("bodyProjectSumPriceAndCount", bodyProjectSumPriceAndCount);
-
-        return j;
-    }
 
 }

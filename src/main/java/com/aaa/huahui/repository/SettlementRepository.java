@@ -59,13 +59,13 @@ public interface SettlementRepository {
 
     //2
     List<Map<String, Integer>> selectCountCustomerTimes(@Param("shopid") int shopid,
-                                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
+                                                        @Param("from") Timestamp from, @Param("to") Timestamp to);
 
     List<Map<String, Integer>> selectCountCustomerPrice(@Param("shopid") int shopid,
-                                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
+                                                        @Param("from") Timestamp from, @Param("to") Timestamp to);
 
     int selectCountCustomerGreaterOrEq(@Param("mintimes") Integer mintimes, @Param("shopid") int shopid,
-                                                @Param("from") Timestamp from, @Param("to") Timestamp to);
+                                       @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
     //3
@@ -76,9 +76,6 @@ public interface SettlementRepository {
                                             @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
-    Map<String, Integer> selectProjectBeauticianCount(@Param("shopid") int shopid, @Param("beauticianname") String beauticianname,
-                                                      @Param("from") Timestamp from, @Param("to") Timestamp to);
-
 
     //-3
     Map<String, Integer> selectCategory2SumPrice(@Param("shopid") int shopid,
@@ -87,7 +84,7 @@ public interface SettlementRepository {
     Map<String, Integer> selectCategory2SumCount(@Param("shopid") int shopid,
                                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
 
-    List<Map<String, String>> selectCategory2SumCountAndSumPrice(@Param("shopid") int shopid,
+    List<Map> selectCategory2SumCountAndSumPrice(@Param("shopid") int shopid,
                                                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
@@ -118,13 +115,13 @@ public interface SettlementRepository {
 
 
     //1
-    List<Map<String, String>> selctProductProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
-                                                                  @Param("to") Timestamp to);
+    List<Map> selctProductProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
+                                                  @Param("to") Timestamp to);
 
-    List<Map<String, String>> selctBeautyProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
-                                                                 @Param("to") Timestamp to);
+    List<Map> selctBeautyProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
+                                                 @Param("to") Timestamp to);
 
-    List<Map<String, String>> selctBodyProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
+    List<Map> selctBodyProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
                                                                @Param("to") Timestamp to);
 
 

@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,7 +32,7 @@ public class DateTest {
 
 
     @Test
-    public void  asaa(){
+    public void asaa() {
         Assert.assertTrue(true);
     }
 
@@ -45,8 +46,10 @@ public class DateTest {
     @Test
     public void seleteSerttlementByid() {
 
-        SettlementVO oneSettlement = settlementRepository.selectSettlementById(2);
-        List<SettlementItem> settlementItems = oneSettlement.getSettlementItems();
+        Timestamp from = DateUtils.getTimeStampStart(2019, 10, 01);
+        Timestamp to = DateUtils.getTimeStampEnd(2019, 11, 01);
+
+        List<Map> maps = settlementRepository.selectCategory2SumCountAndSumPrice(12, from, to);
         Assert.assertTrue(true);
 
     }
