@@ -3,7 +3,7 @@ package com.aaa.huahui.model;
 public class SettlementItem {
     int id;
     int settlementid;
-    int category2id;
+    int projectid;
     int times;
     int price;
     int staff1;
@@ -26,12 +26,12 @@ public class SettlementItem {
         this.settlementid = settlementid;
     }
 
-    public int getCategory2id() {
-        return category2id;
+    public int getProjectid() {
+        return projectid;
     }
 
-    public void setCategory2id(int category2id) {
-        this.category2id = category2id;
+    public void setProjectid(int projectid) {
+        this.projectid = projectid;
     }
 
     public int getTimes() {
@@ -69,9 +69,9 @@ public class SettlementItem {
     public SettlementItem() {
     }
 
-    public SettlementItem(int settlementid, int category2id, int times, int price, int staff1, int staff2) {
+    public SettlementItem(int settlementid, int projectid, int times, int price, int staff1, int staff2) {
         this.settlementid = settlementid;
-        this.category2id = category2id;
+        this.projectid = projectid;
         this.times = times;
         this.price = price;
         this.staff1 = staff1;

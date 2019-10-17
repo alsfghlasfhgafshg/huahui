@@ -22,7 +22,7 @@ public interface SettlementRepository {
     @Select("select * from settlement where id=#{settlementid}")
     Settlement selectSettlement(@Param("settlementid") int settlementid);
 
-    @Insert("insert into settlement (shopid,customername,paymentmethod,consultantid,roomname)values(#{shopid},#{customername},#{paymentmethod},#{consultant},#{roomname})")
+    @Insert("insert into settlement (shopid,customername,paymentmethod,consultantid,roomname)values(#{shopid},#{customername},#{paymentmethod},#{consultantid},#{roomname})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertSettlement(Settlement settlement);
 

@@ -15,7 +15,7 @@ public interface SettlementItemRepository {
     @Select("select * from settlementitem where id=#{settlementid}")
     List<SettlementItem> selectSettlementItemsBySettlementId(@Param("settlementid") int settlementid);
 
-    @Insert("insert into settlementitem(settlementid, category2id, times, price, staff1, staff2) value (#{settlementid}, #{category2id},#{times}, #{price}, #{staff1}, #{staff2})")
+    @Insert("insert into settlementitem(settlementid, projectid, times, price, staff1, staff2) value (#{settlementid}, #{projectid},#{times}, #{price}, #{staff1}, #{staff2})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertSettlementItem(SettlementItem settlementItem);
 

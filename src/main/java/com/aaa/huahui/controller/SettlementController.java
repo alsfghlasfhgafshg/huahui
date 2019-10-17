@@ -5,10 +5,11 @@ import com.aaa.huahui.model.PaymentMethod;
 import com.aaa.huahui.model.Settlement;
 import com.aaa.huahui.model.SettlementItem;
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.repository.ProjectRepository;
+import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.service.SettlementService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
-import com.aaa.huahui.utils.ResponseUtil;
 import com.aaa.huahui.vo.SettlementVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -26,6 +27,12 @@ public class SettlementController {
 
     @Autowired
     SettlementService settlementService;
+
+    @Autowired
+    StaffRepository staffRepository;
+
+    @Autowired
+    ProjectRepository projectRepository;
 
 
     @PostMapping("/settlement/delete")
@@ -55,10 +62,16 @@ public class SettlementController {
         String customername = data.getString("customername");
         int peoplenum = data.getInteger("peoplenum");
         String roomname = data.getString("roomname");
-        int consultant = data.getInteger("consultantid");
+        int consultantid = data.getInteger("consultantid");
         int paymentmethod = data.getInteger("paymentmethod");
 
-        Settlement settlement = new Settlement(u.getId(), null, customername, peoplenum, roomname, consultant, paymentmethod);
+        if (staffRepository.selectCountConsultantShop(u.getId(), consultantid) == 0) {
+            responsejson = ResponseGenerate.genFailResponse(1, "此顾问不属于此店铺");
+            return responsejson;
+        }
+
+
+        Settlement settlement = new Settlement(u.getId(), null, customername, peoplenum, roomname, consultantid, paymentmethod);
 
         JSONArray settlementItemsInput = data.getJSONArray("settlementitems");
 
@@ -72,11 +85,28 @@ public class SettlementController {
         for (int i = 0; i < settlementItemsInput.size(); i++) {
             JSONObject item = (JSONObject) settlementItemsInput.get(i);
             SettlementItem t = new SettlementItem();
-            t.setCategory2id(item.getInteger("category2id"));
+            Integer projectid = item.getInteger("projectid");
+            t.setProjectid(projectid);
+
+            if (projectRepository.selectCountShopProjecet(projectid, u.getId()) == 0) {
+                responsejson = ResponseGenerate.genFailResponse(1, "项目" + (i + 1) + "不属于此商店");
+                return responsejson;
+            }
+
             t.setTimes(item.getInteger("times"));
             t.setPrice(item.getInteger("price"));
-            t.setStaff1(item.getInteger("staff1"));
-            t.setStaff1(item.getInteger("staff2"));
+            Integer staff1 = item.getInteger("staff1");
+            if (staffRepository.selectCountBeauticianShop(u.getId(), staff1) == 0) {
+                responsejson = ResponseGenerate.genFailResponse(1, "项目" + (i + 1) + "中美容师1不属于此店铺");
+                return responsejson;
+            }
+            t.setStaff1(staff1);
+            Integer staff2 = item.getInteger("staff2");
+            if (staffRepository.selectCountBeauticianShop(u.getId(), staff1) == 0) {
+                responsejson = ResponseGenerate.genFailResponse(1, "项目" + (i + 1) + "中美容师2不属于此店铺");
+                return responsejson;
+            }
+            t.setStaff2(staff2);
             settlementProjectItems.add(t);
         }
 

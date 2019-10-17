@@ -33,4 +33,7 @@ public interface ProjectRepository {
     @Delete("delete * from project where category2id=#{category2id}")
     int deleteAllProjectByCategory2id(@Param("category2id") int category2id);
 
+    @Select("select count(*) from category,category2,project,shop where shop.brandid=category.brandid and category.id=category2.categoryid and project.category2id=category2.category2id and project.id=#{id} and shop.shopid=#{shopid}")
+    int selectCountShopProjecet(@Param("id") int projectid, @Param("shopid") int shopid);
+
 }

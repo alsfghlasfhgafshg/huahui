@@ -3,7 +3,7 @@ package com.aaa.huahui.vo;
 public class SettlementItemVO {
     int id;
     int settlementid;
-    String category2name;
+    String projectname;
     int times;
     int price;
     String staff1name;
@@ -26,12 +26,12 @@ public class SettlementItemVO {
         this.settlementid = settlementid;
     }
 
-    public String getCategory2name() {
-        return category2name;
+    public String getProjectname() {
+        return projectname;
     }
 
-    public void setCategory2name(String category2name) {
-        this.category2name = category2name;
+    public void setProjectname(String projectname) {
+        this.projectname = projectname;
     }
 
     public int getTimes() {

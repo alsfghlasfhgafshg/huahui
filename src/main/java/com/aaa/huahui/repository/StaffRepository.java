@@ -32,7 +32,7 @@ public interface StaffRepository {
     int updateStaff(Staff staff);
 
     @Select("select * from staff where shopid=#{shopid} limit #{offset},#{num}")
-    ArrayList<Staff> selectAllStaff(@Param("shopid") int shopid,@Param("offset") int offset, @Param("num") int num);
+    ArrayList<Staff> selectAllStaff(@Param("shopid") int shopid, @Param("offset") int offset, @Param("num") int num);
 
     @Select("select * from staff where shopid=#{shopid}")
     ArrayList<Staff> AllStaff(@Param("shopid") int shopid);
@@ -45,4 +45,11 @@ public interface StaffRepository {
 
     @Select("select * from staff where role='beautician'")
     ArrayList<Staff> selectAllBeautician();
+
+    @Select("select count(*) from staff where shopid=#{shopid} and staffid=#{consultantid} and role='consultant'")
+    int selectCountConsultantShop(@Param("shopid") int shopid, @Param("consultantid") int consultantid);
+
+    @Select("select count(*) from staff where shopid=#{shopid} and staffid=#{beauticianid} and role='beautician'")
+    int selectCountBeauticianShop(@Param("shopid") int shopid, @Param("beauticianid") int beauticianid);
+
 }

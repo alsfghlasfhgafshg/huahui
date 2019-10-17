@@ -19,7 +19,7 @@
         <collection property="settlementItems" ofType="com.aaa.huahui.vo.SettlementItemVO">
             <result property="settlementid" column="settlementid" javaType="int"/>
             <result property="id" column="settlementitemid" javaType="int"/>
-            <result property="category2name" column="category2name" javaType="string"/>
+            <result property="projectname" column="category2name" javaType="string"/>
             <result property="times" column="times" javaType="int"/>
             <result property="price" column="price" javaType="int"/>
             <result property="staff1name" column="staff1name" javaType="string"/>
@@ -58,7 +58,7 @@
                        on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
              left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
              left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-             left join category2 category2 on category2.category2id = settlementitem.category2id
+             left join category2 category2 on category2.category2id = settlementitem.projectid
 
             where settlement.id = #{id}
 
@@ -93,7 +93,7 @@
                        on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
              left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
              left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-             left join category2 category2 on category2.category2id = settlementitem.category2id
+             left join category2 category2 on category2.category2id = settlementitem.projectid
 
     where settlement.shopid = #{shopid}
       and settlement.createtime between #{from} and #{to}
@@ -160,7 +160,7 @@
                     settlementitem.price  price
              from settlementitem settlementitem
                       left join settlement settlement on settlement.id = settlementitem.settlementid
-                      left join category2 category2 on category2.category2id = settlementitem.category2id
+                      left join category2 category2 on category2.category2id = settlementitem.projectid
                       left join project on category2.category2id = project.category2id
 
              where settlement.shopid = #{shopid}
@@ -180,7 +180,7 @@
                     project.name          projectname
              from settlementitem settlementitem
                       left join settlement settlement on settlement.id = settlementitem.settlementid
-                      left join category2 category2 on category2.category2id = settlementitem.category2id
+                      left join category2 category2 on category2.category2id = settlementitem.projectid
                       left join project on category2.category2id = project.category2id
 
              where settlement.shopid = #{shopid}
@@ -213,7 +213,7 @@
                                 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                       left join staff staff2
                                 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.category2id
+                      left join category2 category2 on category2.category2id = settlementitem.projectid
 
 
              where settlement.shopid = #{shopid}
@@ -241,7 +241,7 @@
                                 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                       left join staff staff2
                                 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.category2id
+                      left join category2 category2 on category2.category2id = settlementitem.projectid
 
 
              where settlement.shopid = #{shopid}
@@ -272,7 +272,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id
+                               left join category2 category2 on category2.category2id = settlementitem.projectid
 
 
                       where settlement.shopid = #{shopid}
@@ -297,7 +297,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id
+                               left join category2 category2 on category2.category2id = settlementitem.projectid
 
 
                       where settlement.shopid = #{shopid}
@@ -333,7 +333,7 @@
                                 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                       left join staff staff2
                                 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.category2id
+                      left join category2 category2 on category2.category2id = settlementitem.projectid
 
              where settlement.shopid = #{shopid}
                and settlement.createtime between #{from} and #{to}
@@ -362,7 +362,7 @@
                                 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                       left join staff staff2
                                 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.category2id
+                      left join category2 category2 on category2.category2id = settlementitem.projectid
 
              where settlement.shopid = #{shopid} 
                and settlement.createtime between #{from} and #{to}
@@ -390,7 +390,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id
+                               left join category2 category2 on category2.category2id = settlementitem.projectid
 
                       where settlement.shopid = #{shopid}
                         and settlement.createtime between #{from} and #{to}
@@ -415,7 +415,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id
+                               left join category2 category2 on category2.category2id = settlementitem.projectid
 
                       where settlement.shopid = #{shopid}
                         and settlement.createtime between #{from} and #{to}
@@ -444,7 +444,7 @@
                       left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
                       left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                       left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.category2id
+                      left join category2 category2 on category2.category2id = settlementitem.projectid
                       left join project on category2.category2id = project.category2id
 
              where settlement.shopid = #{shopid}
@@ -474,7 +474,7 @@
                       left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
                       left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                       left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.category2id
+                      left join category2 category2 on category2.category2id = settlementitem.projectid
                       left join project on category2.category2id = project.category2id
 
              where settlement.shopid = #{shopid}
@@ -506,7 +506,7 @@
                             left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
                             left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                             left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                            left join category2 category2 on category2.category2id = settlementitem.category2id
+                            left join category2 category2 on category2.category2id = settlementitem.projectid
                             left join project on category2.category2id = project.category2id
 
                    where settlement.shopid = #{shopid}
@@ -537,7 +537,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id
+                               left join category2 category2 on category2.category2id = settlementitem.projectid
                                left join project on category2.category2id = project.category2id
 
                       where settlement.shopid = #{shopid}
@@ -569,7 +569,7 @@
                                 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                       left join staff staff2
                                 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.category2id
+                      left join category2 category2 on category2.category2id = settlementitem.projectid
                       left join category category on category.id = category2.categoryid and category.name = "产品"
 
              where settlement.shopid = 12
@@ -617,7 +617,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id
+                               left join category2 category2 on category2.category2id = settlementitem.projectid
                                left join category category on category.id = category2.categoryid and category.name = "产品"
 
                                left join project on category2.category2id = project.category2id
@@ -661,7 +661,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id
+                               left join category2 category2 on category2.category2id = settlementitem.projectid
                                left join project on category2.category2id = project.category2id
 
                       where settlement.shopid = #{shopid}
@@ -715,7 +715,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id and category2.name="美容"
+                               left join category2 category2 on category2.category2id = settlementitem.projectid and category2.name="美容"
                                left join project on category2.category2id = project.category2id
 
                       where settlement.shopid = #{shopid}
@@ -757,7 +757,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id and category2.name="美容"
+                               left join category2 category2 on category2.category2id = settlementitem.projectid and category2.name="美容"
                                left join project on category2.category2id = project.category2id
 
                       where settlement.shopid = #{shopid}
@@ -812,7 +812,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id and category2.name="美体"
+                               left join category2 category2 on category2.category2id = settlementitem.projectid and category2.name="美体"
                                left join project on category2.category2id = project.category2id
 
                       where settlement.shopid = #{shopid}
@@ -854,7 +854,7 @@
                                          on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                                left join staff staff2
                                          on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                               left join category2 category2 on category2.category2id = settlementitem.category2id and category2.name="美体"
+                               left join category2 category2 on category2.category2id = settlementitem.projectid and category2.name="美体"
                                left join project on category2.category2id = project.category2id
 
                       where settlement.shopid = #{shopid}

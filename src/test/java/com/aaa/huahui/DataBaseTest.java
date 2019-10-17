@@ -1,7 +1,9 @@
 package com.aaa.huahui;
 
 import com.aaa.huahui.config.ROLE;
+import com.aaa.huahui.controller.SettlementController;
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.repository.ProjectRepository;
 import com.aaa.huahui.repository.SettlementRepository;
 import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.service.BrandService;
@@ -13,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Timestamp;
@@ -38,6 +41,25 @@ public class DataBaseTest {
 
     @Autowired
     SettlementService settlementService;
+
+    @Autowired
+    ProjectRepository projectRepository;
+    @Autowired
+    SettlementController settlementController;
+
+    @Test
+    public void sdaf() {
+        int i = projectRepository.selectCountShopProjecet(3, 12);
+        System.out.println(i);
+    }
+
+    @Test
+    public void adds() {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(new User(12, "", ""), "");
+
+
+    }
+
 
     @Test
     public void testselect() {
@@ -73,7 +95,7 @@ public class DataBaseTest {
 
         List<Map<String, String>> java11 = settlementRepository.selectConsultantCategory2SumCountAndSumPrice(12, "java11",
                 DateUtils.getTimeStampStart(2019, 5, 01), DateUtils.getTimeStampEnd(2019, 10, 1));
-        int a1=124;
+        int a1 = 124;
     }
 
     @Test
@@ -83,7 +105,7 @@ public class DataBaseTest {
 
     @Test
     public void sadf() {
-        brandService.new5CategoryCategory2(121);
+        brandService.new5CategoryCategory2(11);
     }
 
 }

@@ -1,0 +1,53 @@
+[
+  {
+    "customername": "",
+    "peoplenum": "",
+    "roomname": "",
+    "consultantid": "",
+    "consultantid": "",
+    "paymentmethod": "",
+    "paymentmethod": [
+      {
+        "projectid": "",
+        "times": "",
+        "price": "",
+        "staff1": "",
+        "staff2": ""
+      },
+      {
+        "projectid": "",
+        "times": "",
+        "price": "",
+        "staff1": "",
+        "staff2": ""
+      }
+    ]
+  },
+
+
+{
+  "customername": "testcustomname",
+  "peoplenum": "1",
+  "roomname": "testroomname",
+  "consultantid": "32",
+  "paymentmethod": "1",
+  "settlementitems": [
+    {
+      "projectid": "3",
+      "times": "1",
+      "price": "12",
+      "staff1": "28",
+      "staff2": "28"
+    },
+    {
+      "projectid": "4",
+      "times": "2",
+      "price": "234",
+      "staff1": "28",
+      "staff2": "28"
+    }
+  ]
+}
+
+
+]
