@@ -20,6 +20,7 @@ public class ResponseUtil {
     }
     public static void returnJsonU8(HttpServletResponse response, JSONObject responseJson) {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin","*");
         try {
             ServletOutputStream outputStream = response.getOutputStream();
             outputStream.write(responseJson.toJSONString().getBytes("UTF-8"));
