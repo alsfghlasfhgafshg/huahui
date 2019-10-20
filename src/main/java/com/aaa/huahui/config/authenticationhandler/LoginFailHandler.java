@@ -21,8 +21,7 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
 
-
         JSONObject jsonObject = ResponseGenerate.genFailResponse(1, "用户名或密码错误");
-        ResponseUtil.returnJsonU8(response, jsonObject);
+        ResponseUtil.returnJsonU8(request,response, jsonObject);
     }
 }

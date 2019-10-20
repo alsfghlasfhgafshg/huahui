@@ -42,7 +42,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             responseJson = ResponseGenerate.genSuccessResponse(j);
         }
 
-        ResponseUtil.returnJsonU8(response, responseJson);
+        ResponseUtil.returnJsonU8(request,response, responseJson);
 
     }
 }
