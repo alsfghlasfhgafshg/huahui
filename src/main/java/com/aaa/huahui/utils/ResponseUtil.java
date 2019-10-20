@@ -7,6 +7,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 public class ResponseUtil {
 
@@ -27,6 +28,18 @@ public class ResponseUtil {
         }
 
         response.setHeader("Content-type", "application/json;charset=UTF-8");
+
+        boolean firstHeader = true;
+        Collection<String> cookiesHeaders = response.getHeaders("Set-Cookie");
+        for (String header : cookiesHeaders) {
+            if (firstHeader) {
+                response.setHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=Strict"));
+                firstHeader = false;
+                continue;
+            }
+            response.addHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=Strict"));
+        }
+
         try {
             ServletOutputStream outputStream = response.getOutputStream();
             outputStream.write(responseJson.toJSONString().getBytes("UTF-8"));
