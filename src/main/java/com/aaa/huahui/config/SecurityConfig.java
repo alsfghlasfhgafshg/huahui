@@ -54,6 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http.csrf().disable();
+        http.cors();
+
 
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/setting").permitAll();
 
