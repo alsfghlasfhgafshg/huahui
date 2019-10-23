@@ -120,7 +120,7 @@ public class UserService implements UserDetailsService {
         user.setName(username);
 
         String encode = bCryptPasswordEncoder.encode(password);
-        if (password.equals("")||password==null) {
+        if (password.equals("") || password == null) {
             encode = "";
         }
         user.setPassword(encode);
@@ -187,5 +187,10 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
+    @Transactional
+    public User queryUser(int userid) {
+        User user = userRepository.selectByUserid(userid);
+        return user;
+    }
 
 }

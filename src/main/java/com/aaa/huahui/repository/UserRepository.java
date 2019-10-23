@@ -10,6 +10,8 @@ import java.util.HashMap;
 @Mapper
 public interface UserRepository {
 
+    @Select("select * from user where id=#{userid}")
+    User selectByUserid(@Param("userid") Integer userid);
 
     @Update("update user set avatar=#{filepath} where id=#{userid}")
     void updateAvatar(@Param("userid") int userid, @Param("filepath") String filepath);

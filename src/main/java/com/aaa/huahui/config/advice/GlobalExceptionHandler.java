@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     JSONObject MissingServletRequestParameterException(Exception e) {
         e.printStackTrace();
 
-        JSONObject jsonObject = ResponseGenerate.genFailResponse(-1, "输入参数不能为空");
+        JSONObject jsonObject = ResponseGenerate.genFailResponse(-1, "输入参数不能为空"+"\n"+e.getMessage());
         return jsonObject;
     }
 

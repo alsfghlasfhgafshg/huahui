@@ -51,6 +51,7 @@ public class ShopController {
 
         for (Shop shop : list) {
             JSONObject temp = new JSONObject();
+            temp.put("shopname", userService.queryUser(shop.getShopid()).getName());
             temp.put("description", shop.getDescription());
             temp.put("shopid", shop.getShopid());
             temp.put("geo", shop.getGeo());

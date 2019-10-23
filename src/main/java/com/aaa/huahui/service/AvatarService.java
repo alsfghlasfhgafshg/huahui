@@ -29,6 +29,12 @@ public class AvatarService {
     UserRoleRepository userRoleRepository;
 
 
+    public String getShopsBrandAvatat(int shopid){
+
+
+    }
+
+
     public String getAvatar(int userid) {
         String role = userRoleRepository.queryRoleNameByUserId(userid);
         if (role == null) {
