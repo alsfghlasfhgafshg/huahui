@@ -17,6 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MissingServletRequestParameterException.class)
     public @ResponseBody
     JSONObject MissingServletRequestParameterException(Exception e) {
+        e.printStackTrace();
 
         JSONObject jsonObject = ResponseGenerate.genFailResponse(-1, "输入参数不能为空");
         return jsonObject;
