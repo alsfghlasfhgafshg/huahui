@@ -44,20 +44,21 @@ public class ShopController {
     @GetMapping("/allshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
-    JSONObject getAllShop(UsernamePasswordAuthenticationToken token,@RequestParam(value = "page", defaultValue = "1") int page) {
+    JSONObject getAllShop(UsernamePasswordAuthenticationToken token, @RequestParam(value = "page", defaultValue = "1") int page) {
         User user = (User) token.getPrincipal();
-        ArrayList<Shop> list = shopService.selectAllShop(user.getId(),page);
+        ArrayList<Shop> list = shopService.selectAllShop(user.getId(), page);
         JSONArray array = new JSONArray();
 
         for (Shop shop : list) {
             JSONObject temp = new JSONObject();
-            temp.put("description",shop.getDescription());
-            temp.put("geo",shop.getGeo());
+            temp.put("description", shop.getDescription());
+            temp.put("shopid", shop.getShopid());
+            temp.put("geo", shop.getGeo());
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
         return responsejson;
-   }
+    }
 
     //添加shop
     @PostMapping("/addshop")
