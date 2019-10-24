@@ -86,8 +86,8 @@ public class StaffController {
     @PostMapping("/addstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody JSONObject addStaff(@RequestParam("username") String username,
-                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar,
-                                             @RequestParam("name")String name,
+//                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar,
+                                             @RequestParam(value = "name",defaultValue = "",required = false)String name,
                                              @RequestParam("male")int male,
                                              @RequestParam("birthday") Date birthday,
                                              @RequestParam("nation")String nation,
@@ -115,10 +115,10 @@ public class StaffController {
         } catch (NewUserFailException e) {
             e.printStackTrace();
         }
-        Staff staff = new Staff(staffUser.getId(),name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,p1name,p1male,p1company,p1relationship,p2name,p2male,p2company,p2relationship,role,shopId);
+        Staff staff = new Staff(staffUser.getId(),username,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,p1name,p1male,p1company,p1relationship,p2name,p2male,p2company,p2relationship,role,shopId);
         int success = staffService.addStaff(staff);
         if (success==1) {
-            avatarService.updateAvatar(staffUser.getId(),avatar);
+            avatarService.updateAvatar(staffUser.getId(),null);
             return ResponseGenerate.genSuccessResponse("创建成功");
         }else {
             return ResponseGenerate.genFailResponse(1,"generate new staff fail");
