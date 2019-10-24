@@ -3,6 +3,7 @@ package com.aaa.huahui.repository;
 import com.aaa.huahui.model.Shop;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 @Mapper
@@ -31,4 +32,13 @@ public interface ShopRepository {
 
     @Select("select count(*) from shop where brandid=#{brandid}")
     int selectCountShop(@Param("brandid") int brandid);
+
+    //报告
+    @Insert("insert into periodreport (shopid,txt,period,createtime) values(#{shopid},#{txt},#{period},#{createtime})")
+    int insertReport(@Param("shopid") int shopid, @Param("txt") String txt, @Param("period")String period, @Param("createtime")Date createtime);
+
+    @Delete("delete from periodreport where id=#{id}")
+    int deletereport(@Param("id")int id);
+
+
 }
