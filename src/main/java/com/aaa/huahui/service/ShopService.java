@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 @Service
@@ -95,6 +96,26 @@ public class ShopService {
     public User shopBrand(int shopid) {
         User user = userRepository.shopBrand(shopid);
         return user;
+    }
+
+
+    @Transactional
+    public boolean deleteReport(int id){
+        int res = shopRepository.deletereport(id);
+        return res==1;
+    }
+
+    public boolean insertReport(int staffid, int shopid, String txt, String period, String createtime){
+        int res = shopRepository.insertReport(staffid,shopid,txt,period,createtime);
+        return res==1;
+    }
+
+    public String selectOneDay(int staffid,String date){
+        return shopRepository.selectOneReport(staffid,date);
+    }
+
+    public boolean updateReport(int staffid, int shopid, String txt, String period, String createtime){
+        return shopRepository.updateReport(txt,period,shopid,staffid,createtime)==1;
     }
 
 }
