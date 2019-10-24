@@ -30,7 +30,7 @@ public class AvatarService {
 
 
     public String getShopsBrandAvatat(int shopid){
-
+        return null;
 
     }
 
