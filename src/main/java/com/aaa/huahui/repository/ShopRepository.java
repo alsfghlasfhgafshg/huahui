@@ -42,6 +42,9 @@ public interface ShopRepository {
     @Select("select txt from periodreport where staffid=#{staffid} and createtime=#{date}")
     String selectOneReport(@Param("staffid")int staffid,@Param("date")String date);
 
+    @Select("select count(*) from shop")
+    int allCountShop();
+
     @Update("update periodreport set txt = #{txt},period = #{period},createtime=#{createtime} where shopid=#{shopid} and staffid=#{staffid}")
     int updateReport(String txt,String period,int shopid,int staffid,String createtime);
 }

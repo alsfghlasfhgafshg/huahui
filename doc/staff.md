@@ -312,3 +312,67 @@ servicenote|bool|服务备注（可选）
 }
 
 ```
+
+
+-------
+
+
+## 本店所有顾问，下拉选择顾问时候用
+
+**url:** /staff/allconsultant
+
+**HTTP请求方式:** GET
+
+**请求参数:**
+
+
+**返回格式:** json
+
+**返回内容:**
+```
+
+
+name 名字，staffid ：美容师id
+
+
+
+{"msg":"成功",
+"code":0,
+"data":[
+    {"name":"consultant33","staffid":31},
+    {"name":"java11","staffid":32}
+]
+}
+
+```
+
+
+-------
+
+
+## 本店所有美容师，下拉选择顾问时候用
+
+**url:** /staff/allbeautician
+
+**HTTP请求方式:** GET
+
+**请求参数:**
+
+
+**返回格式:** json
+
+**返回内容:**
+```
+
+name 名字，staffid ：美容师id
+
+{"msg":"成功",
+"code":0,
+"data":[
+    {"name":"consultant33","staffid":31},
+    {"name":"java11","staffid":32}
+]
+}
+
+```
+

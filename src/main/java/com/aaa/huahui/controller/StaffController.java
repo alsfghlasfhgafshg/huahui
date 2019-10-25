@@ -258,4 +258,26 @@ public class StaffController {
         JSONObject jsonObject = ResponseGenerate.genSuccessResponse(data);
         return jsonObject;
     }
+
+    //本店所有顾问
+    @GetMapping("/staff/allconsultant")
+    public JSONObject allConsultant(UsernamePasswordAuthenticationToken token){
+        User user = (User) token.getPrincipal();
+        int id = user.getId();
+
+        JSONArray objects = staffService.allConsultant(id);
+        JSONObject responsejson=ResponseGenerate.genSuccessResponse(objects);
+        return responsejson;
+    }
+
+    //本店所有美容师
+    @GetMapping("/staff/allbeautician")
+    public JSONObject allBeautician(UsernamePasswordAuthenticationToken token){
+        User user = (User) token.getPrincipal();
+        int id = user.getId();
+
+        JSONArray objects = staffService.allBeautician(id);
+        JSONObject responsejson=ResponseGenerate.genSuccessResponse(objects);
+        return responsejson;
+    }
 }

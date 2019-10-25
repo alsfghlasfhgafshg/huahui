@@ -5,6 +5,8 @@ import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.FamilyMemberRepository;
 import com.aaa.huahui.repository.StaffRepository;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -63,6 +65,35 @@ public class StaffService {
 
     //查看所有顾问
     public ArrayList<Staff> selectAllConsultant(){return staffRepository.selectAllConsultant();}
+
+    //一个店铺里面所有顾问
+    public JSONArray allConsultant(int shopid){
+        ArrayList<Staff> staffs = staffRepository.AllConsultant(shopid);
+
+        JSONArray  allconsultant=new JSONArray();
+        for (Staff staff : staffs) {
+            JSONObject temp=new JSONObject();
+            temp.put("staffid",staff.getStaffid());
+            temp.put("name",staff.getName());
+            allconsultant.add(temp);
+        }
+        return allconsultant;
+    }
+
+    //一个店铺里面所有美容师
+    public JSONArray allBeautician(int shopid){
+
+        ArrayList<Staff> beauticians = staffRepository.AllBeautician(shopid);
+
+        JSONArray allbeautician=new JSONArray();
+        for (Staff staff : beauticians) {
+            JSONObject temp=new JSONObject();
+            temp.put("staffid",staff.getStaffid());
+            temp.put("name",staff.getName());
+            allbeautician.add(temp);
+        }
+        return allbeautician;
+    }
 
     //删除一个staff
     @Transactional

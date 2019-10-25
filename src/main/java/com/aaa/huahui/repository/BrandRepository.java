@@ -35,6 +35,8 @@ public interface BrandRepository {
     @Select("select count(*) from shop where  brandid=#{brandid} and shopid=#{shopid}")
     int selectBrandShop(@Param("brandid") int brandid, @Param("shopid") int shopid);
 
+    @Select("select count(*) from brand")
+    int allCountBrand();
 
     ArrayList<Category> selectCategoryStructure(@Param("brandid") int brandid);
 

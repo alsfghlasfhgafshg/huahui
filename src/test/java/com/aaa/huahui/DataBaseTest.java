@@ -8,12 +8,12 @@ import com.aaa.huahui.repository.ProjectRepository;
 import com.aaa.huahui.repository.SettlementRepository;
 import com.aaa.huahui.repository.TodayWorkRepository;
 import com.aaa.huahui.repository.UserRepository;
-import com.aaa.huahui.service.BrandService;
-import com.aaa.huahui.service.SettlementService;
-import com.aaa.huahui.service.TodayWorkService;
-import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.service.*;
 import com.aaa.huahui.utils.DateUtils;
+import com.aaa.huahui.utils.ResponseGenerate;
 import com.aaa.huahui.vo.SettlementVO;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +57,17 @@ public class DataBaseTest {
     @Autowired
     TodayWorkRepository todayWorkRepository;
 
+    @Autowired
+    StaffService staffService;
+
+    @Autowired
+    SystemService systemService;
+
     @Test
     public void sadfadswfgdsag(){
-//        todayWorkRepository.insertTodayWork(11,new Timestamp(System.currentTimeMillis()));
+        systemService.queryWebSiteName();
+
+        System.out.println(1);
 
     }
 

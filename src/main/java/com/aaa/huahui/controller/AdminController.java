@@ -6,11 +6,13 @@ import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.repository.UserRoleRepository;
 import com.aaa.huahui.service.BrandService;
+import com.aaa.huahui.service.SystemService;
 import com.aaa.huahui.service.UserService;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +34,12 @@ public class AdminController {
     @Autowired
     BrandService brandService;
 
+    @Autowired
+    SystemService systemService;
+
 
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String adminhomepage(Model model) {
         ArrayList<User> adminUsers = userRepository.selectAllAdmin();
 
@@ -50,6 +56,7 @@ public class AdminController {
 
     //列出所有admin
     @GetMapping("/admin/alladmin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject getAllAdmin(@RequestParam(value = "page", defaultValue = "1") int page) {
         ArrayList<User> users = userService.listAllUsers(ROLE.ADMIN, page);
@@ -68,6 +75,7 @@ public class AdminController {
 
     //删除admin
     @PostMapping("/admin/deladminuser")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject deladminuser(@RequestParam("userid") int userid, UsernamePasswordAuthenticationToken token) {
 
@@ -97,6 +105,7 @@ public class AdminController {
 
     //添加admin
     @PostMapping("/admin/addadminuser")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject addadmin(@RequestParam("username") String username,
                         @RequestParam("password") String password,
@@ -118,6 +127,7 @@ public class AdminController {
 
     //添加品牌
     @PostMapping("/admin/addbranduser")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject addbrand(@RequestParam("brandname") String username,
                         @RequestParam("brandpasswd") String password,
@@ -144,6 +154,7 @@ public class AdminController {
 
     //删除品牌
     @PostMapping("/admin/deletebranduser")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject deletebrand(@RequestParam("brandid") int brandid) {
         JSONObject responsejson = new JSONObject();
@@ -157,6 +168,50 @@ public class AdminController {
         }
 
         return responsejson;
+    }
+
+    //获取网站名
+    @GetMapping("/setting/websitename")
+    public @ResponseBody
+    JSONObject queryWebsitename(){
+        String name = systemService.queryWebSiteName();
+
+        JSONObject data=new JSONObject();
+        data.put("name",name);
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(data);
+        return responsejson;
+    }
+
+    //设置网站名
+    @PostMapping("/setting/websitename")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody
+    JSONObject setWebsitename( @RequestParam("name")String name){
+        boolean result = systemService.setWebSiteName(name);
+        if (result==true){
+            JSONObject responsejson = ResponseGenerate.genSuccessResponse("成功");
+            return responsejson;
+        }
+        JSONObject responsejson = ResponseGenerate.genFailResponse(1,"设置失败");
+        return responsejson;
+    }
+
+    //首页状态
+    @GetMapping("/status")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody
+    JSONObject status(){
+        JSONObject adminstatus = systemService.adminstatus();
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(adminstatus);
+        return responsejson;
+    }
+
+    @PostMapping("/admin/queryadmin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody
+    JSONObject queryAdmin(@RequestParam("name")String name){
+
+        return null;
     }
 
 

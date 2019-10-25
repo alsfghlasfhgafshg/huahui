@@ -109,6 +109,10 @@ public class UserService implements UserDetailsService {
             errmsg.add("密码不一致");
         }
 
+        if (password.length()<6&& password.length()>16){
+            errmsg.add("密码需要在6-16位之间");
+        }
+
         if (userRepository.findByUsername(username) != null) {
             errmsg.add("用户名已存在");
         }
