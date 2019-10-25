@@ -6,7 +6,6 @@ public class Project {
     int category2id;
     String name;
     String shortname;
-    String category2name;
     String productbrand;
     float price;
     float fixedhand;
@@ -15,11 +14,10 @@ public class Project {
     public Project() {
     }
 
-    public Project(int category2id, String name, String shortname, String category2name, String productbrand, float price, float fixedhand, String percentagemethod) {
+    public Project(int category2id, String name, String shortname, String productbrand, float price, float fixedhand, String percentagemethod) {
         this.category2id = category2id;
         this.name = name;
         this.shortname = shortname;
-        this.category2name = category2name;
         this.productbrand = productbrand;
         this.price = price;
         this.fixedhand = fixedhand;
@@ -56,14 +54,6 @@ public class Project {
 
     public void setShortname(String shortname) {
         this.shortname = shortname;
-    }
-
-    public String getCategory2name() {
-        return category2name;
-    }
-
-    public void setCategory2name(String category2name) {
-        this.category2name = category2name;
     }
 
     public String getProductbrand() {

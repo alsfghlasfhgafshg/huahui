@@ -290,14 +290,13 @@ public class BrandController {
                           @RequestParam("category2id") int category2id,
                           @RequestParam("projectname") String projectname,
                           @RequestParam("shortname")String shortname,
-                          @RequestParam("category2name")String category2name,
                           @RequestParam("productbrand")String productbrand,
                           @RequestParam("price")float price,
                           @RequestParam("fixedhand")float fixedhand,
                           @RequestParam("percentagemethod")String percentagemethod) {
         User user = (User) token.getPrincipal();
         int brandid = user.getId();
-        Project project = new Project(category2id, projectname,shortname,category2name,productbrand,price,fixedhand,
+        Project project = new Project(category2id, projectname,shortname,productbrand,price,fixedhand,
                                         percentagemethod);
         Project r = brandService.addProject(user, project);
 

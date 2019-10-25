@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class BrandService {
@@ -219,6 +220,10 @@ public class BrandService {
     public ArrayList<Project> allProject(int category2id) {
         ArrayList<Project> projects = projectRepository.selectByCategory2id(category2id);
         return projects;
+    }
+
+    public Optional<String> findNameById(int category2id){
+        return category2Repository.findNameByCategory2id(category2id);
     }
 
     //添加project

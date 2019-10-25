@@ -5,6 +5,7 @@ import com.aaa.huahui.model.Category2;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Mapper
 public interface Category2Repository {
@@ -30,5 +31,8 @@ public interface Category2Repository {
 
     @Select("select count(*) from category2, category where category2.categoryid = category.id and category2.category2id = #{category2id}  and category.brandid = #{brandid}")
     int selectCountCategory2Brand(@Param("category2id") int categoryid2id, @Param("brandid") int brandid);
+
+    @Select("select name from category2 where category2id=#{category2id}")
+    Optional<String> findNameByCategory2id(int category2id);
 
 }
