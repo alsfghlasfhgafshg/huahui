@@ -2,12 +2,15 @@ package com.aaa.huahui;
 
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.controller.SettlementController;
+import com.aaa.huahui.model.TodayWork;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.ProjectRepository;
 import com.aaa.huahui.repository.SettlementRepository;
+import com.aaa.huahui.repository.TodayWorkRepository;
 import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.SettlementService;
+import com.aaa.huahui.service.TodayWorkService;
 import com.aaa.huahui.service.UserService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.vo.SettlementVO;
@@ -44,8 +47,30 @@ public class DataBaseTest {
 
     @Autowired
     ProjectRepository projectRepository;
+
     @Autowired
     SettlementController settlementController;
+
+    @Autowired
+    TodayWorkService todayWorkService;
+
+    @Autowired
+    TodayWorkRepository todayWorkRepository;
+
+    @Test
+    public void sadfadswfgdsag(){
+//        todayWorkRepository.insertTodayWork(11,new Timestamp(System.currentTimeMillis()));
+
+    }
+
+    @Test
+    public void sadfsdf(){
+//        todayWorkService.setServicenote(11,new Timestamp(System.currentTimeMillis()));
+        todayWorkService.setReturningcustomers(11,new Timestamp(System.currentTimeMillis()));
+
+
+    }
+
 
     @Test
     public void sdaf() {

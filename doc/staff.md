@@ -240,3 +240,75 @@ shopid|int|店家的id
 ```
 
 -------
+
+
+
+
+## 标题
+
+**url:** /staff/getworkstatus
+
+**HTTP请求方式:** GET
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+staffid|String|店员id
+date|String|日期yyyy-dd-mm格式
+
+**返回格式:** json
+
+**返回内容:**
+```
+{
+    "msg": "成功",
+    "code": 0,
+    "data": {
+        "recordingservice": true
+        "remindcustomers": true
+        "returningcustomers" :true
+        "servicenote": true
+    }
+}
+
+```
+
+-------
+
+
+
+
+## 标题
+
+**url:** /staff/StaffController
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+staffid|String|店员id
+recordingservice|bool|提醒客户（可选）
+remindcustomers|bool|提醒客户（可选）
+returningcustomers|bool|回访客户（可选）
+servicenote|bool|服务备注（可选）
+
+
+**返回格式:** json
+
+**返回内容:**
+```
+{
+    "msg": "成功",
+    "code": 0,
+    "data": {
+        "recordingservice": true
+        "remindcustomers": true
+        "returningcustomers" :true
+        "servicenote": true
+    }
+}
+
+```

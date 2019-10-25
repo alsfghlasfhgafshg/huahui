@@ -317,13 +317,23 @@ public class BrandController {
         int brandid = user.getId();
 
         JSONObject rejeson = null;
-        boolean result = brandService.deleteProject(user,projectid);
+        boolean result = brandService.deleteProject(user, projectid);
         if (result == true) {
             rejeson = ResponseGenerate.genSuccessResponse("删除成功");
         } else {
             rejeson = ResponseGenerate.genFailResponse(1, "删除失败");
         }
         return rejeson;
+    }
+
+
+    //审核今日收入
+    @PostMapping("/reviewincome")
+    public @ResponseBody
+    JSONObject reviewincome(UsernamePasswordAuthenticationToken token,
+                            @RequestParam("shopid") int shopid){
+        return null;
+
     }
 
 }

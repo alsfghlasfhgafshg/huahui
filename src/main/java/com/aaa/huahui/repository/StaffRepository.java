@@ -52,4 +52,7 @@ public interface StaffRepository {
     @Select("select count(*) from staff where shopid=#{shopid} and staffid=#{beauticianid} and role='beautician'")
     int selectCountBeauticianShop(@Param("shopid") int shopid, @Param("beauticianid") int beauticianid);
 
+    @Select("select count(*) from staff where shopid=#{shopid} and staffid=#{staffid}")
+    int selectCountShopStaff(@Param("shopid") int shopid, @Param("staffid") int staffid);
+
 }
