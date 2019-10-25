@@ -177,6 +177,13 @@ category2id|int|二级分类id
 ---|:--:|---:
 category2id|int|二级分类id
 projecetname|string|三级分类名称
+shortname|string|简称
+category2name|string|二级分类类名
+productbrand|string|产品品牌
+price|float|价格
+fixedhand|float|固定手工
+percentagemethod|string|提成方式
+
 
 **返回格式:** json
 

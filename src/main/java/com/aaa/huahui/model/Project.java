@@ -5,19 +5,25 @@ public class Project {
     int id;
     int category2id;
     String name;
+    String shortname;
+    String category2name;
+    String productbrand;
+    float price;
+    float fixedhand;
+    String percentagemethod;
 
     public Project() {
     }
 
-    public Project(int id, int category2id, String name) {
-        this.id = id;
+    public Project(int category2id, String name, String shortname, String category2name, String productbrand, float price, float fixedhand, String percentagemethod) {
         this.category2id = category2id;
         this.name = name;
-    }
-
-    public Project(int category2id, String name) {
-        this.category2id = category2id;
-        this.name = name;
+        this.shortname = shortname;
+        this.category2name = category2name;
+        this.productbrand = productbrand;
+        this.price = price;
+        this.fixedhand = fixedhand;
+        this.percentagemethod = percentagemethod;
     }
 
     public int getId() {
@@ -42,5 +48,53 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getShortname() {
+        return shortname;
+    }
+
+    public void setShortname(String shortname) {
+        this.shortname = shortname;
+    }
+
+    public String getCategory2name() {
+        return category2name;
+    }
+
+    public void setCategory2name(String category2name) {
+        this.category2name = category2name;
+    }
+
+    public String getProductbrand() {
+        return productbrand;
+    }
+
+    public void setProductbrand(String productbrand) {
+        this.productbrand = productbrand;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public float getFixedhand() {
+        return fixedhand;
+    }
+
+    public void setFixedhand(float fixedhand) {
+        this.fixedhand = fixedhand;
+    }
+
+    public String getPercentagemethod() {
+        return percentagemethod;
+    }
+
+    public void setPercentagemethod(String percentagemethod) {
+        this.percentagemethod = percentagemethod;
     }
 }

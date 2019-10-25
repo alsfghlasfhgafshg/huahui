@@ -288,11 +288,17 @@ public class BrandController {
     public @ResponseBody
     JSONObject addProject(UsernamePasswordAuthenticationToken token,
                           @RequestParam("category2id") int category2id,
-                          @RequestParam("projecetname") String projecetname) {
+                          @RequestParam("projectname") String projectname,
+                          @RequestParam("shortname")String shortname,
+                          @RequestParam("category2name")String category2name,
+                          @RequestParam("productbrand")String productbrand,
+                          @RequestParam("price")float price,
+                          @RequestParam("fixedhand")float fixedhand,
+                          @RequestParam("percentagemethod")String percentagemethod) {
         User user = (User) token.getPrincipal();
         int brandid = user.getId();
-
-        Project project = new Project(category2id, projecetname);
+        Project project = new Project(category2id, projectname,shortname,category2name,productbrand,price,fixedhand,
+                                        percentagemethod);
         Project r = brandService.addProject(user, project);
 
 
