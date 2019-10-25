@@ -2,6 +2,7 @@ package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
+import com.aaa.huahui.model.Brand;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.repository.UserRoleRepository;
@@ -206,13 +207,23 @@ public class AdminController {
         return responsejson;
     }
 
+    //查询admin
     @PostMapping("/admin/queryadmin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
-    JSONObject queryAdmin(@RequestParam("name")String name){
-
-        return null;
+    JSONObject queryAdmin(@RequestParam("keyword")String keyword){
+        ArrayList<JSONObject> brands = userService.queryAdmin(keyword);
+        JSONObject responsejson=ResponseGenerate.genSuccessResponse(brands);
+        return responsejson;
     }
 
-
+    //查询brand
+    @PostMapping("/admin/querybrand")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody
+    JSONObject queryBrand(@RequestParam("keyword")String keyword){
+        ArrayList<Brand> brands = userService.queryBrand(keyword);
+        JSONObject responsejson=ResponseGenerate.genSuccessResponse(brands);
+        return responsejson;
+    }
 }

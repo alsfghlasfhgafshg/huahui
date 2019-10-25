@@ -268,3 +268,74 @@ sdfa
 
 ```
 
+
+-------
+
+
+## 查询admin
+
+**url:** /admin/queryadmin
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+keyword|string|查询admin的关键字
+
+**返回格式:** json
+
+**返回内容:**
+```
+{
+    "msg": "成功",
+    "code": 0,
+    "data": [
+        {
+            "userid": 1,
+            "username": "admin"
+        }
+    ]
+}
+
+```
+
+
+-------
+
+
+## 查询品牌
+
+**url:** /admin/querybrand
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+keyword|string|查询的品牌名关键字
+
+**返回格式:** json
+
+**返回内容:**
+```
+{
+    "msg": "成功",
+    "code": 0,
+    "data": [
+        {
+            "brandid": 11,
+            "description": "testbrand",
+            "avatar": "no"
+        },
+        {
+            "brandid": 20,
+            "description": "qaqa",
+            "avatar": null
+        }
+    ]
+}
+
+```

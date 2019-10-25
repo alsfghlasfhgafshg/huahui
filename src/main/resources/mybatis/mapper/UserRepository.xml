@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.huahui.repository.UserRepository">
+
+
+    <select id="selectBrandByKeyword" resultType="com.aaa.huahui.model.Brand">
+
+    select brand.*
+    from user,
+         brand,
+         user_role,
+         role
+
+    where user.name like CONCAT(CONCAT('%',#{keyword}),'%')
+      and user.id = brand.brandid
+    and brand.brandid=user_role.userid
+    and user_role.roleid=role.id
+    and role.name="ROLE_BRAND";
+
+
+    </select>
+
+
+    <select id="selectAdminByKeyword" resultType="com.aaa.huahui.model.User">
+         select user.*
+    from user,
+         user_role,
+         role
+
+    where user.name like CONCAT(CONCAT('%',#{keyword}),'%')
+    and user.id=user_role.userid
+    and user_role.roleid=role.id
+    and role.name="ROLE_ADMIN";
+
+    </select>
+</mapper>

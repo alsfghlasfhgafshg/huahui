@@ -2,8 +2,10 @@ package com.aaa.huahui.service;
 
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
+import com.aaa.huahui.model.Brand;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.*;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -195,6 +197,24 @@ public class UserService implements UserDetailsService {
     public User queryUser(int userid) {
         User user = userRepository.selectByUserid(userid);
         return user;
+    }
+
+    //查询brand
+    public ArrayList<Brand> queryBrand(String namekeyword){
+        return userRepository.selectBrandByKeyword(namekeyword);
+    }
+
+    //查询admin
+    public ArrayList<JSONObject> queryAdmin(String namekeyword){
+        ArrayList<User> users = userRepository.selectAdminByKeyword(namekeyword);
+        ArrayList<JSONObject> admins=new ArrayList<>();
+        for (User user : users) {
+            JSONObject temp=new JSONObject();
+            temp.put("username",user.getName());
+            temp.put("userid",user.getId());
+            admins.add(temp);
+        }
+        return admins;
     }
 
 }

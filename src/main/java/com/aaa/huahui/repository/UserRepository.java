@@ -1,5 +1,6 @@
 package com.aaa.huahui.repository;
 
+import com.aaa.huahui.model.Brand;
 import com.aaa.huahui.model.User;
 import org.apache.ibatis.annotations.*;
 
@@ -62,4 +63,9 @@ public interface UserRepository {
 
     @Select("select * from user where user.id=brand.brandid and brand.brandid=shop.brandid and shop.shopid=#{shopid} limit 1")
     User shopBrand(@Param("shopid") int shopid);
+
+    ArrayList<Brand> selectBrandByKeyword(@Param("keyword") String keyword);
+
+    ArrayList<User> selectAdminByKeyword(@Param("keyword") String keyword);
+
 }

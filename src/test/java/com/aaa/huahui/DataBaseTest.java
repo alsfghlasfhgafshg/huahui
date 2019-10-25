@@ -2,6 +2,7 @@ package com.aaa.huahui;
 
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.controller.SettlementController;
+import com.aaa.huahui.model.Brand;
 import com.aaa.huahui.model.TodayWork;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.ProjectRepository;
@@ -65,10 +66,9 @@ public class DataBaseTest {
 
     @Test
     public void sadfadswfgdsag(){
-        systemService.queryWebSiteName();
 
-        System.out.println(1);
-
+        ArrayList<Brand> a = userService.queryBrand("a");
+        System.out.println(12);
     }
 
     @Test
