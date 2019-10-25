@@ -4,6 +4,7 @@ import com.aaa.huahui.model.Staff;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Mapper
 public interface StaffRepository {
@@ -60,5 +61,8 @@ public interface StaffRepository {
 
     @Select("select count(*) from staff where shopid=#{shopid} and staffid=#{staffid}")
     int selectCountShopStaff(@Param("shopid") int shopid, @Param("staffid") int staffid);
+
+    @Select("select name from staff where staffid=#{staffid}")
+    Optional<String> findNameByStaffid(int staffid);
 
 }

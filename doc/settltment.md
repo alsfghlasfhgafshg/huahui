@@ -150,3 +150,54 @@ settlementItems为此结算单做的项目，为array，
 }
 
 ```
+## 根据新客名字获取顾问名字
+
+**url:** /settlement/getconsultantname
+
+**HTTP请求方式:** GET
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+vipname|string|新客名字
+
+**返回格式:** json
+
+**返回内容:**
+```
+{
+    "msg": "成功",
+    "code": 0,
+    "data":"哈哈"
+}
+
+```
+
+## 根据新客名字获取顾问名字
+
+**url:** /settlement/addshopvip
+
+**HTTP请求方式:** POST
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+vipname|string|新客名字
+shopid|int|店铺id
+consultantid|int|顾问id
+
+**返回格式:** json
+
+**返回内容:**
+```
+{
+    "msg": "添加成功",
+    "code": 0
+}
+
+```
+
+
+
