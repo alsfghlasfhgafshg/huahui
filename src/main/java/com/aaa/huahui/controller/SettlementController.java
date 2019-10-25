@@ -8,6 +8,8 @@ import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.ProjectRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.service.SettlementService;
+import com.aaa.huahui.service.ShopVipService;
+import com.aaa.huahui.service.StaffService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.aaa.huahui.vo.SettlementVO;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class SettlementController {
@@ -30,6 +33,9 @@ public class SettlementController {
 
     @Autowired
     StaffRepository staffRepository;
+
+    @Autowired
+    ShopVipService shopVipService;
 
     @Autowired
     ProjectRepository projectRepository;
@@ -224,5 +230,20 @@ public class SettlementController {
 
         ArrayList<PaymentMethod> allPayMentMethod = settlementService.getAllPayMentMethod();
         return responsejson = ResponseGenerate.genSuccessResponse(allPayMentMethod);
+    }
+
+    @GetMapping("/settlement/getconsultantname")
+    public @ResponseBody
+    JSONObject getConsultant(@RequestParam("vipname")String vipname){
+        Optional<String> consultantName = shopVipService.findConsultantName(vipname);
+        if (consultantName.isPresent()) return ResponseGenerate.genSuccessResponse(consultantName.get());
+        else return ResponseGenerate.genFailResponse(1,"查找失败");
+    }
+
+    @PostMapping("/settlement/addshopvip")
+    public @ResponseBody
+    JSONObject addShopvip(@RequestParam("vipname")String vipname,@RequestParam("shopid")int shopid,@RequestParam("consultantid")int consultant){
+        if (shopVipService.addShopVip(vipname,shopid,consultant)) return ResponseGenerate.genSuccessResponse("添加成功");
+        return ResponseGenerate.genFailResponse(1,"error");
     }
 }
