@@ -385,3 +385,29 @@ shopid|int|分店id
 }
 
 ```
+
+-------
+
+
+## 获得brand的名字
+
+**url:** /brand/getname
+
+**HTTP请求方式:** GET
+
+
+
+**返回格式:** json
+
+**返回内容:**
+```
+name ：名字
+{
+    "msg": "成功",
+    "code": 0,
+    "data": {
+        "name": "brand"
+    }
+}
+
+```

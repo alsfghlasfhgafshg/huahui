@@ -205,6 +205,18 @@ public class ShopController {
         }
     }
 
+    //获得shop名字
+    @GetMapping("/shop/getname")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public  @ResponseBody
+    JSONObject getshopname(UsernamePasswordAuthenticationToken token){
+        int shopid = ((User) token.getPrincipal()).getId();
+        String shopName = shopService.getShopName(shopid);
+        JSONObject data=new JSONObject();
+        data.put("name",shopName);
+        JSONObject responsejson=ResponseGenerate.genSuccessResponse(data);
+        return responsejson;
+    }
 
 
 }

@@ -68,4 +68,7 @@ public interface UserRepository {
 
     ArrayList<User> selectAdminByKeyword(@Param("keyword") String keyword);
 
+    @Select("select name from user where id=#{userid}")
+    String queryUserName(@Param("userid")int userid);
+
 }

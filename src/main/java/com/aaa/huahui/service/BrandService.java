@@ -278,4 +278,10 @@ public class BrandService {
         }
         return false;
     }
+
+    public String getBrandName(int brandid){
+        String name = userRepository.queryUserName(brandid);
+        return name;
+    }
+
 }

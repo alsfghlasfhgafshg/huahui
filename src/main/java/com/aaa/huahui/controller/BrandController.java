@@ -12,6 +12,7 @@ import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -340,6 +341,19 @@ public class BrandController {
                             @RequestParam("shopid") int shopid){
         return null;
 
+    }
+
+    //获得brand名字
+    @GetMapping("/brand/getname")
+    @PreAuthorize("hasRole('ROLE_BRAND')")
+    public  @ResponseBody
+    JSONObject getshopname(UsernamePasswordAuthenticationToken token){
+        int brandid = ((User) token.getPrincipal()).getId();
+        String shopName = brandService.getBrandName(brandid);
+        JSONObject data=new JSONObject();
+        data.put("name",shopName);
+        JSONObject responsejson=ResponseGenerate.genSuccessResponse(data);
+        return responsejson;
     }
 
 }

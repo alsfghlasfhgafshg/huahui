@@ -118,4 +118,9 @@ public class ShopService {
         return shopRepository.updateReport(txt,period,shopid,staffid,createtime)==1;
     }
 
+    public String getShopName(int shopid){
+        String name = userRepository.queryUserName(shopid);
+        return name;
+    }
+
 }

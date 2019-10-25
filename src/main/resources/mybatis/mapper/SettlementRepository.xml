@@ -834,7 +834,7 @@ from category
 
         settlementitem.id settlementitemid,
         settlementitem.times times,
-        settlementitem.price price54,
+        settlementitem.price price,
 
         category2.name category2name,
 
