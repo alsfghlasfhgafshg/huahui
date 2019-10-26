@@ -29,9 +29,8 @@ public class StatisticsController {
     @PostMapping("/statistics/1")
     public JSONObject statistics1(UsernamePasswordAuthenticationToken token,
                                   @RequestParam(value = "shopid", defaultValue = "-1") Integer shopid,
-                                  @RequestParam(value = "starttime", defaultValue = "-1") String starttime,
-                                  @RequestParam(value = "endtime", defaultValue = "-1") String endtime
-    ) {
+                                  @RequestParam(value = "starttime", required = true) String starttime,
+                                  @RequestParam(value = "endtime", required = true) String endtime) {
         User user = (User) token.getPrincipal();
         Timestamp start = DateUtils.getTimeStampStart(starttime);
         Timestamp end = DateUtils.getTimeStampStart(endtime);
@@ -55,8 +54,8 @@ public class StatisticsController {
     @PostMapping("/statistics/2")
     public JSONObject statistics2(UsernamePasswordAuthenticationToken token,
                                   @RequestParam(value = "shopid", defaultValue = "-1") Integer shopid,
-                                  @RequestParam(value = "starttime", defaultValue = "-1") String starttime,
-                                  @RequestParam(value = "endtime", defaultValue = "-1") String endtime
+                                  @RequestParam(value = "starttime", required = true) String starttime,
+                                  @RequestParam(value = "endtime", required = true) String endtime
     ) {
         User user = (User) token.getPrincipal();
         Timestamp start = DateUtils.getTimeStampStart(starttime);
