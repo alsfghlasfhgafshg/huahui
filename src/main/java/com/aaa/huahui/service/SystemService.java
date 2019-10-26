@@ -7,9 +7,13 @@ import com.aaa.huahui.repository.WebSettingRepository;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class SystemService {
+
+    @Autowired
+    FileService fileService;
 
     @Autowired
     WebSettingRepository webSettingRepository;
@@ -42,11 +46,33 @@ public class SystemService {
         return webSettingRepository.queryKey("websitename");
     }
 
-    public JSONObject adminstatus(){
-        JSONObject data=new JSONObject();
-        data.put("shopcount",shopRepository.allCountShop());
-        data.put("brandcount",brandRepository.allCountBrand());
+    public JSONObject adminstatus() {
+        JSONObject data = new JSONObject();
+        data.put("shopcount", shopRepository.allCountShop());
+        data.put("brandcount", brandRepository.allCountBrand());
         return data;
     }
 
+    //获得背景图
+    public String getbgimg() {
+        return webSettingRepository.queryKey("bgimg");
+    }
+
+    //设置背景图
+    public String setbgimg(MultipartFile file) {
+        String imgpath = fileService.uploadImage(file);
+
+        if (webSettingRepository.queryCountKey("bgimg") == 1) {
+            if (webSettingRepository.updateKV("bgimg", imgpath) == 1) {
+                return imgpath;
+            }
+
+            return null;
+        } else {
+            if (webSettingRepository.insertKV("bgimg", imgpath) == 1) {
+                return imgpath;
+            }
+            return null;
+        }
+    }
 }
