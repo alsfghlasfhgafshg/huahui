@@ -14,8 +14,8 @@ public interface ProjectRepository {
     @Select("select * from project where category2id=#{category2id}")
     ArrayList<Project> selectByCategory2id(@Param("category2id") int category2id);
 
-    @Insert("insert into project(category2id, name,shortname,category2name,productbrand,price,fixedhand,percentagemethod)" +
-            " value (#{category2id}, #{name}, #{shortname}, #{category2name}, #{productbrand}, #{price}, #{fixedhand}, #{percentagemethod})")
+    @Insert("insert into project(category2id, name,shortname,productbrand,price,fixedhand,percentagemethod)" +
+            " value (#{category2id}, #{name}, #{shortname}, #{productbrand}, #{price}, #{fixedhand}, #{percentagemethod})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertProject(Project project);
 

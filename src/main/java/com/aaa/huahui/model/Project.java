@@ -6,7 +6,6 @@ public class Project {
     int category2id;
     String name;
     String shortname;
-    String category;
     String productbrand;
     float price;
     float fixedhand;
@@ -15,11 +14,10 @@ public class Project {
     public Project() {
     }
 
-    public Project(int category2id, String name, String shortname,String category, String productbrand, float price, float fixedhand, String percentagemethod) {
+    public Project(int category2id, String name, String shortname, String productbrand, float price, float fixedhand, String percentagemethod) {
         this.category2id = category2id;
         this.name = name;
         this.shortname = shortname;
-        this.category = category;
         this.productbrand = productbrand;
         this.price = price;
         this.fixedhand = fixedhand;
