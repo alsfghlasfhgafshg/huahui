@@ -67,7 +67,9 @@ public class DataBaseTest {
     @Test
     public void sadfadswfgdsag(){
 
-        ArrayList<Brand> a = userService.queryBrand("a");
+        Timestamp timeStampStart = DateUtils.getTimeStampStart("2010年10月12日");
+        Timestamp timeStampStart2 = DateUtils.getTimeStampStart("2010-10-12");
+
         System.out.println(12);
     }
 
