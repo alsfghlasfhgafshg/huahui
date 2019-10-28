@@ -287,7 +287,12 @@ public class SettlementService {
         HashMap statistics=new HashMap();
         statistics.put("人头",rentou);
         statistics.put("客流",keliu);
-        statistics.put("平均单价",totalAllProjectPrice/keliu);
+
+        if (keliu.equals(0)){
+            statistics.put("平均单价",0);
+        }else {
+            statistics.put("平均单价",totalAllProjectPrice/keliu);
+        }
 
 
         j.put("category2SumCountAndSumPrice", category2SumCountAndSumPrice);
@@ -345,7 +350,13 @@ public class SettlementService {
         HashMap statistics=new HashMap();
         statistics.put("人头",rentou);
         statistics.put("客流",keliu);
-        statistics.put("平均单价",totalAllProjectPrice/keliu);
+
+        if (keliu.equals(0)){
+            statistics.put("平均单价",0);
+        }else {
+            statistics.put("平均单价",totalAllProjectPrice/keliu);
+        }
+
 
         j.put("consultantstatistics", consultantstatistics);
         j.put("statistics", statistics);
@@ -402,7 +413,14 @@ public class SettlementService {
         HashMap statistics=new HashMap();
         statistics.put("人头",(Long) guesttraffic.get("distinctcustomername"));
         statistics.put("客流",(Long) guesttraffic.get("countcustomername"));
-        statistics.put("平均单价",totalAllProjectPrice/(Long) guesttraffic.get("countcustomername"));
+
+        Long keliu = (Long) guesttraffic.get("countcustomername");
+        if (keliu.equals(0)){
+            statistics.put("平均单价",totalAllProjectPrice/0);
+        }else {
+            statistics.put("平均单价",totalAllProjectPrice/(Long) guesttraffic.get("countcustomername"));
+        }
+
 
 
         j.put("beauticianstatistics", beauticianstatistics);
