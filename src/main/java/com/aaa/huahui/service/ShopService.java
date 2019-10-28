@@ -4,6 +4,7 @@ import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.*;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,21 @@ public class ShopService {
 
     @Autowired
     SettlementRepository settlementRepository;
+
+
+    public JSONObject status(int shopid){
+        JSONObject data=new JSONObject();
+
+        int i = shopRepository.selectCountShopStaff(shopid);
+        data.put("staffcount",i);
+
+        i=settlementRepository.selectCountShopCustomer(shopid);
+        data.put("customercount",i);
+
+        return data;
+    }
+
+
     @Transactional
     public boolean deleteShop(int brandid, int shopid) {
         int i = shopRepository.selectCountBrandShop(shopid, brandid);
