@@ -114,6 +114,9 @@ public class SettlementService {
         if (canOperate(u, settlementid)) {
             return false;
         }
+
+        settlementItemRepository.deleteSettlementitemBySettlementId(settlementid);
+
         if (settlementRepository.deleteSettlementById(settlementid) == 1) {
             return true;
         }

@@ -4,6 +4,7 @@ import com.aaa.huahui.model.Settlement;
 import com.aaa.huahui.model.SettlementItem;
 import org.apache.ibatis.annotations.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -27,5 +28,8 @@ public interface SettlementItemRepository {
 
     @Select("select sum(price) from settlementitem where settlementid=#{settlementid}")
     int seleteSumPriceBySettlementid(@Param("settlementid") int settlementid);
+
+    @Delete("delete from settlementitem where settlementid=#{settlementid}")
+    int deleteSettlementitemBySettlementId(@Param("settlementid")int settlementid);
 
 }

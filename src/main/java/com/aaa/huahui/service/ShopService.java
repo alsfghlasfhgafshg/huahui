@@ -3,9 +3,7 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
-import com.aaa.huahui.repository.ShopRepository;
-import com.aaa.huahui.repository.StaffRepository;
-import com.aaa.huahui.repository.UserRepository;
+import com.aaa.huahui.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,6 +30,11 @@ public class ShopService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    SettlementService settlementService;
+
+    @Autowired
+    SettlementRepository settlementRepository;
     @Transactional
     public boolean deleteShop(int brandid, int shopid) {
         int i = shopRepository.selectCountBrandShop(shopid, brandid);
@@ -42,6 +45,11 @@ public class ShopService {
         ArrayList<Staff> allstaff = staffRepository.AllStaff(shopid);
         for (Staff staff : allstaff) {
             staffService.deleteStaff(staff.getStaffid());
+        }
+
+        ArrayList<Integer> settlementids = settlementRepository.selectAllSettlementId(shopid);
+        for (Integer settlementid : settlementids) {
+            settlementService.deleteSettlement(userRepository.selectByUserid(shopid),settlementid);
         }
         shopRepository.deleteShop(shopid);
         return true;

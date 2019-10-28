@@ -33,6 +33,9 @@ public interface SettlementRepository {
     @Delete("delete from settlement where id=#{id}")
     int deleteSettlementById(@Param("id") int id);
 
+    @Select("select id from settlement where shopid=#{shopid}")
+    ArrayList<Integer> selectAllSettlementId(@Param("shopid")int shopid);
+
     SettlementVO selectSettlementById(@Param("id") int id);
 
     List<SettlementVO> selectSettlementByIdWithPage(@Param("shopid") int shopid,
