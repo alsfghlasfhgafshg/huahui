@@ -288,7 +288,7 @@ public class SettlementService {
         statistics.put("人头",rentou);
         statistics.put("客流",keliu);
 
-        if (keliu.equals(0)){
+        if (!keliu.equals(0)){
             statistics.put("平均单价",0);
         }else {
             statistics.put("平均单价",totalAllProjectPrice/keliu);
@@ -351,7 +351,7 @@ public class SettlementService {
         statistics.put("人头",rentou);
         statistics.put("客流",keliu);
 
-        if (keliu.equals(0)){
+        if (!keliu.equals(0)){
             statistics.put("平均单价",0);
         }else {
             statistics.put("平均单价",totalAllProjectPrice/keliu);
@@ -415,7 +415,7 @@ public class SettlementService {
         statistics.put("客流",(Long) guesttraffic.get("countcustomername"));
 
         Long keliu = (Long) guesttraffic.get("countcustomername");
-        if (keliu.equals(0)){
+        if (!keliu.equals(0)){
             statistics.put("平均单价",totalAllProjectPrice/0);
         }else {
             statistics.put("平均单价",totalAllProjectPrice/(Long) guesttraffic.get("countcustomername"));
