@@ -33,6 +33,9 @@ public interface SettlementRepository {
     @Delete("delete from settlement where id=#{id}")
     int deleteSettlementById(@Param("id") int id);
 
+    @Select("select id from settlement where shopid=#{shopid}")
+    ArrayList<Integer> selectAllSettlementId(@Param("shopid") int shopid);
+
     SettlementVO selectSettlementById(@Param("id") int id);
 
     List<SettlementVO> selectSettlementByIdWithPage(@Param("shopid") int shopid,
@@ -58,6 +61,9 @@ public interface SettlementRepository {
     int sumPriceByPayMentMethod(@Param("shopid") int shopid, @Param("paymentmethod") int paymentmethod, @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
+    @Select("select count(distinct customername) from settlement where shopid=#{shopid}")
+    int selectCountShopCustomer(@Param("shopid")int shopid);
+
     //2
     List<Map<String, Integer>> selectCountCustomerTimes(@Param("shopid") int shopid,
                                                         @Param("from") Timestamp from, @Param("to") Timestamp to);
@@ -69,7 +75,7 @@ public interface SettlementRepository {
                                        @Param("from") Timestamp from, @Param("to") Timestamp to);
 
     int selectCountCustomerEq(@Param("mintimes") Integer mintimes, @Param("shopid") int shopid,
-                                       @Param("from") Timestamp from, @Param("to") Timestamp to);
+                              @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
     //3
@@ -80,7 +86,6 @@ public interface SettlementRepository {
                                             @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
-
     //-3
     Map<String, Integer> selectCategory2SumPrice(@Param("shopid") int shopid,
                                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
@@ -89,10 +94,10 @@ public interface SettlementRepository {
                                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
 
     List<Map> selectCategory2SumCountAndSumPrice(@Param("shopid") int shopid,
-                                                                 @Param("from") Timestamp from, @Param("to") Timestamp to);
+                                                 @Param("from") Timestamp from, @Param("to") Timestamp to);
 
     HashMap selectRentouKeliu(@Param("shopid") int shopid,
-                                @Param("from") Timestamp from, @Param("to") Timestamp to);
+                              @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
     //-2
@@ -106,8 +111,7 @@ public interface SettlementRepository {
                                                                            @Param("from") Timestamp from, @Param("to") Timestamp to);
 
     HashMap selectRentouKeliuConsultant(@Param("shopid") int shopid,
-                              @Param("from") Timestamp from, @Param("to") Timestamp to);
-
+                                        @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
     //-1
@@ -122,7 +126,7 @@ public interface SettlementRepository {
 
 
     Map selectbBeauticianCustomer(@Param("shopid") int shopid, @Param("beauticianname") String beauticianname,
-                                                   @Param("from") Timestamp from, @Param("to") Timestamp to);
+                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
     //1
@@ -133,7 +137,7 @@ public interface SettlementRepository {
                                                  @Param("to") Timestamp to);
 
     List<Map> selctBodyProjectSumPriceAndCount(@Param("shopid") int shopid, @Param("from") Timestamp from,
-                                                               @Param("to") Timestamp to);
+                                               @Param("to") Timestamp to);
 
 
 }

@@ -3,10 +3,7 @@ package com.aaa.huahui.service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.aaa.huahui.model.PaymentMethod;
 import com.aaa.huahui.model.Settlement;
@@ -20,6 +17,7 @@ import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.vo.SettlementVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -114,6 +112,9 @@ public class SettlementService {
         if (canOperate(u, settlementid)) {
             return false;
         }
+
+        settlementItemRepository.deleteSettlementitemBySettlementId(settlementid);
+
         if (settlementRepository.deleteSettlementById(settlementid) == 1) {
             return true;
         }
@@ -236,7 +237,6 @@ public class SettlementService {
     }
 
 
-
     //-3
     public JSONObject statisticsCategory2SumCountAndSumPrice(int shopid,
                                                              Timestamp timeStampStart,
@@ -245,51 +245,80 @@ public class SettlementService {
 
         List<Map> category2SumCountAndSumPrice = settlementRepository.selectCategory2SumCountAndSumPrice(shopid, timeStampStart, timeStampEnd);
 
-        JSONObject totalcount=new JSONObject();
-        JSONObject totalprice=new JSONObject();
+        JSONObject totalcount = new JSONObject();
+        JSONObject totalprice = new JSONObject();
 
-        long totalAllProjectPrice=0;
+        long totalAllProjectPrice = 0;
 
         for (Map map : category2SumCountAndSumPrice) {
-            String categoryname=(String) map.get("categoryname");
-            if (totalcount.containsKey(categoryname)){
-                Long newvalue=totalcount.getInteger(categoryname)+(Long)map.get("sumcount");
-                totalcount.put(categoryname,newvalue);
-            }else {
-                totalcount.put(categoryname,(Long)map.get("sumcount"));
+            String categoryname = (String) map.get("categoryname");
+            if (totalcount.containsKey(categoryname)) {
+                Long newvalue = totalcount.getInteger(categoryname) + (Long) map.get("sumcount");
+                totalcount.put(categoryname, newvalue);
+            } else {
+                totalcount.put(categoryname, (Long) map.get("sumcount"));
             }
-            if (totalprice.containsKey(categoryname)){
-                Long newvalue=totalprice.getInteger(categoryname)+((BigDecimal)map.get("sumprice")).longValue();
-                totalprice.put(categoryname,newvalue);
-            }else {
-                totalprice.put(categoryname,((BigDecimal)map.get("sumprice")).longValue());
+            if (totalprice.containsKey(categoryname)) {
+                Long newvalue = totalprice.getInteger(categoryname) + ((BigDecimal) map.get("sumprice")).longValue();
+                totalprice.put(categoryname, newvalue);
+            } else {
+                totalprice.put(categoryname, ((BigDecimal) map.get("sumprice")).longValue());
             }
-            totalAllProjectPrice+=((BigDecimal)map.get("sumprice")).longValue();
+            totalAllProjectPrice += ((BigDecimal) map.get("sumprice")).longValue();
         }
 
         for (String s : totalcount.keySet()) {
-            HashMap total=new HashMap();
-            total.put("categoryname",s);
-            total.put("category2name","总计");
-            total.put("sumcount",totalcount.getLong(s));
-            total.put("sumprice",totalprice.getLong(s));
+            HashMap total = new HashMap();
+            total.put("categoryname", s);
+            total.put("category2name", "总计");
+            total.put("sumcount", totalcount.getLong(s));
+            total.put("sumprice", totalprice.getLong(s));
             category2SumCountAndSumPrice.add(total);
         }
+        //data tranfer
+        JSONArray jsonArray = new JSONArray();
+        HashMap<String, JSONArray> data = new HashMap<>();
+
+        for (Map map : category2SumCountAndSumPrice) {
+            String categoryname = (String) map.get("categoryname");
+            if (!data.containsKey(categoryname)) {
+                data.put(categoryname, new JSONArray());
+            }
+            map.remove("categoryname");
+            data.get(categoryname).add(map);
+        }
+
+        Set<String> keySets = data.keySet();
+        Iterator<String> iterator = keySets.iterator();
+        while (iterator.hasNext()) {
+            String k = iterator.next();
+            JSONObject temp = new JSONObject();
+            temp.put("type", k);
+            temp.put("con",data.get(k));
+            jsonArray.add(temp);
+        }
+
 
         HashMap rentouKeliu = settlementRepository.selectRentouKeliu(shopid, timeStampStart, timeStampEnd);
 
         Long rentou = (Long) rentouKeliu.get("rentou");
         Long keliu = (Long) rentouKeliu.get("keliu");
 
-        HashMap statistics=new HashMap();
-        statistics.put("人头",rentou);
-        statistics.put("客流",keliu);
-        statistics.put("平均单价",totalAllProjectPrice/keliu);
+        HashMap statistics = new HashMap();
+        statistics.put("人头", rentou);
+        statistics.put("客流", keliu);
+
+        if (keliu == 0L) {
+            statistics.put("平均单价", 0);
+        } else {
+            statistics.put("平均单价", totalAllProjectPrice / keliu);
+        }
 
 
-        j.put("category2SumCountAndSumPrice", category2SumCountAndSumPrice);
+//        j.put("category2SumCountAndSumPrice", category2SumCountAndSumPrice);
 
-        j.put("statistics",statistics);
+        j.put("statistics", statistics);
+        j.put("category2SumCountAndSumPrice", jsonArray);
         return j;
     }
 
@@ -303,34 +332,34 @@ public class SettlementService {
         List<Map<String, String>> consultantstatistics = settlementRepository.selectConsultantCategory2SumCountAndSumPrice(shopid, consultantname, timeStampStart, timeStampEnd);
 
 
-        JSONObject totalcount=new JSONObject();
-        JSONObject totalprice=new JSONObject();
+        JSONObject totalcount = new JSONObject();
+        JSONObject totalprice = new JSONObject();
 
-        long totalAllProjectPrice=0;
+        long totalAllProjectPrice = 0;
 
         for (Map map : consultantstatistics) {
-            String categoryname=(String) map.get("categoryname");
-            if (totalcount.containsKey(categoryname)){
-                Long newvalue=totalcount.getInteger(categoryname)+(Long)map.get("sumcount");
-                totalcount.put(categoryname,newvalue);
-            }else {
-                totalcount.put(categoryname,(Long)map.get("sumcount"));
+            String categoryname = (String) map.get("categoryname");
+            if (totalcount.containsKey(categoryname)) {
+                Long newvalue = totalcount.getInteger(categoryname) + (Long) map.get("sumcount");
+                totalcount.put(categoryname, newvalue);
+            } else {
+                totalcount.put(categoryname, (Long) map.get("sumcount"));
             }
-            if (totalprice.containsKey(categoryname)){
-                Long newvalue=totalprice.getInteger(categoryname)+((BigDecimal)map.get("sumprice")).longValue();
-                totalprice.put(categoryname,newvalue);
-            }else {
-                totalprice.put(categoryname,((BigDecimal)map.get("sumprice")).longValue());
+            if (totalprice.containsKey(categoryname)) {
+                Long newvalue = totalprice.getInteger(categoryname) + ((BigDecimal) map.get("sumprice")).longValue();
+                totalprice.put(categoryname, newvalue);
+            } else {
+                totalprice.put(categoryname, ((BigDecimal) map.get("sumprice")).longValue());
             }
-            totalAllProjectPrice+=((BigDecimal)map.get("sumprice")).longValue();
+            totalAllProjectPrice += ((BigDecimal) map.get("sumprice")).longValue();
         }
 
         for (String s : totalcount.keySet()) {
-            HashMap total=new HashMap();
-            total.put("categoryname",s);
-            total.put("category2name","总计");
-            total.put("sumcount",totalcount.getLong(s));
-            total.put("sumprice",totalprice.getLong(s));
+            HashMap total = new HashMap();
+            total.put("categoryname", s);
+            total.put("category2name", "总计");
+            total.put("sumcount", totalcount.getLong(s));
+            total.put("sumprice", totalprice.getLong(s));
             consultantstatistics.add(total);
         }
 
@@ -339,18 +368,22 @@ public class SettlementService {
         Long rentou = (Long) rentouKeliu.get("rentou");
         Long keliu = (Long) rentouKeliu.get("keliu");
 
-        HashMap statistics=new HashMap();
-        statistics.put("人头",rentou);
-        statistics.put("客流",keliu);
-        statistics.put("平均单价",totalAllProjectPrice/keliu);
+        HashMap statistics = new HashMap();
+        statistics.put("人头", rentou);
+        statistics.put("客流", keliu);
+
+        if (keliu == 0L) {
+            statistics.put("平均单价", 0);
+        } else {
+            statistics.put("平均单价", totalAllProjectPrice / keliu);
+        }
+
 
         j.put("consultantstatistics", consultantstatistics);
         j.put("statistics", statistics);
 
         return j;
     }
-
-
 
 
     //-1
@@ -362,44 +395,50 @@ public class SettlementService {
 
         List<Map<String, String>> beauticianstatistics = settlementRepository.selectbBeauticianCategory2SumCountAndSumPrice(shopid, beauticianname, timeStampStart, timeStampEnd);
 
-        JSONObject totalcount=new JSONObject();
-        JSONObject totalprice=new JSONObject();
+        JSONObject totalcount = new JSONObject();
+        JSONObject totalprice = new JSONObject();
 
-        long totalAllProjectPrice=0;
+        long totalAllProjectPrice = 0;
 
         for (Map map : beauticianstatistics) {
-            String categoryname=(String) map.get("categoryname");
-            if (totalcount.containsKey(categoryname)){
-                Long newvalue=totalcount.getInteger(categoryname)+(Long)map.get("sumcount");
-                totalcount.put(categoryname,newvalue);
-            }else {
-                totalcount.put(categoryname,(Long)map.get("sumcount"));
+            String categoryname = (String) map.get("categoryname");
+            if (totalcount.containsKey(categoryname)) {
+                Long newvalue = totalcount.getInteger(categoryname) + (Long) map.get("sumcount");
+                totalcount.put(categoryname, newvalue);
+            } else {
+                totalcount.put(categoryname, (Long) map.get("sumcount"));
             }
-            if (totalprice.containsKey(categoryname)){
-                Long newvalue=totalprice.getInteger(categoryname)+((BigDecimal)map.get("sumprice")).longValue();
-                totalprice.put(categoryname,newvalue);
-            }else {
-                totalprice.put(categoryname,((BigDecimal)map.get("sumprice")).longValue());
+            if (totalprice.containsKey(categoryname)) {
+                Long newvalue = totalprice.getInteger(categoryname) + ((BigDecimal) map.get("sumprice")).longValue();
+                totalprice.put(categoryname, newvalue);
+            } else {
+                totalprice.put(categoryname, ((BigDecimal) map.get("sumprice")).longValue());
             }
-            totalAllProjectPrice+=((BigDecimal)map.get("sumprice")).longValue();
+            totalAllProjectPrice += ((BigDecimal) map.get("sumprice")).longValue();
         }
 
         for (String s : totalcount.keySet()) {
-            HashMap total=new HashMap();
-            total.put("categoryname",s);
-            total.put("category2name","总计");
-            total.put("sumcount",totalcount.getLong(s));
-            total.put("sumprice",totalprice.getLong(s));
+            HashMap total = new HashMap();
+            total.put("categoryname", s);
+            total.put("category2name", "总计");
+            total.put("sumcount", totalcount.getLong(s));
+            total.put("sumprice", totalprice.getLong(s));
             beauticianstatistics.add(total);
         }
 
         Map guesttraffic = settlementRepository.selectbBeauticianCustomer(shopid, beauticianname, timeStampStart, timeStampEnd);
 
 
-        HashMap statistics=new HashMap();
-        statistics.put("人头",(Long) guesttraffic.get("distinctcustomername"));
-        statistics.put("客流",(Long) guesttraffic.get("countcustomername"));
-        statistics.put("平均单价",totalAllProjectPrice/(Long) guesttraffic.get("countcustomername"));
+        HashMap statistics = new HashMap();
+        statistics.put("人头", (Long) guesttraffic.get("distinctcustomername"));
+        statistics.put("客流", (Long) guesttraffic.get("countcustomername"));
+
+        Long keliu = (Long) guesttraffic.get("countcustomername");
+        if (keliu == 0L) {
+            statistics.put("平均单价", totalAllProjectPrice / 0);
+        } else {
+            statistics.put("平均单价", totalAllProjectPrice / (Long) guesttraffic.get("countcustomername"));
+        }
 
 
         j.put("beauticianstatistics", beauticianstatistics);

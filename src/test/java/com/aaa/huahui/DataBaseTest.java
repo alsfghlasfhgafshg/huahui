@@ -108,9 +108,11 @@ public class DataBaseTest {
 
     @Test
     public void asdfa() {
-        List<SettlementVO> settlementVOS = settlementRepository.selectSettlementByIdWithPage(12, 0, 10,
-                DateUtils.getTimeStampStart(2019, 5, 01), DateUtils.getTimeStampEnd(2019, 10, 1));
-        System.out.println("end");
+        List<Map> maps = settlementRepository.selectCategory2SumCountAndSumPrice(12,
+                DateUtils.getTimeStampStart(2019, 01, 1),
+                DateUtils.getTimeStampEnd(2019, 12, 1));
+
+        System.out.println(1);
     }
 
 

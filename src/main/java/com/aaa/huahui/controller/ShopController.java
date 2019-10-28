@@ -38,10 +38,18 @@ public class ShopController {
     }
 
 
-//    @GetMapping
-//    public String shopIndex(){
-//        return "shop";
-//    }
+    //首页状态
+    @GetMapping("/status/shop")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public @ResponseBody
+    JSONObject status(UsernamePasswordAuthenticationToken token){
+        int id = ((User) token.getPrincipal()).getId();
+        JSONObject status = shopService.status(id);
+
+        JSONObject jsonObject = ResponseGenerate.genSuccessResponse(status);
+
+        return jsonObject;
+    }
 
     //获得所有shop
     @GetMapping("/allshop")

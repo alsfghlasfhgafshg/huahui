@@ -21,7 +21,7 @@ public interface ShopRepository {
     ArrayList<Integer> selectAllShopId(@Param("brandid") int brandid);
 
     @Select("select * from shop where brandid=#{brandid} limit #{offset},#{num}")
-    ArrayList<Shop> selectAllShop(@Param("brandid") int brandid,@Param("offset") int offset,@Param("num")int num);
+    ArrayList<Shop> selectAllShop(@Param("brandid") int brandid, @Param("offset") int offset, @Param("num") int num);
 
     @Select("select * from shop where shopid=#{shopid}")
     Shop selectById(@Param("shopid") int shopid);
@@ -34,17 +34,21 @@ public interface ShopRepository {
 
     //报告
     @Insert("insert into periodreport (staffid,shopid,txt,period,createtime) values(#{shopid},#{txt},#{period},#{createtime})")
-    int insertReport(@Param("staffid")int staffid,@Param("shopid") int shopid, @Param("txt") String txt, @Param("period")String period, @Param("createtime")String createtime);
+    int insertReport(@Param("staffid") int staffid, @Param("shopid") int shopid, @Param("txt") String txt, @Param("period") String period, @Param("createtime") String createtime);
 
     @Delete("delete from periodreport where id=#{id}")
-    int deletereport(@Param("id")int id);
+    int deletereport(@Param("id") int id);
 
     @Select("select txt from periodreport where staffid=#{staffid} and createtime=#{date}")
-    String selectOneReport(@Param("staffid")int staffid,@Param("date")String date);
+    String selectOneReport(@Param("staffid") int staffid, @Param("date") String date);
 
     @Select("select count(*) from shop")
     int allCountShop();
 
     @Update("update periodreport set txt = #{txt},period = #{period},createtime=#{createtime} where shopid=#{shopid} and staffid=#{staffid}")
-    int updateReport(String txt,String period,int shopid,int staffid,String createtime);
+    int updateReport(String txt, String period, int shopid, int staffid, String createtime);
+
+    @Select("select count(*) from staff where shopid=#{}")
+    int selectCountShopStaff(@Param("shopid") int shopid);
+
 }
