@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +68,9 @@ public interface SettlementRepository {
     int selectCountCustomerGreaterOrEq(@Param("mintimes") Integer mintimes, @Param("shopid") int shopid,
                                        @Param("from") Timestamp from, @Param("to") Timestamp to);
 
+    int selectCountCustomerEq(@Param("mintimes") Integer mintimes, @Param("shopid") int shopid,
+                                       @Param("from") Timestamp from, @Param("to") Timestamp to);
+
 
     //3
     Map<String, Integer> selectProjectSumPrice(@Param("shopid") int shopid,
@@ -87,6 +91,9 @@ public interface SettlementRepository {
     List<Map> selectCategory2SumCountAndSumPrice(@Param("shopid") int shopid,
                                                                  @Param("from") Timestamp from, @Param("to") Timestamp to);
 
+    HashMap selectRentouKeliu(@Param("shopid") int shopid,
+                                @Param("from") Timestamp from, @Param("to") Timestamp to);
+
 
     //-2
     Map<String, Integer> selectConsultantCategory2SumPrice(@Param("shopid") int shopid, @Param("consultantname") String consultantname,
@@ -97,6 +104,10 @@ public interface SettlementRepository {
 
     List<Map<String, String>> selectConsultantCategory2SumCountAndSumPrice(@Param("shopid") int shopid, @Param("consultantname") String consultantname,
                                                                            @Param("from") Timestamp from, @Param("to") Timestamp to);
+
+    HashMap selectRentouKeliuConsultant(@Param("shopid") int shopid,
+                              @Param("from") Timestamp from, @Param("to") Timestamp to);
+
 
 
     //-1
@@ -110,7 +121,7 @@ public interface SettlementRepository {
                                                                             @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
-    Map<String, Integer> selectbBeauticianCustomer(@Param("shopid") int shopid, @Param("beauticianname") String beauticianname,
+    Map selectbBeauticianCustomer(@Param("shopid") int shopid, @Param("beauticianname") String beauticianname,
                                                    @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 

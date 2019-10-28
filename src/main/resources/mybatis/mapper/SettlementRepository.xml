@@ -150,6 +150,20 @@
         )t where count>=#{mintimes}
     </select>
 
+    <select id="selectCountCustomerEq" resultType="int">
+
+       select count(customername) count
+        from (
+        select customername, count(customername) count
+        from settlement
+        where shopid = #{shopid}
+        and settlement.createtime between #{from} and #{to}
+        group by customername
+        order by count
+        )t where count=#{mintimes}
+
+    </select>
+
 
     <select id="selectProjectSumPrice" resultType="java.util.Map">
 
@@ -602,8 +616,7 @@ from category
 
     <select id="selectbBeauticianCustomer" resultType="java.util.Map">
     select  count(distinct customername) distinctcustomername,
-        count(customername) countcustomername,
-        (count(customername)) / datediff(20191001, 20190930) passengerflow
+        count(customername) countcustomername
     from (
              select settlementitem.price    price,
                     settlement.customername customername
@@ -907,6 +920,25 @@ from category
         where t1.projectname = t2.projectname
         order by sumprice, countprojectname
 
+    </select>
+
+
+    <select id="selectRentouKeliu" resultType="java.util.HashMap">
+        select count(settlement.customername) keliu, count(distinct settlement.customername) rentou
+    from settlement
+    where settlement.shopid = #{shopid}
+      and settlement.createtime between #{from} and #{to}
+    </select>
+
+
+    <select id="selectRentouKeliuConsultant" resultType="java.util.HashMap">
+    select count(settlement.customername) keliu, count(distinct settlement.customername) rentou
+    from settlement,
+         staff
+    where settlement.consultantid = staff.staffid
+      and staff.role = 'consultant'
+      and settlement.shopid = #{shopid}
+      and settlement.createtime between #{from} and #{to}
     </select>
 
 

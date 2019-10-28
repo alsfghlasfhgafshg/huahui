@@ -1,8 +1,10 @@
 package com.aaa.huahui.service;
 
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -216,9 +218,14 @@ public class SettlementService {
         List<Map<String, Integer>> countCustomerPrice = settlementRepository.selectCountCustomerPrice(shopid, start, end);
 
         for (int i = 1; i <= 5; i++) {
-
-            Integer times = settlementRepository.selectCountCustomerGreaterOrEq(i, shopid, start, end);
-            j.put(i + "times", times);
+            Integer times = null;
+            if (i == 5) {
+                times = settlementRepository.selectCountCustomerGreaterOrEq(i, shopid, start, end);
+                j.put("greateroreq" + i + "times", times);
+            } else {
+                times = settlementRepository.selectCountCustomerEq(i, shopid, start, end);
+                j.put("eq" + i + "times", times);
+            }
         }
 
         j.put("countCustomerTimes", countCustomerTimes);
@@ -229,34 +236,6 @@ public class SettlementService {
     }
 
 
-    //-3
-    public JSONObject statisticsCategory2SumCountAndSumPrice(int brandid, int shopid,
-                                                             int startyear, int startmonth, int startday,
-                                                             int endyear, int endmonth, int endday) {
-
-        if (shopRepository.selectCountBrandShop(shopid, brandid) == 0) {
-            return null;
-        }
-        return statisticsCategory2SumCountAndSumPrice(shopid, startyear, startmonth, startday, endyear, endmonth, endday);
-
-    }
-
-
-    //-3
-    public JSONObject statisticsCategory2SumCountAndSumPrice(int shopid,
-                                                             int startyear, int startmonth, int startday,
-                                                             int endyear, int endmonth, int endday) {
-        JSONObject j = new JSONObject();
-
-        Timestamp timeStampStart = DateUtils.getTimeStampStart(startyear, startmonth, startday);
-        Timestamp timeStampEnd = DateUtils.getTimeStampEnd(endyear, endmonth, endday);
-
-        List<Map> category2SumCountAndSumPrice = settlementRepository.selectCategory2SumCountAndSumPrice(shopid, timeStampStart, timeStampEnd);
-
-        j.put("category2SumCountAndSumPrice", category2SumCountAndSumPrice);
-
-        return j;
-    }
 
     //-3
     public JSONObject statisticsCategory2SumCountAndSumPrice(int shopid,
@@ -266,40 +245,54 @@ public class SettlementService {
 
         List<Map> category2SumCountAndSumPrice = settlementRepository.selectCategory2SumCountAndSumPrice(shopid, timeStampStart, timeStampEnd);
 
+        JSONObject totalcount=new JSONObject();
+        JSONObject totalprice=new JSONObject();
+
+        long totalAllProjectPrice=0;
+
+        for (Map map : category2SumCountAndSumPrice) {
+            String categoryname=(String) map.get("categoryname");
+            if (totalcount.containsKey(categoryname)){
+                Long newvalue=totalcount.getInteger(categoryname)+(Long)map.get("sumcount");
+                totalcount.put(categoryname,newvalue);
+            }else {
+                totalcount.put(categoryname,(Long)map.get("sumcount"));
+            }
+            if (totalprice.containsKey(categoryname)){
+                Long newvalue=totalprice.getInteger(categoryname)+((BigDecimal)map.get("sumprice")).longValue();
+                totalprice.put(categoryname,newvalue);
+            }else {
+                totalprice.put(categoryname,((BigDecimal)map.get("sumprice")).longValue());
+            }
+            totalAllProjectPrice+=((BigDecimal)map.get("sumprice")).longValue();
+        }
+
+        for (String s : totalcount.keySet()) {
+            HashMap total=new HashMap();
+            total.put("categoryname",s);
+            total.put("category2name","总计");
+            total.put("sumcount",totalcount.getLong(s));
+            total.put("sumprice",totalprice.getLong(s));
+            category2SumCountAndSumPrice.add(total);
+        }
+
+        HashMap rentouKeliu = settlementRepository.selectRentouKeliu(shopid, timeStampStart, timeStampEnd);
+
+        Long rentou = (Long) rentouKeliu.get("rentou");
+        Long keliu = (Long) rentouKeliu.get("keliu");
+
+        HashMap statistics=new HashMap();
+        statistics.put("人头",rentou);
+        statistics.put("客流",keliu);
+        statistics.put("平均单价",totalAllProjectPrice/keliu);
+
+
         j.put("category2SumCountAndSumPrice", category2SumCountAndSumPrice);
 
+        j.put("statistics",statistics);
         return j;
     }
 
-
-    //-2
-    public JSONObject statisticsConsultantCategory2SumCountAndSumPrice(int brandid, int shopid, String consultantname,
-                                                                       int startyear, int startmonth, int startday,
-                                                                       int endyear, int endmonth, int endday) {
-
-        if (shopRepository.selectCountBrandShop(shopid, brandid) == 0) {
-            return null;
-        }
-        return statisticsConsultantCategory2SumCountAndSumPrice(shopid, consultantname, startyear, startmonth, startday, endyear, endmonth, endday);
-
-    }
-
-
-    //-2
-    public JSONObject statisticsConsultantCategory2SumCountAndSumPrice(int shopid, String consultantname,
-                                                                       int startyear, int startmonth, int startday,
-                                                                       int endyear, int endmonth, int endday) {
-        JSONObject j = new JSONObject();
-
-        Timestamp timeStampStart = DateUtils.getTimeStampStart(startyear, startmonth, startday);
-        Timestamp timeStampEnd = DateUtils.getTimeStampEnd(endyear, endmonth, endday);
-
-        List<Map<String, String>> beauticianstatistics = settlementRepository.selectConsultantCategory2SumCountAndSumPrice(shopid, consultantname, timeStampStart, timeStampEnd);
-
-        j.put("beauticianstatistics", beauticianstatistics);
-
-        return j;
-    }
 
     //-2
     public JSONObject statisticsConsultantCategory2SumCountAndSumPrice(int shopid, String consultantname,
@@ -309,43 +302,56 @@ public class SettlementService {
 
         List<Map<String, String>> consultantstatistics = settlementRepository.selectConsultantCategory2SumCountAndSumPrice(shopid, consultantname, timeStampStart, timeStampEnd);
 
-        j.put("consultantstatistics", consultantstatistics);
 
-        return j;
-    }
+        JSONObject totalcount=new JSONObject();
+        JSONObject totalprice=new JSONObject();
 
+        long totalAllProjectPrice=0;
 
-    //-1
-    public JSONObject statisticsBeauticianByBrand(int brandid, int shopid, String beauticianname,
-                                                  int startyear, int startmonth, int startday,
-                                                  int endyear, int endmonth, int endday) {
-
-        if (shopRepository.selectCountBrandShop(shopid, brandid) == 0) {
-            return null;
+        for (Map map : consultantstatistics) {
+            String categoryname=(String) map.get("categoryname");
+            if (totalcount.containsKey(categoryname)){
+                Long newvalue=totalcount.getInteger(categoryname)+(Long)map.get("sumcount");
+                totalcount.put(categoryname,newvalue);
+            }else {
+                totalcount.put(categoryname,(Long)map.get("sumcount"));
+            }
+            if (totalprice.containsKey(categoryname)){
+                Long newvalue=totalprice.getInteger(categoryname)+((BigDecimal)map.get("sumprice")).longValue();
+                totalprice.put(categoryname,newvalue);
+            }else {
+                totalprice.put(categoryname,((BigDecimal)map.get("sumprice")).longValue());
+            }
+            totalAllProjectPrice+=((BigDecimal)map.get("sumprice")).longValue();
         }
-        return statisticsBeauticianByShop(shopid, beauticianname, startyear, startmonth, startday, endyear, endmonth, endday);
 
-    }
+        for (String s : totalcount.keySet()) {
+            HashMap total=new HashMap();
+            total.put("categoryname",s);
+            total.put("category2name","总计");
+            total.put("sumcount",totalcount.getLong(s));
+            total.put("sumprice",totalprice.getLong(s));
+            consultantstatistics.add(total);
+        }
 
+        HashMap rentouKeliu = settlementRepository.selectRentouKeliuConsultant(shopid, timeStampStart, timeStampEnd);
 
-    //-1
-    public JSONObject statisticsBeauticianByShop(int shopid, String beauticianname,
-                                                 int startyear, int startmonth, int startday,
-                                                 int endyear, int endmonth, int endday) {
-        JSONObject j = new JSONObject();
+        Long rentou = (Long) rentouKeliu.get("rentou");
+        Long keliu = (Long) rentouKeliu.get("keliu");
 
-        Timestamp timeStampStart = DateUtils.getTimeStampStart(startyear, startmonth, startday);
-        Timestamp timeStampEnd = DateUtils.getTimeStampEnd(endyear, endmonth, endday);
+        HashMap statistics=new HashMap();
+        statistics.put("人头",rentou);
+        statistics.put("客流",keliu);
+        statistics.put("平均单价",totalAllProjectPrice/keliu);
 
-        List<Map<String, String>> beauticianstatistics = settlementRepository.selectbBeauticianCategory2SumCountAndSumPrice(shopid, beauticianname, timeStampStart, timeStampEnd);
-
-        Map<String, Integer> guesttraffic = settlementRepository.selectbBeauticianCustomer(shopid, beauticianname, timeStampStart, timeStampEnd);
-
-        j.put("beauticianstatistics", beauticianstatistics);
-        j.put("guesttraffic", guesttraffic);
+        j.put("consultantstatistics", consultantstatistics);
+        j.put("statistics", statistics);
 
         return j;
     }
+
+
+
 
     //-1
     public JSONObject statisticsBeauticianByShop(int shopid, String beauticianname,
@@ -356,10 +362,48 @@ public class SettlementService {
 
         List<Map<String, String>> beauticianstatistics = settlementRepository.selectbBeauticianCategory2SumCountAndSumPrice(shopid, beauticianname, timeStampStart, timeStampEnd);
 
-        Map<String, Integer> guesttraffic = settlementRepository.selectbBeauticianCustomer(shopid, beauticianname, timeStampStart, timeStampEnd);
+        JSONObject totalcount=new JSONObject();
+        JSONObject totalprice=new JSONObject();
+
+        long totalAllProjectPrice=0;
+
+        for (Map map : beauticianstatistics) {
+            String categoryname=(String) map.get("categoryname");
+            if (totalcount.containsKey(categoryname)){
+                Long newvalue=totalcount.getInteger(categoryname)+(Long)map.get("sumcount");
+                totalcount.put(categoryname,newvalue);
+            }else {
+                totalcount.put(categoryname,(Long)map.get("sumcount"));
+            }
+            if (totalprice.containsKey(categoryname)){
+                Long newvalue=totalprice.getInteger(categoryname)+((BigDecimal)map.get("sumprice")).longValue();
+                totalprice.put(categoryname,newvalue);
+            }else {
+                totalprice.put(categoryname,((BigDecimal)map.get("sumprice")).longValue());
+            }
+            totalAllProjectPrice+=((BigDecimal)map.get("sumprice")).longValue();
+        }
+
+        for (String s : totalcount.keySet()) {
+            HashMap total=new HashMap();
+            total.put("categoryname",s);
+            total.put("category2name","总计");
+            total.put("sumcount",totalcount.getLong(s));
+            total.put("sumprice",totalprice.getLong(s));
+            beauticianstatistics.add(total);
+        }
+
+        Map guesttraffic = settlementRepository.selectbBeauticianCustomer(shopid, beauticianname, timeStampStart, timeStampEnd);
+
+
+        HashMap statistics=new HashMap();
+        statistics.put("人头",(Long) guesttraffic.get("distinctcustomername"));
+        statistics.put("客流",(Long) guesttraffic.get("countcustomername"));
+        statistics.put("平均单价",totalAllProjectPrice/(Long) guesttraffic.get("countcustomername"));
+
 
         j.put("beauticianstatistics", beauticianstatistics);
-        j.put("guesttraffic", guesttraffic);
+        j.put("statistics", statistics);
 
         return j;
     }
@@ -377,24 +421,47 @@ public class SettlementService {
 
         //1-1total
         JSONObject totalProductProjectSumPriceAndCount = new JSONObject();
-        int totalcount = 0;
-        int totalprice = 0;
+        int totalproductProjectSumPriceAndCountcount = 0;
+        int totalproductProjectSumPriceAndCountprice = 0;
         for (Map<String, String> i : productProjectSumPriceAndCount) {
-            totalcount += Integer.valueOf(i.get("countprojectname"));
-            totalprice += Integer.valueOf(i.get("sumprice"));
+            totalproductProjectSumPriceAndCountcount += Integer.valueOf(i.get("countprojectname"));
+            totalproductProjectSumPriceAndCountprice += Integer.valueOf(i.get("sumprice"));
         }
-        totalProductProjectSumPriceAndCount.put("totalcount", totalcount);
-        totalProductProjectSumPriceAndCount.put("totalprice", totalprice);
+        totalProductProjectSumPriceAndCount.put("totalcount", totalproductProjectSumPriceAndCountcount);
+        totalProductProjectSumPriceAndCount.put("totalprice", totalproductProjectSumPriceAndCountprice);
+
+        //1-2total
+        JSONObject totalbeautyProjectSumPriceAndCount = new JSONObject();
+        int totalbeautyProjectSumPriceAndCountcount = 0;
+        int totalbeautyProjectSumPriceAndCountprice = 0;
+        for (Map<String, String> i : beautyProjectSumPriceAndCount) {
+            totalbeautyProjectSumPriceAndCountcount += Integer.valueOf(i.get("countprojectname"));
+            totalbeautyProjectSumPriceAndCountprice += Integer.valueOf(i.get("sumprice"));
+        }
+        totalbeautyProjectSumPriceAndCount.put("totalcount", totalbeautyProjectSumPriceAndCountcount);
+        totalbeautyProjectSumPriceAndCount.put("totalprice", totalbeautyProjectSumPriceAndCountprice);
 
 
-
+        //1-3total
+        JSONObject totalbodyProjectSumPriceAndCount = new JSONObject();
+        int totalbodyProjectSumPriceAndCountcount = 0;
+        int totalbodyProjectSumPriceAndCountprice = 0;
+        for (Map<String, String> i : beautyProjectSumPriceAndCount) {
+            totalbodyProjectSumPriceAndCountcount += Integer.valueOf(i.get("countprojectname"));
+            totalbodyProjectSumPriceAndCountprice += Integer.valueOf(i.get("sumprice"));
+        }
+        totalbodyProjectSumPriceAndCount.put("totalcount", totalbodyProjectSumPriceAndCountcount);
+        totalbodyProjectSumPriceAndCount.put("totalprice", totalbodyProjectSumPriceAndCountprice);
 
         j.put("productProjectSumPriceAndCount", productProjectSumPriceAndCount);
         j.put("productTotal", totalProductProjectSumPriceAndCount);
 
 
         j.put("beautyProjectSumPriceAndCount", beautyProjectSumPriceAndCount);
+        j.put("beautyTotal", totalbeautyProjectSumPriceAndCount);
+
         j.put("bodyProjectSumPriceAndCount", bodyProjectSumPriceAndCount);
+        j.put("bodyTotal", totalbodyProjectSumPriceAndCount);
 
         return j;
     }

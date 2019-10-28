@@ -67,7 +67,9 @@ public class DataBaseTest {
     @Test
     public void sadfadswfgdsag(){
 
-        ArrayList<Brand> a = userService.queryBrand("a");
+        Timestamp timeStampStart = DateUtils.getTimeStampStart("2010年10月12日");
+        Timestamp timeStampStart2 = DateUtils.getTimeStampStart("2010-10-12");
+
         System.out.println(12);
     }
 
@@ -75,8 +77,6 @@ public class DataBaseTest {
     public void sadfsdf(){
 //        todayWorkService.setServicenote(11,new Timestamp(System.currentTimeMillis()));
         todayWorkService.setReturningcustomers(11,new Timestamp(System.currentTimeMillis()));
-
-
     }
 
 
@@ -111,8 +111,6 @@ public class DataBaseTest {
         List<SettlementVO> settlementVOS = settlementRepository.selectSettlementByIdWithPage(12, 0, 10,
                 DateUtils.getTimeStampStart(2019, 5, 01), DateUtils.getTimeStampEnd(2019, 10, 1));
         System.out.println("end");
-
-
     }
 
 

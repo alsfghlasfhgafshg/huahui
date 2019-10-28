@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DateUtils {
     static volatile Calendar calendar = Calendar.getInstance();
@@ -14,13 +16,23 @@ public class DateUtils {
         return getTimeStampWithHHmmss(year, month, day, 0, 0, 0);
     }
 
-    public static Timestamp getTimeStampStart(String yyyyMMdd) {
-        int year,month,day;
 
-        String[] split = yyyyMMdd.split("-");
-        year = Integer.valueOf(split[0]);
-        month = Integer.valueOf(split[1]);
-        day = Integer.valueOf(split[2]);
+    public static Timestamp getTimeStampStart(String yyyyMMdd) {
+
+        int year, month, day;
+        Pattern r = Pattern.compile("(\\d+)年(\\d+)月(\\d+)日");
+
+        Matcher m = r.matcher(yyyyMMdd);
+        if (m.find()) {
+            year = Integer.valueOf(m.group(1));
+            month = Integer.valueOf(m.group(2));
+            day = Integer.valueOf(m.group(3));
+        } else {
+            String[] split = yyyyMMdd.split("-");
+            year = Integer.valueOf(split[0]);
+            month = Integer.valueOf(split[1]);
+            day = Integer.valueOf(split[2]);
+        }
 
         return getTimeStampWithHHmmss(year, month, day, 0, 0, 0);
     }
@@ -29,14 +41,22 @@ public class DateUtils {
     public static Timestamp getTimeStampEnd(int year, int month, int day) {
         return getTimeStampWithHHmmss(year, month, day, 23, 59, 59);
     }
+
     public static Timestamp getTimeStampEnd(String yyyyMMdd) {
-        int year,month,day;
+        int year, month, day;
+        Pattern r = Pattern.compile("(\\d+)年(\\d+)月(\\d+)日");
 
-        String[] split = yyyyMMdd.split("-");
-        year = Integer.valueOf(split[0]);
-        month = Integer.valueOf(split[1]);
-        day = Integer.valueOf(split[2]);
-
+        Matcher m = r.matcher(yyyyMMdd);
+        if (m.find()) {
+            year = Integer.valueOf(m.group(1));
+            month = Integer.valueOf(m.group(2));
+            day = Integer.valueOf(m.group(3));
+        } else {
+            String[] split = yyyyMMdd.split("-");
+            year = Integer.valueOf(split[0]);
+            month = Integer.valueOf(split[1]);
+            day = Integer.valueOf(split[2]);
+        }
         return getTimeStampWithHHmmss(year, month, day, 23, 59, 59);
     }
 

@@ -24,29 +24,50 @@ endtime|string|终止统计时间 yyyy-mm-dd格式
 
 **返回内容:**
 ```
-productProjectSumPriceAndCount 返回商品类信息
+productProjectSumPriceAndCount 返回商品类统计信息，类型为array
  projectname商品名称，sumprice总销售金额，countprojectname总销售数量
-beautyProjectSumPriceAndCount 和bodyProjectSumPriceAndCount同样
+
+beautyProjectSumPriceAndCount 美容类统计信息，类型为array
+ projectname商品名称，sumprice总销售金额，countprojectname总销售数量
+
+bodyProjectSumPriceAndCount 美体类统计信息，类型为array
+ projectname商品名称，sumprice总销售金额，countprojectname总销售数量
+
+bodyTotal美体统计 totalcount总数量 总价格totalprice 
+beautyTotal美容统计 totalcount总数量 总价格totalprice 
+productTotal产品统计 totalcount总数量 总价格totalprice 
 
 格式
 {
     "msg": "成功",
     "code": 0,
     "data": {
-        "productProjectSumPriceAndCount": [
+        "bodyTotal": {
+            "totalcount": 0,
+            "totalprice": 0
+        },
+        "productProjectSumPriceAndCount": [],
+        "beautyTotal": {
+            "totalcount": 0,
+            "totalprice": 0
+        },
+        "beautyProjectSumPriceAndCount": [],
+        "bodyProjectSumPriceAndCount": [
             {
-                "projectname": "project1",
+                "projectname": "meirong1",
                 "sumprice": 25,
                 "countprojectname": 2
             },
             {
-                "projectname": "project2",
+                "projectname": "meirong2",
                 "sumprice": 45,
                 "countprojectname": 1
             }
         ],
-        "beautyProjectSumPriceAndCount": [],
-        "bodyProjectSumPriceAndCount": []
+        "productTotal": {
+            "totalcount": 0,
+            "totalprice": 0
+        }
     }
 }
 
@@ -72,8 +93,13 @@ endtime|string|终止统计时间 yyyy-mm-dd格式
 **返回内容:**
 ```
 
-5times 到点5次的人数
-4times 到点4次的人数
+
+"eq4times": 到店4次的人数
+"eq1times": 到店1次的人数
+"greateroreq5times": 到店大于等于5次的人数
+"eq2times": 到店2次的人数
+"eq3times": 到店3次的人数
+
 ....
 
 countCustomerTimes为每个顾客到店次数，arraylist
@@ -89,35 +115,27 @@ customername顾客名称
     "msg": "成功",
     "code": 0,
     "data": {
-        "2times": 0,
-        "4times": 0,
-        "1times": 3,
         "countCustomerTimes": [
             {
-                "count": 1,
-                "customername": "dsf"
+                "count": 2,
+                "customername": "c1"
             },
             {
                 "count": 1,
-                "customername": "112"
-            },
-            {
-                "count": 1,
-                "customername": "11"
+                "customername": "c2"
             }
         ],
         "countCustomerPrice": [
             {
-                "countprice": 45,
-                "customername": "11"
-            },
-            {
-                "countprice": 25,
-                "customername": "dsf"
+                "countprice": 70,
+                "customername": "c1"
             }
         ],
-        "5times": 0,
-        "3times": 0
+        "eq4times": 0,
+        "eq1times": 1,
+        "greateroreq5times": 0,
+        "eq2times": 1,
+        "eq3times": 0
     }
 }
 ```
@@ -146,10 +164,13 @@ endtime|string|终止统计时间 yyyy-mm-dd格式
 **返回内容:**
 ```
 
-category2SumCountAndSumPrice为array
+category2SumCountAndSumPrice为array,
+总计也包含在内，总计作为二级分类
 category2name二级分类名称
 sumcount总销售量
 sumprice总销售金额
+
+statistics"包含 人头 客流 平均单价
 
 {
     "msg": "成功",
@@ -157,16 +178,137 @@ sumprice总销售金额
     "data": {
         "category2SumCountAndSumPrice": [
             {
-                "sumcount": 1,
-                "category2name": "tttttt",
-                "sumprice": 45
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "美容",
+                "sumprice": 0
             },
             {
-                "sumcount": 2,
-                "category2name": "为杀人犯",
-                "sumprice": 25
+                "sumcount": 3,
+                "categoryname": "实操类",
+                "category2name": "美体",
+                "sumprice": 70
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "仪器",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "卡扣产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "现金产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "赠送产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "现金产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "现金卡",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "现金实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "卡扣产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "卡扣实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "现金产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "现金实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "赠送实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "赠送类",
+                "category2name": "赠送产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "赠送类",
+                "category2name": "赠送实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 3,
+                "categoryname": "实操类",
+                "category2name": "总计",
+                "sumprice": 70
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "赠送类",
+                "category2name": "总计",
+                "sumprice": 0
             }
-        ]
+        ],
+        "statistics": {
+            "人头": 2,
+            "客流": 3,
+            "平均单价": 23
+        }
     }
 }
 ```
@@ -193,11 +335,14 @@ consultantname|string|顾问姓名
 
 **返回内容:**
 ```
-consultantstatistics为array，顾问对应的销售量和金额
 
- sumcount 销售量
- category2name项目名
- sumprice销售额
+consultantstatistics 顾问统计,数据类型为array
+总计也包含在内，总计作为二级分类
+category2name二级分类名称
+sumcount总销售量
+sumprice总销售金额
+
+statistics"包含 人头 客流 平均单价
 
 {
     "msg": "成功",
@@ -205,16 +350,137 @@ consultantstatistics为array，顾问对应的销售量和金额
     "data": {
         "consultantstatistics": [
             {
-                "sumcount": 1,
-                "category2name": "tttttt",
-                "sumprice": 45
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "美容",
+                "sumprice": 0
             },
             {
-                "sumcount": 2,
-                "category2name": "为杀人犯",
-                "sumprice": 25
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "美体",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "仪器",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "卡扣产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "现金产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "赠送产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "现金产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "现金卡",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "现金实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "卡扣产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "卡扣实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "现金产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "现金实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "赠送实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "赠送类",
+                "category2name": "赠送产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "赠送类",
+                "category2name": "赠送实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "赠送类",
+                "category2name": "总计",
+                "sumprice": 0
             }
-        ]
+        ],
+        "statistics": {
+            "人头": 2,
+            "客流": 2,
+            "平均单价": 0
+        }
     }
 }
 
@@ -242,34 +508,150 @@ consultantname|string|顾问姓名
 
 **返回内容:**
 ```
-beauticianstatistics为array，顾问对应的销售量和金额
+beauticianstatistics 美容师统计,数据类型为array
+总计也包含在内，总计作为二级分类
+category2name二级分类名称
+sumcount总销售量
+sumprice总销售金额
 
- sumcount 销售量
- category2name项目名
- sumprice销售额
-
+statistics"包含 人头 客流 平均单价
 {
     "msg": "成功",
     "code": 0,
     "data": {
         "beauticianstatistics": [
             {
-                "countcategory2name": 1,
-                "category2name": "tttttt",
-                "sumprice": 45
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "美容",
+                "sumprice": 0
             },
             {
-                "countcategory2name": 2,
-                "category2name": "为杀人犯",
-                "sumprice": 25
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "美体",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "仪器",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "卡扣产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "现金产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "赠送产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "现金产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "现金卡",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "现金实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "卡扣产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "卡扣实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "现金产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "现金实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "赠送实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "赠送类",
+                "category2name": "赠送产品",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "赠送类",
+                "category2name": "赠送实操",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "产品类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实耗类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "实操类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "现金类",
+                "category2name": "总计",
+                "sumprice": 0
+            },
+            {
+                "sumcount": 0,
+                "categoryname": "赠送类",
+                "category2name": "总计",
+                "sumprice": 0
             }
         ],
-        "guesttraffic": {
-            "countcustomername": 3,
-            "distinctcustomername": 2,
-            "passengerflow": 3.0000
+        "statistics": {
+            "人头": 1,
+            "客流": 3,
+            "平均单价": 0
         }
     }
 }
-
 ```
