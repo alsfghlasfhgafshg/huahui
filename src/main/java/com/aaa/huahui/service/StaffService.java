@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class StaffService {
@@ -132,13 +133,17 @@ public class StaffService {
     }
 
     //查看所有familymember
-    ArrayList<FamilyMember> selectAllFamilyMember(int staffid) {
+    public ArrayList<FamilyMember> selectAllFamilyMember(int staffid) {
         return familyMemberRepository.selectAllFamilyMember(staffid);
     }
 
-    boolean updateFamilyMember(FamilyMember familyMember) {
+    public boolean updateFamilyMember(FamilyMember familyMember) {
         familyMemberRepository.updateFamilyMember(familyMember);
         return true;
+    }
+
+    public String findNameById(int staffid){
+        return staffRepository.findNameByStaffid(staffid).get();
     }
 
 

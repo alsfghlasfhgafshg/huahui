@@ -1,14 +1,21 @@
 package com.aaa.huahui.service;
 
+import com.aaa.huahui.model.Shop;
+import com.aaa.huahui.model.Shopvip;
 import com.aaa.huahui.repository.ShopVipRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
 public class ShopVipService {
+
+    @Value("${pageSize}")
+    private int pageSize;
 
     @Autowired
     ShopVipRepository shopVipRepository;
@@ -16,17 +23,38 @@ public class ShopVipService {
     @Autowired
     StaffRepository staffRepository;
 
-    public boolean addShopVip(String vipname,int shopid,int consultantid){
-        return shopVipRepository.insertNewVip(vipname,shopid,consultantid)==1;
+    public boolean addShopVip(Shopvip shopvip){
+        return shopVipRepository.insertNewVip(shopvip)==1;
     }
 
-    public Optional<String> findConsultantName(String vipname){
-        try {
-            int staffid = shopVipRepository.findConsultantByName(vipname);
-            Optional<String>  consultantName= staffRepository.findNameByStaffid(staffid);
-            return consultantName;
-        }catch (Exception e){
-            throw new RuntimeException();
+    public ArrayList<Shopvip> findShopVipByName(String vipname){
+        return shopVipRepository.findShopVipByName(vipname);
+    }
+
+    public boolean changeCustomerToVip(int vipid){
+        return shopVipRepository.changeNewToOld(vipid)==1;
+    }
+
+    public boolean deleteShopVip(int vipid){
+        Shopvip shopvip = shopVipRepository.selectOneByVipid(vipid);
+        if (shopvip.getIsnew()==1){
+            return false;
+        }else {
+            shopVipRepository.deleteShopVip(vipid);
+            return true;
         }
     }
+
+    public ArrayList<Shopvip> listAllShopVip(int page){
+        int offset = (page - 1) * pageSize;
+
+        int pagesize = this.pageSize;
+
+        if (page == -1) {
+            offset = 0;
+            pagesize = Integer.MAX_VALUE;
+        }
+        return shopVipRepository.selectAllShopVip(offset,pagesize);
+    }
+
 }
