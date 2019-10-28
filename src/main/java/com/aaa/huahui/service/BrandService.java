@@ -3,6 +3,7 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.*;
 import com.aaa.huahui.repository.*;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,20 @@ public class BrandService {
         userService.deleteUser(brandid, ROLE.BRAND);
         return true;
     }
+
+    //状态
+    public JSONObject status(int brandid){
+        JSONObject data=new JSONObject();
+
+        int i = brandRepository.selectCountBrandShop(brandid);
+        data.put("shopcount",i);
+
+        i=brandRepository.selectCountBrandStaff(brandid);
+        data.put("staffcount",i);
+
+        return data;
+    }
+
 
     //新的4个category
     @Transactional

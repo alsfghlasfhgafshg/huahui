@@ -198,7 +198,7 @@ public class AdminController {
     }
 
     //首页状态
-    @GetMapping("/status")
+    @GetMapping("/status/admin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject status(){

@@ -43,6 +43,17 @@ public class ShopController {
 //        return "shop";
 //    }
 
+
+
+    //首页状态
+    @GetMapping("/status/shop")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public @ResponseBody
+    JSONObject status(){
+
+        return null;
+    }
+
     //获得所有shop
     @GetMapping("/allshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")

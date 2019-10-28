@@ -46,6 +46,19 @@ public class BrandController {
     }
 
 
+
+    //首页状态
+    @GetMapping("/status/brand")
+    @PreAuthorize("hasRole('ROLE_BRAND')")
+    public @ResponseBody
+    JSONObject status(UsernamePasswordAuthenticationToken token){
+        int id = ((User) token.getPrincipal()).getId();
+        JSONObject status = brandService.status(id);
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(status);
+
+        return responsejson;
+    }
+
     //列出所有brand
     @GetMapping("/brand/allbrand")
     public @ResponseBody
