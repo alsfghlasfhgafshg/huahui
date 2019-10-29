@@ -310,8 +310,7 @@ public class BrandController {
                           @RequestParam("percentagemethod")String percentagemethod) {
         User user = (User) token.getPrincipal();
         int brandid = user.getId();
-        String category = brandService.findNameById(category2id).get();
-        Project project = new Project(category2id, projectname,shortname,category,productbrand,price,fixedhand,
+        Project project = new Project(category2id, projectname,shortname,productbrand,price,fixedhand,
                                         percentagemethod);
         Project r = brandService.addProject(user, project);
 

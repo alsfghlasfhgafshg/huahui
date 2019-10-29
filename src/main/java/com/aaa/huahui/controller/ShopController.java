@@ -214,7 +214,7 @@ public class ShopController {
     }
 
     //获得shop名字
-    @GetMapping("/shop/getname")
+    @GetMapping("/getname")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public  @ResponseBody
     JSONObject getshopname(UsernamePasswordAuthenticationToken token){
