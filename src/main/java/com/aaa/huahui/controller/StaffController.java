@@ -62,6 +62,7 @@ public class StaffController {
 
         for (Staff staff : list) {
             JSONObject temp = new JSONObject();
+            temp.put("id",staff.getStaffid());
             temp.put("name", staff.getName());
             temp.put("male", staff.getMale());
             temp.put("birthday", staff.getBirthday());
@@ -72,7 +73,13 @@ public class StaffController {
             temp.put("address", staff.getAddress());
             temp.put("phone", staff.getPhone());
             temp.put("emergencyphone", staff.getEmergencyphone());
-            temp.put("role", staff.getRole());
+            if (staff.getRole().equals("beautician")){
+                temp.put("role", "美容师");
+            }
+            if (staff.getRole().equals("consultant")){
+                temp.put("role", "顾问");
+            }
+
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
