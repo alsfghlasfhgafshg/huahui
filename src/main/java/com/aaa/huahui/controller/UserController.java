@@ -149,6 +149,12 @@ public class UserController {
             responsejson = ResponseGenerate.genFailResponse(1, "密码不一致");
             return responsejson;
         }
+
+        if(passwd.length()<6||passwd.length()>16){
+            responsejson = ResponseGenerate.genFailResponse(1, "密码需要在6-16之间");
+            return responsejson;
+        }
+
         if (user == null) {
             responsejson = ResponseGenerate.genFailResponse(1, "无权限");
             return responsejson;
