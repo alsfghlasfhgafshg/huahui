@@ -8,24 +8,36 @@ public class Shopvip {
     private int male;//男0女1
     private int age;
     private String telephone;
-    private int isnew;//1true
+    private boolean isvip;//1true
     private int shopid;
     private int consultant;
     private int beautician;
+    private int beautician2;
 
     public Shopvip() {
     }
 
-    public Shopvip(String vipname, String vipnumber, int male, int age, String telephone, int isnew, int shopid, int consultant, int beautician) {
+    public Shopvip(String vipname, String vipnumber, int male,
+                   int age, String telephone, boolean isvip, int shopid,
+                   int consultant, int beautician, int beautician2) {
         this.vipname = vipname;
         this.vipnumber = vipnumber;
         this.male = male;
         this.age = age;
         this.telephone = telephone;
-        this.isnew = isnew;
+        this.isvip = isvip;
         this.shopid = shopid;
         this.consultant = consultant;
         this.beautician = beautician;
+        this.beautician2=beautician2;
+    }
+
+    public int getBeautician2() {
+        return beautician2;
+    }
+
+    public void setBeautician2(int beautician2) {
+        this.beautician2 = beautician2;
     }
 
     public String getVipnumber() {
@@ -76,12 +88,12 @@ public class Shopvip {
         this.telephone = telephone;
     }
 
-    public int getIsnew() {
-        return isnew;
+    public boolean getIsvip() {
+        return isvip;
     }
 
-    public void setIsnew(int isnew) {
-        this.isnew = isnew;
+    public void setIsvip(boolean isvip) {
+        this.isvip = isvip;
     }
 
     public int getShopid() {

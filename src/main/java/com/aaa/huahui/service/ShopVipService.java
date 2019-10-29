@@ -1,6 +1,5 @@
 package com.aaa.huahui.service;
 
-import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.Shopvip;
 import com.aaa.huahui.repository.ShopVipRepository;
 import com.aaa.huahui.repository.StaffRepository;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 public class ShopVipService {
@@ -24,6 +22,12 @@ public class ShopVipService {
     StaffRepository staffRepository;
 
     public boolean addShopVip(Shopvip shopvip){
+
+
+        Shopvip shopvip1 = shopVipRepository.selectOneByTelephone(shopvip.getTelephone());
+        if (shopvip1.getIsvip()==false) {
+            shopVipRepository.deleteShopVip(shopvip1.getVipid());
+        }
         return shopVipRepository.insertNewVip(shopvip)==1;
     }
 
@@ -32,14 +36,15 @@ public class ShopVipService {
     }
 
     public int changeCustomerToVip(int vipid){
-        if (shopVipRepository.selectOneByVipid(vipid).getIsnew()==0) return 1;
+        if (shopVipRepository.selectOneByVipid(vipid).getIsvip()==true) return 1;
         else if (shopVipRepository.changeNewToOld(vipid)==1) return 2;
         else return 3;
     }
 
     public boolean deleteShopVip(int vipid){
         Shopvip shopvip = shopVipRepository.selectOneByVipid(vipid);
-        if (shopvip.getIsnew()==1){
+        if (shopvip==null) return false;
+        if (shopvip.getIsvip()==false){
             return false;
         }else {
             shopVipRepository.deleteShopVip(vipid);
