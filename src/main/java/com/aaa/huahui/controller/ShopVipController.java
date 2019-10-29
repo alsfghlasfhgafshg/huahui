@@ -60,6 +60,7 @@ public class ShopVipController {
 
         for (Shopvip shopvip : list) {
             JSONObject temp = new JSONObject();
+            temp.put("vipid", shopvip.getVipid());
             temp.put("vipname", shopvip.getVipname());
             temp.put("vipnumber", shopvip.getVipnumber());
             temp.put("male", shopvip.getMale());
