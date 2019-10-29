@@ -2,6 +2,7 @@ package com.aaa.huahui.repository;
 
 import com.aaa.huahui.model.Brand;
 import com.aaa.huahui.model.Category;
+import com.aaa.huahui.vo.CategoryVO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
@@ -45,4 +46,7 @@ public interface BrandRepository {
 
     @Select("select count(*) from staff,shop,brand where staff.staffid=shop.shopid and shop.shopid=shop.brandid and brand.brandid=#{brandid}")
     int selectCountBrandStaff(@Param("brandid") int brandid);
+
+
+    List<CategoryVO> selectallcategoryand2(@Param("brandid")int brandid);
 }

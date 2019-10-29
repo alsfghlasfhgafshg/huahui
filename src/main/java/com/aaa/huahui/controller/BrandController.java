@@ -9,6 +9,7 @@ import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.UserService;
 import com.aaa.huahui.utils.ResponseGenerate;
+import com.aaa.huahui.vo.CategoryVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class BrandController {
@@ -46,12 +48,11 @@ public class BrandController {
     }
 
 
-
     //首页状态
     @GetMapping("/status/brand")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
-    JSONObject status(UsernamePasswordAuthenticationToken token){
+    JSONObject status(UsernamePasswordAuthenticationToken token) {
         int id = ((User) token.getPrincipal()).getId();
         JSONObject status = brandService.status(id);
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(status);
@@ -61,6 +62,7 @@ public class BrandController {
 
     //列出所有brand
     @GetMapping("/brand/allbrand")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject allBrand() {
         JSONObject rejeson = null;
@@ -86,6 +88,7 @@ public class BrandController {
 
     //获得一个brand
     @GetMapping("/brand/getbrand")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject getBrand(@RequestParam("brandid") int brandid) {
         Brand brand = brandService.getBrand(brandid);
@@ -99,6 +102,7 @@ public class BrandController {
 
     //新的brand
     @PostMapping("/brand/newbrand")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject newBrand(@RequestParam("name") String name,
                         @RequestParam("password") String password,
@@ -122,6 +126,7 @@ public class BrandController {
 
     //更新brand
     @PostMapping("/brand/updatebrandadmin")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject adminUpdateBrand(@RequestParam("brandid") int brandid,
                                 @RequestParam("description") String description,
@@ -148,6 +153,7 @@ public class BrandController {
 
     //删除一个brand
     @PostMapping("/brand/deletebrand")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject deleteBrand(@RequestParam("brandid") int brandid) {
         JSONObject rejeson = new JSONObject();
@@ -303,15 +309,15 @@ public class BrandController {
     JSONObject addProject(UsernamePasswordAuthenticationToken token,
                           @RequestParam("category2id") int category2id,
                           @RequestParam("projectname") String projectname,
-                          @RequestParam("shortname")String shortname,
-                          @RequestParam("productbrand")String productbrand,
-                          @RequestParam("price")float price,
-                          @RequestParam("fixedhand")float fixedhand,
-                          @RequestParam("percentagemethod")String percentagemethod) {
+                          @RequestParam("shortname") String shortname,
+                          @RequestParam("productbrand") String productbrand,
+                          @RequestParam("price") float price,
+                          @RequestParam("fixedhand") float fixedhand,
+                          @RequestParam("percentagemethod") String percentagemethod) {
         User user = (User) token.getPrincipal();
         int brandid = user.getId();
-        Project project = new Project(category2id, projectname,shortname,productbrand,price,fixedhand,
-                                        percentagemethod);
+        Project project = new Project(category2id, projectname, shortname, productbrand, price, fixedhand,
+                percentagemethod);
         Project r = brandService.addProject(user, project);
 
 
@@ -350,7 +356,7 @@ public class BrandController {
     @PostMapping("/reviewincome")
     public @ResponseBody
     JSONObject reviewincome(UsernamePasswordAuthenticationToken token,
-                            @RequestParam("shopid") int shopid){
+                            @RequestParam("shopid") int shopid) {
         return null;
 
     }
@@ -358,13 +364,13 @@ public class BrandController {
     //获得brand名字
     @GetMapping("/brand/getname")
     @PreAuthorize("hasRole('ROLE_BRAND')")
-    public  @ResponseBody
-    JSONObject getshopname(UsernamePasswordAuthenticationToken token){
+    public @ResponseBody
+    JSONObject getshopname(UsernamePasswordAuthenticationToken token) {
         int brandid = ((User) token.getPrincipal()).getId();
         String shopName = brandService.getBrandName(brandid);
-        JSONObject data=new JSONObject();
-        data.put("name",shopName);
-        JSONObject responsejson=ResponseGenerate.genSuccessResponse(data);
+        JSONObject data = new JSONObject();
+        data.put("name", shopName);
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(data);
         return responsejson;
     }
 

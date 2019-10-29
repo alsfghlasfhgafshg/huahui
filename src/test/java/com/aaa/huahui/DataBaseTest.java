@@ -6,13 +6,11 @@ import com.aaa.huahui.model.Brand;
 import com.aaa.huahui.model.Project;
 import com.aaa.huahui.model.TodayWork;
 import com.aaa.huahui.model.User;
-import com.aaa.huahui.repository.ProjectRepository;
-import com.aaa.huahui.repository.SettlementRepository;
-import com.aaa.huahui.repository.TodayWorkRepository;
-import com.aaa.huahui.repository.UserRepository;
+import com.aaa.huahui.repository.*;
 import com.aaa.huahui.service.*;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
+import com.aaa.huahui.vo.CategoryVO;
 import com.aaa.huahui.vo.SettlementVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -63,8 +61,18 @@ public class DataBaseTest {
     StaffService staffService;
 
     @Autowired
+    BrandRepository brandRepository;
+
+    @Autowired
     SystemService systemService;
 
+
+
+    @Test
+    public void sad(){
+        List<CategoryVO> categoryVOS = brandRepository.selectallcategoryand2(11);
+        System.out.println(23);
+    }
 
     @Test
     public void sadfadswfgdsag(){

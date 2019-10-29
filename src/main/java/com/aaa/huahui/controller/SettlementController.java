@@ -249,18 +249,18 @@ public class SettlementController {
         return responsejson = ResponseGenerate.genSuccessResponse(allPayMentMethod);
     }
 
-    @GetMapping("/settlement/getconsultantname")
-    public @ResponseBody
-    JSONObject getConsultant(@RequestParam("vipname")String vipname){
-        Optional<String> consultantName = shopVipService.findConsultantName(vipname);
-        if (consultantName.isPresent()) return ResponseGenerate.genSuccessResponse(consultantName.get());
-        else return ResponseGenerate.genFailResponse(1,"查找失败");
-    }
-
-    @PostMapping("/settlement/addshopvip")
-    public @ResponseBody
-    JSONObject addShopvip(@RequestParam("vipname")String vipname,@RequestParam("shopid")int shopid,@RequestParam("consultantid")int consultant){
-        if (shopVipService.addShopVip(vipname,shopid,consultant)) return ResponseGenerate.genSuccessResponse("添加成功");
-        return ResponseGenerate.genFailResponse(1,"error");
-    }
+//    @GetMapping("/settlement/getconsultantname")
+//    public @ResponseBody
+//    JSONObject getConsultant(@RequestParam("vipname")String vipname){
+//        Optional<String> consultantName = shopVipService.findConsultantName(vipname);
+//        if (consultantName.isPresent()) return ResponseGenerate.genSuccessResponse(consultantName.get());
+//        else return ResponseGenerate.genFailResponse(1,"查找失败");
+//    }
+//
+//    @PostMapping("/settlement/addshopvip")
+//    public @ResponseBody
+//    JSONObject addShopvip(@RequestParam("vipname")String vipname,@RequestParam("shopid")int shopid,@RequestParam("consultantid")int consultant){
+//        if (shopVipService.addShopVip(vipname,shopid,consultant)) return ResponseGenerate.genSuccessResponse("添加成功");
+//        return ResponseGenerate.genFailResponse(1,"error");
+//    }
 }

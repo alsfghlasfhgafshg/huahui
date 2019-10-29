@@ -41,4 +41,34 @@
 
 
 
+
+    <resultMap id="CategoryVO" type="com.aaa.huahui.vo.CategoryVO">
+
+        <id column="categoryid" property="id"/>
+        <result column="categoryname" property="name"/>
+
+
+        <collection property="category2s" ofType="com.aaa.huahui.vo.Category2VO">
+            <result property="category2id" column="category2id" />
+            <result property="name" column="category2name"/>
+
+        </collection>
+
+    </resultMap>
+
+    <select id="selectallcategoryand2" resultMap="CategoryVO">
+
+    select category.id           categoryid,
+           category.name         categoryname,
+           category2.category2id category2id,
+           category2.name        category2name
+    from category,
+         category2
+
+    where category2.categoryid = category.id
+      and category.brandid = #{brandid};
+
+    </select>
+
+
 </mapper>

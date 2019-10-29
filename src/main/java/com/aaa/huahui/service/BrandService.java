@@ -3,6 +3,7 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.*;
 import com.aaa.huahui.repository.*;
+import com.aaa.huahui.vo.CategoryVO;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -305,5 +306,16 @@ public class BrandService {
         String name = userRepository.queryUserName(brandid);
         return name;
     }
+
+
+    public List<CategoryVO> getallcategoryand2(int brandid){
+        List<CategoryVO> categoryVOS = brandRepository.selectallcategoryand2(brandid);
+        return categoryVOS;
+    }
+
+
+
+
+
 
 }
