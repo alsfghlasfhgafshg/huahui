@@ -2,6 +2,7 @@ package com.aaa.huahui.repository;
 
 import com.aaa.huahui.model.Shopvip;
 import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -14,13 +15,17 @@ public interface ShopVipRepository {
     @Options(useGeneratedKeys = true,keyColumn = "vipid")
     int insertNewVip(Shopvip shopvip);
 
+    @Select("select * from shopvip where telephone=#{telephone}")
+    Shopvip selectOneByTelephone(@RequestParam("telephone") String telephone);
+
     //根据会员名查找,重名情况未考虑
-    @Select("select * from shopvip where vipname like '%#{vipname}%'")
+    @Select("select * from shopvip where vipname like CONCAT(CONCAT('%',#{keyword}),'%')")
     ArrayList<Shopvip> findShopVipByName(@Param("vipname") String vipname);
 
+
     //将新客变为会员
-    @Update("update shopvip set isnew=0 where vipid=#{vipid}")
-    int changeNewToOld(@Param("vipid") int vipid);
+    @Update("update shopvip set isnew=0 where telephone=#{telephone}")
+    int changeNewToOld(@Param("telephone") String telephone);
 
     //删除会员
     @Delete("delete from shopvip where vipid=#{vipid}")

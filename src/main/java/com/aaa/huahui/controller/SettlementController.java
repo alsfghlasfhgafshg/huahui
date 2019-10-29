@@ -1,10 +1,12 @@
 package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.ROLE;
-import com.aaa.huahui.model.*;
+import com.aaa.huahui.model.PaymentMethod;
+import com.aaa.huahui.model.Settlement;
+import com.aaa.huahui.model.SettlementItem;
+import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.ProjectRepository;
 import com.aaa.huahui.repository.StaffRepository;
-import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.SettlementService;
 import com.aaa.huahui.service.ShopVipService;
 import com.aaa.huahui.service.StaffService;
@@ -13,9 +15,7 @@ import com.aaa.huahui.utils.ResponseGenerate;
 import com.aaa.huahui.vo.SettlementVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -39,23 +39,6 @@ public class SettlementController {
 
     @Autowired
     ProjectRepository projectRepository;
-
-    @Autowired
-    BrandService brandService;
-
-
-    @PostMapping("/project/searchprojecet")
-    public @ResponseBody
-    JSONObject searchProject(UsernamePasswordAuthenticationToken token,
-            @Param("keyword")String keyword){
-
-        int userid = ((User) token.getPrincipal()).getId();
-        List<Project> projects = brandService.searchProject(userid, keyword);
-
-        JSONObject response=ResponseGenerate.genSuccessResponse(projects);
-        return response;
-
-    }
 
 
     @PostMapping("/settlement/delete")
@@ -249,18 +232,4 @@ public class SettlementController {
         return responsejson = ResponseGenerate.genSuccessResponse(allPayMentMethod);
     }
 
-//    @GetMapping("/settlement/getconsultantname")
-//    public @ResponseBody
-//    JSONObject getConsultant(@RequestParam("vipname")String vipname){
-//        Optional<String> consultantName = shopVipService.findConsultantName(vipname);
-//        if (consultantName.isPresent()) return ResponseGenerate.genSuccessResponse(consultantName.get());
-//        else return ResponseGenerate.genFailResponse(1,"查找失败");
-//    }
-//
-//    @PostMapping("/settlement/addshopvip")
-//    public @ResponseBody
-//    JSONObject addShopvip(@RequestParam("vipname")String vipname,@RequestParam("shopid")int shopid,@RequestParam("consultantid")int consultant){
-//        if (shopVipService.addShopVip(vipname,shopid,consultant)) return ResponseGenerate.genSuccessResponse("添加成功");
-//        return ResponseGenerate.genFailResponse(1,"error");
-//    }
 }

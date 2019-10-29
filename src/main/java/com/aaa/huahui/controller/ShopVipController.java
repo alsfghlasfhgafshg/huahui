@@ -99,11 +99,23 @@ public class ShopVipController {
 
     @PostMapping("/change")
     public @ResponseBody
-    JSONObject changeToVip(@RequestParam("vipid")int vipid){
-        int res = shopVipService.changeCustomerToVip(vipid);
-        if (res==1) return ResponseGenerate.genFailResponse(1,"不是新用户");
-        else if (res==2) return ResponseGenerate.genSuccessResponse("更改成功");
-        else return ResponseGenerate.genFailResponse(1,"更改失败");
+    JSONObject changeToVip(@RequestParam("vipname")String vipname,
+                           @RequestParam("vipnumber")String vipnumber,
+                           @RequestParam("male")int male,
+                           @RequestParam("age")int age,
+                           @RequestParam("telephone")String telephone,
+                           @RequestParam("shopid")int shopid,
+                           @RequestParam("consultant")int consultant,
+                           @RequestParam("beautician")int beautician){
+        ArrayList<Shopvip> list = shopVipService.findShopVipByName(vipname);
+        if(list.size()==0) {
+            Shopvip shopvip = new Shopvip(vipname,vipnumber,male,age,telephone,0,shopid,consultant,beautician);
+            shopVipService.addShopVip(shopvip);
+            int res = shopVipService.changeCustomerToVip(telephone);
+            if (res == 1) return ResponseGenerate.genFailResponse(1, "不是新用户");
+            else if (res == 2) return ResponseGenerate.genSuccessResponse("更改成功");
+            else return ResponseGenerate.genFailResponse(1, "更改失败");
+        }else return ResponseGenerate.genFailResponse(1,"已是会员");
     }
 
 }

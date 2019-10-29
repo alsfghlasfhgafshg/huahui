@@ -89,7 +89,6 @@ vipnumber|String|会员码
 male|int|性别(0男1女)
 age|int|年龄
 telephone|String|电话
-isnew|int|是否会员 1是
 shopid|int|店铺id
 consultant|int|顾问id
 beautician|int|美容师id
@@ -167,7 +166,15 @@ vipname|String|会员名
 
 参数名称|类型|描述
 ---|:--:|---:
-vipid|int|会员id
+vipname|String|会员名
+vipnumber|String|会员码
+male|int|性别(0男1女)
+age|int|年龄
+telephone|String|电话
+shopid|int|店铺id
+consultant|int|顾问id
+beautician|int|美容师id
+
 
 **返回格式:** json
 

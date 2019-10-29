@@ -31,9 +31,9 @@ public class ShopVipService {
         return shopVipRepository.findShopVipByName(vipname);
     }
 
-    public int changeCustomerToVip(int vipid){
-        if (shopVipRepository.selectOneByVipid(vipid).getIsnew()==0) return 1;
-        else if (shopVipRepository.changeNewToOld(vipid)==1) return 2;
+    public int changeCustomerToVip(String telephone){
+        if (shopVipRepository.selectOneByTelephone(telephone).getIsnew()==0) return 1;
+        else if (shopVipRepository.changeNewToOld(telephone)==1) return 2;
         else return 3;
     }
 
@@ -58,5 +58,4 @@ public class ShopVipService {
         }
         return shopVipRepository.selectAllShopVip(offset,pagesize);
     }
-
 }
