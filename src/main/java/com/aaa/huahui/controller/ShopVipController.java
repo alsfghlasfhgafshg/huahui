@@ -28,6 +28,7 @@ public class ShopVipController {
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
     JSONObject addShopVip(@RequestParam("vipname")String vipname,
+                          @RequestParam("vipnumber")String vipnumber,
                           @RequestParam("male")int male,
                           @RequestParam("age")int age,
                           @RequestParam("telephone")String telephone,
@@ -36,7 +37,7 @@ public class ShopVipController {
                           @RequestParam("consultant")int consultant,
                           @RequestParam("beautician")int beautician){
         try {
-            Shopvip shopvip = new Shopvip(vipname,male,age,telephone,isnew,shopid,consultant,beautician);
+            Shopvip shopvip = new Shopvip(vipname,vipnumber,male,age,telephone,isnew,shopid,consultant,beautician);
             if (shopVipService.addShopVip(shopvip)) return ResponseGenerate.genSuccessResponse("添加成功");
             else return ResponseGenerate.genSuccessResponse("添加失败");
         }catch (Exception e){
@@ -54,6 +55,7 @@ public class ShopVipController {
         for (Shopvip shopvip: list) {
             JSONObject temp = new JSONObject();
             temp.put("vipname", shopvip.getVipname());
+            temp.put("vipnumber",shopvip.getVipnumber());
             temp.put("male", shopvip.getMale());
             temp.put("age", shopvip.getAge());
             temp.put("telephone", shopvip.getTelephone());
@@ -82,6 +84,7 @@ public class ShopVipController {
         for (Shopvip shopvip: list) {
             JSONObject temp = new JSONObject();
             temp.put("vipname", shopvip.getVipname());
+            temp.put("vipnumber", shopvip.getVipnumber());
             temp.put("male", shopvip.getMale());
             temp.put("age", shopvip.getAge());
             temp.put("telephone", shopvip.getTelephone());
@@ -92,6 +95,15 @@ public class ShopVipController {
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
         return responsejson;
+    }
+
+    @PostMapping("/change")
+    public @ResponseBody
+    JSONObject changeToVip(@RequestParam("vipid")int vipid){
+        int res = shopVipService.changeCustomerToVip(vipid);
+        if (res==1) return ResponseGenerate.genFailResponse(1,"不是新用户");
+        else if (res==2) return ResponseGenerate.genSuccessResponse("更改成功");
+        else return ResponseGenerate.genFailResponse(1,"更改失败");
     }
 
 }

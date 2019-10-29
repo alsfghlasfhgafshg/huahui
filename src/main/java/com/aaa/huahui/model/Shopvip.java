@@ -4,6 +4,7 @@ public class Shopvip {
 
     private int vipid;
     private String vipname;
+    private String vipnumber;
     private int male;//男0女1
     private int age;
     private String telephone;
@@ -15,8 +16,9 @@ public class Shopvip {
     public Shopvip() {
     }
 
-    public Shopvip(String vipname,int male, int age, String telephone, int isnew, int shopid, int consultant, int beautician) {
+    public Shopvip(String vipname, String vipnumber, int male, int age, String telephone, int isnew, int shopid, int consultant, int beautician) {
         this.vipname = vipname;
+        this.vipnumber = vipnumber;
         this.male = male;
         this.age = age;
         this.telephone = telephone;
@@ -24,6 +26,14 @@ public class Shopvip {
         this.shopid = shopid;
         this.consultant = consultant;
         this.beautician = beautician;
+    }
+
+    public String getVipnumber() {
+        return vipnumber;
+    }
+
+    public void setVipnumber(String vipnumber) {
+        this.vipnumber = vipnumber;
     }
 
     public String getVipname() {

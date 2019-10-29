@@ -10,7 +10,7 @@ import java.util.Optional;
 @Mapper
 public interface ShopVipRepository {
     //添加顾客/会员
-    @Insert("insert into shopvip (vipname,male,age,telephone,isnew,shopid,consultant,beautician) values(#{vipname},#{male},#{age},#{telephone},#{isnew},#{shopid},#{consultant},#{beautician})")
+    @Insert("insert into shopvip (vipname,vipnumber,male,age,telephone,isnew,shopid,consultant,beautician) values(#{vipname},#{vipnumber},#{male},#{age},#{telephone},#{isnew},#{shopid},#{consultant},#{beautician})")
     @Options(useGeneratedKeys = true,keyColumn = "vipid")
     int insertNewVip(Shopvip shopvip);
 
@@ -33,4 +33,6 @@ public interface ShopVipRepository {
     //列举所有会员
     @Select("select * from shopvip limit #{offset},#{num}")
     ArrayList<Shopvip> selectAllShopVip(@Param("offset")int offset,@Param("num")int num);
+
+
 }
