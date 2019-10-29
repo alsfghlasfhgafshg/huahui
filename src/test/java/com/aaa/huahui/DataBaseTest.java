@@ -3,6 +3,7 @@ package com.aaa.huahui;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.controller.SettlementController;
 import com.aaa.huahui.model.Brand;
+import com.aaa.huahui.model.Project;
 import com.aaa.huahui.model.TodayWork;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.ProjectRepository;
@@ -64,13 +65,20 @@ public class DataBaseTest {
     @Autowired
     SystemService systemService;
 
+
     @Test
     public void sadfadswfgdsag(){
 
-        Timestamp timeStampStart = DateUtils.getTimeStampStart("2010年10月12日");
-        Timestamp timeStampStart2 = DateUtils.getTimeStampStart("2010-10-12");
 
-        System.out.println(12);
+        List<Project> m1 = brandService.searchProject(12, "m");
+
+//        ArrayList<User> a = userRepository.selectAdminByKeyword("a");
+        List<Project> m = projectRepository.searchProject("m", 12);
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("1",m);
+        System.out.println(jsonObject.toJSONString());
+
+        System.out.println(1);
     }
 
     @Test

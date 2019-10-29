@@ -269,3 +269,42 @@ name ：名字
 }
 
 ```
+
+-------
+
+
+## 搜索project
+
+**url:** /project/searchprojecet
+
+**HTTP请求方式:** GET
+
+
+
+**返回格式:** json
+
+**返回内容:**
+```
+name ：名字
+{
+    "msg": "成功",
+    "code": 0,
+    "data": [
+              {
+                "category2id": 50,
+                "fixedhand": 0.0,
+                "id": 3,
+                "name": "meirong1",
+                "price": 0.0
+              },
+              {
+                "category2id": 50,
+                "fixedhand": 0.0,
+                "id": 4,
+                "name": "meirong2",
+                "price": 0.0
+              }
+            ]
+}
+
+```

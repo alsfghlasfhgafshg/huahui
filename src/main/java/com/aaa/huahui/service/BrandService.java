@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -239,6 +240,12 @@ public class BrandService {
 
     public Optional<String> findNameById(int category2id){
         return category2Repository.findNameByCategory2id(category2id);
+    }
+
+    //搜索project
+    public List<Project> searchProject(int shopid,String keyword){
+        List<Project> projects = projectRepository.searchProject(keyword, shopid);
+        return projects;
     }
 
     //添加project
