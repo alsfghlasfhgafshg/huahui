@@ -88,9 +88,9 @@ public class StaffController {
 
 
     //获取一个员工详细信息
-    @GetMapping("/{id}")
+    @GetMapping("/getonestaff")
     public @ResponseBody
-    JSONObject showOneStaff(@PathVariable("id") int staffId) {
+    JSONObject showOneStaff(@RequestParam("id") int staffId) {
         try {
             Staff staff = staffService.selectOneStaff(staffId);
             return ResponseGenerate.genSuccessResponse(staff);
@@ -146,10 +146,10 @@ public class StaffController {
     }
 
     //修改staff
-    @PostMapping("/editstaff/{staffid}")
+    @PostMapping("/editstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
-    JSONObject updateStaff(@PathVariable("staffid") int staffid,
+    JSONObject updateStaff(@RequestParam("staffid") int staffid,
                            @RequestParam(value = "avatar", required = false) MultipartFile avatar,
                            @RequestParam("name") String name,
                            @RequestParam("male") int male,
@@ -188,10 +188,10 @@ public class StaffController {
     }
 
     //删除staff
-    @PostMapping("/deletestaff/{staffid}")
+    @PostMapping("/deletestaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
-    JSONObject deleteStaff(UsernamePasswordAuthenticationToken token, @PathVariable("staffid") int staffId) {
+    JSONObject deleteStaff(UsernamePasswordAuthenticationToken token, @RequestParam("staffid") int staffId) {
         User user = (User) token.getPrincipal();
         int shopid = staffService.selectOneStaff(staffId).getShopid();
         if (user.getId() != shopid) {
