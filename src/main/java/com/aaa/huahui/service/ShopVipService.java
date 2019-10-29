@@ -31,8 +31,10 @@ public class ShopVipService {
         return shopVipRepository.findShopVipByName(vipname);
     }
 
-    public boolean changeCustomerToVip(int vipid){
-        return shopVipRepository.changeNewToOld(vipid)==1;
+    public int changeCustomerToVip(int vipid){
+        if (shopVipRepository.selectOneByVipid(vipid).getIsnew()==0) return 1;
+        else if (shopVipRepository.changeNewToOld(vipid)==1) return 2;
+        else return 3;
     }
 
     public boolean deleteShopVip(int vipid){
