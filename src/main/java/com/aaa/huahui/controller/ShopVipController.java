@@ -69,6 +69,7 @@ public class ShopVipController {
             temp.put("isnew", shopvip.getIsvip());
             temp.put("consultant", staffService.findNameById(shopvip.getConsultant()));
             temp.put("beautician", staffService.findNameById(shopvip.getBeautician()));
+            temp.put("beautician2", staffService.findNameById(shopvip.getBeautician2()));
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
@@ -90,6 +91,7 @@ public class ShopVipController {
 
         for (Shopvip shopvip : list) {
             JSONObject temp = new JSONObject();
+            temp.put("vipid", shopvip.getVipid());
             temp.put("vipname", shopvip.getVipname());
             temp.put("vipnumber", shopvip.getVipnumber());
             temp.put("male", shopvip.getMale());
@@ -98,6 +100,7 @@ public class ShopVipController {
             temp.put("isnew", shopvip.getIsvip());
             temp.put("consultant", staffService.findNameById(shopvip.getConsultant()));
             temp.put("beautician", staffService.findNameById(shopvip.getBeautician()));
+            temp.put("beautician2", staffService.findNameById(shopvip.getBeautician2()));
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);

@@ -23,6 +23,7 @@ page|int|页数,每页10个,可选参数默认值1
     "code": 0,
     "data": [
         {
+            "vipid": "vipid",
             "vipname": "vipname",
             "vipnumber":"68641554354",
             "male": 0,
@@ -31,6 +32,7 @@ page|int|页数,每页10个,可选参数默认值1
             "isnew",0,
             "consultant","dewitt",
             "beautician","dewitt"
+            "beautician2","dewitt"
         }
     ]
 }
@@ -135,14 +137,16 @@ vipname|String|会员名
     "code": 0,
     "data": [
         {
+            "vipid": "vipid",
             "vipname": "vipname",
             "vipnumber":"54556447112",
             "male": 0,
             "age":21,
             "telephone",1562655616,
-            "isnew",0,
+        
             "consultant","dewitt",
             "beautician","dewitt"
+            "beautician2","dewitt"
         }
     ]
 }
