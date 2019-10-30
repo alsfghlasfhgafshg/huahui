@@ -38,14 +38,14 @@ public class ShopService {
     SettlementRepository settlementRepository;
 
 
-    public JSONObject status(int shopid){
-        JSONObject data=new JSONObject();
+    public JSONObject status(int shopid) {
+        JSONObject data = new JSONObject();
 
         int i = shopRepository.selectCountShopStaff(shopid);
-        data.put("staffcount",i);
+        data.put("staffcount", i);
 
-        i=settlementRepository.selectCountShopCustomer(shopid);
-        data.put("customercount",i);
+        i = settlementRepository.selectCountShopCustomer(shopid);
+        data.put("customercount", i);
 
         return data;
     }
@@ -65,15 +65,15 @@ public class ShopService {
 
         ArrayList<Integer> settlementids = settlementRepository.selectAllSettlementId(shopid);
         for (Integer settlementid : settlementids) {
-            settlementService.deleteSettlement(userRepository.selectByUserid(shopid),settlementid);
+            settlementService.deleteSettlement(userRepository.selectByUserid(shopid), settlementid);
         }
         shopRepository.deleteShop(shopid);
         return true;
     }
 
     //添加一个shop
-    public int insertShop(int shopid, String description, String geo, int brandid) {
-        return shopRepository.insertShop(shopid, description, geo, brandid);
+    public int insertShop(int shopid, String description, String province, String city, String district, String geo, int brandid) {
+        return shopRepository.insertShop(shopid, description, province, city, district, geo, brandid);
     }
 
     //更改shop信息
@@ -104,7 +104,7 @@ public class ShopService {
     }
 
     //获得所有shop
-    public ArrayList<Shop> selectAllShop(int brandid,int page) {
+    public ArrayList<Shop> selectAllShop(int brandid, int page) {
         int offset = (page - 1) * pageSize;
 
         int pagesize = this.pageSize;
@@ -113,7 +113,7 @@ public class ShopService {
             offset = 0;
             pagesize = Integer.MAX_VALUE;
         }
-        return shopRepository.selectAllShop(brandid,offset,pagesize);
+        return shopRepository.selectAllShop(brandid, offset, pagesize);
     }
 
     //获得shop的brand
@@ -124,25 +124,25 @@ public class ShopService {
 
 
     @Transactional
-    public boolean deleteReport(int id){
+    public boolean deleteReport(int id) {
         int res = shopRepository.deletereport(id);
-        return res==1;
+        return res == 1;
     }
 
-    public boolean insertReport(int staffid, int shopid, String txt, String period, String createtime){
-        int res = shopRepository.insertReport(staffid,shopid,txt,period,createtime);
-        return res==1;
+    public boolean insertReport(int staffid, int shopid, String txt, String period, String createtime) {
+        int res = shopRepository.insertReport(staffid, shopid, txt, period, createtime);
+        return res == 1;
     }
 
-    public String selectOneDay(int staffid,String date){
-        return shopRepository.selectOneReport(staffid,date);
+    public String selectOneDay(int staffid, String date) {
+        return shopRepository.selectOneReport(staffid, date);
     }
 
-    public boolean updateReport(int staffid, int shopid, String txt, String period, String createtime){
-        return shopRepository.updateReport(txt,period,shopid,staffid,createtime)==1;
+    public boolean updateReport(int staffid, int shopid, String txt, String period, String createtime) {
+        return shopRepository.updateReport(txt, period, shopid, staffid, createtime) == 1;
     }
 
-    public String getShopName(int shopid){
+    public String getShopName(int shopid) {
         String name = userRepository.queryUserName(shopid);
         return name;
     }

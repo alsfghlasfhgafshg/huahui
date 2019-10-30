@@ -3,8 +3,20 @@ package com.aaa.huahui.model;
 public class Shop {
     int shopid;
     String description;
+    String province;
+    String city;
+    String district;
     String geo;
     int brandid;
+
+    public Shop(String description, String province, String city, String district, String geo, int brandid) {
+        this.description = description;
+        this.province = province;
+        this.city = city;
+        this.district = district;
+        this.geo = geo;
+        this.brandid = brandid;
+    }
 
     public int getBrandid() {
         return brandid;
