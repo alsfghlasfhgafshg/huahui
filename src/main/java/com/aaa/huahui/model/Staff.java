@@ -2,6 +2,7 @@ package com.aaa.huahui.model;
 
 import java.io.File;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Staff {
@@ -9,7 +10,7 @@ public class Staff {
     private String avatar;
     private String name;
     private int male;//0男
-    private Date birthday;
+    private Timestamp birthday;
     private String nation;
     private String party;
     private String healthy;
@@ -28,7 +29,7 @@ public class Staff {
     private String role;
     private int shopid;
 
-    public Staff(int staffid, String name, int male, Date birthday, String nation, String party, String healthy, String nativeplace, String address, String phone, String emergencyphone, String p1name, int p1male, String p1company, String p1relationship, String p2name, int p2male, String p2company, String p2relationship,String role, int shopid) {
+    public Staff(int staffid, String name, int male, Timestamp birthday, String nation, String party, String healthy, String nativeplace, String address, String phone, String emergencyphone, String p1name, int p1male, String p1company, String p1relationship, String p2name, int p2male, String p2company, String p2relationship, String role, int shopid) {
         this.staffid = staffid;
         this.name = name;
         this.male = male;
@@ -100,11 +101,11 @@ public class Staff {
         this.male = male;
     }
 
-    public Date getBirthday() {
+    public Timestamp getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(Timestamp birthday) {
         this.birthday = birthday;
     }
 

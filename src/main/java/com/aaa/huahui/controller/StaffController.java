@@ -108,7 +108,7 @@ public class StaffController {
 //                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar,
                         @RequestParam(value = "name", defaultValue = "", required = false) String name,
                         @RequestParam("male") int male,
-                        @RequestParam("birthday") Date birthday,
+                        @RequestParam("birthday") String birth,
                         @RequestParam("nation") String nation,
                         @RequestParam("party") String party,
                         @RequestParam("healthy") String healthy,
@@ -126,6 +126,9 @@ public class StaffController {
                         @RequestParam(value = "p2relationship", required = false) String p2relationship,
                         @RequestParam("role") String role,
                         UsernamePasswordAuthenticationToken token) {
+
+        Timestamp birthday=DateUtils.getTimeStampEnd(birth);
+
         User user = (User) token.getPrincipal();
         int shopId = user.getId();
         User staffUser = null;
@@ -156,7 +159,7 @@ public class StaffController {
                            @RequestParam(value = "avatar", required = false) MultipartFile avatar,
                            @RequestParam("name") String name,
                            @RequestParam("male") int male,
-                           @RequestParam("birthday") Date birthday,
+                           @RequestParam("birthday") String birth,
                            @RequestParam("nation") String nation,
                            @RequestParam("party") String party,
                            @RequestParam("healthy") String healthy,
@@ -175,6 +178,8 @@ public class StaffController {
                            @RequestParam(value = "role") String role,
                            @RequestParam("shopid") int shopid,
                            UsernamePasswordAuthenticationToken token) {
+        Timestamp birthday=DateUtils.getTimeStampEnd(birth);
+
         User user = (User) token.getPrincipal();
         if (user.getId() != shopid) {
             return ResponseGenerate.genFailResponse(1, "not be permitted");
