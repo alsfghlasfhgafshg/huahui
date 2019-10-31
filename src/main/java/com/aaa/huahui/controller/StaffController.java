@@ -133,6 +133,9 @@ public class StaffController {
             staffUser = userService.newUser(username, "", "", "ROLE_STAFF");
         } catch (NewUserFailException e) {
             e.printStackTrace();
+            String errors = e.getErrors();
+            JSONObject responsejson = ResponseGenerate.genFailResponse(1, errors);
+            return responsejson;
         }
         Staff staff = new Staff(staffUser.getId(), username, male, birthday, nation, party, healthy, nativeplace, address, phone, emergencyphone, p1name, p1male, p1company, p1relationship, p2name, p2male, p2company, p2relationship, role, shopId);
         int success = staffService.addStaff(staff);

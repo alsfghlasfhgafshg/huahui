@@ -1,6 +1,7 @@
 package com.aaa.huahui;
 
 import com.aaa.huahui.config.ROLE;
+import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.controller.SettlementController;
 import com.aaa.huahui.model.Brand;
 import com.aaa.huahui.model.Project;
@@ -69,8 +70,10 @@ public class DataBaseTest {
 
 
     @Test
-    public void sad(){
-        List<CategoryVO> categoryVOS = brandRepository.selectallcategoryand2(11);
+    public void sad() throws NewUserFailException {
+        User user = userService.newUser("userdsghhfgdsname", "", "", "ROLE_STAFF");
+
+
         System.out.println(23);
     }
 
