@@ -11,6 +11,13 @@ import java.util.regex.Pattern;
 public class DateUtils {
     static volatile Calendar calendar = Calendar.getInstance();
 
+
+    public static String formatTimeStrap(Timestamp time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timestr = sdf.format(new Date(time.getTime()));
+        return timestr;
+    }
+
     //开始 0：00
     public static Timestamp getTimeStampStart(int year, int month, int day) {
         return getTimeStampWithHHmmss(year, month, day, 0, 0, 0);

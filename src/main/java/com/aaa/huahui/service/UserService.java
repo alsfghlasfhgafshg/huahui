@@ -217,4 +217,9 @@ public class UserService implements UserDetailsService {
         return admins;
     }
 
+    public User getUserByUserid(int userid){
+        User user = userRepository.findById(userid);
+        return user;
+    }
+
 }

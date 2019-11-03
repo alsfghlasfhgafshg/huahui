@@ -65,7 +65,7 @@ public class StaffController {
             temp.put("id",staff.getStaffid());
             temp.put("name", staff.getName());
             temp.put("male", staff.getMale());
-            temp.put("birthday", staff.getBirthday());
+            temp.put("birthday", DateUtils.formatTimeStrap(staff.getBirthday()));
             temp.put("nation", staff.getNation());
             temp.put("party", staff.getParty());
             temp.put("healthy", staff.getHealthy());
