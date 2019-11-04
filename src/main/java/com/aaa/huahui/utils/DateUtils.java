@@ -13,7 +13,7 @@ public class DateUtils {
 
 
     public static String formatTimeStrap(Timestamp time) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         String timestr = sdf.format(new Date(time.getTime()));
         return timestr;
     }
