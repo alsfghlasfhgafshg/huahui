@@ -3,10 +3,7 @@ package com.aaa.huahui;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.controller.SettlementController;
-import com.aaa.huahui.model.Brand;
-import com.aaa.huahui.model.Project;
-import com.aaa.huahui.model.TodayWork;
-import com.aaa.huahui.model.User;
+import com.aaa.huahui.model.*;
 import com.aaa.huahui.repository.*;
 import com.aaa.huahui.service.*;
 import com.aaa.huahui.utils.DateUtils;
@@ -67,6 +64,15 @@ public class DataBaseTest {
     @Autowired
     SystemService systemService;
 
+    @Autowired
+    Settlement_newRepository settlement_newRepository;
+
+    @Test
+    public void das() {
+        Settlement_new settlement_new = settlement_newRepository.selectOneSettlement(1);
+        System.out.println(12);
+
+    }
 
 
     @Test
@@ -78,24 +84,24 @@ public class DataBaseTest {
     }
 
     @Test
-    public void sadfadswfgdsag(){
+    public void sadfadswfgdsag() {
 
 
         List<Project> m1 = brandService.searchProject(12, "m");
 
 //        ArrayList<User> a = userRepository.selectAdminByKeyword("a");
         List<Project> m = projectRepository.searchProject("m", 12);
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("1",m);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("1", m);
         System.out.println(jsonObject.toJSONString());
 
         System.out.println(1);
     }
 
     @Test
-    public void sadfsdf(){
+    public void sadfsdf() {
 //        todayWorkService.setServicenote(11,new Timestamp(System.currentTimeMillis()));
-        todayWorkService.setReturningcustomers(11,new Timestamp(System.currentTimeMillis()));
+        todayWorkService.setReturningcustomers(11, new Timestamp(System.currentTimeMillis()));
     }
 
 
