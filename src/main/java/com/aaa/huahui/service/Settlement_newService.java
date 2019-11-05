@@ -28,4 +28,11 @@ public class Settlement_newService {
         }
         return false;
     }
+
+    public boolean updateSettlement(Settlement_new settlement_new){
+        if (settlement_newRepository.updateSettlement(settlement_new)==1){
+            return true;
+        }
+        return false;
+    }
 }

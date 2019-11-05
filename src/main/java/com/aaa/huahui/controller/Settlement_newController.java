@@ -63,5 +63,56 @@ public class Settlement_newController {
         return ResponseGenerate.genFailResponse(1,"删除失败");
     }
 
-
+    @PostMapping("/update")
+    public JSONObject updateOneSettlement(UsernamePasswordAuthenticationToken token,
+                                          @RequestParam("settlementid") int settlementid,
+                                          @RequestParam("customer")String customer,
+                                          @RequestParam("classify")String classify,
+                                          @RequestParam("category")String category,
+                                          @RequestParam("brandname")String brandname,
+                                          @RequestParam("projectname")String projectname,
+                                          @RequestParam("times") int times,
+                                          @RequestParam("hand") int hand,
+                                          @RequestParam("money") int money,
+                                          @RequestParam("consumptioncategory")String consumptioncategory,
+                                          @RequestParam("consumptionpattern")String consumptionpattern,
+                                          @RequestParam("allocate")String allocate,
+                                          @RequestParam("beautician1") int beautician1,
+                                          @RequestParam("beautician2") int beautician2,
+                                          @RequestParam("cardcategory")String cardcategory,
+                                          @RequestParam("consultant")String consultant,
+                                          @RequestParam("checker")String checker,
+                                          @RequestParam("createtime")Timestamp createtime){
+        Settlement_new settlement_new = null;
+        User principal = (User) token.getPrincipal();
+        try {
+            settlement_new = settlement_newService.selectOneSettlement(settlementid);
+        }catch (Exception e){
+            return ResponseGenerate.genFailResponse(1,"id非法");
+        }
+        int shopid = principal.getId();
+        settlement_new.setShopid(shopid);
+        settlement_new.setCustomer(customer);
+        settlement_new.setClasify(classify);
+        settlement_new.setCategory(category);
+        settlement_new.setCardcategory(cardcategory);
+        settlement_new.setBrandname(brandname);
+        settlement_new.setProjectname(projectname);
+        settlement_new.setTimes(times);
+        settlement_new.setHand(hand);
+        settlement_new.setMoney(money);
+        settlement_new.setConsumptioncategory(consumptioncategory);
+        settlement_new.setConsumptionpattern(consumptionpattern);
+        settlement_new.setAllocate(allocate);
+        settlement_new.setBeautician1(beautician1);
+        settlement_new.setBeautician2(beautician2);
+        settlement_new.setCardcategory(cardcategory);
+        settlement_new.setConsultant(consultant);
+        settlement_new.setChecker(checker);
+        settlement_new.setCreatetime(createtime);
+        if (settlement_newService.updateSettlement(settlement_new)){
+            return ResponseGenerate.genSuccessResponse("修改成功");
+        }
+        return ResponseGenerate.genFailResponse(1,"修改失败");
+    }
 }
