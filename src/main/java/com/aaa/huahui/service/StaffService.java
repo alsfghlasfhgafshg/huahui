@@ -143,7 +143,12 @@ public class StaffService {
     }
 
     public String findNameById(int staffid){
-        return staffRepository.findNameByStaffid(staffid).get();
+        Optional<String> nameByStaffid = staffRepository.findNameByStaffid(staffid);
+        if (nameByStaffid.isPresent()){
+            return nameByStaffid.get();
+        }else {
+            return "未指定";
+        }
     }
 
 

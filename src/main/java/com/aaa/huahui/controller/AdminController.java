@@ -223,7 +223,18 @@ public class AdminController {
     public @ResponseBody
     JSONObject queryBrand(@RequestParam("keyword")String keyword){
         ArrayList<Brand> brands = userService.queryBrand(keyword);
-        JSONObject responsejson=ResponseGenerate.genSuccessResponse(brands);
+        JSONArray data=new JSONArray();
+        for (Brand brand : brands) {
+            JSONObject temp=new JSONObject();
+            temp.put("brandid",brand.getBrandid());
+            temp.put("description",brand.getDescription());
+            temp.put("avatar",brand.getAvatar());
+            User user = userService.getUserByUserid(brand.getBrandid());
+            temp.put("brandname",user.getName());
+            data.add(temp);
+        }
+
+        JSONObject responsejson=ResponseGenerate.genSuccessResponse(data);
         return responsejson;
     }
 }

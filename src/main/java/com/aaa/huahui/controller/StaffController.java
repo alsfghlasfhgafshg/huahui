@@ -65,7 +65,7 @@ public class StaffController {
             temp.put("id",staff.getStaffid());
             temp.put("name", staff.getName());
             temp.put("male", staff.getMale());
-            temp.put("birthday", staff.getBirthday());
+            temp.put("birthday", DateUtils.formatTimeStrap(staff.getBirthday()));
             temp.put("nation", staff.getNation());
             temp.put("party", staff.getParty());
             temp.put("healthy", staff.getHealthy());
@@ -88,9 +88,9 @@ public class StaffController {
 
 
     //获取一个员工详细信息
-    @GetMapping("/{id}")
+    @GetMapping("/getonestaff")
     public @ResponseBody
-    JSONObject showOneStaff(@PathVariable("id") int staffId) {
+    JSONObject showOneStaff(@RequestParam("id") int staffId) {
         try {
             Staff staff = staffService.selectOneStaff(staffId);
             return ResponseGenerate.genSuccessResponse(staff);
@@ -108,7 +108,7 @@ public class StaffController {
 //                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar,
                         @RequestParam(value = "name", defaultValue = "", required = false) String name,
                         @RequestParam("male") int male,
-                        @RequestParam("birthday") Date birthday,
+                        @RequestParam("birthday") String birth,
                         @RequestParam("nation") String nation,
                         @RequestParam("party") String party,
                         @RequestParam("healthy") String healthy,
@@ -126,6 +126,9 @@ public class StaffController {
                         @RequestParam(value = "p2relationship", required = false) String p2relationship,
                         @RequestParam("role") String role,
                         UsernamePasswordAuthenticationToken token) {
+
+        Timestamp birthday=DateUtils.getTimeStampEnd(birth);
+
         User user = (User) token.getPrincipal();
         int shopId = user.getId();
         User staffUser = null;
@@ -133,6 +136,9 @@ public class StaffController {
             staffUser = userService.newUser(username, "", "", "ROLE_STAFF");
         } catch (NewUserFailException e) {
             e.printStackTrace();
+            String errors = e.getErrors();
+            JSONObject responsejson = ResponseGenerate.genFailResponse(1, errors);
+            return responsejson;
         }
         Staff staff = new Staff(staffUser.getId(), username, male, birthday, nation, party, healthy, nativeplace, address, phone, emergencyphone, p1name, p1male, p1company, p1relationship, p2name, p2male, p2company, p2relationship, role, shopId);
         int success = staffService.addStaff(staff);
@@ -146,14 +152,14 @@ public class StaffController {
     }
 
     //修改staff
-    @PostMapping("/editstaff/{staffid}")
+    @PostMapping("/editstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
-    JSONObject updateStaff(@PathVariable("staffid") int staffid,
+    JSONObject updateStaff(@RequestParam("staffid") int staffid,
                            @RequestParam(value = "avatar", required = false) MultipartFile avatar,
                            @RequestParam("name") String name,
                            @RequestParam("male") int male,
-                           @RequestParam("birthday") Date birthday,
+                           @RequestParam("birthday") String birth,
                            @RequestParam("nation") String nation,
                            @RequestParam("party") String party,
                            @RequestParam("healthy") String healthy,
@@ -172,6 +178,8 @@ public class StaffController {
                            @RequestParam(value = "role") String role,
                            @RequestParam("shopid") int shopid,
                            UsernamePasswordAuthenticationToken token) {
+        Timestamp birthday=DateUtils.getTimeStampEnd(birth);
+
         User user = (User) token.getPrincipal();
         if (user.getId() != shopid) {
             return ResponseGenerate.genFailResponse(1, "not be permitted");
@@ -188,10 +196,10 @@ public class StaffController {
     }
 
     //删除staff
-    @PostMapping("/deletestaff/{staffid}")
+    @PostMapping("/deletestaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
-    JSONObject deleteStaff(UsernamePasswordAuthenticationToken token, @PathVariable("staffid") int staffId) {
+    JSONObject deleteStaff(UsernamePasswordAuthenticationToken token, @RequestParam("staffid") int staffId) {
         User user = (User) token.getPrincipal();
         int shopid = staffService.selectOneStaff(staffId).getShopid();
         if (user.getId() != shopid) {

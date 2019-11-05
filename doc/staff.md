@@ -24,6 +24,7 @@ data为array
     "code": 0,
     "data": [
         {
+            "id": "1",
             "name": "dewitt",
             "male": 0,
             "birthday":"1998-02-21",
@@ -135,7 +136,7 @@ role|String|员工角色("consultant","beautician")
 
 ## 获取一个员工的详细信息
 
-**url:** /staff/{id}
+**url:** /staff/getonestaff
 
 **HTTP请求方式:** GET
 
@@ -143,6 +144,7 @@ role|String|员工角色("consultant","beautician")
 
 参数名称|类型|描述
 ---|:--:|---:
+id|int|id
 
 **返回格式:** json
 
@@ -192,7 +194,7 @@ role|String|员工角色("consultant","beautician")
 
 ## 修改staff
 
-**url:** /staff/editstaff/{staffid}
+**url:** /staff/editstaff
 
 **HTTP请求方式:** POST
 
@@ -200,7 +202,8 @@ role|String|员工角色("consultant","beautician")
 
 参数名称|类型|描述
 ---|:--:|---:
-avatar|MultipartFile|用户头像
+staffid|int|用户id
+avatar|二进制|用户头像
 name|String|姓名
 male|int|员工性别
 birthday|Date|员工生日
@@ -279,9 +282,9 @@ date|String|日期yyyy-dd-mm格式
 
 
 
-## 标题
+## 标记员工工作日志完成
 
-**url:** /staff/StaffController
+**url:** /staff/todaywork
 
 **HTTP请求方式:** POST
 
@@ -332,7 +335,7 @@ servicenote|bool|服务备注（可选）
 ```
 
 
-name 名字，staffid ：美容师id
+name 名字，staffid ：顾问id
 
 
 

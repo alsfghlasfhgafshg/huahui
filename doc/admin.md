@@ -320,6 +320,12 @@ keyword|string|查询的品牌名关键字
 **返回格式:** json
 
 **返回内容:**
+
+brandid ：id
+description ： 描述
+avatar：头像
+brandname：品牌名称
+
 ```
 {
     "msg": "成功",
@@ -328,12 +334,14 @@ keyword|string|查询的品牌名关键字
         {
             "brandid": 11,
             "description": "testbrand",
-            "avatar": "no"
+            "avatar": "no",
+            "brandname": "brand1"
         },
         {
             "brandid": 20,
             "description": "qaqa",
-            "avatar": null
+            "avatar": null,
+            "brandname": "brand1"      
         }
     ]
 }

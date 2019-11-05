@@ -42,7 +42,7 @@ public class ShopController {
     @GetMapping("/status/shop")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
-    JSONObject status(UsernamePasswordAuthenticationToken token){
+    JSONObject status(UsernamePasswordAuthenticationToken token) {
         int id = ((User) token.getPrincipal()).getId();
         JSONObject status = shopService.status(id);
 
@@ -80,7 +80,10 @@ public class ShopController {
                         @RequestParam("password") String password,
                         @RequestParam("repeatpassword") String repeatpassword,
                         @RequestParam("description") String description,
-                        @RequestParam("geo") String geo,
+                        @RequestParam(value = "province", defaultValue = "") String province,
+                        @RequestParam(value = "city", defaultValue = "") String city,
+                        @RequestParam(value = "district", defaultValue = "") String district,
+                        @RequestParam(value = "geo",defaultValue = "") String geo,
                         UsernamePasswordAuthenticationToken token) {
         JSONObject rejeson = new JSONObject();
         User brandManager = (User) token.getPrincipal();
@@ -95,8 +98,7 @@ public class ShopController {
             return rejeson;
         }
 
-
-        int i = shopService.insertShop(shopManager.getId(), description, geo, brandId);
+        int i = shopService.insertShop(shopManager.getId(), description, province, city, district, geo, brandId);
         if (i == 1) {
             JSONObject data = new JSONObject();
             data.put("shopid", shopManager.getId());
@@ -150,17 +152,16 @@ public class ShopController {
     //获取一个员工的日报告
     @GetMapping("/staffreporter")
     public @ResponseBody
-    JSONObject getOneStaffReporter(UsernamePasswordAuthenticationToken token, @RequestParam("date")String date, @RequestParam("staffid") int staffid){
+    JSONObject getOneStaffReporter(UsernamePasswordAuthenticationToken token, @RequestParam("date") String date, @RequestParam("staffid") int staffid) {
         User user = (User) token.getPrincipal();
-        if (user.getId()!=staffService.selectOneStaff(staffid).getShopid()){
-            return ResponseGenerate.genFailResponse(1,"无权访问他店员工报告");
-        }else {
+        if (user.getId() != staffService.selectOneStaff(staffid).getShopid()) {
+            return ResponseGenerate.genFailResponse(1, "无权访问他店员工报告");
+        } else {
             try {
                 String find = shopService.selectOneDay(staffid, date);
                 return ResponseGenerate.genSuccessResponse(find);
-            }
-            catch (Exception e){
-                return ResponseGenerate.genFailResponse(1,"staffid is wrong");
+            } catch (Exception e) {
+                return ResponseGenerate.genFailResponse(1, "staffid is wrong");
             }
         }
 
@@ -170,45 +171,45 @@ public class ShopController {
     @PostMapping("/addstaffreport")
     public @ResponseBody
     JSONObject addOneStaffReporter(UsernamePasswordAuthenticationToken token,
-                                   @RequestParam("shopid")int shopid,
-                                   @RequestParam("txt")String txt,
-                                   @RequestParam("period")String period){
+                                   @RequestParam("shopid") int shopid,
+                                   @RequestParam("txt") String txt,
+                                   @RequestParam("period") String period) {
         User user = (User) token.getPrincipal();
         int staffid = user.getId();
         java.util.Date date = new java.util.Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String createtime = format.format(date);
         try {
-            if (shopService.insertReport(staffid,shopid,txt,period,createtime)){
+            if (shopService.insertReport(staffid, shopid, txt, period, createtime)) {
                 return ResponseGenerate.genSuccessResponse("添加成功");
             }
-            return ResponseGenerate.genFailResponse(1,"添加失败");
-        }catch (Exception e){
-            return ResponseGenerate.genFailResponse(1,"错误");
+            return ResponseGenerate.genFailResponse(1, "添加失败");
+        } catch (Exception e) {
+            return ResponseGenerate.genFailResponse(1, "错误");
         }
     }
 
     @PostMapping("/updatestaffreport")
     public @ResponseBody
     JSONObject updateOneStaffReporter(UsernamePasswordAuthenticationToken token,
-                                      @RequestParam("shopid")int shopid,
-                                      @RequestParam("staffid")int staffid,
-                                      @RequestParam("txt")String txt,
-                                      @RequestParam("period")String period){
+                                      @RequestParam("shopid") int shopid,
+                                      @RequestParam("staffid") int staffid,
+                                      @RequestParam("txt") String txt,
+                                      @RequestParam("period") String period) {
         User user = (User) token.getPrincipal();
         java.util.Date date = new java.util.Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String createtime = format.format(date);
-        if (user.getId()!=staffid){
-            return ResponseGenerate.genFailResponse(1,"无修改权限");
-        }else {
+        if (user.getId() != staffid) {
+            return ResponseGenerate.genFailResponse(1, "无修改权限");
+        } else {
             try {
-                if (shopService.updateReport(staffid,shopid,txt,period,createtime)){
+                if (shopService.updateReport(staffid, shopid, txt, period, createtime)) {
                     return ResponseGenerate.genSuccessResponse("更新成功");
                 }
-                return ResponseGenerate.genFailResponse(1,"更新失败");
-            }catch (Exception e){
-                return ResponseGenerate.genFailResponse(1,"错误");
+                return ResponseGenerate.genFailResponse(1, "更新失败");
+            } catch (Exception e) {
+                return ResponseGenerate.genFailResponse(1, "错误");
             }
         }
     }
@@ -216,13 +217,13 @@ public class ShopController {
     //获得shop名字
     @GetMapping("/getname")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    public  @ResponseBody
-    JSONObject getshopname(UsernamePasswordAuthenticationToken token){
+    public @ResponseBody
+    JSONObject getshopname(UsernamePasswordAuthenticationToken token) {
         int shopid = ((User) token.getPrincipal()).getId();
         String shopName = shopService.getShopName(shopid);
-        JSONObject data=new JSONObject();
-        data.put("name",shopName);
-        JSONObject responsejson=ResponseGenerate.genSuccessResponse(data);
+        JSONObject data = new JSONObject();
+        data.put("name", shopName);
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(data);
         return responsejson;
     }
 

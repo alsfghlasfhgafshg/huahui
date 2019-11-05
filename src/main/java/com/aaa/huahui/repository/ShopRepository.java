@@ -11,8 +11,10 @@ public interface ShopRepository {
     @Delete("delete from shop where shopid=#{shopid}")
     int deleteShop(@Param("shopid") int shopid);
 
-    @Insert("insert into shop (shopid,description,geo,brandid)values(#{shopid},#{description},#{geo},#{brandid})")
-    int insertShop(@Param("shopid") int shopid, @Param("description") String description, @Param("geo") String geo, @Param("brandid") int brandid);
+    @Insert("insert into shop (shopid,description,province,city,district,geo,brandid)values(#{shopid},#{description},#{province},#{city},#{district},#{geo},#{brandid})")
+    int insertShop(@Param("shopid") int shopid, @Param("description") String description,
+                   @Param("province") String province, @Param("city") String city, @Param("district") String district, @Param("geo") String geo,
+                   @Param("brandid") int brandid);
 
     @Update("update shop set description=#{description},geo=#{geo} where shopid=#{shopid}")
     int updateShopInfo(@Param("shopid") int shopid, @Param("description") String description, @Param("geo") String geo);

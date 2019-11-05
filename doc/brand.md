@@ -295,7 +295,10 @@ username|string|用户名
 password|string|密码
 repeatpassword|string|重复密码
 description|string|分店简介
-geo|内容|地理位置
+province|string|省
+city|string|市
+district|string|区
+geo|string|详细地理位置
 
 **返回格式:** json
 
