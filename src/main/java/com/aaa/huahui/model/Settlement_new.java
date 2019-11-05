@@ -23,6 +23,9 @@ public class Settlement_new {
     private String checker;
     private Timestamp createtime;
 
+    public Settlement_new() {
+    }
+
     public Settlement_new(int shopid, String customer, String classify, String category, String brandname, String projectname, int times, int hand, int money, String consumptioncategory, String consumptionpattern, String allocate, int beautician1, int beautician2, String cardcategory, String consultant, String checker, Timestamp createtime) {
         this.shopid = shopid;
         this.customer = customer;

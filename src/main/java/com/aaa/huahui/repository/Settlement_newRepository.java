@@ -18,7 +18,7 @@ public interface Settlement_newRepository {
     Settlement_new selectOneSettlement(@Param("settlementid") int settlementid);
 
     @Delete("delete from settlementnew where settlementid=#{settlementid}")
-    int deleteSettlement(int settlementid);
+    int deleteSettlement(@Param("settlementid") int settlementid);
 
     @Update("update from settlementnew set customer=#{customer},classify=#{classify},category=#{category}," +
             "brandname=#{brandname},projectname=#{projectname},times=#{times},hand=#{hand},money=#{money}" +
