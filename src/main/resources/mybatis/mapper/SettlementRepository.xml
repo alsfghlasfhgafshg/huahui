@@ -104,12 +104,12 @@
 
     <select id="selectCountCustomerTimes" resultType="java.util.Map">
 
-        select customername, count(customername) count
+        select customername, times(customername) times
         from settlement
         where shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
         group by customername
-        order by count desc
+        order by times desc
     </select>
 
 
@@ -139,28 +139,28 @@
 
     <select id="selectCountCustomerGreaterOrEq" resultType="java.lang.Integer">
 
-        select count(customername) count
+        select times(customername) times
         from (
-        select customername, count(customername) count
+        select customername, times(customername) times
         from settlement
         where shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
         group by customername
-        order by count
-        )t where count>=#{mintimes}
+        order by times
+        )t where times>=#{mintimes}
     </select>
 
     <select id="selectCountCustomerEq" resultType="int">
 
-       select count(customername) count
+       select times(customername) times
         from (
-        select customername, count(customername) count
+        select customername, times(customername) times
         from settlement
         where shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
         group by customername
-        order by count
-        )t where count=#{mintimes}
+        order by times
+        )t where times=#{mintimes}
 
     </select>
 
@@ -188,7 +188,7 @@
 
 
     <select id="selectProjectCount" resultType="java.util.Map">
-        select projectname, count(projectname) projectcount
+        select projectname, times(projectname) projectcount
         from (
         select settlement.createtime createtime,
         project.name projectname
@@ -235,7 +235,7 @@
     </select>
 
     <select id="selectCategory2SumCount" resultType="java.util.Map">
-        select category2name, count (category2name) sumcount
+        select category2name, times (category2name) sumcount
         from (
         select
         settlementitem.price price,
@@ -308,7 +308,7 @@ from category
 ) t2 on allcategory2.category2name = t2.category2name
 
          left join (
-    select category2name, count(category2name) countcategory2
+    select category2name, times(category2name) countcategory2
     from (
              select settlementitem.price price,
                     category2.name       category2name
@@ -370,7 +370,7 @@ from category
 
 
     <select id="selectConsultantCategory2SumCount" resultType="java.util.Map">
-        select category2name, count (category2name) countcategory2name
+        select category2name, times (category2name) countcategory2name
         from (
         select
         category2.name category2name
@@ -442,7 +442,7 @@ from category
     ) t2 on allcategory2.category2name = t2.category2name
 
              left join (
-        select category2name, count(category2name) countcategory2
+        select category2name, times(category2name) countcategory2
         from (
                  select settlementitem.price price,
                         category2.name       category2name
@@ -504,7 +504,7 @@ from category
 
     <select id="selectbBeauticianCategory2SumCount" resultType="java.util.Map">
 
-        select category2name, count(category2name) countcategory2name
+        select category2name, times(category2name) countcategory2name
         from (
         select settlement.createtime createtime,
 
@@ -581,7 +581,7 @@ from category
     ) t2 on allcategory2.category2name = t2.category2name
 
              left join (
-        select category2name, count(category2name) countcategory2
+        select category2name, times(category2name) countcategory2
         from (
                  select settlementitem.price price,
                         category2.name       category2name
@@ -615,8 +615,8 @@ from category
 
 
     <select id="selectbBeauticianCustomer" resultType="java.util.Map">
-    select  count(distinct customername) distinctcustomername,
-        count(customername) countcustomername
+    select  times(distinct customername) distinctcustomername,
+        times(customername) countcustomername
     from (
              select settlementitem.price    price,
                     settlement.customername customername
@@ -687,7 +687,7 @@ from category
         group by t.projectname
         ) t1,
         (
-        select projectname projectname, count(projectname) countprojectname
+        select projectname projectname, times(projectname) countprojectname
         from (
         select settlement.id settlementid,
         settlement.shopid shopid,
@@ -781,7 +781,7 @@ from category
         group by t.projectname
         ) t1,
         (
-        select projectname projectname, count(projectname) countprojectname
+        select projectname projectname, times(projectname) countprojectname
         from (
         select settlement.id settlementid,
         settlement.shopid shopid,
@@ -875,7 +875,7 @@ from category
         group by t.projectname
         ) t1,
         (
-        select projectname projectname, count(projectname) countprojectname
+        select projectname projectname, times(projectname) countprojectname
         from (
         select settlement.id settlementid,
         settlement.shopid shopid,
@@ -924,7 +924,7 @@ from category
 
 
     <select id="selectRentouKeliu" resultType="java.util.HashMap">
-        select count(settlement.customername) keliu, count(distinct settlement.customername) rentou
+        select times(settlement.customername) keliu, times(distinct settlement.customername) rentou
     from settlement
     where settlement.shopid = #{shopid}
       and settlement.createtime between #{from} and #{to}
@@ -932,7 +932,7 @@ from category
 
 
     <select id="selectRentouKeliuConsultant" resultType="java.util.HashMap">
-    select count(settlement.customername) keliu, count(distinct settlement.customername) rentou
+    select times(settlement.customername) keliu, times(distinct settlement.customername) rentou
     from settlement,
          staff
     where settlement.consultantid = staff.staffid

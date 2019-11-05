@@ -103,7 +103,7 @@ endtime|string|终止统计时间 yyyy-mm-dd格式
 ....
 
 countCustomerTimes为每个顾客到店次数，arraylist
-"count": 1,数量
+"times": 1,数量
 "customername": "dsf" 顾客名
 
 countCustomerPrice每个顾客消费总数
@@ -117,11 +117,11 @@ customername顾客名称
     "data": {
         "countCustomerTimes": [
             {
-                "count": 2,
+                "times": 2,
                 "customername": "c1"
             },
             {
-                "count": 1,
+                "times": 1,
                 "customername": "c2"
             }
         ],
