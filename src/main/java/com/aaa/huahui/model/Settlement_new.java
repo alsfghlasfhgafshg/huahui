@@ -12,7 +12,7 @@ public class Settlement_new {
     private String projectname;
     private int times;
     private int hand;
-    private int money;
+    private double money;
     private String consumptioncategory;
     private String consumptionpattern;
     private String allocate;
@@ -26,7 +26,7 @@ public class Settlement_new {
     public Settlement_new() {
     }
 
-    public Settlement_new(int shopid, String customer, String classify, String category, String brandname, String projectname, int times, int hand, int money, String consumptioncategory, String consumptionpattern, String allocate, int beautician1, int beautician2, String cardcategory, String consultant, String checker, Timestamp createtime) {
+    public Settlement_new(int shopid, String customer, String classify, String category, String brandname, String projectname, int times, int hand, double money, String consumptioncategory, String consumptionpattern, String allocate, int beautician1, int beautician2, String cardcategory, String consultant, String checker, Timestamp createtime) {
         this.shopid = shopid;
         this.customer = customer;
         this.classify = classify;
@@ -119,11 +119,11 @@ public class Settlement_new {
         this.hand = hand;
     }
 
-    public int getMoney() {
+    public double getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(double money) {
         this.money = money;
     }
 
