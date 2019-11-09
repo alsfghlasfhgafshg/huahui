@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.huahui.repository.AnalysisTableRepository">
+
+
+    <select id="selectCustomerHands" resultType="com.aaa.huahui.vo.CustomerHandsVO">
+        select customer,createtime,projectname,money,times
+        from settlementnew
+        where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
+        union all
+        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times
+        from settlementnew
+        where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
+    </select>
+
+    <select id="selectCustomerCash" resultType="com.aaa.huahui.vo.CustomerHandsVO">
+        select customer,createtime,projectname,money,times
+        from settlementnew
+        where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
+        union all
+        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times
+        from settlementnew
+        where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
+    </select>
+
+    <!--<select id="selectAllCustomer" resultType="com.aaa.huahui.vo.CustomerHandsVO">-->
+        <!--select customer,createtime,projectname,money,times-->
+        <!--from settlementnew-->
+        <!--where shopid=#{shopid} and createtime between #{start} and #{end}-->
+        <!--order by createtime desc-->
+    <!--</select>-->
+
+
+</mapper>
