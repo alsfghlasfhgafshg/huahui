@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.huahui.repository.AnalysisTable2Repository">
+
+
+    <resultMap id="AnalysisVO" type="com.aaa.huahui.vo.AnalysisVO">
+        <result column="category" property="type"/>
+        <collection property="con" ofType="com.aaa.huahui.vo.AnalysisItemVO">
+            <result property="category2" column="category2"/>
+            <result property="sumcount" column="sumcount" javaType="double"/>
+            <result property="summoney" column="summoney" javaType="double"/>
+        </collection>
+    </resultMap>
+
+
+    <!--经营分析表-->
+    <select id="managementAnalysis" resultMap="AnalysisVO">
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select category category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                   and createtime between #{from} and #{to}
+                   and (category = "美容" or category = "美体" or category = "仪器")) t
+        group by category
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "实操类"
+
+    union all
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select "产品类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                   and createtime between #{from} and #{to}
+                   and category = "产品") t
+        group by consumptioncategory
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "产品类"
+
+    union all
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select "现金类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                   and createtime between #{from} and #{to}
+                   and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")) t
+        group by consumptioncategory
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "现金类"
+
+    union all
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select "实耗类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                   and createtime between #{from} and #{to}
+                   and (consumptioncategory = "卡扣产品" or consumptioncategory = "卡扣实操"
+                            or consumptioncategory = "现金产品"
+                     or consumptioncategory = "赠送实操"
+                     or consumptioncategory = "现金实操"
+                       )) t
+        group by consumptioncategory
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "实耗类"
+
+    union all
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select "赠送类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                   and createtime between #{from} and #{to}
+                   and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
+                     )) t
+        group by consumptioncategory
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "赠送类"
+
+    ;
+
+    </select>
+
+
+    <select id="statisticsPeopleByShopId" resultType="com.aaa.huahui.vo.CustomerVO">
+
+    select count(distinct customer) "distinctcustomer", count(customer) "customer"
+    from settlementnew
+    where shopid = #{shopid}
+      and createtime between #{from} and #{to}
+
+    </select>
+
+
+    <!--    技师分析表-->
+    <select id="beauticiantAnalysis" resultType="com.aaa.huahui.vo.AnalysisVO">
+
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select category category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                   and createtime between #{from} and #{to}
+                   and (category = "美容" or category = "美体" or category = "仪器")) t
+        group by category
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "实操类"
+
+    union all
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select "产品类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                   and createtime between #{from} and #{to}
+                   and category = "产品") t
+        group by consumptioncategory
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "产品类"
+
+    union all
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select "现金类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                   and createtime between #{from} and #{to}
+                   and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")) t
+        group by consumptioncategory
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "现金类"
+
+    union all
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select "实耗类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                   and createtime between #{from} and #{to}
+                   and (consumptioncategory = "卡扣产品" or consumptioncategory = "卡扣实操"
+                            or consumptioncategory = "现金产品"
+                     or consumptioncategory = "赠送实操"
+                     or consumptioncategory = "现金实操"
+                       )) t
+        group by consumptioncategory
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "实耗类"
+
+    union all
+
+    select analysisintermediatetable.category  category,
+           analysisintermediatetable.category2 category2,
+           ifnull(t2.summoney, 0)              summoney,
+           ifnull(t2.sumcount, 0)              sumcount
+    from analysisintermediatetable
+             left join (
+        select "赠送类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        from (
+                 select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                   and createtime between #{from} and #{to}
+                   and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
+                     )) t
+        group by consumptioncategory
+    ) t2 on t2.category2 = analysisintermediatetable.category2
+    where analysisintermediatetable.category = "赠送类"
+
+    ;
+
+    </select>
+
+
+    <select id="statisticsPeopleByShopIdAndBeautician" resultType="com.aaa.huahui.vo.CustomerVO">
+
+    select count(distinct customer) "distinctcustomer", count(customer) "customer"
+    from settlementnew
+    where shopid = #{shopid}
+    and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+      and createtime between #{from} and #{to}
+
+
+    </select>
+
+    <select id="categoryAnalysis" resultType="com.aaa.huahui.vo.ProjectTableVO">
+
+    select projectname  name,
+           count(money) summoney,
+           count(times) sumcount
+    from settlementnew
+    where shopid = #{shopid}
+      and createtime between #{from}
+        and #{to}
+      and category = #{category}
+    group by projectname
+    order by summoney,sumcount
+
+    </select>
+
+
+    <resultMap id="BeauticianProjectVO" type="com.aaa.huahui.vo.BeauticianProjectVO">
+        <result column="name" property="name"/>
+        <collection property="con" ofType="com.aaa.huahui.vo.BeauticianProjectItemVO">
+
+            <result property="time" column="time" javaType="java.sql.Timestamp"/>
+            <result property="projectname" column="projectname"/>
+            <result property="summoney" column="summoney"/>
+            <result property="count" column="count"/>
+            <result property="sumhand" column="sumhand"/>
+
+        </collection>
+    </resultMap>
+
+
+    <select id="beauticiantTableAnalysis" resultMap="BeauticianProjectVO">
+
+    select staff.name                  name,
+           settlementnew.createtime as time,
+           settlementnew.projectname   projectname,
+           sum(money)                  summoney,
+           count(projectname)          count,
+           sum(hand)                   sumhand
+    from settlementnew
+             inner join staff on (settlementnew.beautician1 = staff.staffid or settlementnew.beautician2 = staff.staffid)
+    <if test="staffid!=-1">
+        and staff.staffid = #{staffid}
+    </if>
+        and settlementnew.createtime between #{from} and #{to}
+        and settlementnew.shopid=#{shopid}
+    group by staff.staffid,settlementnew.projectname
+
+    </select>
+
+
+</mapper>

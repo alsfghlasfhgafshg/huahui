@@ -63,6 +63,11 @@ public interface StaffRepository {
     int selectCountShopStaff(@Param("shopid") int shopid, @Param("staffid") int staffid);
 
     @Select("select name from staff where staffid=#{staffid}")
-    Optional<String> findNameByStaffid(int staffid);
+    Optional<String> findNameByStaffid(@Param("staffid") int staffid);
+
+    @Select("select staffid from staff where name=#{staffname} limit 1")
+    Integer findIdByStaffName(@Param("staffname")String staffname);
+
+
 
 }

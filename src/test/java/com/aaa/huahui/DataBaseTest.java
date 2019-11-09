@@ -7,9 +7,8 @@ import com.aaa.huahui.model.*;
 import com.aaa.huahui.repository.*;
 import com.aaa.huahui.service.*;
 import com.aaa.huahui.utils.DateUtils;
-import com.aaa.huahui.utils.ResponseGenerate;
-import com.aaa.huahui.vo.CategoryVO;
-import com.aaa.huahui.vo.SettlementVO;
+import com.aaa.huahui.vo.AnalysisVO;
+import com.aaa.huahui.vo.BeauticianProjectVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
@@ -66,6 +65,63 @@ public class DataBaseTest {
 
     @Autowired
     Settlement_newRepository settlement_newRepository;
+
+    @Autowired
+    AnalysisTable2Repository analysisTable2Repository;
+
+
+    @Autowired
+    AnalysisTable2Service analysisTable2Service;
+
+    Timestamp start = DateUtils.getTimeStampStart(2011, 01, 1);
+    Timestamp end = DateUtils.getTimeStampEnd(2019, 12, 1);
+
+
+    @Test
+    public void dsagdfshdkjsfghdswkagnalds() {
+
+//        System.out.println(
+//                analysisTable2Service.beauticiantTableAnalysis(12, start, end, 1).toJSONString());
+
+        JSONArray jsonArray = analysisTable2Service.beauticiantTableAnalysis(12, start, end);
+        System.out.println(jsonArray);
+
+//        List<BeauticianProjectVO> beauticianProjectVOS = analysisTable2Repository.beauticiantTableAnalysis(12, start, end, 1);
+
+//        System.out.println(jsonObject.toJSONString());
+
+    }
+
+    @Test
+    public void asdfgadsgads() {
+
+        JSONObject jsonObject = analysisTable2Service.categoryAnalysis(12, start, end);
+        System.out.println(jsonObject.toJSONString());
+
+    }
+
+
+    @Test
+    public void assdfadf() {
+        Timestamp start = DateUtils.getTimeStampStart(2011, 01, 1);
+        Timestamp end = DateUtils.getTimeStampEnd(2019, 12, 1);
+
+//        JSONObject jsonObject = analysisTable2Service.managementAnalysis(12, start, end);
+        JSONObject jsonObject = analysisTable2Service.beauticiantAnalysis(12, start, end, "臧三");
+        System.out.println(jsonObject.toJSONString());
+        System.out.println(1);
+
+    }
+
+    @Test
+    public void asdf() {
+        Timestamp start = DateUtils.getTimeStampStart(2011, 01, 1);
+        Timestamp end = DateUtils.getTimeStampEnd(2019, 12, 1);
+
+        List<AnalysisVO> analysisVO = analysisTable2Repository.managementAnalysis(12, start, end);
+        System.out.println(1);
+
+    }
 
     @Test
     public void das() {
