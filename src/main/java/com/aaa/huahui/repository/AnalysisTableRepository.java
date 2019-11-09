@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Mapper
 public interface AnalysisTableRepository {
@@ -28,4 +29,19 @@ public interface AnalysisTableRepository {
     ArrayList<CustomerHandsVO> selectAllCustomer(@Param("shopid")int shopid,
                                                  @Param("start")Timestamp start,
                                                  @Param("end")Timestamp end);
+
+    //客流分析
+    //到店次数
+    ArrayList<HashMap<String,String>> downtoStoreTimes(@Param("shopid")int shopid,
+                                                       @Param("start")Timestamp start,
+                                                       @Param("end")Timestamp end);
+    //实耗
+    ArrayList<HashMap<String,String>> actualMoney(@Param("shopid")int shopid,
+                                                  @Param("start")Timestamp start,
+                                                  @Param("end")Timestamp end);
+    //饼图
+    ArrayList<HashMap<String,Object>> downtoStorePercent(@Param("shopid")int shopid,
+                                                         @Param("start")Timestamp start,
+                                                         @Param("end")Timestamp end);
+
 }

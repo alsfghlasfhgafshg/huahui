@@ -25,12 +25,50 @@
         where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
     </select>
 
-    <!--<select id="selectAllCustomer" resultType="com.aaa.huahui.vo.CustomerHandsVO">-->
-        <!--select customer,createtime,projectname,money,times-->
-        <!--from settlementnew-->
-        <!--where shopid=#{shopid} and createtime between #{start} and #{end}-->
-        <!--order by createtime desc-->
-    <!--</select>-->
+    <select id="downtoStoreTimes" resultType="java.util.HashMap">
+       select customer,count(customer) as times
+       from settlementnew
+       where shopid=#{shopid} and createtime between #{start} and  #{end}
+       group by customer
+       order by times desc;
+    </select>
 
+    <select id="actualMoney" resultType="java.util.HashMap">
+       select * from(
+       select customer,sum(money) as smoney
+       from settlementnew
+       where shopid=#{shopid} and consumptioncategory in ('卡扣产品','卡扣实操','现金产品','现金实操') and createtime between #{start} and  #{end}
+       group by customer) t
+       union all
+       select '总计' as customer,sum(money) as smoney
+       from settlementnew
+       where shopid=#{shopid} and consumptioncategory in ('卡扣产品','卡扣实操','现金产品','现金实操') and createtime between #{start} and  #{end}
+    </select>
+
+    <select id="downtoStorePercent" resultType="java.util.HashMap">
+        select times, count(*) con
+        from (
+        select customer, count(customer) as times
+        from settlementnew
+        where shopid = #{shopid}
+        and settlementnew.createtime between #{start} and  #{end}
+        group by customer
+        order by times) t
+        group by times
+        having times &lt; 5
+        union all
+        select 5 times, count(*)
+        from (
+        select times, count(*) con
+        from (select customer, count(customer) as times
+        from settlementnew
+        where shopid = #{shopid}
+        and settlementnew.createtime between #{start} and  #{end}
+        group by customer
+        order by times) t
+        group by times
+        having times >= 5
+        ) tt
+    </select>
 
 </mapper>
