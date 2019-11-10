@@ -116,7 +116,7 @@ public class AnalysisTable2Service {
     }
 
     //项目分析表
-    public JSONObject categoryAnalysis(int shopid, Timestamp from, Timestamp to) {
+    public JSONObject projectAnalysis(int shopid, Timestamp from, Timestamp to) {
 
         List<ProjectTableVO> beauty = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容");
         List<ProjectTableVO> body = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体");

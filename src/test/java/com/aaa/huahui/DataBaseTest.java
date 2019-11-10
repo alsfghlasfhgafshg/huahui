@@ -8,7 +8,6 @@ import com.aaa.huahui.repository.*;
 import com.aaa.huahui.service.*;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.vo.AnalysisVO;
-import com.aaa.huahui.vo.BeauticianProjectVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
@@ -95,7 +94,7 @@ public class DataBaseTest {
     @Test
     public void asdfgadsgads() {
 
-        JSONObject jsonObject = analysisTable2Service.categoryAnalysis(12, start, end);
+        JSONObject jsonObject = analysisTable2Service.projectAnalysis(12, start, end);
         System.out.println(jsonObject.toJSONString());
 
     }
