@@ -462,3 +462,99 @@ product，beauty，body分别为产品，美容，美体排名：
 
 
 
+-------
+
+
+## 美容师分析表 最后一个excel
+
+**url:** /analysis/beauticianttable
+
+**HTTP请求方式:** GET
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+staffname|string|美容师姓名，如果不传或者此项为空，为所有的美容师
+fenxi|int|0为实操，1为现金，2为所有
+starttime|string|开始时间
+endtime|string|结束时间
+
+**返回格式:** json
+
+**返回内容:**
+
+返回内容：
+name美容师姓名，con为list
+
+time：时间
+projectname:项目名
+summoney: 金额
+count数量
+sumhand手工
+
+```
+错误code 为1：
+{
+    "msg": "无此美容师",
+    "code": 1
+}
+
+正确code为0：
+
+{
+    "msg": "成功",
+    "code": 0,
+    "data": [
+        {
+            "name": "臧三",
+            "con": [
+                {
+                    "time": "2016年01月01日",
+                    "projectname": "美容1",
+                    "summoney": 12,
+                    "count": 1,
+                    "sumhand": 1
+                },
+                {
+                    "time": "2019年01月01日",
+                    "projectname": "美容2",
+                    "summoney": 315,
+                    "count": 4,
+                    "sumhand": 29
+                },
+                {
+                    "time": "2019年03月01日",
+                    "projectname": "projectname",
+                    "summoney": 42,
+                    "count": 1,
+                    "sumhand": 1
+                },
+                {
+                    "time": "2019年08月01日",
+                    "projectname": "projectname",
+                    "summoney": 53,
+                    "count": 1,
+                    "sumhand": 2
+                }
+            ]
+        },
+        {
+            "name": "总计",
+            "con": [
+                {
+                    "time": "",
+                    "projectname": "",
+                    "summoney": 422,
+                    "count": 7,
+                    "sumhand": 33
+                }
+            ]
+        }
+    ]
+}
+
+```
+
+
+

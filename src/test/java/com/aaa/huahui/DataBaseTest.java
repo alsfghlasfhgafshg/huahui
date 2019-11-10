@@ -77,13 +77,20 @@ public class DataBaseTest {
 
 
     @Test
+    public void dfgasfdasf(){
+
+        JSONArray jsonArray = analysisTable2Service.beauticiantTableAnalysis(12, start, end, 1, AnalysisTable2Service.XIANJIN);
+        System.out.println(1);
+    }
+
+    @Test
     public void dsagdfshdkjsfghdswkagnalds() {
 
 //        System.out.println(
 //                analysisTable2Service.beauticiantTableAnalysis(12, start, end, 1).toJSONString());
 
-        JSONArray jsonArray = analysisTable2Service.beauticiantTableAnalysis(12, start, end);
-        System.out.println(jsonArray);
+//        JSONArray jsonArray = analysisTable2Service.beauticiantTableAnalysis(12, start, end);
+//        System.out.println(jsonArray);
 
 //        List<BeauticianProjectVO> beauticianProjectVOS = analysisTable2Repository.beauticiantTableAnalysis(12, start, end, 1);
 

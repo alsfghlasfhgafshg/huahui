@@ -134,17 +134,27 @@ public class AnalysisTable2Service {
         return j;
     }
 
+    public static final int SHICAO = 0;
+    public static final int XIANJIN = 1;
+    public static final int ALL = 2;
+
+
     //美容师分析表
-    public JSONArray beauticiantTableAnalysis(int shopid, Timestamp from, Timestamp to) {
-        return beauticiantTableAnalysis(shopid, from, to, -1);
+    public JSONArray beauticiantTableAnalysis(int shopid, Timestamp from, Timestamp to, String staffname, int fenxi) {
+        if (staffname == null || staffname.equals("")) {
+            return beauticiantTableAnalysis(shopid, from, to, -1, fenxi);
+        } else {
+            Integer staffid = staffRepository.findIdByStaffName(staffname);
+            return beauticiantTableAnalysis(shopid, from, to, staffid, fenxi);
+        }
     }
 
     //美容师分析表
-    public JSONArray beauticiantTableAnalysis(int shopid, Timestamp from, Timestamp to, Integer staffid) {
+    public JSONArray beauticiantTableAnalysis(int shopid, Timestamp from, Timestamp to, Integer staffid, int fenxi) {
 
         JSONArray jsonArray = new JSONArray();
 
-        List<BeauticianProjectVO> beauticianProjectVOS = analysisTable2Repository.beauticiantTableAnalysis(shopid, from, to, staffid);
+        List<BeauticianProjectVO> beauticianProjectVOS = analysisTable2Repository.beauticiantTableAnalysis(shopid, from, to, staffid, fenxi);
         BeauticianProjectVO sum = new BeauticianProjectVO();
         sum.setName("总计");
 

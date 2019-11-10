@@ -26,7 +26,6 @@ public interface AnalysisTable2Repository {
                                         @Param("to") Timestamp to);
 
 
-
     //技师分析表
     List<AnalysisVO> beauticiantAnalysis(@Param("shopid") int shopid,
                                          @Param("from") Timestamp from,
@@ -49,6 +48,7 @@ public interface AnalysisTable2Repository {
     List<BeauticianProjectVO> beauticiantTableAnalysis(@Param("shopid") int shopid,
                                                        @Param("from") Timestamp from,
                                                        @Param("to") Timestamp to,
-                                                       @Param("staffid") int staffid);
+                                                       @Param("staffid") int staffid,
+                                                       @Param("fenxi") int fenxi);
 
 }

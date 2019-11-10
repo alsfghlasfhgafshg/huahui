@@ -294,12 +294,21 @@
            sum(hand)                   sumhand
     from settlementnew
              inner join staff on (settlementnew.beautician1 = staff.staffid or settlementnew.beautician2 = staff.staffid)
-    <if test="staffid!=-1">
-        and staff.staffid = #{staffid}
-    </if>
+        <if test="staffid!=-1">
+            and staff.staffid = #{staffid}
+        </if>
+
+        <if test="fenxi==0">
+            and category in ('美容','美体','仪器')
+        </if>
+
+        <if test="fenxi==1">
+            and consumptioncategory in ('现金卡','现金产品','现金实操')
+        </if>
+
         and settlementnew.createtime between #{from} and #{to}
         and settlementnew.shopid=#{shopid}
-    group by staff.staffid,settlementnew.projectname
+    group by staff.staffid,createtime
 
     </select>
 
