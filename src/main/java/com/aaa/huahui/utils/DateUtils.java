@@ -13,9 +13,31 @@ public class DateUtils {
 
 
     public static String formatTimeStrap(Timestamp time) {
+        return formatTimeStrap(time.getTime());
+    }
+    public static String formatTimeStrap(long time) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-        String timestr = sdf.format(new Date(time.getTime()));
+        String timestr = sdf.format(new Date(time));
         return timestr;
+    }
+    public static Timestamp getMonthStart(long time){
+        String line = formatTimeStrap(time);
+        String pattern = "(\\d*)年(\\d*)月(\\d*)日";
+
+        Pattern r = Pattern.compile(pattern);
+
+        Matcher m = r.matcher(line);
+        if (m.find( )) {
+            System.out.println("Found value: " + m.group(0) );
+            System.out.println("Found value: " + m.group(1) );
+            System.out.println("Found value: " + m.group(2) );
+            System.out.println("Found value: " + m.group(3) );
+            String date=m.group(1)+"年"+m.group(2)+"月"+"1日";
+            return getTimeStampStart(date);
+        } else {
+            System.out.println("NO MATCH");
+        }
+        return new Timestamp(0);
     }
 
     //开始 0：00

@@ -72,12 +72,24 @@ public class DataBaseTest {
     @Autowired
     AnalysisTable2Service analysisTable2Service;
 
+    @Autowired
+    Settlement_newService settlement_newService;
+
     Timestamp start = DateUtils.getTimeStampStart(2011, 01, 1);
     Timestamp end = DateUtils.getTimeStampEnd(2019, 12, 1);
 
+    @Test
+    public void dasgadsgf() {
+
+//        Settlement_new settlement_new = settlement_newRepository.selectOneSettlement(15);
+        ArrayList<Settlement_new> settlementthisMonth = settlement_newService.getSettlementthisMonth(12);
+        System.out.printf("");
+    }
+
 
     @Test
-    public void dfgasfdasf(){
+    public void dfgasfdasf() {
+
 
         JSONArray jsonArray = analysisTable2Service.beauticiantTableAnalysis(12, start, end, 1, AnalysisTable2Service.XIANJIN);
         System.out.println(1);

@@ -1,10 +1,15 @@
 package com.aaa.huahui.controller;
 
 import com.aaa.huahui.model.Settlement_new;
+import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.repository.Settlement_newRepository;
+import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.service.Settlement_newService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
+import com.aaa.huahui.vo.Settlement_newVO;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/settlement")
@@ -20,6 +26,52 @@ public class Settlement_newController {
 
     @Autowired
     Settlement_newService settlement_newService;
+
+    @Autowired
+    StaffRepository staffRepository;
+
+    @Autowired
+    Settlement_newRepository settlement_newRepository;
+
+    @GetMapping("/thismonth")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public JSONObject getSettlementMonth(UsernamePasswordAuthenticationToken token) {
+
+        int shopid = ((User) token.getPrincipal()).getId();
+        ArrayList<Settlement_new> settlementthisMonth = settlement_newService.getSettlementthisMonth(shopid);
+        JSONArray data = new JSONArray();
+        for (Settlement_new settlement_new : settlementthisMonth) {
+            JSONObject t = new JSONObject();
+            t.put("settltmentid", settlement_new.getSettlementid());
+            t.put("time", DateUtils.formatTimeStrap(settlement_new.getCreatetime()));
+            t.put("customer", settlement_new.getCustomer());
+            t.put("classify", settlement_new.getClasify());
+            t.put("category", settlement_new.getCategory());
+            t.put("brandname", settlement_new.getBrandname());
+            t.put("projectname", settlement_new.getProjectname());
+            t.put("money", settlement_new.getMoney());
+            t.put("consumptioncategory", settlement_new.getConsumptioncategory());
+            t.put("consumptionpattern", settlement_new.getConsumptionpattern());
+
+
+            int beautician1id = settlement_new.getBeautician1();
+            Staff beautician1 = staffRepository.selectOne(beautician1id);
+
+            Integer beautician2id = settlement_new.getBeautician2();
+            Staff beautician2 = staffRepository.selectOne(beautician2id);
+
+            String beauticianname = beautician1.getName();
+            if (beautician2 != null) {
+                beauticianname += "/" + beautician2.getName();
+            }
+            t.put("beautician", beauticianname);
+            data.add(t);
+        }
+        JSONObject repsonsejson = ResponseGenerate.genSuccessResponse(data);
+
+        return repsonsejson;
+    }
+
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_SHOP')")
@@ -57,9 +109,45 @@ public class Settlement_newController {
 
     @GetMapping("/selectone")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    public JSONObject selectOneSettlement(@RequestParam("settlementid") int settlementid) {
-        Settlement_new settlement_new = settlement_newService.selectOneSettlement(settlementid);
-        return ResponseGenerate.genSuccessResponse(settlement_new);
+    public JSONObject selectOneSettlement(@RequestParam("settlementid") int settlementid,
+                                          UsernamePasswordAuthenticationToken token) {
+
+        int shopid = ((User) token.getPrincipal()).getId();
+
+        if (settlement_newRepository.selectCountShopidSettlementId(shopid, settlementid) == 0) {
+            JSONObject jsonObject = ResponseGenerate.genFailResponse(2, "无此结算单");
+            return jsonObject;
+        }
+
+        Settlement_new s = settlement_newService.selectOneSettlement(settlementid);
+
+        if (s == null) {
+            JSONObject jsonObject = ResponseGenerate.genFailResponse(1, "无此结算单");
+            return jsonObject;
+        }
+
+
+        Settlement_newVO vo = new Settlement_newVO();
+        vo.setSettlementid(s.getSettlementid());
+        vo.setCustomer(s.getCustomer());
+        vo.setClassify(s.getClasify());
+        vo.setCategory(s.getCategory());
+        vo.setBrandname(s.getBrandname());
+        vo.setProjectname(s.getProjectname());
+        vo.setTimes(s.getTimes());
+        vo.setHand(s.getHand());
+        vo.setMoney(s.getMoney());
+        vo.setConsumptioncategory(s.getConsumptioncategory());
+        vo.setConsumptionpattern(s.getConsumptionpattern());
+        vo.setAllocate(s.getAllocate());
+        vo.setBeautician1(staffRepository.findNameByStaffid(s.getBeautician1()).get());
+        vo.setBeautician2(staffRepository.findNameByStaffid(s.getBeautician2()).get());
+        vo.setCardcategory(s.getCardcategory());
+        vo.setConsultant(s.getConsultant());
+        vo.setChecker(s.getChecker());
+        vo.setCreatetime(DateUtils.formatTimeStrap(s.getCreatetime()));
+
+        return ResponseGenerate.genSuccessResponse(vo);
     }
 
     @PostMapping("/deleteone")
@@ -91,7 +179,7 @@ public class Settlement_newController {
                                           @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                           @RequestParam(value = "consultant", required = false) String consultant,
                                           @RequestParam(value = "checker", required = false) String checker,
-                                          @RequestParam(value = "createtime",required = false) String createtimestr) {
+                                          @RequestParam(value = "createtime", required = false) String createtimestr) {
         Settlement_new settlement_new = null;
         User principal = (User) token.getPrincipal();
 

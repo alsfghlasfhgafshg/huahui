@@ -3,6 +3,9 @@ package com.aaa.huahui.repository;
 import com.aaa.huahui.model.Settlement_new;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+
 @Mapper
 public interface Settlement_newRepository {
 
@@ -17,13 +20,20 @@ public interface Settlement_newRepository {
     @Select("select * from settlementnew where settlementid=#{settlementid}")
     Settlement_new selectOneSettlement(@Param("settlementid") int settlementid);
 
+    @Select("select * from settlementnew where shopid=#{shopid} and createtime between #{from} and #{to} order by createtime desc ")
+    ArrayList<Settlement_new> selectSettlementByDate(@Param("shopid") int shopid, @Param("from") Timestamp from, @Param("to") Timestamp to);
+
     @Delete("delete from settlementnew where settlementid=#{settlementid}")
     int deleteSettlement(@Param("settlementid") int settlementid);
 
-    @Update("update from settlementnew set customer=#{customer},classify=#{classify},category=#{category}," +
+    @Update("update settlementnew set customer=#{customer},classify=#{classify},category=#{category}," +
             "brandname=#{brandname},projectname=#{projectname},times=#{times},hand=#{hand},money=#{money}" +
             ",consumptioncategory=#{consumptioncategory},consumptionpattern=#{consumptionpattern},allocate=#{allocate}," +
             "beautician1=#{beautician1},beautician2=#{beautician2},cardcategory=#{cardcategory},consultant=#{consultant}," +
             "checker=#{checker},createtime=#{createtime} where settlementid=#{settlementid}")
     int updateSettlement(Settlement_new settlement_new);
+
+    @Select("select count(*) from settlementnew where settlementid=#{settlementid} and shopid=#{shopid}")
+    int selectCountShopidSettlementId(@Param("shopid") int shopid, @Param("settlementid") int settlementid);
+
 }

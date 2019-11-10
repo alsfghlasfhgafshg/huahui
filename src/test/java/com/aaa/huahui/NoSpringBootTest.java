@@ -1,17 +1,18 @@
 package com.aaa.huahui;
 
 
+import com.aaa.huahui.utils.DateUtils;
 import com.alibaba.fastjson.JSONArray;
-
-
 import org.junit.Test;
-
+import java.sql.Timestamp;
 import java.util.*;
 
 public class NoSpringBootTest {
 
     @Test
     public void contextLoads() {
+
+        Timestamp start = DateUtils.getTimeStampStart(2019, 01, 01);
 
 
         PriorityQueue<Integer> queue1 = new PriorityQueue<Integer>(new Comparator<Integer>() {

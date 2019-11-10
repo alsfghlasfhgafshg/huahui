@@ -1,10 +1,10 @@
-package com.aaa.huahui.model;
+package com.aaa.huahui.vo;
 
 import java.sql.Timestamp;
 
-public class Settlement_new {
+public class Settlement_newVO {
     private int settlementid;
-    private int shopid;
+
     private String customer;
     private String classify;
     private String category;
@@ -16,36 +16,16 @@ public class Settlement_new {
     private String consumptioncategory;
     private String consumptionpattern;
     private String allocate;
-    private Integer beautician1;
-    private Integer beautician2;
+
+    private String beautician1;
+    private String beautician2;
+
     private String cardcategory;
     private String consultant;
     private String checker;
-    private Timestamp createtime;
 
-    public Settlement_new() {
-    }
+    private String createtime;
 
-    public Settlement_new(int shopid, String customer, String classify, String category, String brandname, String projectname, int times, int hand, double money, String consumptioncategory, String consumptionpattern, String allocate, int beautician1, int beautician2, String cardcategory, String consultant, String checker, Timestamp createtime) {
-        this.shopid = shopid;
-        this.customer = customer;
-        this.classify = classify;
-        this.category = category;
-        this.brandname = brandname;
-        this.projectname = projectname;
-        this.times = times;
-        this.hand = hand;
-        this.money = money;
-        this.consumptioncategory = consumptioncategory;
-        this.consumptionpattern = consumptionpattern;
-        this.allocate = allocate;
-        this.beautician1 = beautician1;
-        this.beautician2 = beautician2;
-        this.cardcategory = cardcategory;
-        this.consultant = consultant;
-        this.checker = checker;
-        this.createtime = createtime;
-    }
 
     public int getSettlementid() {
         return settlementid;
@@ -53,14 +33,6 @@ public class Settlement_new {
 
     public void setSettlementid(int settlementid) {
         this.settlementid = settlementid;
-    }
-
-    public int getShopid() {
-        return shopid;
-    }
-
-    public void setShopid(int shopid) {
-        this.shopid = shopid;
     }
 
     public String getCustomer() {
@@ -71,12 +43,12 @@ public class Settlement_new {
         this.customer = customer;
     }
 
-    public String getClasify() {
+    public String getClassify() {
         return classify;
     }
 
-    public void setClasify(String clasify) {
-        this.classify = clasify;
+    public void setClassify(String classify) {
+        this.classify = classify;
     }
 
     public String getCategory() {
@@ -151,19 +123,19 @@ public class Settlement_new {
         this.allocate = allocate;
     }
 
-    public Integer getBeautician1() {
+    public String getBeautician1() {
         return beautician1;
     }
 
-    public void setBeautician1(int beautician1) {
+    public void setBeautician1(String beautician1) {
         this.beautician1 = beautician1;
     }
 
-    public Integer getBeautician2() {
+    public String getBeautician2() {
         return beautician2;
     }
 
-    public void setBeautician2(int beautician2) {
+    public void setBeautician2(String beautician2) {
         this.beautician2 = beautician2;
     }
 
@@ -191,11 +163,35 @@ public class Settlement_new {
         this.checker = checker;
     }
 
-    public Timestamp getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Timestamp createtime) {
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime;
+    }
+
+    public Settlement_newVO() {
+    }
+
+    public Settlement_newVO(int settlementid, String customer, String classify, String category, String brandname, String projectname, int times, int hand, double money, String consumptioncategory, String consumptionpattern, String allocate, String beautician1, String beautician2, String cardcategory, String consultant, String checker, String createtime) {
+        this.settlementid = settlementid;
+        this.customer = customer;
+        this.classify = classify;
+        this.category = category;
+        this.brandname = brandname;
+        this.projectname = projectname;
+        this.times = times;
+        this.hand = hand;
+        this.money = money;
+        this.consumptioncategory = consumptioncategory;
+        this.consumptionpattern = consumptionpattern;
+        this.allocate = allocate;
+        this.beautician1 = beautician1;
+        this.beautician2 = beautician2;
+        this.cardcategory = cardcategory;
+        this.consultant = consultant;
+        this.checker = checker;
         this.createtime = createtime;
     }
 }
