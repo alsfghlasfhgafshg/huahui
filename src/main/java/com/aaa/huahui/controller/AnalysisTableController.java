@@ -32,8 +32,8 @@ public class AnalysisTableController {
     JSONObject getCustomerAnalysis(UsernamePasswordAuthenticationToken token,
                                    @RequestParam(value = "customer") String customer,
                                    @RequestParam(value = "shopid", required = false) Integer shopid,
-                                   @RequestParam(value = "starttime", required = false) String startTime,
-                                   @RequestParam(value = "endtime", required = false) String endTime,
+                                   @RequestParam(value = "starttime") String startTime,
+                                   @RequestParam(value = "endtime") String endTime,
                                    @RequestParam(value = "handorcash", required = false,defaultValue = "其它") String handorcash) {
         Integer id;
         User user = (User) token.getPrincipal();

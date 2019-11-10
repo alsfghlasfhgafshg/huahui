@@ -112,10 +112,8 @@ public class DateUtils {
     //过去距今天多少天
     public static long getInterval(String begin_date) throws ParseException {
         long day = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date beginDate = sdf.parse(begin_date);
         Date now = new Date();
-        day = (beginDate.getTime()-now.getTime())/(24*60*60*1000);
+        day = (DateUtils.getTimeStampStart(begin_date).getTime()-now.getTime())/(24*60*60*1000);
         return -day;
     }
 
