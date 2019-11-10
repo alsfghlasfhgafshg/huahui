@@ -83,7 +83,7 @@ public class AnalysisTable2Controller {
         Timestamp start = DateUtils.getTimeStampStart(startTime);
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
-        JSONObject data = analysisTable2Service.beauticiantAnalysis(shopid, start, end, beauticianname);
+        JSONObject data = analysisTable2Service.beauticiantAnalysis(id, start, end, beauticianname);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
@@ -112,7 +112,7 @@ public class AnalysisTable2Controller {
         Timestamp start = DateUtils.getTimeStampStart(startTime);
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
-        JSONObject data = analysisTable2Service.projectAnalysis(shopid, start, end);
+        JSONObject data = analysisTable2Service.projectAnalysis(id, start, end);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
