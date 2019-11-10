@@ -6,23 +6,75 @@
 
 
     <select id="selectCustomerHands" resultType="com.aaa.huahui.vo.CustomerHandsVO">
+        select * from(
+        select customer,
+       if(sum(t1 + t2 + t3) = 0, "睡眠客",
+          if(sum(t1 + t2 + t3) = 2, "活客", if(sum(t1 + t2 + t3) = 3, "有效客", "其它"))) as status
+    from (
+       select customer,
+                       if(createtime between date_sub(now(), INTERVAL 30 DAY) and now(), 1, 0) as t1,
+                       if(createtime between date_sub(now(), INTERVAL 60 DAY) and date_sub(now(), INTERVAL 30 DAY), 1,
+                          0)                                                                   as t2,
+                       if(createtime between date_sub(now(), INTERVAL 90 DAY) and date_sub(now(), INTERVAL 60 DAY), 1,
+                          0)                                                                   as t3
+       from settlementnew
+      where customer=#{customer}
+     ) t)aa
+     inner join (
         select customer,createtime,projectname,money,times
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
         union all
         select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times
         from settlementnew
-        where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
+        where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}) bb where aa.customer=bb.customer
     </select>
 
     <select id="selectCustomerCash" resultType="com.aaa.huahui.vo.CustomerHandsVO">
+        select * from(
+        select customer,
+       if(sum(t1 + t2 + t3) = 0, "睡眠客",
+          if(sum(t1 + t2 + t3) = 2, "活客", if(sum(t1 + t2 + t3) = 3, "有效客", "其它"))) as status
+    from (
+       select customer,
+                       if(createtime between date_sub(now(), INTERVAL 30 DAY) and now(), 1, 0) as t1,
+                       if(createtime between date_sub(now(), INTERVAL 60 DAY) and date_sub(now(), INTERVAL 30 DAY), 1,
+                          0)                                                                   as t2,
+                       if(createtime between date_sub(now(), INTERVAL 90 DAY) and date_sub(now(), INTERVAL 60 DAY), 1,
+                          0)                                                                   as t3
+       from settlementnew
+      where customer=#{customer}
+     ) t)aa
+     inner join (
         select customer,createtime,projectname,money,times
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
         union all
         select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times
         from settlementnew
-        where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
+        where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}) bb where aa.customer=bb.customer
+    </select>
+
+    <select id="selectAllCustomer" resultType="com.aaa.huahui.vo.CustomerHandsVO">
+        select * from(
+        select customer,
+               if(sum(t1 + t2 + t3) = 0, "睡眠客",
+                  if(sum(t1 + t2 + t3) = 2, "活客", if(sum(t1 + t2 + t3) = 3, "有效客", "其他"))) as status
+        from (
+               select distinct customer,
+                               if(createtime between date_sub(now(), INTERVAL 30 DAY) and now(), 1, 0) as t1,
+                               if(createtime between date_sub(now(), INTERVAL 60 DAY) and date_sub(now(), INTERVAL 30 DAY), 1,
+                                  0)                                                                   as t2,
+                               if(createtime between date_sub(now(), INTERVAL 90 DAY) and date_sub(now(), INTERVAL 60 DAY), 1,
+                                  0)                                                                   as t3
+               from settlementnew
+             ) t
+        group by customer) aa
+        inner join(
+        select customer,createtime,projectname,money,times
+        from settlementnew
+        where customer=#{customer} and shopid=#{shopid} and createtime between #{start} and #{end}
+        order by createtime desc) bb on aa.customer=bb.customer
     </select>
 
     <select id="downtoStoreTimes" resultType="java.util.HashMap">

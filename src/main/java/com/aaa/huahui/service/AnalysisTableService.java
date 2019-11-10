@@ -26,11 +26,11 @@ public class AnalysisTableService {
     }
 
     public ArrayList<CustomerHandsVO> customerCashVOS(String customer, int shopid, Timestamp startTime,Timestamp endTime){
-        return analysisTableRepository.selectCustomerCash(customer,shopid,startTime,endTime);
+       return analysisTableRepository.selectCustomerCash(customer,shopid,startTime,endTime);
     }
 
-    public ArrayList<CustomerHandsVO> AllCustomerVO(int shopid,Timestamp start,Timestamp end){
-        return analysisTableRepository.selectAllCustomer(shopid,start,end);
+    public ArrayList<CustomerHandsVO> AllCustomerVO(String customer,int shopid,Timestamp start,Timestamp end){
+        return analysisTableRepository.selectAllCustomer(customer,shopid,start,end);
     }
 
     public ArrayList<HashMap<String,String>> downtoStoreTimes(int shopid, Timestamp start, Timestamp end){

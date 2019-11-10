@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class CustomerHandsVO {
 
     String customer;
+    String status;
     String createtime;
     String projectname;
     double money;
@@ -53,5 +54,13 @@ public class CustomerHandsVO {
 
     public void setTimes(int times) {
         this.times = times;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

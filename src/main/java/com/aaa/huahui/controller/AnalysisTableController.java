@@ -1,6 +1,7 @@
 package com.aaa.huahui.controller;
 
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.repository.ShopRepository;
 import com.aaa.huahui.service.AnalysisTableService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
@@ -13,9 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/analysis")
@@ -23,11 +24,13 @@ public class AnalysisTableController {
 
     @Autowired
     AnalysisTableService analysisTableService;
+    @Autowired
+    ShopRepository shopRepository;
 
     @GetMapping("/customer")
     public @ResponseBody
     JSONObject getCustomerAnalysis(UsernamePasswordAuthenticationToken token,
-                                   @RequestParam(value = "customer", required = false) String customer,
+                                   @RequestParam(value = "customer") String customer,
                                    @RequestParam(value = "shopid", required = false) Integer shopid,
                                    @RequestParam(value = "starttime", required = false) String startTime,
                                    @RequestParam(value = "endtime", required = false) String endTime,
@@ -36,7 +39,9 @@ public class AnalysisTableController {
         User user = (User) token.getPrincipal();
         //brand的话看是哪个店,shop的话只能当前店
         if (user.hasRole("ROLE_BRAND")) {
-            id = shopid;
+            if (shopRepository.selectCountBrandShop(shopid,user.getId())==1){
+                id = shopid;
+            }else return ResponseGenerate.genFailResponse(1,"当前用户无shopid操作权限");
         } else {
             id = user.getId();
         }
@@ -48,7 +53,7 @@ public class AnalysisTableController {
         } else if (handorcash.equals("实操")&&customer!=null) {
             list = analysisTableService.customerHandsVOS(customer, id, start, end);
         } else {//默认按时间排序
-            list = analysisTableService.AllCustomerVO(id, start, end);
+            list = analysisTableService.AllCustomerVO(customer,id, start, end);
         }
 
         JSONArray array = new JSONArray();
@@ -57,13 +62,40 @@ public class AnalysisTableController {
             String usetime = createtime.length() < 10 ? "" : createtime.substring(0, 10);
             JSONObject temp = new JSONObject();
             temp.put("customer", customerHandsVO.getCustomer());
+            temp.put("status",customerHandsVO.getStatus());
             temp.put("createtime", usetime);
             temp.put("projectname", customerHandsVO.getProjectname());
             temp.put("money", customerHandsVO.getMoney());
             temp.put("times", customerHandsVO.getTimes());
             array.add(temp);
         }
-        JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
+        JSONObject responsejson;
+        if (handorcash.equals("实操")) {
+           responsejson = ResponseGenerate.genSuccessResponse(array);
+        }else{
+            JSONObject object = new JSONObject();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Collections.sort(list, new Comparator<CustomerHandsVO>() {
+                @Override
+                public int compare(CustomerHandsVO o1, CustomerHandsVO o2) {
+                    try {
+                        if (sdf.parse(o1.getCreatetime()).getTime()<sdf.parse(o2.getCreatetime()).getTime())
+                            return 1;
+                        else return -1;
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    return 0;
+                }
+            });
+            try {
+                object.put("距离上次",DateUtils.getInterval(list.get(0).getCreatetime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            object.put("客户信息",array);
+            responsejson = ResponseGenerate.genSuccessResponse(object);
+        }
         return responsejson;
     }
 
@@ -77,7 +109,9 @@ public class AnalysisTableController {
         User user = (User) token.getPrincipal();
         //brand的话看是哪个店,shop的话只能当前店
         if (user.hasRole("ROLE_BRAND")) {
-            id = shopid;
+            if (shopRepository.selectCountBrandShop(shopid,user.getId())==1){
+                id = shopid;
+            }else return ResponseGenerate.genFailResponse(1,"当前用户无shopid操作权限");
         } else {
             id = user.getId();
         }

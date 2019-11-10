@@ -3,7 +3,6 @@ package com.aaa.huahui.repository;
 import com.aaa.huahui.vo.CustomerHandsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -22,11 +21,8 @@ public interface AnalysisTableRepository {
                                                    @Param("starttime")Timestamp startTime,
                                                    @Param("endtime")Timestamp endTime);
 
-    @Select("select customer,createtime,projectname,money,times" +
-            " from settlementnew" +
-            " where shopid=#{shopid} and createtime between #{start} and #{end} " +
-            "order by createtime desc")
-    ArrayList<CustomerHandsVO> selectAllCustomer(@Param("shopid")int shopid,
+    ArrayList<CustomerHandsVO> selectAllCustomer(@Param("customer") String customer,
+                                                 @Param("shopid")int shopid,
                                                  @Param("start")Timestamp start,
                                                  @Param("end")Timestamp end);
 
