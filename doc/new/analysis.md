@@ -18,8 +18,6 @@ endtime|string|结束时间，yyyy-mm-dd或者yyyy年mm月dd日格式
 
 **返回格式:** json
 
-**返回内容:**
-
 返回数据：
 type为每个表名
 
