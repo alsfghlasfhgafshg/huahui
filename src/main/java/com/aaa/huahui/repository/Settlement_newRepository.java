@@ -36,4 +36,8 @@ public interface Settlement_newRepository {
     @Select("select count(*) from settlementnew where settlementid=#{settlementid} and shopid=#{shopid}")
     int selectCountShopidSettlementId(@Param("shopid") int shopid, @Param("settlementid") int settlementid);
 
+    int dayslaststoshop(@Param("customer") String customer,@Param("shopid") int shopid);
+
+    int projectremainingtimes(@Param("customer") String customer,@Param("projectname") String projectname,@Param("shopid") int shopid);
+
 }

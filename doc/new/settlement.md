@@ -226,3 +226,74 @@ createtime|string|yyyy-dd-mm或者yyyy年dd月mm日格式
 
 
 
+
+-------
+
+
+## 在新建结算单页显示的顾客上次到店时间
+
+**url:** /settlement/dayslaststoshop
+
+**HTTP请求方式:** GET
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+customer|string|顾客姓名
+
+**返回格式:** json
+
+**返回内容:**
+```
+day距离上次到店时间，如果为非负数，则是到店时间。-1为从未到店
+
+{
+    "msg": "成功",
+    "code": 0,
+    "data": {
+        "day": -1
+    }
+}
+
+```
+
+
+
+-------
+
+
+## 顾客剩余项目次数
+
+**url:** /settlement/projectremainingtimes
+
+**HTTP请求方式:** GET
+
+**请求参数:**
+
+参数名称|类型|描述
+---|:--:|---:
+customer|string|顾客姓名
+projectname|string|项目名
+
+**返回格式:** json
+
+**返回内容:**
+```
+成功返回code 0
+remainingtimes 为剩余次数
+{
+    "msg": "成功",
+    "code": 0,
+    "data": {
+        "remainingtimes": 8
+    }
+}
+
+失败返回1
+{
+    "msg": "顾客没有购买此项目",
+    "code": 1
+}
+
+```

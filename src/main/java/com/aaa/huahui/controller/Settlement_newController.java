@@ -39,8 +39,33 @@ public class Settlement_newController {
                                       @RequestParam("customer") String customer) {
         int shopid = ((User) token.getPrincipal()).getId();
 
-        return null;
+        int day = settlement_newRepository.dayslaststoshop(customer, shopid);
+        JSONObject data = new JSONObject();
+        data.put("day", day);
+        return ResponseGenerate.genSuccessResponse(data);
     }
+
+    @GetMapping("/projectremainingtimes")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public JSONObject projectRemainingTimes(UsernamePasswordAuthenticationToken token,
+                                            @RequestParam("customer") String customer,
+                                            @RequestParam("projectname") String projectname) {
+        int shopid = ((User) token.getPrincipal()).getId();
+
+        int projectremainingtimes = settlement_newRepository.projectremainingtimes(customer, projectname, shopid);
+        if (projectremainingtimes >= 0) {
+            JSONObject data = new JSONObject();
+            data.put("remainingtimes", projectremainingtimes);
+            return ResponseGenerate.genSuccessResponse(data);
+        } else if (projectremainingtimes == -1) {
+            return ResponseGenerate.genFailResponse(1, "顾客没有购买此项目");
+        } else if (projectremainingtimes == -2) {
+            return ResponseGenerate.genFailResponse(1, "顾客未消费过此项目");
+        } else {
+            return ResponseGenerate.genFailResponse(1, "错误");
+        }
+    }
+
 
     @GetMapping("/thismonth")
     @PreAuthorize("hasRole('ROLE_SHOP')")
