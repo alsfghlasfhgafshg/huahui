@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -107,7 +106,7 @@ public class StaffController {
     public @ResponseBody
     JSONObject addStaff(@RequestParam("username") String username,
 //                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar,
-                        @RequestParam(value = "name", defaultValue = "", required = false) String name,
+//                        @RequestParam(value = "name", defaultValue = "", required = false) String name,
                         @RequestParam(value = "employment",required = false,defaultValue = "true") boolean employment,
                         @RequestParam("male") int male,
                         @RequestParam("birthday") String birth,
@@ -118,14 +117,14 @@ public class StaffController {
                         @RequestParam("address") String address,
                         @RequestParam("phone") String phone,
                         @RequestParam("emergencyphone") String emergencyphone,
-                        @RequestParam(value = "p1name", required = false) String p1name,
-                        @RequestParam(value = "p1male", required = false) int p1male,
-                        @RequestParam(value = "p1company", required = false) String p1company,
-                        @RequestParam(value = "p1relationship", required = false) String p1relationship,
-                        @RequestParam(value = "p2name", required = false) String p2name,
-                        @RequestParam(value = "p2male", required = false) int p2male,
-                        @RequestParam(value = "p2company", required = false) String p2company,
-                        @RequestParam(value = "p2relationship", required = false) String p2relationship,
+                        @RequestParam(value = "p1name", required = false,defaultValue = "无") String p1name,
+                        @RequestParam(value = "p1male", required = false,defaultValue = "无") int p1male,
+                        @RequestParam(value = "p1company", required = false,defaultValue = "无") String p1company,
+                        @RequestParam(value = "p1relationship", required = false,defaultValue = "无") String p1relationship,
+                        @RequestParam(value = "p2name", required = false,defaultValue = "无") String p2name,
+                        @RequestParam(value = "p2male", required = false,defaultValue = "无") int p2male,
+                        @RequestParam(value = "p2company", required = false,defaultValue = "无") String p2company,
+                        @RequestParam(value = "p2relationship", required = false,defaultValue = "无") String p2relationship,
                         @RequestParam("role") String role,
                         UsernamePasswordAuthenticationToken token) {
 
@@ -159,8 +158,8 @@ public class StaffController {
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
     JSONObject updateStaff(@RequestParam("staffid") int staffid,
-                           @RequestParam(value = "avatar", required = false) MultipartFile avatar,
-                           @RequestParam("name") String name,
+//                           @RequestParam(value = "avatar", required = false) MultipartFile avatar,
+                           @RequestParam("username") String name,
                            @RequestParam("male") int male,
                            @RequestParam(value = "employment",required = false,defaultValue = "true") boolean employment,
                            @RequestParam("birthday") String birth,
@@ -171,14 +170,14 @@ public class StaffController {
                            @RequestParam("address") String address,
                            @RequestParam("phone") String phone,
                            @RequestParam("emergencyphone") String emergencyphone,
-                           @RequestParam(value = "p1name", required = false) String p1name,
-                           @RequestParam(value = "p1male", required = false) int p1male,
-                           @RequestParam(value = "p1company", required = false) String p1company,
-                           @RequestParam(value = "p1relationship", required = false) String p1relationship,
-                           @RequestParam(value = "p2name", required = false) String p2name,
-                           @RequestParam(value = "p2male", required = false) int p2male,
-                           @RequestParam(value = "p2company", required = false) String p2company,
-                           @RequestParam(value = "p2relationship", required = false) String p2relationship,
+                           @RequestParam(value = "p1name", required = false,defaultValue = "无") String p1name,
+                           @RequestParam(value = "p1male", required = false,defaultValue ="0") int p1male,
+                           @RequestParam(value = "p1company", required = false,defaultValue = "无") String p1company,
+                           @RequestParam(value = "p1relationship", required = false,defaultValue = "无") String p1relationship,
+                           @RequestParam(value = "p2name", required = false,defaultValue = "无") String p2name,
+                           @RequestParam(value = "p2male", required = false,defaultValue = "0") int p2male,
+                           @RequestParam(value = "p2company", required = false,defaultValue = "无") String p2company,
+                           @RequestParam(value = "p2relationship", required = false,defaultValue = "无") String p2relationship,
                            @RequestParam(value = "role") String role,
                            @RequestParam("shopid") int shopid,
                            UsernamePasswordAuthenticationToken token) {
@@ -188,11 +187,29 @@ public class StaffController {
         if (user.getId() != shopid) {
             return ResponseGenerate.genFailResponse(1, "not be permitted");
         }
-        Staff newStaff = new Staff(staffid, name, male, birthday, nation, party, healthy, nativeplace, address, phone, emergencyphone, p1name, p1male, p1company, p1relationship, p2name, p2male, p2company, p2relationship, role, shopid);
-        newStaff.setEmployment(employment);
-        int success = staffService.updateStaff(newStaff);
+        Staff originStaff = staffService.selectOneStaff(staffid);
+        originStaff.setName(name);
+        originStaff.setMale(male);
+        originStaff.setEmployment(employment);
+        originStaff.setBirthday(birthday);
+        originStaff.setNation(nation);
+        originStaff.setParty(party);
+        originStaff.setHealthy(healthy);
+        originStaff.setNativeplace(nativeplace);
+        originStaff.setAddress(address);
+        originStaff.setPhone(phone);
+        originStaff.setEmergencyphone(emergencyphone);
+        originStaff.setP1name(p1name);
+        originStaff.setP2name(p2name);
+        originStaff.setP1male(p1male);
+        originStaff.setP2male(p2male);
+        originStaff.setP1company(p1company);
+        originStaff.setP2company(p2company);
+        originStaff.setP1relationship(p1relationship);
+        originStaff.setP2relationship(p2relationship);
+        originStaff.setRole(role);
+        int success = staffService.updateStaff(originStaff);
         if (success == 1) {
-            avatarService.updateAvatar(staffid, avatar);
             return ResponseGenerate.genSuccessResponse("modify success");
         } else {
             return ResponseGenerate.genFailResponse(1, "modify fail");

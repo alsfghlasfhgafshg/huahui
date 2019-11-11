@@ -24,18 +24,33 @@ data为array
     "code": 0,
     "data": [
         {
-            "id": "1",
-            "name": "dewitt",
+            "birthday": "1991年10月16日",
+            "address": "秦皇岛开发区",
+            "role": "顾问",
+            "nation": "汉族",
+            "employment": true,
+            "phone": "15242525986",
+            "healthy": "健康",
+            "name": "臧三",
+            "emergencyphone": "15242525986",
+            "id": 1,
+            "nativeplace": "秦皇岛",
             "male": 0,
-            "birthday":"1998-02-21",
-            "nation":"中国",
-            "party":"共产党",
-            "healthy":"健康",
-            "nativeplace":"河北",
-            "address","海港区52号",
-            "phone","15603382139",
-            "emergencyphone","15603382139",
-            "role","beautician"
+            "party": "中共党员"
+        },
+        {
+            "birthday": "1949年10月01日",
+            "address": "秦皇岛",
+            "nation": "汉族",
+            "phone": "13833238038",
+            "healthy": "良好",
+            "name": "胡志军",
+            "emergencyphone": "15500225822",
+            "id": 162,
+            "nativeplace": "中国",
+            "employment": true,
+            "male": 0,
+            "party": "团员"
         }
     ]
 }
@@ -90,10 +105,9 @@ staffid|int|员工id
 参数名称|类型|描述
 ---|:--:|---:
 username|String|用户名
-avatar|MultipartFile|用户头像
-name|String|姓名
+employment|boolean|是否在职
 male|int|员工性别
-birthday|Date|员工生日
+birthday|String|员工生日
 nation|String|员工籍贯
 party|String|政治面貌
 healthy|String|健康状况
@@ -154,31 +168,31 @@ id|int|id
 {
     "msg": "成功",
     "code": 0,
-    "data": [
-        {
-            "staffid":"1",
-            "avatar","XXXX",
-            "name": "dewitt",
-            "male": 0,
-            "birthday":"1998-02-21",
-            "nation":"中国",
-            "party":"共产党",
-            "healthy":"健康",
-            "nativeplace":"河北",
-            "address","海港区52号",
-            "phone","15603382139",
-            "emergencyphone","15603382139",
-            "p1name","p1name",
-            "p1male","0",
-            "p1company","公司",
-            "p1relationship","父子",
-            "p2name","p2name",
-            "p2male","0",
-            "p2company","公司",
-            "p2relationship","父子",
-            "role","beautician"
-        }
-    ]
+    "data": {
+        "staffid": 162,
+        "avatar": null,
+        "name": "胡志军",
+        "employment": true,
+        "male": 0,
+        "birthday": "1949-10-01T00:00:00.000+0000",
+        "nation": "汉族",
+        "party": "团员",
+        "healthy": "良好",
+        "nativeplace": "中国",
+        "address": "秦皇岛",
+        "phone": "13833238038",
+        "emergencyphone": "15500225822",
+        "p1name": "father",
+        "p1male": 0,
+        "p1company": "公司",
+        "p1relationship": "父子",
+        "p2name": "无",
+        "p2male": 0,
+        "p2company": "无",
+        "p2relationship": "无",
+        "role": "美容师",
+        "shopid": 12
+    }
 }
 失败:
 {
@@ -203,11 +217,11 @@ id|int|id
 参数名称|类型|描述
 ---|:--:|---:
 staffid|int|用户id
-avatar|二进制|用户头像
-name|String|姓名
+username|String|姓名
 male|int|员工性别
-birthday|Date|员工生日
-nation|String|员工籍贯
+employment|boolean|是否在职
+birthday|String|员工生日
+nation|String|员工民族
 party|String|政治面貌
 healthy|String|健康状况
 nativeplace|String|籍贯

@@ -27,8 +27,8 @@ public interface StaffRepository {
     ArrayList<Integer> selectAllStaffId(@Param("shopid") int shopid);
 
     @Update("update staff " +
-            "set avatar=#{avatar},name=#{name},male=#{male},birthday=#{birthday},nation=#{nation},party=#{party},healthy=#{healthy},nativeplace=#{nativeplace},address=#{address},phone=#{phone},staff.employment=#{employment}" +
-            "emergencyphone=#{emergencyphone},p1name=#{p1name},p1male=#{p1male},p1company=#{p1company},p1relationship=#{p1relationship},p2name=#{p2name},p2male=#{p2male},p2company=#{p2company},p2relationship=#{p2relationship},role=#{role},shopid=#{shopid}" +
+            "set avatar=#{avatar},name=#{name},male=#{male},birthday=#{birthday},nation=#{nation},party=#{party},healthy=#{healthy},nativeplace=#{nativeplace},address=#{address},phone=#{phone},employment=#{employment}" +
+            ",emergencyphone=#{emergencyphone},p1name=#{p1name},p1male=#{p1male},p1company=#{p1company},p1relationship=#{p1relationship},p2name=#{p2name},p2male=#{p2male},p2company=#{p2company},p2relationship=#{p2relationship},role=#{role},shopid=#{shopid}" +
             " where staffid=#{staffid}")
     int updateStaff(Staff staff);
 
