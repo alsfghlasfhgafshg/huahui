@@ -9,6 +9,7 @@ public class Staff {
     private int staffid;
     private String avatar;
     private String name;
+    Boolean employment;
     private int male;//0男
     private Timestamp birthday;
     private String nation;
@@ -51,6 +52,14 @@ public class Staff {
         this.p2relationship = p2relationship;
         this.shopid = shopid;
         this.role = role;
+    }
+
+    public Boolean getEmployment() {
+        return employment;
+    }
+
+    public void setEmployment(Boolean employment) {
+        this.employment = employment;
     }
 
     public String getRole() {

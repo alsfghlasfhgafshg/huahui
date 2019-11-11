@@ -73,6 +73,7 @@ public class StaffController {
             temp.put("address", staff.getAddress());
             temp.put("phone", staff.getPhone());
             temp.put("emergencyphone", staff.getEmergencyphone());
+            temp.put("employment", staff.getEmployment());
             if (staff.getRole().equals("beautician")){
                 temp.put("role", "美容师");
             }
@@ -107,6 +108,7 @@ public class StaffController {
     JSONObject addStaff(@RequestParam("username") String username,
 //                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar,
                         @RequestParam(value = "name", defaultValue = "", required = false) String name,
+                        @RequestParam(value = "employment",required = false,defaultValue = "true") boolean employment,
                         @RequestParam("male") int male,
                         @RequestParam("birthday") String birth,
                         @RequestParam("nation") String nation,
@@ -141,6 +143,7 @@ public class StaffController {
             return responsejson;
         }
         Staff staff = new Staff(staffUser.getId(), username, male, birthday, nation, party, healthy, nativeplace, address, phone, emergencyphone, p1name, p1male, p1company, p1relationship, p2name, p2male, p2company, p2relationship, role, shopId);
+        staff.setEmployment(employment);
         int success = staffService.addStaff(staff);
         if (success == 1) {
             avatarService.updateAvatar(staffUser.getId(), null);
@@ -159,6 +162,7 @@ public class StaffController {
                            @RequestParam(value = "avatar", required = false) MultipartFile avatar,
                            @RequestParam("name") String name,
                            @RequestParam("male") int male,
+                           @RequestParam(value = "employment",required = false,defaultValue = "true") boolean employment,
                            @RequestParam("birthday") String birth,
                            @RequestParam("nation") String nation,
                            @RequestParam("party") String party,
@@ -185,6 +189,7 @@ public class StaffController {
             return ResponseGenerate.genFailResponse(1, "not be permitted");
         }
         Staff newStaff = new Staff(staffid, name, male, birthday, nation, party, healthy, nativeplace, address, phone, emergencyphone, p1name, p1male, p1company, p1relationship, p2name, p2male, p2company, p2relationship, role, shopid);
+        newStaff.setEmployment(employment);
         int success = staffService.updateStaff(newStaff);
         if (success == 1) {
             avatarService.updateAvatar(staffid, avatar);

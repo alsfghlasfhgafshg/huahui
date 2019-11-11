@@ -15,9 +15,9 @@ public interface StaffRepository {
     @Update("update staff set avatar=#{avatar} where staffid=#{staffid}")
     int updateStaffAvatar(@Param("staffid") int staffid, @Param("avatar") String avatar);
 
-    @Insert("insert into staff (staffid,avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,p1name,p1male,p1company,p1relationship,p2name,p2male,p2company,p2relationship,role,shopid)" +
+    @Insert("insert into staff (staffid,avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,p1name,p1male,p1company,p1relationship,p2name,p2male,p2company,p2relationship,role,shopid,employment)" +
             "values(#{staffid},#{avatar},#{name},#{male},#{birthday},#{nation},#{party},#{healthy},#{nativeplace}," +
-            "#{address},#{phone},#{emergencyphone},#{p1name},#{p1male},#{p1company},#{p1relationship},#{p2name},#{p2male},#{p2company},#{p2relationship},#{role},#{shopid})")
+            "#{address},#{phone},#{emergencyphone},#{p1name},#{p1male},#{p1company},#{p1relationship},#{p2name},#{p2male},#{p2company},#{p2relationship},#{role},#{shopid},#{employment})")
     int insertStaff(Staff staff);
 
     @Delete("delete from staff where staffid=#{staffid}")
@@ -27,7 +27,7 @@ public interface StaffRepository {
     ArrayList<Integer> selectAllStaffId(@Param("shopid") int shopid);
 
     @Update("update staff " +
-            "set avatar=#{avatar},name=#{name},male=#{male},birthday=#{birthday},nation=#{nation},party=#{party},healthy=#{healthy},nativeplace=#{nativeplace},address=#{address},phone=#{phone}," +
+            "set avatar=#{avatar},name=#{name},male=#{male},birthday=#{birthday},nation=#{nation},party=#{party},healthy=#{healthy},nativeplace=#{nativeplace},address=#{address},phone=#{phone},staff.employment=#{employment}" +
             "emergencyphone=#{emergencyphone},p1name=#{p1name},p1male=#{p1male},p1company=#{p1company},p1relationship=#{p1relationship},p2name=#{p2name},p2male=#{p2male},p2company=#{p2company},p2relationship=#{p2relationship},role=#{role},shopid=#{shopid}" +
             " where staffid=#{staffid}")
     int updateStaff(Staff staff);
@@ -67,7 +67,5 @@ public interface StaffRepository {
 
     @Select("select staffid from staff where name=#{staffname} limit 1")
     Integer findIdByStaffName(@Param("staffname")String staffname);
-
-
 
 }

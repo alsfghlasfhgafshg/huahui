@@ -33,6 +33,15 @@ public class Settlement_newController {
     @Autowired
     Settlement_newRepository settlement_newRepository;
 
+    @GetMapping("/dayslaststoshop")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public JSONObject dayslaststoshop(UsernamePasswordAuthenticationToken token,
+                                      @RequestParam("customer") String customer) {
+        int shopid = ((User) token.getPrincipal()).getId();
+
+        return null;
+    }
+
     @GetMapping("/thismonth")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public JSONObject getSettlementMonth(UsernamePasswordAuthenticationToken token) {
