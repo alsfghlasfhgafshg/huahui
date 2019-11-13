@@ -156,12 +156,12 @@ public class DateUtils {
     }
 
     //7天之前
-    public static Timestamp sevenDaysAgo() {
-        return nDaysAgo(6);
+    public static String sevenDaysAgo() {
+        return formatTimeStrap(nDaysAgo(6));
     }
 
     //一个月之前
-    public static Timestamp oneMonthAgo() {
+    public static String oneMonthAgo() {
         long now = System.currentTimeMillis();
         String nowstr = formatTimeStrap(now);
         Pattern r = Pattern.compile("(\\d+)年(\\d+)月(\\d+)日");
@@ -182,13 +182,12 @@ public class DateUtils {
                 year--;
             }
         }
-        Timestamp oneMonthAgo = getTimeStampStart(year, month, day);
-        return oneMonthAgo;
+        return year+"年"+month+"月"+day+"日";
 
     }
 
     //一个季度之前
-    public static Timestamp oneSeasonAgo() {
+    public static String oneSeasonAgo() {
         long now = System.currentTimeMillis();
         String nowstr = formatTimeStrap(now);
         Pattern r = Pattern.compile("(\\d+)年(\\d+)月(\\d+)日");
@@ -209,13 +208,11 @@ public class DateUtils {
                 year--;
             }
         }
-        Timestamp oneSeasonAgo = getTimeStampStart(year, month, day);
-        return oneSeasonAgo;
-
+        return year+"年"+month+"月"+day+"日";
     }
 
     //365天之前
-    public static Timestamp oneYearAgo() {
+    public static String oneYearAgo() {
         long now = System.currentTimeMillis();
         String nowstr = formatTimeStrap(now);
         Pattern r = Pattern.compile("(\\d+)年(\\d+)月(\\d+)日");
@@ -232,8 +229,7 @@ public class DateUtils {
 
             year--;
         }
-        Timestamp oneYearAgo = getTimeStampStart(year, month, day);
-        return oneYearAgo;
+        return year+"年"+month+"月"+day+"日";
     }
 
 }
