@@ -30,6 +30,12 @@ public class DateTest {
     @Autowired
     SettlementService settlementService;
 
+    @Test
+    public void oneMonthage(){
+        Timestamp timestamp = DateUtils.oneSeasonAgo();
+        Timestamp timestamp1 = DateUtils.oneYearAgo();
+    }
+
 
     @Test
     public void asaa() {

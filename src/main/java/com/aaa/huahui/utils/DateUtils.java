@@ -10,29 +10,31 @@ import java.util.regex.Pattern;
 
 public class DateUtils {
     static volatile Calendar calendar = Calendar.getInstance();
-
+    static int onedayTimeMillis = 86400000;
 
     public static String formatTimeStrap(Timestamp time) {
         return formatTimeStrap(time.getTime());
     }
+
     public static String formatTimeStrap(long time) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         String timestr = sdf.format(new Date(time));
         return timestr;
     }
-    public static Timestamp getMonthStart(long time){
+
+    public static Timestamp getMonthStart(long time) {
         String line = formatTimeStrap(time);
         String pattern = "(\\d*)年(\\d*)月(\\d*)日";
 
         Pattern r = Pattern.compile(pattern);
 
         Matcher m = r.matcher(line);
-        if (m.find( )) {
-            System.out.println("Found value: " + m.group(0) );
-            System.out.println("Found value: " + m.group(1) );
-            System.out.println("Found value: " + m.group(2) );
-            System.out.println("Found value: " + m.group(3) );
-            String date=m.group(1)+"年"+m.group(2)+"月"+"1日";
+        if (m.find()) {
+            System.out.println("Found value: " + m.group(0));
+            System.out.println("Found value: " + m.group(1));
+            System.out.println("Found value: " + m.group(2));
+            System.out.println("Found value: " + m.group(3));
+            String date = m.group(1) + "年" + m.group(2) + "月" + "1日";
             return getTimeStampStart(date);
         } else {
             System.out.println("NO MATCH");
@@ -135,8 +137,103 @@ public class DateUtils {
     public static long getInterval(String begin_date) throws ParseException {
         long day = 0;
         Date now = new Date();
-        day = (DateUtils.getTimeStampStart(begin_date).getTime()-now.getTime())/(24*60*60*1000);
+        day = (DateUtils.getTimeStampStart(begin_date).getTime() - now.getTime()) / (24 * 60 * 60 * 1000);
         return -day;
+    }
+
+    //今天开始
+    public static Timestamp todayStart() {
+        long now = System.currentTimeMillis();
+        Timestamp todaystartTimestamp = new Timestamp(now - now % onedayTimeMillis);
+        return todaystartTimestamp;
+    }
+
+    //n之前
+    public static Timestamp nDaysAgo(int ndays) {
+        long now = System.currentTimeMillis();
+        Timestamp todaystartTimestamp = new Timestamp(now - now % onedayTimeMillis - ndays * onedayTimeMillis);
+        return todaystartTimestamp;
+    }
+
+    //7天之前
+    public static Timestamp sevenDaysAgo() {
+        return nDaysAgo(6);
+    }
+
+    //一个月之前
+    public static Timestamp oneMonthAgo() {
+        long now = System.currentTimeMillis();
+        String nowstr = formatTimeStrap(now);
+        Pattern r = Pattern.compile("(\\d+)年(\\d+)月(\\d+)日");
+
+        int year = 0;
+        int month = 0;
+        int day = 0;
+
+        Matcher m = r.matcher(nowstr);
+        if (m.find()) {
+            year = Integer.valueOf(m.group(1));
+            month = Integer.valueOf(m.group(2));
+            day = Integer.valueOf(m.group(3));
+            if (month != 1) {
+                month--;
+            } else {
+                month = 12;
+                year--;
+            }
+        }
+        Timestamp oneMonthAgo = getTimeStampStart(year, month, day);
+        return oneMonthAgo;
+
+    }
+
+    //一个季度之前
+    public static Timestamp oneSeasonAgo() {
+        long now = System.currentTimeMillis();
+        String nowstr = formatTimeStrap(now);
+        Pattern r = Pattern.compile("(\\d+)年(\\d+)月(\\d+)日");
+
+        int year = 0;
+        int month = 0;
+        int day = 0;
+
+        Matcher m = r.matcher(nowstr);
+        if (m.find()) {
+            year = Integer.valueOf(m.group(1));
+            month = Integer.valueOf(m.group(2));
+            day = Integer.valueOf(m.group(3));
+            if (month > 3) {
+                month = month - 3;
+            } else {
+                month = month + 9;
+                year--;
+            }
+        }
+        Timestamp oneSeasonAgo = getTimeStampStart(year, month, day);
+        return oneSeasonAgo;
+
+    }
+
+    //365天之前
+    public static Timestamp oneYearAgo() {
+        long now = System.currentTimeMillis();
+        String nowstr = formatTimeStrap(now);
+        Pattern r = Pattern.compile("(\\d+)年(\\d+)月(\\d+)日");
+
+        int year = 0;
+        int month = 0;
+        int day = 0;
+
+        Matcher m = r.matcher(nowstr);
+        if (m.find()) {
+            year = Integer.valueOf(m.group(1));
+            month = Integer.valueOf(m.group(2));
+            day = Integer.valueOf(m.group(3));
+
+            year--;
+        }
+        Timestamp oneYearAgo = getTimeStampStart(year, month, day);
+        return oneYearAgo;
     }
 
 }
