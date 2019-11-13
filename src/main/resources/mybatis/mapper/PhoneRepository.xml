@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.huahui.repository.PhoneRepository">
+
+
+    <select id="todayData" resultType="java.util.Map">
+        select 客流, 人头, 实操数, 项目数, ifnull(convert(actualmoney / 客流,decimal(10,2)), 0) as 客人单价, cash 现金
+        from (select 1 id, count(customer) as 客流, count(distinct customer) as 人头, count(customer) 项目数
+              from settlementnew
+              where DATE_FORMAT(createtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') and shopid=#{shopid}) a
+               left join(
+          select 1 id, count(customer) 实操数, IFNULL(sum(money), 0) actualmoney
+          from settlementnew
+          where DATE_FORMAT(createtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') and shopid=#{shopid}
+            and category in ('美容', '美体', '仪器')) b on a.id = b.id
+               left join(
+          select 1 id, ifnull(sum(money), 0) cash
+          from settlementnew
+          where DATE_FORMAT(createtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') and shopid=#{shopid}
+            and consumptioncategory in ('现金产品', '现金卡', '现金实操')) c
+                        on b.id = c.id
+    </select>
+
+
+
+</mapper>
