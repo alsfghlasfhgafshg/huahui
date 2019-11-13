@@ -141,11 +141,17 @@ public class DateUtils {
         return -day;
     }
 
+    //现在
+    public static String nowString() {
+        long now = System.currentTimeMillis();
+        return formatTimeStrap(new Timestamp(now));
+    }
+
     //今天开始
-    public static Timestamp todayStart() {
+    public static String todayStart() {
         long now = System.currentTimeMillis();
         Timestamp todaystartTimestamp = new Timestamp(now - now % onedayTimeMillis);
-        return todaystartTimestamp;
+        return formatTimeStrap(todaystartTimestamp);
     }
 
     //n之前
@@ -182,7 +188,7 @@ public class DateUtils {
                 year--;
             }
         }
-        return year+"年"+month+"月"+day+"日";
+        return year + "年" + month + "月" + day + "日";
 
     }
 
@@ -208,7 +214,7 @@ public class DateUtils {
                 year--;
             }
         }
-        return year+"年"+month+"月"+day+"日";
+        return year + "年" + month + "月" + day + "日";
     }
 
     //365天之前
@@ -229,7 +235,7 @@ public class DateUtils {
 
             year--;
         }
-        return year+"年"+month+"月"+day+"日";
+        return year + "年" + month + "月" + day + "日";
     }
 
 }
