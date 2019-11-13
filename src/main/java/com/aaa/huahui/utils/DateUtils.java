@@ -62,7 +62,7 @@ public class DateUtils {
             String[] split = yyyyMMdd.split("-");
             year = Integer.valueOf(split[0]);
             month = Integer.valueOf(split[1]);
-            day = Integer.valueOf(split[2]);
+            day = Integer.valueOf(split[2].length()>2?split[2].substring(0,2):split[2]);
         }
 
         return getTimeStampWithHHmmss(year, month, day, 0, 0, 0);

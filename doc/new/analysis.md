@@ -128,7 +128,7 @@ con为每个表的数据列表
 
 参数名称|类型|描述
 ---|:--:|---:
-customer|string|客户名称
+customer|string|客户名称(非必须,此项为空时查看时间区间内全部)
 shopid|int|如果是商店登录查看本店经营分析表，不需要此项，如果是brand查看shop的经营分析，需要传入shopid
 starttime|string|开始时间，yyyy-mm-dd或者yyyy年mm月dd日格式
 endtime|string|结束时间，yyyy-mm-dd或者yyyy年mm月dd日格式
