@@ -1,4 +1,4 @@
-package com.aaa.huahui.controller;
+package com.aaa.huahui.controller.mobile;
 
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.ShopRepository;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/phone")
+@RequestMapping("/m")
 public class PhoneController {
 
     @Autowired
