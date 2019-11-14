@@ -12,6 +12,7 @@ import com.aaa.huahui.vo.CustomerHandsVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class AnalysisTable2Controller {
     AnalysisTable2Service analysisTable2Service;
 
     @GetMapping("/management")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject managementAnalysis(UsernamePasswordAuthenticationToken token,
                                   @RequestParam(value = "shopid", required = false) Integer shopid,
@@ -42,6 +44,7 @@ public class AnalysisTable2Controller {
 
 
     @GetMapping("/beauticiant")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject beauticiantAnalysis(UsernamePasswordAuthenticationToken token,
                                    @RequestParam(value = "shopid", required = false) Integer shopid,
@@ -52,6 +55,7 @@ public class AnalysisTable2Controller {
     }
 
     @GetMapping("/project")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject projectAnalysis(UsernamePasswordAuthenticationToken token,
                                @RequestParam(value = "shopid", required = false) Integer shopid,
@@ -62,6 +66,7 @@ public class AnalysisTable2Controller {
 
 
     @GetMapping("/beauticianttable")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject beauticiantTableAnalysis(UsernamePasswordAuthenticationToken token,
                                         @RequestParam(value = "shopid", required = false) Integer shopid,

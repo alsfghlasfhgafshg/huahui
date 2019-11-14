@@ -9,6 +9,7 @@ import com.aaa.huahui.vo.CustomerHandsVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class AnalysisTableController {
 
 
     @GetMapping("/customer")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject getCustomerAnalysis(UsernamePasswordAuthenticationToken token,
                                    @RequestParam(value = "customer") String customer,
@@ -38,6 +40,7 @@ public class AnalysisTableController {
     }
 
     @GetMapping("/cuflow")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject getCustomerFlow(UsernamePasswordAuthenticationToken token,
                                @RequestParam(value = "shopid", required = false) Integer shopid,

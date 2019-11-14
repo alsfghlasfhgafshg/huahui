@@ -8,6 +8,7 @@ import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class PhoneController {
     AnalysisTableService analysisTableService;
 
     @GetMapping("/todaydata")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject getTodayData(UsernamePasswordAuthenticationToken token,
                             @RequestParam(value = "shopid", required = false) Integer shopid){
@@ -54,6 +56,7 @@ public class PhoneController {
     }
 
     @GetMapping("/customer")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject getCustomerAnalysis(UsernamePasswordAuthenticationToken token,
                                    @RequestParam(value = "customer",required = false) String customer,
@@ -88,6 +91,7 @@ public class PhoneController {
 
 
     @GetMapping("/cuflow")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject getCustomerFlow(UsernamePasswordAuthenticationToken token,
                                @RequestParam(value = "shopid", required = false) Integer shopid,
