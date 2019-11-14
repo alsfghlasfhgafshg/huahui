@@ -73,6 +73,10 @@ public class PhoneController {
             String yend=DateUtils.todayStart();
             String  ystart= DateUtils.oneMonthAgo();
             return analysisTableService.getCustomerAnalysis(token,customer,shopid,ystart,yend,handorcash);
+        }else if (period.equals("季报")){
+            String send=DateUtils.todayStart();
+            String  sstart= DateUtils.oneSeasonAgo();
+            return analysisTableService.getCustomerAnalysis(token,customer,shopid,sstart,send,handorcash);
         }else if (period.equals("年报")){
             String  nend= DateUtils.todayStart();
             String  nstart= DateUtils.oneYearAgo();
@@ -101,6 +105,10 @@ public class PhoneController {
             String yend=DateUtils.todayStart();
             String ystart = DateUtils.oneMonthAgo();
             return analysisTableService.getCustomerFlow(token,shopid,ystart,yend);
+        }else if (period.equals("季报")){
+            String send = DateUtils.todayStart();
+            String sstart = DateUtils.oneSeasonAgo();
+            return analysisTableService.getCustomerFlow(token,shopid,sstart,send);
         }else if (period.equals("年报")){
             String  nend= DateUtils.todayStart();
             String  nstart= DateUtils.oneYearAgo();
