@@ -98,6 +98,7 @@
     </select>
 
     <select id="downtoStorePercent" resultType="java.util.HashMap">
+        select times, cast(sum(con) as int) con from (
         select times, count(*) con
         from (
         select customer, count(customer) as times
@@ -121,6 +122,13 @@
         group by times
         having times >= 5
         ) tt
+        union select 1 times,0 con
+        union
+        select 2 times,0 con
+        union
+        select 3 times,0 con
+        union
+        select 4 times,0 con)tt group by times
     </select>
 
 </mapper>
