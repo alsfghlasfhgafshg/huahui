@@ -5,6 +5,7 @@ import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.repository.UserRoleRepository;
+import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.UserService;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONObject;
@@ -28,6 +29,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ShopService shopService;
 
     @Autowired
     UserRepository userRepository;
@@ -41,6 +44,10 @@ public class UserController {
     @GetMapping("/role")
     public @ResponseBody
     String getRole(UsernamePasswordAuthenticationToken token) {
+
+        if (token == null) {
+            return "null";
+        }
         Collection<GrantedAuthority> authorities = token.getAuthorities();
         Iterator<GrantedAuthority> iterator = authorities.iterator();
         String roles = "";
@@ -52,9 +59,13 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public String getInfo(UsernamePasswordAuthenticationToken token) {
-
+    public @ResponseBody
+    JSONObject getInfo(UsernamePasswordAuthenticationToken token) {
+        if (token==null){
+            ResponseGenerate.genFailResponse(1,"未登录");
+        }
         User user = (User) token.getPrincipal();
+
 
         String userName = user.getName();
         Collection<GrantedAuthority> authorities = token.getAuthorities();
@@ -66,22 +77,13 @@ public class UserController {
         JSONObject responsejson = null;
         JSONObject data = new JSONObject();
         data.put("username", userName);
+        data.put("userid", user.getId());
 
-        switch (authority) {
-            case ROLE.ADMIN:
-
-
-                break;
-            case ROLE.BRAND:
-
-
-                break;
-
-            case ROLE.SHOP:
-                break;
+        if (user.hasRole(ROLE.SHOP)){
+            data.put("geo",shopService.selectOneShop(user.getId()).getGeo());
         }
-        return null;
 
+        return ResponseGenerate.genSuccessResponse(data);
     }
 
     //设置
@@ -150,7 +152,7 @@ public class UserController {
             return responsejson;
         }
 
-        if(passwd.length()<6||passwd.length()>16){
+        if (passwd.length() < 6 || passwd.length() > 16) {
             responsejson = ResponseGenerate.genFailResponse(1, "密码需要在6-16之间");
             return responsejson;
         }

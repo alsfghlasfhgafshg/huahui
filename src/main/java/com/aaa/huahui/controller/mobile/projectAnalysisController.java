@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/m/project")
 public class projectAnalysisController {
 
     @Autowired
     AnalysisTable2Service analysisTable2Service;
 
-    @GetMapping("/")
+    @GetMapping("/m/project")
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject projectAnalysisToday(UsernamePasswordAuthenticationToken token,

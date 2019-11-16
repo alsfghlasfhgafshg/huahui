@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/m/management")
 public class managementAnalysisController {
 
     @Autowired
     AnalysisTable2Service analysisTable2Service;
 
 
-    @GetMapping("/")
+    @GetMapping("/m/management")
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject managementAnalysisToday(UsernamePasswordAuthenticationToken token,

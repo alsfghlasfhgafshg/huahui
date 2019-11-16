@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/m/beauticiant")
 public class beauticiantAnalysisController {
     @Autowired
     AnalysisTable2Service analysisTable2Service;
 
 
-    @GetMapping("/")
+    @GetMapping("/m/beauticiant")
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject beauticiantAnalysisToday(UsernamePasswordAuthenticationToken token,

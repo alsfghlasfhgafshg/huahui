@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/m")
 public class PhoneController {
 
     @Autowired
@@ -32,7 +31,7 @@ public class PhoneController {
     @Autowired
     AnalysisTableService analysisTableService;
 
-    @GetMapping("/todaydata")
+    @GetMapping("/m/todaydata")
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject getTodayData(UsernamePasswordAuthenticationToken token,
@@ -55,7 +54,7 @@ public class PhoneController {
         return ResponseGenerate.genSuccessResponse(reJson);
     }
 
-    @GetMapping("/customer")
+    @GetMapping("/m/customer")
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject getCustomerAnalysis(UsernamePasswordAuthenticationToken token,
@@ -90,7 +89,7 @@ public class PhoneController {
     }
 
 
-    @GetMapping("/cuflow")
+    @GetMapping("/m/cuflow")
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject getCustomerFlow(UsernamePasswordAuthenticationToken token,

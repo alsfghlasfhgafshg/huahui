@@ -221,13 +221,13 @@ public class AnalysisTable2Service {
         } else {
             id = user.getId();
         }
-
-        Integer staffid = staffRepository.findIdByStaffName(staffname);
-        if (staffid == null || staffRepository.selectCountShopStaff(id, staffid) == 0) {
-            JSONObject fail = ResponseGenerate.genFailResponse(1, "无此美容师");
-            return fail;
+        if (!(staffname==null||staffname.equals(""))){
+            Integer staffid = staffRepository.findIdByStaffName(staffname);
+            if (staffid == null || staffRepository.selectCountShopStaff(id, staffid) == 0) {
+                JSONObject fail = ResponseGenerate.genFailResponse(1, "无此美容师");
+                return fail;
+            }
         }
-
 
         Timestamp start = DateUtils.getTimeStampStart(startTime);
         Timestamp end = DateUtils.getTimeStampEnd(endTime);

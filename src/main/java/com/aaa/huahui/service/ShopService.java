@@ -37,6 +37,10 @@ public class ShopService {
     @Autowired
     SettlementRepository settlementRepository;
 
+    public Shop selectOneShop(int shopid){
+        return shopRepository.selectById(shopid);
+    }
+
 
     public JSONObject status(int shopid) {
         JSONObject data = new JSONObject();
