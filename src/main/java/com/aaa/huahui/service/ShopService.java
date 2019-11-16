@@ -81,7 +81,7 @@ public class ShopService {
     }
 
     //更改shop信息
-    public boolean updateShopInfo(int brandid, int shopid, String description, String geo) {
+    public boolean updateShopInfo(int brandid, int shopid, String description, String geo,String province,String city,String district) {
 
         if (shopRepository.selectCountBrandShop(shopid, brandid) == 0) {
             return false;
@@ -91,11 +91,20 @@ public class ShopService {
         if (description == null || description.equals("")) {
             description = shop.getDescription();
         }
-        if (geo == null || description.equals("")) {
+        if (geo == null || geo.equals("")) {
             geo = shop.getGeo();
         }
+        if (province == null || province.equals("")) {
+            province = shop.getProvince();
+        }
+        if (city == null || city.equals("")) {
+            city = shop.getCity();
+        }
+        if (district == null || district.equals("")) {
+            district = shop.getDistrict();
+        }
 
-        int i = shopRepository.updateShopInfo(shopid, description, geo);
+        int i = shopRepository.updateShopInfo(shopid, description, geo,province,city,district);
         if (i == 1) {
             return true;
         }

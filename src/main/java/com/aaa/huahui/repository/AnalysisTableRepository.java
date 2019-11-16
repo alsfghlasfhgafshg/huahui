@@ -28,7 +28,7 @@ public interface AnalysisTableRepository {
 
     //客流分析
     //到店次数
-    ArrayList<HashMap<String,String>> downtoStoreTimes(@Param("shopid")int shopid,
+    ArrayList<HashMap<String,Object>> downtoStoreTimes(@Param("shopid")int shopid,
                                                        @Param("start")Timestamp start,
                                                        @Param("end")Timestamp end);
     //实耗
