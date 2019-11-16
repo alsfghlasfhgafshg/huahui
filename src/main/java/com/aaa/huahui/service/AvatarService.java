@@ -61,6 +61,9 @@ public class AvatarService {
         //file为空，直接返回原来的头像
         if (file == null) {
             switch (role) {
+                case ROLE.ADMIN:
+                    return brandRepository.queryAvatar(id);
+
                 case ROLE.BRAND:
                     return brandRepository.queryAvatar(id);
 
