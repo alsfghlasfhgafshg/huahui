@@ -48,7 +48,7 @@ public class AnalysisTableService {
         return analysisTableRepository.selectAllCustomer(customer,shopid,start,end);
     }
 
-    public ArrayList<HashMap<String,String>> downtoStoreTimes(int shopid, Timestamp start, Timestamp end){
+    public ArrayList<HashMap<String,Object>> downtoStoreTimes(int shopid, Timestamp start, Timestamp end){
         return analysisTableRepository.downtoStoreTimes(shopid,start,end);
     }
 
@@ -150,21 +150,29 @@ public class AnalysisTableService {
             return ResponseGenerate.genFailResponse(1,"传入时间格式错误");
         }
         ArrayList<HashMap<String,String>> list2 = actualMoney(id,start,end);
-        ArrayList<HashMap<String,String>> list1 = downtoStoreTimes(id,start,end);
+        ArrayList<HashMap<String,Object>> list1 = downtoStoreTimes(id,start,end);
         ArrayList<HashMap<String,Object>> list3 = downToStorePercent(id,start,end);
 
         //总返回列表
         JSONArray sumArray = new JSONArray();
         //子列表
         JSONArray array = new JSONArray();
+        int sum =0;
         int rank = 1;//排名
-        for (HashMap<String,String> map: list1){
-            JSONObject mtemp = new JSONObject();
+        JSONObject mtemp;
+        for (HashMap<String,Object> map: list1){
+            sum += (Long)map.get("times");
+            mtemp = new JSONObject();
             mtemp.put("排名",rank++);
-            for (Map.Entry<String,String> entry:map.entrySet()){
+            for (Map.Entry<String,Object> entry:map.entrySet()){
                 mtemp.put(entry.getKey(),entry.getValue());
             }array.add(mtemp);
         }
+        mtemp = new JSONObject();
+        mtemp.put("customer","总计");
+        mtemp.put("排名",rank);
+        mtemp.put("times",sum);
+        array.add(mtemp);
 
         JSONObject reJson = new JSONObject();
         reJson.put("type","到店次数");
@@ -173,7 +181,6 @@ public class AnalysisTableService {
 
         array = new JSONArray();
         rank = 1;
-        JSONObject mtemp;
         for (HashMap<String,String> map:list2){
             mtemp = new JSONObject();
             mtemp.put("排名",rank++);
@@ -194,7 +201,7 @@ public class AnalysisTableService {
             }array.add(mtemp);
         }
         reJson = new JSONObject();
-        reJson.put("type","到店次数");
+        reJson.put("type","到店次数统计");
         reJson.put("con",array);
         sumArray.add(reJson);
         return ResponseGenerate.genSuccessResponse(sumArray);

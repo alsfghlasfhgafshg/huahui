@@ -16,8 +16,8 @@ public interface ShopRepository {
                    @Param("province") String province, @Param("city") String city, @Param("district") String district, @Param("geo") String geo,
                    @Param("brandid") int brandid);
 
-    @Update("update shop set description=#{description},geo=#{geo} where shopid=#{shopid}")
-    int updateShopInfo(@Param("shopid") int shopid, @Param("description") String description, @Param("geo") String geo);
+    @Update("update shop set description=#{description},geo=#{geo},province=#{province},city=#{city},district=#{district} where shopid=#{shopid}")
+    int updateShopInfo(@Param("shopid") int shopid, @Param("description") String description, @Param("geo") String geo,@Param("province")String province,@Param("city")String city,@Param("district")String district);
 
     @Select("select shopid from shop where brandid=#{brandid}")
     ArrayList<Integer> selectAllShopId(@Param("brandid") int brandid);

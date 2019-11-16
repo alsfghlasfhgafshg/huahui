@@ -116,12 +116,13 @@ public class ShopController {
     JSONObject updateStaff(UsernamePasswordAuthenticationToken token,
                            @RequestParam("shopid") int shopid,
                            @RequestParam(value = "description", defaultValue = "") String description,
+                           @RequestParam(value = "province", defaultValue = "") String province,
+                           @RequestParam(value = "city", defaultValue = "") String city,
+                           @RequestParam(value = "district", defaultValue = "") String district,
                            @RequestParam(value = "geo", defaultValue = "") String geo) {
         JSONObject reobject = new JSONObject();
         int brandid = ((User) token.getPrincipal()).getId();
-
-
-        boolean result = shopService.updateShopInfo(brandid, shopid, description, geo);
+        boolean result = shopService.updateShopInfo(brandid, shopid, description, geo,province,city,district);
         if (result == true) {
             reobject = ResponseGenerate.genSuccessResponse("修改成功");
             return reobject;
