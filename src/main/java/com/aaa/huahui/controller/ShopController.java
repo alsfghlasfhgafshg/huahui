@@ -55,9 +55,9 @@ public class ShopController {
     @GetMapping("/allshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
-    JSONObject getAllShop(UsernamePasswordAuthenticationToken token, @RequestParam(value = "page", defaultValue = "1") int page) {
+    JSONObject getAllShop(UsernamePasswordAuthenticationToken token) {
         User user = (User) token.getPrincipal();
-        ArrayList<Shop> list = shopService.selectAllShop(user.getId(), page);
+        ArrayList<Shop> list = shopService.selectAllShop(user.getId());
         JSONArray array = new JSONArray();
 
         for (Shop shop : list) {

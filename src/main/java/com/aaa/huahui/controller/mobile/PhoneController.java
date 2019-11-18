@@ -4,6 +4,7 @@ import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.ShopRepository;
 import com.aaa.huahui.service.AnalysisTableService;
 import com.aaa.huahui.service.PhoneService;
+import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONObject;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -29,29 +32,48 @@ public class PhoneController {
     ShopRepository shopRepository;
 
     @Autowired
+    ShopService shopService;
+
+    @Autowired
     AnalysisTableService analysisTableService;
 
     @GetMapping("/m/todaydata")
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
-    JSONObject getTodayData(UsernamePasswordAuthenticationToken token,
-                            @RequestParam(value = "shopid", required = false) Integer shopid){
+    JSONObject getTodayData(UsernamePasswordAuthenticationToken token){
         Integer id;
         User user = (User) token.getPrincipal();
         //brand的话看是哪个店,shop的话只能当前店
         if (user.hasRole("ROLE_BRAND")) {
-            if (shopRepository.selectCountBrandShop(shopid,user.getId())==1){
-                id = shopid;
-            }else return ResponseGenerate.genFailResponse(1,"当前用户无shopid操作权限");
+            id = user.getId();
+            ArrayList<Integer> list = shopService.selectAllShopId(id);
+            HashMap<String,Double> resultMap = new HashMap<>();
+            for (int i=0;i<list.size();i++){
+                Map<String,Object> map = phoneService.getTodayData(list.get(i));
+                for (Map.Entry entry:map.entrySet()){
+                    String key = (String) entry.getKey();
+                    double value = Double.parseDouble(String.valueOf(entry.getValue()));
+                    if (resultMap.containsKey(key)){
+                        double n = resultMap.get(key)+value;
+                        resultMap.put(key,n);
+                    }else resultMap.put(key,value);
+                }
+            }
+            JSONObject reJson = new JSONObject();
+            for (Map.Entry entry:resultMap.entrySet()){
+                reJson.put((String) entry.getKey(),entry.getValue());
+            }
+            return ResponseGenerate.genSuccessResponse(reJson);
         } else {
             id = user.getId();
-        }
-        Map<String,Object> map = phoneService.getTodayData(id);
-        JSONObject reJson = new JSONObject();
-        for (Map.Entry entry:map.entrySet()){
+            Map<String,Object> map = phoneService.getTodayData(id);
+            JSONObject reJson = new JSONObject();
+            for (Map.Entry entry:map.entrySet()){
                 reJson.put((String) entry.getKey(),entry.getValue());
+            }
+            return ResponseGenerate.genSuccessResponse(reJson);
         }
-        return ResponseGenerate.genSuccessResponse(reJson);
+
     }
 
     @GetMapping("/m/customer")

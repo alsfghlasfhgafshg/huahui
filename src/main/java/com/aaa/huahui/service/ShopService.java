@@ -117,16 +117,8 @@ public class ShopService {
     }
 
     //获得所有shop
-    public ArrayList<Shop> selectAllShop(int brandid, int page) {
-        int offset = (page - 1) * pageSize;
-
-        int pagesize = this.pageSize;
-
-        if (page == -1) {
-            offset = 0;
-            pagesize = Integer.MAX_VALUE;
-        }
-        return shopRepository.selectAllShop(brandid, offset, pagesize);
+    public ArrayList<Shop> selectAllShop(int brandid) {
+        return shopRepository.selectAllShop(brandid);
     }
 
     //获得shop的brand
