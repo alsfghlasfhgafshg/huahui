@@ -22,7 +22,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @Controller
-@RequestMapping("/staff")
 public class StaffController {
 
     @Autowired
@@ -46,13 +45,13 @@ public class StaffController {
     @Autowired
     StaffRepository staffRepository;
 
-    @GetMapping
-    public String staffIndex() {
-        return "staff";
-    }
+//    @GetMapping
+//    public String staffIndex() {
+//        return "staff";
+//    }
 
     //获得所有staff
-    @GetMapping("/allstaff")
+    @GetMapping("/staff/allstaff")
     public @ResponseBody
     JSONObject getAllStaff(UsernamePasswordAuthenticationToken token, @RequestParam(value = "page", defaultValue = "1") int page) {
         User shopController = (User) token.getPrincipal();
@@ -88,7 +87,7 @@ public class StaffController {
 
 
     //获取一个员工详细信息
-    @GetMapping("/getonestaff")
+    @GetMapping("/staff/getonestaff")
     public @ResponseBody
     JSONObject showOneStaff(@RequestParam("id") int staffId) {
         try {
@@ -101,7 +100,7 @@ public class StaffController {
 
 
     //添加staff
-    @PostMapping("/addstaff")
+    @PostMapping("/staff/addstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
     JSONObject addStaff(@RequestParam("username") String username,
@@ -154,7 +153,7 @@ public class StaffController {
     }
 
     //修改staff
-    @PostMapping("/editstaff")
+    @PostMapping("/staff/editstaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
     JSONObject updateStaff(@RequestParam("staffid") int staffid,
@@ -218,7 +217,7 @@ public class StaffController {
     }
 
     //删除staff
-    @PostMapping("/deletestaff")
+    @PostMapping("/staff/deletestaff")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
     JSONObject deleteStaff(UsernamePasswordAuthenticationToken token, @RequestParam("staffid") int staffId) {

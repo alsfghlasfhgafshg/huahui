@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/settlementold")
 public class SettlementController {
 
     @Autowired
@@ -227,9 +228,9 @@ public class SettlementController {
     JSONObject allPaymentMethod() {
 
         JSONObject responsejson = null;
-
         ArrayList<PaymentMethod> allPayMentMethod = settlementService.getAllPayMentMethod();
-        return responsejson = ResponseGenerate.genSuccessResponse(allPayMentMethod);
+        responsejson = ResponseGenerate.genSuccessResponse(allPayMentMethod);
+        return responsejson;
     }
 
 }

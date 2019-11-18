@@ -49,4 +49,8 @@ public class Settlement_newService {
         }
         return false;
     }
+
+    public ArrayList<Settlement_new> allSettlement(int shopid,Timestamp start,Timestamp end){
+        return settlement_newRepository.selectSettlementByDate(shopid,start,end);
+    }
 }

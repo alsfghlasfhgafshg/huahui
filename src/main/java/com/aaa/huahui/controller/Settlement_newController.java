@@ -115,21 +115,21 @@ public class Settlement_newController {
                                     @RequestParam("category") String category,
                                     @RequestParam(value = "brandname", required = false) String brandname,
                                     @RequestParam("projectname") String projectname,
-                                    @RequestParam("times") int times,
-                                    @RequestParam(value = "hand", required = false) int hand,
-                                    @RequestParam(value = "money", required = false) double money,
+                                    @RequestParam("times") Integer times,
+                                    @RequestParam(value = "hand", required = false) Integer hand,
+                                    @RequestParam(value = "money", required = false) Double money,
                                     @RequestParam("consumptioncategory") String consumptioncategory,
                                     @RequestParam("consumptionpattern") String consumptionpattern,
                                     @RequestParam(value = "allocate", required = false) String allocate,
-                                    @RequestParam("beautician1") int beautician1,
-                                    @RequestParam(value = "beautician2", required = false) int beautician2,
-                                    @RequestParam("cardcategory") String cardcategory,
+                                    @RequestParam("beautician1") Integer beautician1,
+                                    @RequestParam(value = "beautician2", required = false,defaultValue = "0") Integer beautician2,
+                                    @RequestParam(value = "cardcategory",required = false) String cardcategory,
                                     @RequestParam(value = "consultant", required = false) String consultant,
                                     @RequestParam(value = "checker", required = false) String checker,
-                                    @RequestParam("createtime") String createtimestr) {
+                                    @RequestParam("createtime") String time) {
         int shopid = ((User) token.getPrincipal()).getId();
 
-        Timestamp createtime = DateUtils.getTimeStampStart(createtimestr);
+        Timestamp createtime = DateUtils.getTimeStampStart(time);
 
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
@@ -139,6 +139,48 @@ public class Settlement_newController {
         } else {
             return ResponseGenerate.genFailResponse(1, "添加失败");
         }
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public JSONObject getAllSettlement(UsernamePasswordAuthenticationToken token,
+                                       @RequestParam("createtime") String createtime,
+                                       @RequestParam("endtime")String endtime){
+        Timestamp start  = DateUtils.getTimeStampStart(createtime);
+        Timestamp end = DateUtils.getTimeStampEnd(endtime);
+        int shopid = ((User) token.getPrincipal()).getId();
+        ArrayList<Settlement_new> allSettlement = settlement_newService.allSettlement(shopid,start,end);
+        JSONArray data = new JSONArray();
+        for (Settlement_new settlement_new : allSettlement) {
+            JSONObject t = new JSONObject();
+            t.put("settltmentid", settlement_new.getSettlementid());
+            t.put("time", DateUtils.formatTimeStrap(settlement_new.getCreatetime()));
+            t.put("customer", settlement_new.getCustomer());
+            t.put("classify", settlement_new.getClasify());
+            t.put("category", settlement_new.getCategory());
+            t.put("brandname", settlement_new.getBrandname());
+            t.put("projectname", settlement_new.getProjectname());
+            t.put("money", settlement_new.getMoney());
+            t.put("consumptioncategory", settlement_new.getConsumptioncategory());
+            t.put("consumptionpattern", settlement_new.getConsumptionpattern());
+
+
+            int beautician1id = settlement_new.getBeautician1();
+            Staff beautician1 = staffRepository.selectOne(beautician1id);
+
+            Integer beautician2id = settlement_new.getBeautician2();
+            Staff beautician2 = staffRepository.selectOne(beautician2id);
+
+            String beauticianname = beautician1.getName();
+            if (beautician2 != null) {
+                beauticianname += "/" + beautician2.getName();
+            }
+            t.put("beautician", beauticianname);
+            data.add(t);
+        }
+        JSONObject repsonsejson = ResponseGenerate.genSuccessResponse(data);
+
+        return repsonsejson;
     }
 
     @GetMapping("/selectone")
