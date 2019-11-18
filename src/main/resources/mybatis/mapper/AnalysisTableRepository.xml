@@ -25,7 +25,7 @@
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
         union all
-        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times
+        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times,sum(hand) as hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}) bb where aa.customer=bb.customer
     </select>
@@ -50,7 +50,7 @@
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
         union all
-        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times
+        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times,sum(hand) as hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}) bb where aa.customer=bb.customer
     </select>
