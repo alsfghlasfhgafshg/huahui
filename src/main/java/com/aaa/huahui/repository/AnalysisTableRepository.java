@@ -26,6 +26,11 @@ public interface AnalysisTableRepository {
                                                  @Param("start")Timestamp start,
                                                  @Param("end")Timestamp end);
 
+    ArrayList<CustomerHandsVO> selectAllCustomerByName(@Param("customer") String customer,
+                                                       @Param("shopid")int shopid,
+                                                       @Param("start")Timestamp start,
+                                                       @Param("end")Timestamp end);
+
     //客流分析
     //到店次数
     ArrayList<HashMap<String,Object>> downtoStoreTimes(@Param("shopid")int shopid,

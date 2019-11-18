@@ -48,6 +48,10 @@ public class AnalysisTableService {
         return analysisTableRepository.selectAllCustomer(shopid,start,end);
     }
 
+    public ArrayList<CustomerHandsVO> AllCustomerVObyName(String customer,int shopid,Timestamp start,Timestamp end){
+        return analysisTableRepository.selectAllCustomerByName(customer,shopid,start,end);
+    }
+
     public ArrayList<HashMap<String,Object>> downtoStoreTimes(int shopid, Timestamp start, Timestamp end){
         return analysisTableRepository.downtoStoreTimes(shopid,start,end);
     }
@@ -97,7 +101,10 @@ public class AnalysisTableService {
             list = customerCashVOS(customer, id, start, end);
         } else if (handorcash.equals("实操")&&!customer.equals("无")) {
             list = customerHandsVOS(customer, id, start, end);
-        } else {//默认按时间排序
+        }else if (handorcash.equals("所有")){
+            list = AllCustomerVObyName(customer,id,start,end);
+        }
+        else {//默认按时间排序
             list = AllCustomerVO(id, start, end);
         }
 
