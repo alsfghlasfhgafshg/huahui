@@ -31,7 +31,7 @@ public class AnalysisTableController {
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
     JSONObject getCustomerAnalysis(UsernamePasswordAuthenticationToken token,
-                                   @RequestParam(value = "customer") String customer,
+                                   @RequestParam(value = "customer",required = false,defaultValue = "无") String customer,
                                    @RequestParam(value = "shopid", required = false) Integer shopid,
                                    @RequestParam(value = "starttime") String startTime,
                                    @RequestParam(value = "endtime") String endTime,

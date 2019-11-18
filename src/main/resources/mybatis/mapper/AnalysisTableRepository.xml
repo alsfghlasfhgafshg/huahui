@@ -21,7 +21,7 @@
       where customer=#{customer}
      ) t)aa
      inner join (
-        select customer,createtime,projectname,money,times
+        select customer,createtime,projectname,money,times,hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
         union all
@@ -46,7 +46,7 @@
       where customer=#{customer}
      ) t)aa
      inner join (
-        select customer,createtime,projectname,money,times
+        select customer,createtime,projectname,money,times,hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
         union all
@@ -71,9 +71,9 @@
              ) t
         group by customer) aa
         inner join(
-        select customer,createtime,projectname,money,times
+        select customer,createtime,projectname,money,times,hand
         from settlementnew
-        where customer=#{customer} and shopid=#{shopid} and createtime between #{start} and #{end}
+        where shopid=#{shopid} and createtime between #{start} and #{end}
         order by createtime desc) bb on aa.customer=bb.customer
     </select>
 

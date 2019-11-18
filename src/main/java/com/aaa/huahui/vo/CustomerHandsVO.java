@@ -10,6 +10,15 @@ public class CustomerHandsVO {
     String projectname;
     double money;
     int times;
+    int hand;
+
+    public int getHand() {
+        return hand;
+    }
+
+    public void setHand(int hand) {
+        this.hand = hand;
+    }
 
     public CustomerHandsVO() {
     }

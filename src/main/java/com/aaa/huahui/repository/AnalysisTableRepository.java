@@ -21,7 +21,7 @@ public interface AnalysisTableRepository {
                                                    @Param("starttime")Timestamp startTime,
                                                    @Param("endtime")Timestamp endTime);
 
-    ArrayList<CustomerHandsVO> selectAllCustomer(@Param("customer") String customer,
+    ArrayList<CustomerHandsVO> selectAllCustomer(
                                                  @Param("shopid")int shopid,
                                                  @Param("start")Timestamp start,
                                                  @Param("end")Timestamp end);

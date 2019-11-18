@@ -201,29 +201,37 @@ public class Settlement_newController {
             JSONObject jsonObject = ResponseGenerate.genFailResponse(1, "无此结算单");
             return jsonObject;
         }
+        JSONObject t = new JSONObject();
+        t.put("settltmentid", s.getSettlementid());
+        t.put("time", DateUtils.formatTimeStrap(s.getCreatetime()));
+        t.put("customer", s.getCustomer());
+        t.put("classify", s.getClasify());
+        t.put("category", s.getCategory());
+        t.put("brandname", s.getBrandname());
+        t.put("projectname", s.getProjectname());
+        t.put("money", s.getMoney());
+        t.put("consumptioncategory", s.getConsumptioncategory());
+        t.put("consumptionpattern", s.getConsumptionpattern());
 
+        int beautician1id = s.getBeautician1();
 
-        Settlement_newVO vo = new Settlement_newVO();
-        vo.setSettlementid(s.getSettlementid());
-        vo.setCustomer(s.getCustomer());
-        vo.setClassify(s.getClasify());
-        vo.setCategory(s.getCategory());
-        vo.setBrandname(s.getBrandname());
-        vo.setProjectname(s.getProjectname());
-        vo.setTimes(s.getTimes());
-        vo.setHand(s.getHand());
-        vo.setMoney(s.getMoney());
-        vo.setConsumptioncategory(s.getConsumptioncategory());
-        vo.setConsumptionpattern(s.getConsumptionpattern());
-        vo.setAllocate(s.getAllocate());
-        vo.setBeautician1(staffRepository.findNameByStaffid(s.getBeautician1()).get());
-        vo.setBeautician2(staffRepository.findNameByStaffid(s.getBeautician2()).get());
-        vo.setCardcategory(s.getCardcategory());
-        vo.setConsultant(s.getConsultant());
-        vo.setChecker(s.getChecker());
-        vo.setCreatetime(DateUtils.formatTimeStrap(s.getCreatetime()));
+        Staff beautician1 = staffRepository.selectOne(beautician1id);
 
-        return ResponseGenerate.genSuccessResponse(vo);
+        Integer beautician2id = s.getBeautician2();
+        Staff beautician2 = staffRepository.selectOne(beautician2id);
+
+        String beauticianname = beautician1.getName();
+        if (beautician2 != null) {
+            beauticianname += "/" + beautician2.getName();
+        }
+        t.put("beautician", beauticianname);
+        t.put("hand",s.getHand());
+        t.put("cardcategory",s.getCardcategory());
+        t.put("sonsultant",s.getConsultant());
+        t.put("checker",s.getChecker());
+        t.put("allocate",s.getAllocate());
+
+        return ResponseGenerate.genSuccessResponse(t);
     }
 
     @PostMapping("/deleteone")

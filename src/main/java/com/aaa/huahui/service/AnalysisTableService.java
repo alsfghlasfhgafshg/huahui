@@ -44,8 +44,8 @@ public class AnalysisTableService {
        return analysisTableRepository.selectCustomerCash(customer,shopid,startTime,endTime);
     }
 
-    public ArrayList<CustomerHandsVO> AllCustomerVO(String customer,int shopid,Timestamp start,Timestamp end){
-        return analysisTableRepository.selectAllCustomer(customer,shopid,start,end);
+    public ArrayList<CustomerHandsVO> AllCustomerVO(int shopid,Timestamp start,Timestamp end){
+        return analysisTableRepository.selectAllCustomer(shopid,start,end);
     }
 
     public ArrayList<HashMap<String,Object>> downtoStoreTimes(int shopid, Timestamp start, Timestamp end){
@@ -93,14 +93,17 @@ public class AnalysisTableService {
         ArrayList<CustomerHandsVO> list;
         Timestamp start = DateUtils.getTimeStampStart(startTime);
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
-        if (handorcash.equals("现金")&&customer!=null) {//选择现金查顾客现金表否则顾客实操表
+        if (handorcash.equals("现金")&&!customer.equals("无")) {//选择现金查顾客现金表否则顾客实操表
             list = customerCashVOS(customer, id, start, end);
-        } else if (handorcash.equals("实操")&&customer!=null) {
+        } else if (handorcash.equals("实操")&&!customer.equals("无")) {
             list = customerHandsVOS(customer, id, start, end);
         } else {//默认按时间排序
-            list = AllCustomerVO(customer,id, start, end);
+            list = AllCustomerVO(id, start, end);
         }
 
+        int handSum = 0;
+        int moneySum = 0;
+        int timesSum = 0;
         JSONArray array = new JSONArray();
         for (CustomerHandsVO customerHandsVO : list) {
             String createtime = customerHandsVO.getCreatetime();
@@ -108,12 +111,22 @@ public class AnalysisTableService {
             JSONObject temp = new JSONObject();
             temp.put("customer", customerHandsVO.getCustomer());
             temp.put("status",customerHandsVO.getStatus());
+            temp.put("hand",customerHandsVO.getHand());
             temp.put("createtime", usetime);
             temp.put("projectname", customerHandsVO.getProjectname());
             temp.put("money", customerHandsVO.getMoney());
             temp.put("times", customerHandsVO.getTimes());
+            handSum+=customerHandsVO.getHand();
+            moneySum+= customerHandsVO.getMoney();
+            timesSum += customerHandsVO.getTimes();
             array.add(temp);
         }
+        JSONObject temp = new JSONObject();
+        temp.put("customer","总计");
+        temp.put("hand",handSum);
+        temp.put("times",timesSum);
+        temp.put("money",moneySum);
+        array.add(temp);
         JSONObject responsejson;
         if (handorcash.equals("实操")) {
             responsejson = ResponseGenerate.genSuccessResponse(array);
