@@ -204,6 +204,7 @@ public class Settlement_newController {
         JSONObject t = new JSONObject();
         t.put("settltmentid", s.getSettlementid());
         t.put("time", DateUtils.formatTimeStrap(s.getCreatetime()));
+        t.put("times",s.getTimes());
         t.put("customer", s.getCustomer());
         t.put("classify", s.getClasify());
         t.put("category", s.getCategory());
@@ -259,7 +260,7 @@ public class Settlement_newController {
                                           @RequestParam(value = "consumptionpattern", required = false) String consumptionpattern,
                                           @RequestParam(value = "allocate", required = false) String allocate,
                                           @RequestParam(value = "beautician1", required = false) Integer beautician1,
-                                          @RequestParam(value = "beautician2", required = false) Integer beautician2,
+                                          @RequestParam(value = "beautician2", required = false,defaultValue = "无") Integer beautician2,
                                           @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                           @RequestParam(value = "consultant", required = false) String consultant,
                                           @RequestParam(value = "checker", required = false) String checker,
@@ -326,7 +327,7 @@ public class Settlement_newController {
             settlement_new.setBeautician1(beautician1);
         }
 
-        if (beautician2 != null) {
+        if (beautician2 != null&&!beautician2.equals("无")) {
             settlement_new.setBeautician2(beautician2);
         }
 

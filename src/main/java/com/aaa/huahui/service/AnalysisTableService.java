@@ -122,14 +122,16 @@ public class AnalysisTableService {
             array.add(temp);
         }
         JSONObject temp = new JSONObject();
-        temp.put("customer","总计");
+        temp.put("projectname","总计");
         temp.put("hand",handSum);
         temp.put("times",timesSum);
         temp.put("money",moneySum);
         array.add(temp);
         JSONObject responsejson;
         if (handorcash.equals("实操")) {
-            responsejson = ResponseGenerate.genSuccessResponse(array);
+            JSONObject object = new JSONObject();
+            object.put("客户信息",array);
+            responsejson = ResponseGenerate.genSuccessResponse(object);
         }else{
             JSONObject object = new JSONObject();
             int days = settlement_newRepository.dayslaststoshop(customer,id);
