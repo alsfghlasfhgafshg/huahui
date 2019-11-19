@@ -1,6 +1,6 @@
 package com.aaa.huahui.vo;
 
-import com.aaa.huahui.model.Project;
+//import com.aaa.huahui.model.Project;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ public class Category2VO {
 
     int category2id;
     String name;
-    List<Project> projects;
 
     public Category2VO() {
     }

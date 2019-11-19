@@ -19,7 +19,7 @@ data为list：
 - money 金额
 - consumptioncategory 消费类别
 - time 日期
-- category 类别
+- factory 类别
 - brandname 商店
 - customer 顾客名
 - beautician 美容师
@@ -39,7 +39,7 @@ data为list：
             "money": 1.0,
             "consumptioncategory": "现金卡",
             "time": "2019年11月01日",
-            "category": "卡",
+            "factory": "卡",
             "brandname": "brandname",
             "customer": "testcustomer2",
             "beautician": "臧三/臧三"
@@ -66,7 +66,7 @@ data为list：
 ---|:--:|---:
 customer|string|顾客名
 classify|string|分类
-category|string|类别
+factory|string|类别
 brandname|string|品牌 
 projectname|string|项目名
 times|int|数量
@@ -126,7 +126,7 @@ settlementid|int|结算单id
         "settlementid": 18,
         "customer": "testcustomer2",
         "classify": "classify",
-        "category": "卡",
+        "factory": "卡",
         "brandname": "brandname",
         "projectname": "projectname",
         "times": 1,
@@ -193,7 +193,7 @@ settlementid|int|结算单id
 settlementid|int|结算单id
 customer|string|顾客名
 classify|string|分类
-category|string|类别
+factory|string|类别
 brandname|string|品牌 
 projectname|string|项目名
 times|int|数量

@@ -2,89 +2,46 @@ package com.aaa.huahui.model;
 
 public class Project {
 
-    int id;
-    int category2id;
-    String name;
-    String shortname;
-    String productbrand;
-    float price;
-    float fixedhand;
-    String percentagemethod;
+    int factoryid;
+    int projectid;
+    String projectname;
 
     public Project() {
     }
 
-    public Project(int category2id, String name, String shortname, String productbrand, float price, float fixedhand, String percentagemethod) {
-        this.category2id = category2id;
-        this.name = name;
-        this.shortname = shortname;
-        this.productbrand = productbrand;
-        this.price = price;
-        this.fixedhand = fixedhand;
-        this.percentagemethod = percentagemethod;
+    public Project(int factoryid, String projectname) {
+        this.factoryid = factoryid;
+        this.projectname = projectname;
     }
 
-    public int getId() {
-        return id;
+    public Project(int projectid, int factoryid, String projectname) {
+        this.projectid = projectid;
+        this.factoryid = factoryid;
+        this.projectname = projectname;
     }
 
-    public void setId(int id) {
-        this.id = id;
+
+    public int getProjectid() {
+        return projectid;
     }
 
-    public int getCategory2id() {
-        return category2id;
+    public void setProjectid(int projectid) {
+        this.projectid = projectid;
     }
 
-    public void setCategory2id(int category2id) {
-        this.category2id = category2id;
+    public int getFactoryid() {
+        return factoryid;
     }
 
-    public String getName() {
-        return name;
+    public void setFactoryid(int factoryid) {
+        this.factoryid = factoryid;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getProjectname() {
+        return projectname;
     }
 
-    public String getShortname() {
-        return shortname;
-    }
-
-    public void setShortname(String shortname) {
-        this.shortname = shortname;
-    }
-
-    public String getProductbrand() {
-        return productbrand;
-    }
-
-    public void setProductbrand(String productbrand) {
-        this.productbrand = productbrand;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public float getFixedhand() {
-        return fixedhand;
-    }
-
-    public void setFixedhand(float fixedhand) {
-        this.fixedhand = fixedhand;
-    }
-
-    public String getPercentagemethod() {
-        return percentagemethod;
-    }
-
-    public void setPercentagemethod(String percentagemethod) {
-        this.percentagemethod = percentagemethod;
+    public void setProjectname(String projectname) {
+        this.projectname = projectname;
     }
 }

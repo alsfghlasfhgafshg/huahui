@@ -3,43 +3,41 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aaa.huahui.repository.BrandRepository">
-    <resultMap id="Category" type="com.aaa.huahui.model.Category">
+    <resultMap id="Category" type="com.aaa.huahui.model.Factory">
 
-<!--        <id column="id" property="id"/>-->
-<!--        <result column="brandid" property="shopid"/>-->
+        <!--        <id column="id" property="id"/>-->
+        <!--        <result column="brandid" property="shopid"/>-->
 
 
-<!--        <collection property="settlementItems" ofType="com.aaa.huahui.vo.SettlementItemVO">-->
-<!--            <result property="settlementid" column="settlementid" javaType="int"/>-->
-<!--            <collection property=""-->
+        <!--        <collection property="settlementItems" ofType="com.aaa.huahui.vo.SettlementItemVO">-->
+        <!--            <result property="settlementid" column="settlementid" javaType="int"/>-->
+        <!--            <collection property=""-->
 
-<!--        </collection>-->
+        <!--        </collection>-->
 
     </resultMap>
-    <select id="selectCategoryStructure" resultType="com.aaa.huahui.model.Category">
+<!--    <select id="selectCategoryStructure" resultType="com.aaa.huahui.model.Factory">-->
 
 
-    select category.id           categoryid,
-           category.brandid      categorybrandid,
-           category.name         categoryname,
+<!--    select factory.id           categoryid,-->
+<!--           factory.brandid      categorybrandid,-->
+<!--           factory.name         categoryname,-->
 
-           category2.category2id category2category2id,
-           category2.categoryid  category2categoryid,
-           category2.name        category2name,
+<!--           project.projectid category2category2id,-->
+<!--           project.factoryid  category2categoryid,-->
+<!--           project.projectname        category2name,-->
 
-           project.id            projectid,
-           project.category2id   projectcategory2id,
-           project.name          projectname
+<!--           project.id            projectid,-->
+<!--           project.category2id   projectcategory2id,-->
+<!--           project.name          projectname-->
 
-    from category
-             left join category2 on category.id = category2.categoryid
-             left join project on project.category2id = category2.category2id
-    where category.brandid = #{brandid};
-
-
-    </select>
+<!--    from factory-->
+<!--             left join project on factory.id = project.factoryid-->
+<!--             left join project on project.category2id = project.projectid-->
+<!--    where factory.brandid = #{brandid};-->
 
 
+<!--    </select>-->
 
 
     <resultMap id="CategoryVO" type="com.aaa.huahui.vo.CategoryVO">
@@ -47,28 +45,33 @@
         <id column="categoryid" property="id"/>
         <result column="categoryname" property="name"/>
 
-
-        <collection property="category2s" ofType="com.aaa.huahui.vo.Category2VO">
-            <result property="category2id" column="category2id" />
-            <result property="name" column="category2name"/>
+        <collection property="projects" ofType="com.aaa.huahui.model.Project">
+            <result property="factoryid" column="categoryid"/>
+            <result property="projectname" column="projectname"/>
+            <result property="projectid" column="projectid"/>
 
         </collection>
 
     </resultMap>
+    <select id="selectAllFactoryAndProject" resultMap="CategoryVO">
 
-    <select id="selectallcategoryand2" resultMap="CategoryVO">
 
-    select category.id           categoryid,
-           category.name         categoryname,
-           category2.category2id category2id,
-           category2.name        category2name
-    from category,
-         category2
-
-    where category2.categoryid = category.id
-      and category.brandid = #{brandid};
 
     </select>
+
+    <!--    <select id="selectallcategoryand2" resultMap="CategoryVO">-->
+
+<!--    select factory.id           categoryid,-->
+<!--           factory.name         categoryname,-->
+<!--           project.projectid   projectid,-->
+<!--           project.projectname        projectname-->
+<!--    from factory,-->
+<!--         project-->
+
+<!--    where project.factoryid = factory.id-->
+<!--      and factory.brandid = #{brandid};-->
+
+<!--    </select>-->
 
 
 </mapper>

@@ -6,9 +6,9 @@
 
 
     <resultMap id="AnalysisVO" type="com.aaa.huahui.vo.AnalysisVO">
-        <result column="category" property="type"/>
+        <result column="factory" property="type"/>
         <collection property="con" ofType="com.aaa.huahui.vo.AnalysisItemVO">
-            <result property="category2" column="category2"/>
+            <result property="project" column="project"/>
             <result property="sumcount" column="sumcount" javaType="double"/>
             <result property="summoney" column="summoney" javaType="double"/>
         </collection>
@@ -18,51 +18,51 @@
     <!--经营分析表-->
     <select id="managementAnalysis" resultMap="AnalysisVO">
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select category category2, sum(money) summoney, count(times) sumcount
+        select factory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
                  where shopid = #{shopid}
                    and createtime between #{from} and #{to}
-                   and (category = "美容" or category = "美体" or category = "仪器")) t
-        group by category
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "实操类"
+                   and (factory = "美容" or factory = "美体" or factory = "仪器")) t
+        group by factory
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "实操类"
 
     union all
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select "产品类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        select "产品类" factory, consumptioncategory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
                  where shopid = #{shopid}
                    and createtime between #{from} and #{to}
-                   and category = "产品") t
+                   and factory = "产品") t
         group by consumptioncategory
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "产品类"
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "产品类"
 
     union all
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select "现金类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        select "现金类" factory, consumptioncategory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
@@ -70,18 +70,18 @@
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")) t
         group by consumptioncategory
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "现金类"
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "现金类"
 
     union all
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select "实耗类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        select "实耗类" factory, consumptioncategory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
@@ -93,18 +93,18 @@
                      or consumptioncategory = "现金实操"
                        )) t
         group by consumptioncategory
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "实耗类"
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "实耗类"
 
     union all
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select "赠送类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        select "赠送类" factory, consumptioncategory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
@@ -113,8 +113,8 @@
                    and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
                      )) t
         group by consumptioncategory
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "赠送类"
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "赠送类"
 
     ;
 
@@ -135,53 +135,53 @@
     <select id="beauticiantAnalysis" resultType="com.aaa.huahui.vo.AnalysisVO">
 
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select category category2, sum(money) summoney, count(times) sumcount
+        select factory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
                  where shopid = #{shopid}
                  and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
                    and createtime between #{from} and #{to}
-                   and (category = "美容" or category = "美体" or category = "仪器")) t
-        group by category
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "实操类"
+                   and (factory = "美容" or factory = "美体" or factory = "仪器")) t
+        group by factory
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "实操类"
 
     union all
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select "产品类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        select "产品类" factory, consumptioncategory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
                  where shopid = #{shopid}
                  and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
                    and createtime between #{from} and #{to}
-                   and category = "产品") t
+                   and factory = "产品") t
         group by consumptioncategory
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "产品类"
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "产品类"
 
     union all
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select "现金类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        select "现金类" factory, consumptioncategory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
@@ -190,18 +190,18 @@
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")) t
         group by consumptioncategory
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "现金类"
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "现金类"
 
     union all
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select "实耗类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        select "实耗类" factory, consumptioncategory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
@@ -214,18 +214,18 @@
                      or consumptioncategory = "现金实操"
                        )) t
         group by consumptioncategory
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "实耗类"
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "实耗类"
 
     union all
 
-    select analysisintermediatetable.category  category,
-           analysisintermediatetable.category2 category2,
+    select analysisintermediatetable.factory  factory,
+           analysisintermediatetable.project project,
            ifnull(t2.summoney, 0)              summoney,
            ifnull(t2.sumcount, 0)              sumcount
     from analysisintermediatetable
              left join (
-        select "赠送类" category, consumptioncategory category2, sum(money) summoney, count(times) sumcount
+        select "赠送类" factory, consumptioncategory project, sum(money) summoney, count(times) sumcount
         from (
                  select *
                  from settlementnew
@@ -235,8 +235,8 @@
                    and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
                      )) t
         group by consumptioncategory
-    ) t2 on t2.category2 = analysisintermediatetable.category2
-    where analysisintermediatetable.category = "赠送类"
+    ) t2 on t2.project = analysisintermediatetable.project
+    where analysisintermediatetable.factory = "赠送类"
 
     ;
 
@@ -263,7 +263,7 @@
     where shopid = #{shopid}
       and createtime between #{from}
         and #{to}
-      and category = #{category}
+      and factory = #{factory}
     group by projectname
     order by summoney,sumcount
 
@@ -299,7 +299,7 @@
         </if>
 
         <if test="fenxi==0">
-            and category in ('美容','美体','仪器')
+            and factory in ('美容','美体','仪器')
         </if>
 
         <if test="fenxi==1">

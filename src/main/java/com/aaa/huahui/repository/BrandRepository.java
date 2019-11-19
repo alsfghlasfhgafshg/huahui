@@ -1,13 +1,12 @@
 package com.aaa.huahui.repository;
 
 import com.aaa.huahui.model.Brand;
-import com.aaa.huahui.model.Category;
+import com.aaa.huahui.model.Factory;
 import com.aaa.huahui.vo.CategoryVO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface BrandRepository {
@@ -39,14 +38,14 @@ public interface BrandRepository {
     @Select("select count(*) from brand")
     int allCountBrand();
 
-    ArrayList<Category> selectCategoryStructure(@Param("brandid") int brandid);
-
     @Select("select count(*) from shop where brandid=#{brandid}")
     int selectCountBrandShop(@Param("brandid") int brandid);
 
     @Select("select count(*) from staff,shop,brand where staff.staffid=shop.shopid and shop.shopid=shop.brandid and brand.brandid=#{brandid}")
     int selectCountBrandStaff(@Param("brandid") int brandid);
 
+    @Select("select count(*) from factory,project where factory.brandid=#{brandid} and factory.id=project.factoryid and project.projectid=#{projectid}")
+    int selectCountBrandAndProject(@Param("brandid") int brandid, @Param("projectid") int projectid);
 
-    List<CategoryVO> selectallcategoryand2(@Param("brandid")int brandid);
+    List<CategoryVO> selectAllFactoryAndProject(@Param("brandid") int brandid);
 }

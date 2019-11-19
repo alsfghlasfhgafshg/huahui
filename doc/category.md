@@ -29,7 +29,7 @@ category2id二级分类id，name二级分类名字
         {
             "id": 50,
             "name": "实操类",
-            "category2s": [
+            "projects": [
                 {
                     "category2id": 49,
                     "name": "美容"
@@ -47,7 +47,7 @@ category2id二级分类id，name二级分类名字
         {
             "id": 51,
             "name": "产品类",
-            "category2s": [
+            "projects": [
                 {
                     "category2id": 52,
                     "name": "卡扣产品"
@@ -65,7 +65,7 @@ category2id二级分类id，name二级分类名字
         {
             "id": 52,
             "name": "现金类",
-            "category2s": [
+            "projects": [
                 {
                     "category2id": 55,
                     "name": "现金产品"
@@ -83,7 +83,7 @@ category2id二级分类id，name二级分类名字
         {
             "id": 53,
             "name": "实耗类",
-            "category2s": [
+            "projects": [
                 {
                     "category2id": 58,
                     "name": "卡扣产品"
@@ -109,7 +109,7 @@ category2id二级分类id，name二级分类名字
         {
             "id": 54,
             "name": "赠送类",
-            "category2s": [
+            "projects": [
                 {
                     "category2id": 63,
                     "name": "赠送产品"

@@ -26,21 +26,21 @@ public class CategoryController {
     @Autowired
     ShopService shopService;
 
-    @GetMapping("/getallcategoryand2")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
-    public @ResponseBody
-    JSONObject getallcategoryand2(UsernamePasswordAuthenticationToken token) {
-        User user = (User) token.getPrincipal();
-        int userid=user.getId();
-        if (user.hasRole(ROLE.SHOP)){
-            User brand = shopService.shopBrand(userid);
-            userid=brand.getId();
-        }
-        List<CategoryVO> categoryVOS = brandService.getallcategoryand2(userid);
-        JSONObject jsonObject = ResponseGenerate.genSuccessResponse(categoryVOS);
-        return jsonObject;
-    }
-
+//    @GetMapping("/getallcategoryand2")
+//    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+//    public @ResponseBody
+//    JSONObject getallcategoryand2(UsernamePasswordAuthenticationToken token) {
+//        User user = (User) token.getPrincipal();
+//        int userid=user.getId();
+//        if (user.hasRole(ROLE.SHOP)){
+//            User brand = shopService.shopBrand(userid);
+//            userid=brand.getId();
+//        }
+//        List<CategoryVO> categoryVOS = brandService.getallcategoryand2(userid);
+//        JSONObject jsonObject = ResponseGenerate.genSuccessResponse(categoryVOS);
+//        return jsonObject;
+//    }
+//
 
 
 

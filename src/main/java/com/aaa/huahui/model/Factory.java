@@ -2,33 +2,33 @@ package com.aaa.huahui.model;
 
 import java.util.List;
 
-public class Category {
+public class Factory {
 
     int id;
     int brandid;
     String name;
 
-    List<Category2> category2s;
+    List<Project> projects;
 
-    public Category(int id, int brandid, String name) {
+    public Factory(int id, int brandid, String name) {
         this.id = id;
         this.brandid = brandid;
         this.name = name;
     }
 
-    public Category() {
+    public Factory() {
     }
 
-    public Category(int brandid, String name) {
+    public Factory(int brandid, String name) {
         this.brandid = brandid;
         this.name = name;
     }
-    public List<Category2> getCategory2s() {
-        return category2s;
+    public List<Project> getProjects() {
+        return projects;
     }
 
-    public void setCategory2s(List<Category2> category2s) {
-        this.category2s = category2s;
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
     public int getId() {

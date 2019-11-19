@@ -23,7 +23,7 @@ endtime|string|结束时间，yyyy-mm-dd或者yyyy年mm月dd日格式
 返回数据：
 
 managementanalysis中type为类别实操，产品...，con为内容列表：
-- category2：美容，美体，实操...
+- project：美容，美体，实操...
 - summoney：金额
 - sumcount：数量
 
@@ -50,22 +50,22 @@ tablefooter 底下的统计：
                 "type": "实操类",
                 "con": [
                     {
-                        "category2": "仪器",
+                        "project": "仪器",
                         "summoney": 332.0,
                         "sumcount": 3.0
                     },
                     {
-                        "category2": "美体",
+                        "project": "美体",
                         "summoney": 76.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "美容",
+                        "project": "美容",
                         "summoney": 14.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 422.0,
                         "sumcount": 7.0
                     }
@@ -75,22 +75,22 @@ tablefooter 底下的统计：
                 "type": "产品类",
                 "con": [
                     {
-                        "category2": "卡扣产品",
+                        "project": "卡扣产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金产品",
+                        "project": "现金产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "赠送产品",
+                        "project": "赠送产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 6.0,
                         "sumcount": 6.0
                     }
@@ -100,22 +100,22 @@ tablefooter 底下的统计：
                 "type": "现金类",
                 "con": [
                     {
-                        "category2": "现金产品",
+                        "project": "现金产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金卡",
+                        "project": "现金卡",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金实操",
+                        "project": "现金实操",
                         "summoney": 291.0,
                         "sumcount": 3.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 295.0,
                         "sumcount": 7.0
                     }
@@ -125,32 +125,32 @@ tablefooter 底下的统计：
                 "type": "实耗类",
                 "con": [
                     {
-                        "category2": "卡扣产品",
+                        "project": "卡扣产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金产品",
+                        "project": "现金产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金实操",
+                        "project": "现金实操",
                         "summoney": 291.0,
                         "sumcount": 3.0
                     },
                     {
-                        "category2": "卡扣实操",
+                        "project": "卡扣实操",
                         "summoney": 0.0,
                         "sumcount": 0.0
                     },
                     {
-                        "category2": "赠送实操",
+                        "project": "赠送实操",
                         "summoney": 0.0,
                         "sumcount": 0.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 295.0,
                         "sumcount": 7.0
                     }
@@ -160,17 +160,17 @@ tablefooter 底下的统计：
                 "type": "赠送类",
                 "con": [
                     {
-                        "category2": "赠送产品",
+                        "project": "赠送产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "赠送实操",
+                        "project": "赠送实操",
                         "summoney": 0.0,
                         "sumcount": 0.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     }
@@ -212,7 +212,7 @@ endtime|string|结束时间，yyyy-mm-dd或者yyyy年mm月dd日格式
 返回数据：
 
 managementanalysis中type为类别实操，产品...，con为内容列表：
-- category2：美容，美体，实操...
+- project：美容，美体，实操...
 - summoney：金额
 - sumcount：数量
 
@@ -239,22 +239,22 @@ tablefooter 底下的统计：
                 "type": "实操类",
                 "con": [
                     {
-                        "category2": "仪器",
+                        "project": "仪器",
                         "summoney": 332.0,
                         "sumcount": 3.0
                     },
                     {
-                        "category2": "美体",
+                        "project": "美体",
                         "summoney": 76.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "美容",
+                        "project": "美容",
                         "summoney": 14.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 422.0,
                         "sumcount": 7.0
                     }
@@ -264,22 +264,22 @@ tablefooter 底下的统计：
                 "type": "产品类",
                 "con": [
                     {
-                        "category2": "卡扣产品",
+                        "project": "卡扣产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金产品",
+                        "project": "现金产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "赠送产品",
+                        "project": "赠送产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 6.0,
                         "sumcount": 6.0
                     }
@@ -289,22 +289,22 @@ tablefooter 底下的统计：
                 "type": "现金类",
                 "con": [
                     {
-                        "category2": "现金产品",
+                        "project": "现金产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金卡",
+                        "project": "现金卡",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金实操",
+                        "project": "现金实操",
                         "summoney": 291.0,
                         "sumcount": 3.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 295.0,
                         "sumcount": 7.0
                     }
@@ -314,32 +314,32 @@ tablefooter 底下的统计：
                 "type": "实耗类",
                 "con": [
                     {
-                        "category2": "卡扣产品",
+                        "project": "卡扣产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金产品",
+                        "project": "现金产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "现金实操",
+                        "project": "现金实操",
                         "summoney": 291.0,
                         "sumcount": 3.0
                     },
                     {
-                        "category2": "卡扣实操",
+                        "project": "卡扣实操",
                         "summoney": 0.0,
                         "sumcount": 0.0
                     },
                     {
-                        "category2": "赠送实操",
+                        "project": "赠送实操",
                         "summoney": 0.0,
                         "sumcount": 0.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 295.0,
                         "sumcount": 7.0
                     }
@@ -349,17 +349,17 @@ tablefooter 底下的统计：
                 "type": "赠送类",
                 "con": [
                     {
-                        "category2": "赠送产品",
+                        "project": "赠送产品",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     },
                     {
-                        "category2": "赠送实操",
+                        "project": "赠送实操",
                         "summoney": 0.0,
                         "sumcount": 0.0
                     },
                     {
-                        "category2": "总计",
+                        "project": "总计",
                         "summoney": 2.0,
                         "sumcount": 2.0
                     }

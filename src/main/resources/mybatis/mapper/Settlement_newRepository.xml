@@ -39,7 +39,7 @@
              where customer = #{customer}
                and shopid = #{shopid}
                and projectname = #{projectname}
-               and category = "卡"
+               and factory = "卡"
                and consumptioncategory = "卡扣卡") t2;
 
     </select>

@@ -41,13 +41,13 @@ INSERT INTO `brand` VALUES (11,'testbrand','no'),(15,'testbrand1des',NULL),(16,'
 UNLOCK TABLES;
 
 --
--- Table structure for table `category`
+-- Table structure for table `factory`
 --
 
-DROP TABLE IF EXISTS `category`;
+DROP TABLE IF EXISTS `factory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `category` (
+CREATE TABLE `factory` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `brandid` int(11) DEFAULT NULL,
   `name` varchar(20) DEFAULT NULL,
@@ -56,23 +56,23 @@ CREATE TABLE `category` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `category`
+-- Dumping data for table `factory`
 --
 
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (18,19,'面部'),(19,19,'身体'),(20,19,'产品'),(21,19,'现金卡项目'),(22,20,'面部'),(23,20,'身体'),(24,20,'产品'),(25,20,'现金卡项目'),(26,21,'面部'),(27,21,'身体'),(28,21,'产品'),(29,21,'现金卡项目'),(30,11,'1'),(31,11,'test'),(32,11,'test2'),(33,11,'test2e'),(39,121,'实操类'),(40,121,'产品类'),(41,121,'现金类'),(42,121,'实耗类'),(43,121,'赠送类'),(45,34,'实操类'),(46,34,'产品类'),(47,34,'现金类'),(48,34,'实耗类'),(49,34,'赠送类');
-/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+LOCK TABLES `factory` WRITE;
+/*!40000 ALTER TABLE `factory` DISABLE KEYS */;
+INSERT INTO `factory` VALUES (18,19,'面部'),(19,19,'身体'),(20,19,'产品'),(21,19,'现金卡项目'),(22,20,'面部'),(23,20,'身体'),(24,20,'产品'),(25,20,'现金卡项目'),(26,21,'面部'),(27,21,'身体'),(28,21,'产品'),(29,21,'现金卡项目'),(30,11,'1'),(31,11,'test'),(32,11,'test2'),(33,11,'test2e'),(39,121,'实操类'),(40,121,'产品类'),(41,121,'现金类'),(42,121,'实耗类'),(43,121,'赠送类'),(45,34,'实操类'),(46,34,'产品类'),(47,34,'现金类'),(48,34,'实耗类'),(49,34,'赠送类');
+/*!40000 ALTER TABLE `factory` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `category2`
+-- Table structure for table `project`
 --
 
-DROP TABLE IF EXISTS `category2`;
+DROP TABLE IF EXISTS `project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `category2` (
+CREATE TABLE `project` (
   `category2id` int(11) NOT NULL AUTO_INCREMENT,
   `categoryid` int(11) DEFAULT NULL,
   `name` varchar(20) DEFAULT NULL,
@@ -81,13 +81,13 @@ CREATE TABLE `category2` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `category2`
+-- Dumping data for table `project`
 --
 
-LOCK TABLES `category2` WRITE;
-/*!40000 ALTER TABLE `category2` DISABLE KEYS */;
-INSERT INTO `category2` VALUES (12,33,'为杀人犯'),(13,39,'美容'),(14,39,'美体'),(15,39,'仪器'),(16,40,'美容'),(17,40,'美容'),(18,40,'美容'),(19,41,'现金产品'),(20,41,'现金卡'),(21,41,'现金实操'),(22,42,'卡扣产品'),(23,42,'卡扣实操'),(24,42,'现金产品'),(25,42,'现金实操'),(26,42,'赠送实操'),(27,43,'赠送产品'),(28,43,'赠送实操'),(32,45,'美容'),(33,45,'美体'),(34,45,'仪器'),(35,46,'卡扣产品'),(36,46,'现金产品'),(37,46,'赠送产品'),(38,47,'现金产品'),(39,47,'现金卡'),(40,47,'现金实操'),(41,48,'卡扣产品'),(42,48,'卡扣实操'),(43,48,'现金产品'),(44,48,'现金实操'),(45,48,'赠送实操'),(46,49,'赠送产品'),(47,49,'赠送实操'),(48,33,'tttttt');
-/*!40000 ALTER TABLE `category2` ENABLE KEYS */;
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+INSERT INTO project VALUES (12,33,'为杀人犯'),(13,39,'美容'),(14,39,'美体'),(15,39,'仪器'),(16,40,'美容'),(17,40,'美容'),(18,40,'美容'),(19,41,'现金产品'),(20,41,'现金卡'),(21,41,'现金实操'),(22,42,'卡扣产品'),(23,42,'卡扣实操'),(24,42,'现金产品'),(25,42,'现金实操'),(26,42,'赠送实操'),(27,43,'赠送产品'),(28,43,'赠送实操'),(32,45,'美容'),(33,45,'美体'),(34,45,'仪器'),(35,46,'卡扣产品'),(36,46,'现金产品'),(37,46,'赠送产品'),(38,47,'现金产品'),(39,47,'现金卡'),(40,47,'现金实操'),(41,48,'卡扣产品'),(42,48,'卡扣实操'),(43,48,'现金产品'),(44,48,'现金实操'),(45,48,'赠送实操'),(46,49,'赠送产品'),(47,49,'赠送实操'),(48,33,'tttttt');
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

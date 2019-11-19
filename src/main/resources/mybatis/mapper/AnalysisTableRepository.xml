@@ -23,11 +23,11 @@
      inner join (
         select customer,createtime,projectname,money,times,hand
         from settlementnew
-        where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
+        where customer=#{customer} and shopid=#{shopid} and factory in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
         union all
         select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times,sum(hand) as hand
         from settlementnew
-        where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}) bb where aa.customer=bb.customer
+        where customer=#{customer} and shopid=#{shopid} and factory in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}) bb where aa.customer=bb.customer
     </select>
 
     <select id="selectCustomerCash" resultType="com.aaa.huahui.vo.CustomerHandsVO">

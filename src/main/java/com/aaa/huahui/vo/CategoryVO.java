@@ -1,6 +1,6 @@
 package com.aaa.huahui.vo;
 
-import com.aaa.huahui.model.Category2;
+import com.aaa.huahui.model.Project;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public class CategoryVO {
 
     String name;
 
-    List<Category2> category2s;
+    List<Project> projects;
 
 
     public CategoryVO() {
@@ -21,10 +21,10 @@ public class CategoryVO {
         this.name = name;
     }
 
-    public CategoryVO(int id, String name, List<Category2> category2s) {
+    public CategoryVO(int id, String name, List<Project> projects) {
         this.id = id;
         this.name = name;
-        this.category2s = category2s;
+        this.projects = projects;
     }
 
     public int getId() {
@@ -43,11 +43,11 @@ public class CategoryVO {
         this.name = name;
     }
 
-    public List<Category2> getCategory2s() {
-        return category2s;
+    public List<Project> getProjects() {
+        return projects;
     }
 
-    public void setCategory2s(List<Category2> category2s) {
-        this.category2s = category2s;
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 }

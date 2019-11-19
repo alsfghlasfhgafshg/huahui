@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BrandService {
@@ -41,13 +40,10 @@ public class BrandService {
     UserRepository userRepository;
 
     @Autowired
-    CategoryRepository categoryRepository;
+    FactoryRepository factoryRepository;
 
     @Autowired
     ShopService shopService;
-
-    @Autowired
-    Category2Repository category2Repository;
 
     @Autowired
     ProjectRepository projectRepository;
@@ -70,61 +66,18 @@ public class BrandService {
     }
 
     //状态
-    public JSONObject status(int brandid){
-        JSONObject data=new JSONObject();
+    public JSONObject status(int brandid) {
+        JSONObject data = new JSONObject();
 
         int i = brandRepository.selectCountBrandShop(brandid);
-        data.put("shopcount",i);
+        data.put("shopcount", i);
 
-        i=brandRepository.selectCountBrandStaff(brandid);
-        data.put("staffcount",i);
+        i = brandRepository.selectCountBrandStaff(brandid);
+        data.put("staffcount", i);
 
         return data;
     }
 
-
-    //新的4个category
-    @Transactional
-    public void new5CategoryCategory2(int brandid) {
-        Category shicaolei = new Category(brandid, "实操类");
-        categoryRepository.insertCategory(shicaolei);
-
-        category2Repository.insertCategory2(new Category2(shicaolei.getId(), "美容"));
-        category2Repository.insertCategory2(new Category2(shicaolei.getId(), "美体"));
-        category2Repository.insertCategory2(new Category2(shicaolei.getId(), "仪器"));
-
-        Category chanpinlei = new Category(brandid, "产品类");
-        categoryRepository.insertCategory(chanpinlei);
-
-        category2Repository.insertCategory2(new Category2(chanpinlei.getId(), "卡扣产品"));
-        category2Repository.insertCategory2(new Category2(chanpinlei.getId(), "现金产品"));
-        category2Repository.insertCategory2(new Category2(chanpinlei.getId(), "赠送产品"));
-
-
-        Category xianjinlei = new Category(brandid, "现金类");
-        categoryRepository.insertCategory(xianjinlei);
-
-        category2Repository.insertCategory2(new Category2(xianjinlei.getId(), "现金产品"));
-        category2Repository.insertCategory2(new Category2(xianjinlei.getId(), "现金卡"));
-        category2Repository.insertCategory2(new Category2(xianjinlei.getId(), "现金实操"));
-
-        Category shihaolei = new Category(brandid, "实耗类");
-        categoryRepository.insertCategory(shihaolei);
-
-        category2Repository.insertCategory2(new Category2(shihaolei.getId(), "卡扣产品"));
-        category2Repository.insertCategory2(new Category2(shihaolei.getId(), "卡扣实操"));
-        category2Repository.insertCategory2(new Category2(shihaolei.getId(), "现金产品"));
-        category2Repository.insertCategory2(new Category2(shihaolei.getId(), "现金实操"));
-        category2Repository.insertCategory2(new Category2(shihaolei.getId(), "赠送实操"));
-
-
-        Category zengsonglei = new Category(brandid, "赠送类");
-        categoryRepository.insertCategory(zengsonglei);
-
-        category2Repository.insertCategory2(new Category2(zengsonglei.getId(), "赠送产品"));
-        category2Repository.insertCategory2(new Category2(zengsonglei.getId(), "赠送实操"));
-
-    }
 
     /**
      * 新的品牌
@@ -137,7 +90,6 @@ public class BrandService {
 
 
         int i = brandRepository.newBrand(user.getId(), description);
-        new5CategoryCategory2(user.getId());
 
         if (file != null) {
             String avatarfile = fileService.uploadImage(file);
@@ -157,7 +109,6 @@ public class BrandService {
         return brand;
     }
 
-
     //更新brand
     public boolean updateBrand(int brandid, String description, MultipartFile file) {
         if (description == null || description.equals("")) {
@@ -168,22 +119,21 @@ public class BrandService {
         return true;
     }
 
-    //添加一级分类
-    public Category addCategory(int brandid, String categoryName) {
-        if (categoryRepository.selectCountCategory(brandid, categoryName) == 1) {
+    //添加厂家
+    public Factory addFactory(int brandid, String factoryName) {
+        if (factoryRepository.selectCountFactoryByName(brandid, factoryName) == 1) {
             return null;
         }
-        Category category = new Category();
-        category.setBrandid(brandid);
-        category.setName(categoryName);
-        categoryRepository.insertCategory(category);
-        return category;
+        Factory factory = new Factory();
+        factory.setBrandid(brandid);
+        factory.setName(factoryName);
+        factoryRepository.insertFactory(factory);
+        return factory;
     }
 
-    //删除一级分类
-    public boolean deleteCategory(int brandid, int categoryid) {
-        int i = categoryRepository.deleteCategoryByBrandidAndCategoryName(brandid, categoryid);
-
+    //删除厂家
+    public boolean deleteFactory(int brandid, int factoryid) {
+        int i = factoryRepository.deleteFactory(factoryid);
         if (i == 1) {
             return true;
         } else {
@@ -191,99 +141,46 @@ public class BrandService {
         }
     }
 
+    //获得所有厂家
+    public ArrayList<Factory> allFactory(int brandid) {
+        return factoryRepository.selectAllFactory(brandid);
+    }
 
-    //获得所有一级分类
-    public ArrayList<Category> allCategory(int brandid) {
-        return categoryRepository.selectAllCategory(brandid);
+    //重命名厂家
+    public boolean renameFactory(int brandid, int factoryid, String newname) {
+        if (factoryRepository.selectCountFactory(brandid, factoryid) == 0) {
+            return false;
+        } else {
+            int i = factoryRepository.updateFactoryName(factoryid, newname);
+            if (i == 1) {
+                return true;
+            }
+            return false;
+        }
     }
 
 
-    //添加二级分类
-    public Category2 addCategory2(int brandid, int categoryid, String category2name) {
-        int i = categoryRepository.selectCountByIdAndBrandId(brandid, categoryid);
+    //添加项目
+    public Project addProject(int brandid, int factoryid, String projectname) {
+        int i = factoryRepository.selectCountBrandIdFactoryId(brandid, factoryid);
         if (i == 0) {
             return null;
         }
-        Category2 category2 = new Category2(categoryid, category2name);
-        if (category2Repository.insertCategory2(category2) == 1) {
-            return category2;
+        Project project = new Project(factoryid, projectname);
+        if (projectRepository.insertProject(project) == 1) {
+            return project;
         }
         return null;
     }
 
-    //删除二级分类
-    public boolean deleteCategory2(int brandid, int categoryid, int category2id) {
-        int i = categoryRepository.selectCountByIdAndBrandId(brandid, categoryid);
-        if (i == 0) {
+    //删除项目
+    public boolean deleteProject(int brandid, int projectid) {
+        if (brandRepository.selectCountBrandAndProject(brandid, projectid) == 0) {
             return false;
         }
-        category2Repository.deleteCatagory2ByCategoryidAndCategoryname2(categoryid, category2id);
-        return true;
-    }
 
-    //获得所有category2
-    public ArrayList<Category2> allCategoryAndCategory2(int brandid) {
-        ArrayList<Category> categories = categoryRepository.selectAllCategory(brandid);
-        ArrayList<Category2> allcategory2 = new ArrayList<>();
+        int i = projectRepository.deleteProjectById(projectid);
 
-        for (Category category : categories) {
-            ArrayList<Category2> category2s = category2Repository.selectAllCategory2(category.getId());
-            allcategory2.addAll(category2s);
-        }
-        return allcategory2;
-    }
-
-    //获取所有project
-    public ArrayList<Project> allProject(int category2id) {
-        ArrayList<Project> projects = projectRepository.selectByCategory2id(category2id);
-        return projects;
-    }
-
-    public Optional<String> findNameById(int category2id){
-        return category2Repository.findNameByCategory2id(category2id);
-    }
-
-    //搜索project
-    public List<Project> searchProject(int shopid,String keyword){
-        List<Project> projects = projectRepository.searchProject(keyword, shopid);
-        return projects;
-    }
-
-    //添加project
-    public Project addProject(User user, Project project) {
-        if (user.hasRole(ROLE.BRAND) == false) {
-            return null;
-        }
-        if (category2Repository.selectCountCategory2Brand(project.getCategory2id(), user.getId()) == 0) {
-            return null;
-        }
-
-        int i = projectRepository.insertProject(project);
-        if (i == 1) {
-            return project;
-        } else {
-            return null;
-        }
-    }
-
-    //删除project
-    private boolean deleteProject(Project project) {
-        int i = projectRepository.deleteProject(project.getId());
-        if (i == 1) {
-            return true;
-        }
-        return true;
-    }
-
-    //删除
-    public boolean deleteProject(User user, int projecetid) {
-        if (user.hasRole(ROLE.BRAND) == false) {
-            return false;
-        }
-        if (projectRepository.selectCountBrandProjecet(user.getId(), projecetid) == 0) {
-            return false;
-        }
-        int i = projectRepository.deleteProject(projecetid);
         if (i == 1) {
             return true;
         } else {
@@ -291,31 +188,40 @@ public class BrandService {
         }
     }
 
-    //删除所有project
-    public boolean deleteAllProject(User user, int category2id) {
-        if ((user == null || !user.hasRole(ROLE.BRAND))) {
+    //重命名项目
+    public boolean renameProject(int brandid, int projectid, String newname) {
+        if (brandRepository.selectCountBrandAndProject(brandid, projectid) == 0) {
             return false;
         }
-        if (category2Repository.selectCountCategory2Brand(category2id, user.getId()) == 1) {
-            projectRepository.deleteAllProjectByCategory2id(category2id);
+        int i = projectRepository.updateProject(projectid, newname);
+
+        if (i == 1) {
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
-    public String getBrandName(int brandid){
+    //获得所有project
+    public ArrayList<Factory> allFactoryAndProject(int brandid) {
+        ArrayList<Factory> factorys = factoryRepository.selectAllFactory(brandid);
+        ArrayList<Project> projects = new ArrayList<>();
+
+        for (Factory factory : factorys) {
+            ArrayList<Project> temp = projectRepository.selectAllProject(factory.getId());
+            factory.setProjects(temp);
+        }
+        return factorys;
+    }
+
+    public String getBrandName(int brandid) {
         String name = userRepository.queryUserName(brandid);
         return name;
     }
 
-
-    public List<CategoryVO> getallcategoryand2(int brandid){
-        List<CategoryVO> categoryVOS = brandRepository.selectallcategoryand2(brandid);
+    public List<CategoryVO> getAllFactoryAndProject(int brandid) {
+        List<CategoryVO> categoryVOS = brandRepository.selectAllFactoryAndProject(brandid);
         return categoryVOS;
     }
-
-
-
-
-
 
 }

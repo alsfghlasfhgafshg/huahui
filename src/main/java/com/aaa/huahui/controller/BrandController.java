@@ -9,7 +9,6 @@ import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.UserService;
 import com.aaa.huahui.utils.ResponseGenerate;
-import com.aaa.huahui.vo.CategoryVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 @Controller
 public class BrandController {
@@ -167,8 +165,8 @@ public class BrandController {
         return rejeson;
     }
 
-    //获得所有一级分类
-    @GetMapping("/brand/getallcategory")
+    //获得所有厂家
+    @GetMapping("/brand/getallfactory")
     public @ResponseBody
     JSONObject getAllCategory(UsernamePasswordAuthenticationToken token) {
 
@@ -180,7 +178,7 @@ public class BrandController {
         }
 
         JSONObject rejeson = null;
-        ArrayList<Category> categories = brandService.allCategory(brandid);
+        ArrayList<Factory> categories = brandService.allFactory(brandid);
 
         JSONArray allcategories = new JSONArray(Collections.singletonList(categories));
         rejeson = ResponseGenerate.genSuccessResponse(allcategories);
@@ -188,35 +186,35 @@ public class BrandController {
         return rejeson;
     }
 
-    //添加一级分类
-    @PostMapping("/brand/addcategory")
+    //添加厂家
+    @PostMapping("/brand/addfactory")
     public @ResponseBody
     JSONObject addCategory(UsernamePasswordAuthenticationToken token,
-                           @RequestParam("categoryname") String categoryName) {
+                           @RequestParam("factoryname") String factoryName) {
         int brandid = ((User) token.getPrincipal()).getId();
         JSONObject rejeson = new JSONObject();
 
-        Category category = brandService.addCategory(brandid, categoryName);
-        if (category != null) {
+        Factory factory = brandService.addFactory(brandid, factoryName);
+        if (factory != null) {
 
             JSONObject data = new JSONObject();
-            data.put("id", category.getId());
+            data.put("id", factory.getId());
             rejeson = ResponseGenerate.genSuccessResponse("成功", data);
         } else {
-            rejeson = ResponseGenerate.genFailResponse(1, "分类已存在");
+            rejeson = ResponseGenerate.genFailResponse(1, "厂家已存在");
         }
         return rejeson;
     }
 
-    //删除一级分类
-    @PostMapping("/brand/deletecategory")
+    //删除厂家
+    @PostMapping("/brand/deletefactory")
     public @ResponseBody
     JSONObject deleteCategory(UsernamePasswordAuthenticationToken token,
-                              @RequestParam("categoryid") int categoryId) {
+                              @RequestParam("factoryid") int factoryid) {
         int brandid = ((User) token.getPrincipal()).getId();
         JSONObject rejeson = new JSONObject();
 
-        boolean result = brandService.deleteCategory(brandid, categoryId);
+        boolean result = brandService.deleteFactory(brandid, factoryid);
         if (result == true) {
             rejeson = ResponseGenerate.genSuccessResponse("删除成功");
             return rejeson;
@@ -226,8 +224,8 @@ public class BrandController {
     }
 
 
-    //查看二级分类
-    @GetMapping("/brand/querycategory2")
+    //查看项目
+    @GetMapping("/brand/allproject")
     public @ResponseBody
     JSONObject queryCategory2(UsernamePasswordAuthenticationToken token) {
         JSONObject rejeson = new JSONObject();
@@ -238,93 +236,25 @@ public class BrandController {
             brandid = shopService.shopBrand(brandid).getId();
         }
 
-        ArrayList<Category2> category2s = brandService.allCategoryAndCategory2(brandid);
+        ArrayList<Factory> projects = brandService.allFactoryAndProject(brandid);
         rejeson.put("error", 0);
-        rejeson.put("allcategories", category2s);
+        rejeson.put("data", projects);
         return rejeson;
     }
 
-    //添加二级分类
-    @PostMapping("/brand/addcategory2")
-    public @ResponseBody
-    JSONObject addCategory2(UsernamePasswordAuthenticationToken token,
-                            @RequestParam("categoryid") int categoryid,
-                            @RequestParam("category2name") String category2name) {
-        int brandid = ((User) token.getPrincipal()).getId();
-        Category2 category2 = brandService.addCategory2(brandid, categoryid, category2name);
-
-        JSONObject rejeson = null;
-        if (category2 != null) {
-            JSONObject data = new JSONObject();
-            data.put("category2id", category2.getCategory2id());
-            rejeson = ResponseGenerate.genSuccessResponse("成功", data);
-        } else {
-            rejeson = ResponseGenerate.genFailResponse(1, "添加失败");
-        }
-        return rejeson;
-    }
-
-
-    //删除二级分类
-    @PostMapping("/brand/deletecategory2")
-    public @ResponseBody
-    JSONObject deleteCategory2(UsernamePasswordAuthenticationToken token,
-                               @RequestParam("categoryid") int categoryid,
-                               @RequestParam("category2id") int category2id) {
-        int brandid = ((User) token.getPrincipal()).getId();
-
-        JSONObject rejeson = null;
-        boolean result = brandService.deleteCategory2(brandid, categoryid, category2id);
-        if (result == true) {
-            rejeson = ResponseGenerate.genSuccessResponse("删除成功");
-        } else {
-            rejeson = ResponseGenerate.genFailResponse(1, "删除失败");
-        }
-        return rejeson;
-    }
-
-
-    //查看三级分类
-    @GetMapping("/brand/allproject")
-    public @ResponseBody
-    JSONObject addCategory2(@RequestParam("category2id") int category2id,
-                            UsernamePasswordAuthenticationToken token) {
-        JSONObject rejeson = new JSONObject();
-        User user = ((User) token.getPrincipal());
-        int brandid = user.getId();
-
-        if (user.hasRole(ROLE.SHOP)) {
-            brandid = shopService.shopBrand(brandid).getId();
-        }
-
-        ArrayList<Project> category2s = brandService.allProject(brandid);
-        rejeson.put("error", 0);
-        rejeson.put("allprojects", category2s);
-        return rejeson;
-    }
-
-    //添加3级分类
+    //添加项目
     @PostMapping("/brand/addproject")
     public @ResponseBody
-    JSONObject addProject(UsernamePasswordAuthenticationToken token,
-                          @RequestParam("category2id") int category2id,
-                          @RequestParam("projectname") String projectname,
-                          @RequestParam("shortname") String shortname,
-                          @RequestParam("productbrand") String productbrand,
-                          @RequestParam("price") float price,
-                          @RequestParam("fixedhand") float fixedhand,
-                          @RequestParam("percentagemethod") String percentagemethod) {
-        User user = (User) token.getPrincipal();
-        int brandid = user.getId();
-        Project project = new Project(category2id, projectname, shortname, productbrand, price, fixedhand,
-                percentagemethod);
-        Project r = brandService.addProject(user, project);
-
+    JSONObject addCategory2(UsernamePasswordAuthenticationToken token,
+                            @RequestParam("factoryid") int factoryid,
+                            @RequestParam("projectname") String projcetname) {
+        int brandid = ((User) token.getPrincipal()).getId();
+        Project project = brandService.addProject(brandid, factoryid, projcetname);
 
         JSONObject rejeson = null;
-        if (r != null) {
+        if (project != null) {
             JSONObject data = new JSONObject();
-            data.put("projectid", r.getId());
+            data.put("projectid", project.getProjectid());
             rejeson = ResponseGenerate.genSuccessResponse("成功", data);
         } else {
             rejeson = ResponseGenerate.genFailResponse(1, "添加失败");
@@ -333,16 +263,15 @@ public class BrandController {
     }
 
 
-    //删除3级分类
+    //删除项目
     @PostMapping("/brand/deleteproject")
     public @ResponseBody
     JSONObject deleteCategory2(UsernamePasswordAuthenticationToken token,
                                @RequestParam("projectid") int projectid) {
-        User user = (User) token.getPrincipal();
-        int brandid = user.getId();
+        int brandid = ((User) token.getPrincipal()).getId();
 
         JSONObject rejeson = null;
-        boolean result = brandService.deleteProject(user, projectid);
+        boolean result = brandService.deleteProject(brandid, projectid);
         if (result == true) {
             rejeson = ResponseGenerate.genSuccessResponse("删除成功");
         } else {
@@ -351,15 +280,6 @@ public class BrandController {
         return rejeson;
     }
 
-
-    //审核今日收入
-    @PostMapping("/reviewincome")
-    public @ResponseBody
-    JSONObject reviewincome(UsernamePasswordAuthenticationToken token,
-                            @RequestParam("shopid") int shopid) {
-        return null;
-
-    }
 
     //获得brand名字
     @GetMapping("/brand/getname")

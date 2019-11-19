@@ -5,11 +5,9 @@ import com.aaa.huahui.model.PaymentMethod;
 import com.aaa.huahui.model.Settlement;
 import com.aaa.huahui.model.SettlementItem;
 import com.aaa.huahui.model.User;
-import com.aaa.huahui.repository.ProjectRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.service.SettlementService;
 import com.aaa.huahui.service.ShopVipService;
-import com.aaa.huahui.service.StaffService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.aaa.huahui.vo.SettlementVO;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/settlementold")
@@ -38,8 +35,6 @@ public class SettlementController {
     @Autowired
     ShopVipService shopVipService;
 
-    @Autowired
-    ProjectRepository projectRepository;
 
 
     @PostMapping("/settlement/delete")
@@ -95,10 +90,10 @@ public class SettlementController {
             Integer projectid = item.getInteger("projectid");
             t.setProjectid(projectid);
 
-            if (projectRepository.selectCountShopProjecet(projectid, u.getId()) == 0) {
-                responsejson = ResponseGenerate.genFailResponse(1, "项目" + (i + 1) + "不属于此商店");
-                return responsejson;
-            }
+//            if (projectRepository.selectCountShopProjecet(projectid, u.getId()) == 0) {
+//                responsejson = ResponseGenerate.genFailResponse(1, "项目" + (i + 1) + "不属于此商店");
+//                return responsejson;
+//            }
 
             t.setTimes(item.getInteger("times"));
             t.setPrice(item.getInteger("price"));

@@ -45,7 +45,7 @@
         settlementitem.times times,
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -58,7 +58,7 @@
         on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
         left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
         left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project project on project.projectid = settlementitem.projectid
 
         where settlement.id = #{id}
 
@@ -80,7 +80,7 @@
         settlementitem.times times,
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -93,7 +93,7 @@
         on consultanttable.staffid = settlement.consultantid and consultanttable.role = 'consultant'
         left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
         left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project project on project.projectid = settlementitem.projectid
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -174,8 +174,8 @@
         settlementitem.price price
         from settlementitem settlementitem
         left join settlement settlement on settlement.id = settlementitem.settlementid
-        left join category2 category2 on category2.category2id = settlementitem.projectid
-        left join project on category2.category2id = project.category2id
+        left join project project on project.projectid = settlementitem.projectid
+        left join project on project.projectid = project.category2id
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -194,8 +194,8 @@
         project.name projectname
         from settlementitem settlementitem
         left join settlement settlement on settlement.id = settlementitem.settlementid
-        left join category2 category2 on category2.category2id = settlementitem.projectid
-        left join project on category2.category2id = project.category2id
+        left join project project on project.projectid = settlementitem.projectid
+        left join project on project.projectid = project.category2id
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -211,7 +211,7 @@
         from (
         select
         settlementitem.price price,
-        category2.name category2name
+        project.projectname category2name
 
         from settlementitem settlementitem
         left join
@@ -224,7 +224,7 @@
         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project project on project.projectid = settlementitem.projectid
 
 
         where settlement.shopid = #{shopid}
@@ -239,7 +239,7 @@
         from (
         select
         settlementitem.price price,
-        category2.name category2name
+        project.projectname category2name
 
         from settlementitem settlementitem
         left join
@@ -252,7 +252,7 @@
         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project project on project.projectid = settlementitem.projectid
 
 
         where settlement.shopid = #{shopid}
@@ -264,28 +264,28 @@
 
 
     <select id="selectCategory2SumCountAndSumPrice" resultType="java.util.Map">
-    select category.name                categoryname,
+    select factory.name                categoryname,
        allcategory2.category2name   category2name,
        ifnull(t2.sumprice, 0)       sumprice,
        ifnull(t3.countcategory2, 0) sumcount
-from category
+from factory
          inner join (
-    select category2.name category2name, category2.category2id category2id, category.id categoryid
+    select project.projectname category2name, project.projectid category2id, factory.id categoryid
     from brand,
          shop,
-         category,
-         category2
+         factory,
+         project
     where shopid = #{shopid}
       and shop.brandid = brand.brandid
-      and category.brandid = brand.brandid
-      and category2.categoryid = category.id
-) allcategory2 on category.id = allcategory2.categoryid
+      and factory.brandid = brand.brandid
+      and project.factoryid = factory.id
+) allcategory2 on factory.id = allcategory2.categoryid
 
          left join (
     select category2name, sum(price) sumprice
     from (
              select settlementitem.price price,
-                    category2.name       category2name
+                    project.projectname       category2name
 
              from settlementitem settlementitem
                       inner join
@@ -299,7 +299,7 @@ from category
                       left join staff staff2
                                 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
                       inner join project project on project.id = settlementitem.projectid
-                      inner join category2 on category2.category2id = project.category2id
+                      inner join project on project.projectid = project.category2id
 
              where settlement.shopid = #{shopid}
                and settlement.createtime between #{from} and #{to}
@@ -311,7 +311,7 @@ from category
     select category2name, times(category2name) countcategory2
     from (
              select settlementitem.price price,
-                    category2.name       category2name
+                    project.projectname       category2name
 
              from settlementitem settlementitem
                       inner join
@@ -325,7 +325,7 @@ from category
                       left join staff staff2
                                 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
                       inner join project project on project.id = settlementitem.projectid
-                      inner join category2 on category2.category2id = project.category2id
+                      inner join project on project.projectid = project.category2id
 
              where settlement.shopid = #{shopid}
                and settlement.createtime between #{from} and #{to}
@@ -345,7 +345,7 @@ from category
 
         settlementitem.price price,
 
-        category2.name category2name
+        project.projectname category2name
 
         from settlementitem settlementitem
         left join
@@ -358,7 +358,7 @@ from category
         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project project on project.projectid = settlementitem.projectid
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -373,7 +373,7 @@ from category
         select category2name, times (category2name) countcategory2name
         from (
         select
-        category2.name category2name
+        project.projectname category2name
 
         from settlementitem settlementitem
         left join
@@ -386,7 +386,7 @@ from category
         on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-        left join category2 category2 on category2.category2id = settlementitem.projectid
+        left join project project on project.projectid = settlementitem.projectid
 
         where settlement.shopid = #{shopid} 
         and settlement.createtime between #{from} and #{to}
@@ -398,28 +398,28 @@ from category
 
     <select id="selectConsultantCategory2SumCountAndSumPrice" resultType="java.util.Map">
 
-    select category.name                categoryname,
+    select factory.name                categoryname,
            allcategory2.category2name   category2name,
            ifnull(t2.sumprice, 0)       sumprice,
            ifnull(t3.countcategory2, 0) sumcount
-    from category
+    from factory
              inner join (
-        select category2.name category2name, category2.category2id category2id, category.id categoryid
+        select project.projectname category2name, project.projectid category2id, factory.id categoryid
         from brand,
              shop,
-             category,
-             category2
+             factory,
+             project
         where shopid = #{shopid}
           and shop.brandid = brand.brandid
-          and category.brandid = brand.brandid
-          and category2.categoryid = category.id
-    ) allcategory2 on category.id = allcategory2.categoryid
+          and factory.brandid = brand.brandid
+          and project.factoryid = factory.id
+    ) allcategory2 on factory.id = allcategory2.categoryid
 
              left join (
         select category2name, sum(price) sumprice
         from (
                  select settlementitem.price price,
-                        category2.name       category2name
+                        project.projectname       category2name
 
                  from settlementitem settlementitem
                           inner join
@@ -433,7 +433,7 @@ from category
                           left join staff staff2
                                     on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
                           inner join project project on project.id = settlementitem.projectid
-                          inner join category2 on category2.category2id = project.category2id
+                          inner join project on project.projectid = project.category2id
 
                  where settlement.shopid = #{shopid}
                    and settlement.createtime between #{from} and #{to}
@@ -445,7 +445,7 @@ from category
         select category2name, times(category2name) countcategory2
         from (
                  select settlementitem.price price,
-                        category2.name       category2name
+                        project.projectname       category2name
 
                  from settlementitem settlementitem
                           inner join
@@ -459,7 +459,7 @@ from category
                           left join staff staff2
                                     on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
                           inner join project project on project.id = settlementitem.projectid
-                          inner join category2 on category2.category2id = project.category2id
+                          inner join project on project.projectid = project.category2id
 
                  where settlement.shopid = #{shopid}
                    and settlement.createtime between #{from} and #{to}
@@ -480,7 +480,7 @@ from category
 
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -491,8 +491,8 @@ from category
         left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
         left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
         left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-        left join category2 category2 on category2.category2id = settlementitem.projectid
-        left join project on category2.category2id = project.category2id
+        left join project project on project.projectid = settlementitem.projectid
+        left join project on project.projectid = project.category2id
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -510,7 +510,7 @@ from category
 
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -521,8 +521,8 @@ from category
         left join paymentmethod paymentmethod on paymentmethod.id = settlement.paymentmethod
         left join staff staff1 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
         left join staff staff2 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-        left join category2 category2 on category2.category2id = settlementitem.projectid
-        left join project on category2.category2id = project.category2id
+        left join project project on project.projectid = settlementitem.projectid
+        left join project on project.projectid = project.category2id
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -536,28 +536,28 @@ from category
     <select id="selectbBeauticianCategory2SumCountAndSumPrice" resultType="java.util.Map">
 
 
-    select category.name                categoryname,
+    select factory.name                categoryname,
            allcategory2.category2name   category2name,
            ifnull(t2.sumprice, 0)       sumprice,
            ifnull(t3.countcategory2, 0) sumcount
-    from category
+    from factory
              inner join (
-        select category2.name category2name, category2.category2id category2id, category.id categoryid
+        select project.projectname category2name, project.projectid category2id, factory.id categoryid
         from brand,
              shop,
-             category,
-             category2
+             factory,
+             project
         where shopid = #{shopid}
           and shop.brandid = brand.brandid
-          and category.brandid = brand.brandid
-          and category2.categoryid = category.id
-    ) allcategory2 on category.id = allcategory2.categoryid
+          and factory.brandid = brand.brandid
+          and project.factoryid = factory.id
+    ) allcategory2 on factory.id = allcategory2.categoryid
 
              left join (
         select category2name, sum(price) sumprice
         from (
                  select settlementitem.price price,
-                        category2.name       category2name
+                        project.projectname       category2name
 
                  from settlementitem settlementitem
                           inner join
@@ -571,7 +571,7 @@ from category
                           left join staff staff2
                                     on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
                           inner join project project on project.id = settlementitem.projectid
-                          inner join category2 on category2.category2id = project.category2id
+                          inner join project on project.projectid = project.category2id
 
                  where settlement.shopid = #{shopid}
                    and settlement.createtime between #{from} and #{to}
@@ -584,7 +584,7 @@ from category
         select category2name, times(category2name) countcategory2
         from (
                  select settlementitem.price price,
-                        category2.name       category2name
+                        project.projectname       category2name
 
                  from settlementitem settlementitem
                           inner join
@@ -598,7 +598,7 @@ from category
                           left join staff staff2
                                     on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
                           inner join project project on project.id = settlementitem.projectid
-                          inner join category2 on category2.category2id = project.category2id
+                          inner join project on project.projectid = project.category2id
 
                  where settlement.shopid = #{shopid}
                    and settlement.createtime between #{from} and #{to}
@@ -629,8 +629,8 @@ from category
                                 on staff1.staffid = settlementitem.staff1 and staff1.role = 'beautician'
                       left join staff staff2
                                 on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
-                      left join category2 category2 on category2.category2id = settlementitem.projectid
-                      left join category category on category.id = category2.categoryid and category.name = "产品"
+                      left join project project on project.projectid = settlementitem.projectid
+                      left join factory factory on factory.id = project.factoryid and factory.name = "产品"
 
              where settlement.shopid = 12
                and settlement.createtime between 20190101 and 20191001
@@ -662,7 +662,7 @@ from category
         settlementitem.times times,
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -678,8 +678,8 @@ from category
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
         inner join project project on project.id = settlementitem.projectid
-        inner join category2 on category2.category2id = project.category2id
-        inner join category category on category.id = category2.categoryid and category.name = "产品类"
+        inner join project on project.projectid = project.category2id
+        inner join factory factory on factory.id = project.factoryid and factory.name = "产品类"
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -704,7 +704,7 @@ from category
         settlementitem.times times,
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -720,8 +720,8 @@ from category
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
         inner join project project on project.id = settlementitem.projectid
-        inner join category2 on category2.category2id = project.category2id
-        inner join category category on category.id = category2.categoryid and category.name = "产品类"
+        inner join project on project.projectid = project.category2id
+        inner join factory factory on factory.id = project.factoryid and factory.name = "产品类"
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -755,7 +755,7 @@ from category
         settlementitem.times times,
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -772,8 +772,8 @@ from category
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
         inner join project on project.id = settlementitem.projectid
-        inner join category2 category2
-        on category2.category2id = project.category2id and category2.name = "美容"
+        inner join project project
+        on project.projectid = project.category2id and project.projectname = "美容"
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -798,7 +798,7 @@ from category
         settlementitem.times times,
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -815,8 +815,8 @@ from category
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
         inner join project on project.id = settlementitem.projectid
-        inner join category2 category2
-        on category2.category2id = project.category2id and category2.name = "美容"
+        inner join project project
+        on project.projectid = project.category2id and project.projectname = "美容"
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -849,7 +849,7 @@ from category
         settlementitem.times times,
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -866,8 +866,8 @@ from category
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
         inner join project on project.id = settlementitem.projectid
-        inner join category2 category2
-        on category2.category2id = project.category2id and category2.name = "美体"
+        inner join project project
+        on project.projectid = project.category2id and project.projectname = "美体"
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
@@ -892,7 +892,7 @@ from category
         settlementitem.times times,
         settlementitem.price price,
 
-        category2.name category2name,
+        project.projectname category2name,
 
         staff1.name staff1name,
         staff2.name staff2name
@@ -909,8 +909,8 @@ from category
         left join staff staff2
         on staff2.staffid = settlementitem.staff2 and staff1.role = 'beautician'
         inner join project on project.id = settlementitem.projectid
-        inner join category2 category2
-        on category2.category2id = project.category2id and category2.name = "美体"
+        inner join project project
+        on project.projectid = project.category2id and project.projectname = "美体"
 
         where settlement.shopid = #{shopid}
         and settlement.createtime between #{from} and #{to}
