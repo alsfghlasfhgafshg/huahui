@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 @Controller
@@ -92,7 +94,31 @@ public class StaffController {
     JSONObject showOneStaff(@RequestParam("id") int staffId) {
         try {
             Staff staff = staffService.selectOneStaff(staffId);
-            return ResponseGenerate.genSuccessResponse(staff);
+            SimpleDateFormat f = new SimpleDateFormat("yyyy年MM月dd日");
+            String ss = f.format(staff.getBirthday());
+            JSONObject object = new JSONObject();
+            object.put("name",staff.getName());
+            object.put("staffid",staffId);
+            object.put("role",staff.getEmployment());
+            object.put("male",staff.getMale());
+            object.put("nation",staff.getNation());
+            object.put("party",staff.getParty());
+            object.put("healthy",staff.getHealthy());
+            object.put("nativeplace",staff.getNativeplace());
+            object.put("address",staff.getAddress());
+            object.put("phone",staff.getPhone());
+            object.put("emergencyphone",staff.getEmergencyphone());
+            object.put("p1name",staff.getP1name());
+            object.put("p1male",staff.getP1male());
+            object.put("p1company",staff.getP1company());
+            object.put("p1relationship",staff.getP1relationship());
+            object.put("p2name",staff.getP1name());
+            object.put("p2male",staff.getP1male());
+            object.put("p2company",staff.getP1company());
+            object.put("p2relationship",staff.getP1relationship());
+            object.put("shopid",staff.getShopid());
+            object.put("birthday",ss);
+            return ResponseGenerate.genSuccessResponse(object);
         } catch (Exception e) {
             return ResponseGenerate.genFailResponse(1, "staffId is wrong");
         }
@@ -178,12 +204,11 @@ public class StaffController {
                            @RequestParam(value = "p2company", required = false,defaultValue = "无") String p2company,
                            @RequestParam(value = "p2relationship", required = false,defaultValue = "无") String p2relationship,
                            @RequestParam(value = "role") String role,
-                           @RequestParam("shopid") int shopid,
                            UsernamePasswordAuthenticationToken token) {
         Timestamp birthday=DateUtils.getTimeStampEnd(birth);
 
         User user = (User) token.getPrincipal();
-        if (user.getId() != shopid) {
+        if (user.getId() != staffService.selectOneStaff(staffid).getShopid()) {
             return ResponseGenerate.genFailResponse(1, "not be permitted");
         }
         Staff originStaff = staffService.selectOneStaff(staffid);

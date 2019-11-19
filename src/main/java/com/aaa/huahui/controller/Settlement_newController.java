@@ -260,7 +260,7 @@ public class Settlement_newController {
                                           @RequestParam(value = "consumptionpattern", required = false) String consumptionpattern,
                                           @RequestParam(value = "allocate", required = false) String allocate,
                                           @RequestParam(value = "beautician1", required = false) Integer beautician1,
-                                          @RequestParam(value = "beautician2", required = false,defaultValue = "无") Integer beautician2,
+                                          @RequestParam(value = "beautician2", required = false,defaultValue = "0") Integer beautician2,
                                           @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                           @RequestParam(value = "consultant", required = false) String consultant,
                                           @RequestParam(value = "checker", required = false) String checker,
