@@ -34,5 +34,13 @@ public class RoleService {
         }
     }
 
+    public boolean changeToReporter(int staffid){
+        return userRoleRepository.changeUserRoleToReporter(staffid)==1;
+    }
+
+    public boolean changeToStaff(int staffid){
+        return userRoleRepository.changeUserRoleToStaff(staffid)==1;
+    }
+
 
 }

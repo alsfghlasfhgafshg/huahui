@@ -31,4 +31,10 @@ public interface UserRoleRepository {
 
     @Delete("delete from user_role where userid=#{id}")
     int deleteRoleById(@Param("id") int id);
+
+    @Update("update user_role set roleid=5 where userid=#{staffid}")
+    int changeUserRoleToReporter(@Param("staffid")int staffid);
+
+    @Update("update user_role set roleid=4 where userid=#{staffid}")
+    int changeUserRoleToStaff(@Param("staffid")int staffid);
 }

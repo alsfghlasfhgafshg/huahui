@@ -134,6 +134,7 @@ public class StaffController {
 //                        @RequestParam(value = "name", defaultValue = "", required = false) String name,
                         @RequestParam(value = "employment",required = false,defaultValue = "true") boolean employment,
                         @RequestParam("male") int male,
+                        @RequestParam("password") String password,
                         @RequestParam("birthday") String birth,
                         @RequestParam("nation") String nation,
                         @RequestParam("party") String party,
@@ -143,11 +144,11 @@ public class StaffController {
                         @RequestParam("phone") String phone,
                         @RequestParam("emergencyphone") String emergencyphone,
                         @RequestParam(value = "p1name", required = false,defaultValue = "无") String p1name,
-                        @RequestParam(value = "p1male", required = false,defaultValue = "无") int p1male,
+                        @RequestParam(value = "p1male", required = false,defaultValue = "0") int p1male,
                         @RequestParam(value = "p1company", required = false,defaultValue = "无") String p1company,
                         @RequestParam(value = "p1relationship", required = false,defaultValue = "无") String p1relationship,
                         @RequestParam(value = "p2name", required = false,defaultValue = "无") String p2name,
-                        @RequestParam(value = "p2male", required = false,defaultValue = "无") int p2male,
+                        @RequestParam(value = "p2male", required = false,defaultValue = "0") int p2male,
                         @RequestParam(value = "p2company", required = false,defaultValue = "无") String p2company,
                         @RequestParam(value = "p2relationship", required = false,defaultValue = "无") String p2relationship,
                         @RequestParam("role") String role,
@@ -159,7 +160,7 @@ public class StaffController {
         int shopId = user.getId();
         User staffUser = null;
         try {
-            staffUser = userService.newUser(username, "", "", "ROLE_STAFF");
+            staffUser = userService.newUser(username, password, password, "ROLE_STAFF");
         } catch (NewUserFailException e) {
             e.printStackTrace();
             String errors = e.getErrors();

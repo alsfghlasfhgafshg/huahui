@@ -2,7 +2,9 @@ package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.Shop;
+import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.service.RoleService;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.StaffService;
 import com.aaa.huahui.service.UserService;
@@ -30,6 +32,11 @@ public class ShopController {
 
     @Autowired
     StaffService staffService;
+
+    @Autowired
+    RoleService roleService;
+
+
 
     @GetMapping
     public String shopIndex(UsernamePasswordAuthenticationToken e) {
@@ -83,7 +90,7 @@ public class ShopController {
                         @RequestParam(value = "province", defaultValue = "") String province,
                         @RequestParam(value = "city", defaultValue = "") String city,
                         @RequestParam(value = "district", defaultValue = "") String district,
-                        @RequestParam(value = "geo",defaultValue = "") String geo,
+                        @RequestParam(value = "geo", defaultValue = "") String geo,
                         UsernamePasswordAuthenticationToken token) {
         JSONObject rejeson = new JSONObject();
         User brandManager = (User) token.getPrincipal();
@@ -122,7 +129,7 @@ public class ShopController {
                            @RequestParam(value = "geo", defaultValue = "") String geo) {
         JSONObject reobject = new JSONObject();
         int brandid = ((User) token.getPrincipal()).getId();
-        boolean result = shopService.updateShopInfo(brandid, shopid, description, geo,province,city,district);
+        boolean result = shopService.updateShopInfo(brandid, shopid, description, geo, province, city, district);
         if (result == true) {
             reobject = ResponseGenerate.genSuccessResponse("修改成功");
             return reobject;
@@ -226,6 +233,63 @@ public class ShopController {
         data.put("name", shopName);
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(data);
         return responsejson;
+    }
+
+
+    //添加录入员
+    @PostMapping("/reporter/add")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public @ResponseBody
+    JSONObject addReporter(UsernamePasswordAuthenticationToken token,
+                           @RequestParam("staffid") int staffid) {
+        User user = (User) token.getPrincipal();
+        int shopid = user.getId();
+        if (staffService.selectOneStaff(staffid).getShopid() == shopid) {
+            if (shopService.addReporter(shopid, staffid)) {
+                roleService.changeToReporter(staffid);
+                return ResponseGenerate.genSuccessResponse("添加成功");
+            } else {
+                return ResponseGenerate.genFailResponse(1, "添加失败");
+            }
+        }else {
+            return ResponseGenerate.genFailResponse(1,"无权操作他店");
+        }
+    }
+
+    //删除录入员
+    @PostMapping("/reporter/delete")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public @ResponseBody
+    JSONObject changeReporter(UsernamePasswordAuthenticationToken token,
+                              @RequestParam("staffid")int staffid){
+        int shopid = ((User) token.getPrincipal()).getId();
+        if (staffService.selectOneStaff(staffid).getShopid()==shopid){
+            if (shopService.deleteReporter(staffid)){
+                roleService.changeToStaff(staffid);
+                return ResponseGenerate.genSuccessResponse("删除成功");
+            }else {
+                return ResponseGenerate.genFailResponse(1,"删除失败");
+            }
+        }else {
+            return ResponseGenerate.genFailResponse(1,"无权操作他店");
+        }
+    }
+
+    //查询所有录入员
+    @GetMapping("/reporter/all")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public @ResponseBody
+    JSONObject allReporter(UsernamePasswordAuthenticationToken token){
+        int shopid = ((User) token.getPrincipal()).getId();
+        ArrayList<Staff> list = shopService.allReporter(shopid);
+        JSONObject object;
+        JSONArray array = new JSONArray();
+        for (Staff staff:list){
+            object = new JSONObject();
+            object.put("staff",staff);
+            array.add(object);
+        }
+        return ResponseGenerate.genSuccessResponse(array);
     }
 
 

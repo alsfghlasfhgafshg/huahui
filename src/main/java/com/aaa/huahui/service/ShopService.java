@@ -128,12 +128,6 @@ public class ShopService {
     }
 
 
-    @Transactional
-    public boolean deleteReport(int id) {
-        int res = shopRepository.deletereport(id);
-        return res == 1;
-    }
-
     public boolean insertReport(int staffid, int shopid, String txt, String period, String createtime) {
         int res = shopRepository.insertReport(staffid, shopid, txt, period, createtime);
         return res == 1;
@@ -150,6 +144,27 @@ public class ShopService {
     public String getShopName(int shopid) {
         String name = userRepository.queryUserName(shopid);
         return name;
+    }
+
+    //录入员相关
+    //添加
+    public boolean addReporter(int shopid,int staffid){
+        return shopRepository.addReporter(shopid,staffid)==1;
+    }
+
+    //删除
+    public boolean deleteReporter(int staffid){
+        return shopRepository.deleteReporter(staffid)==1;
+    }
+
+    //查询所有录入员
+    public ArrayList<Staff> allReporter(int shopid){
+        ArrayList<Integer> list = shopRepository.selectAllReporterId(shopid);
+        ArrayList<Staff> rlist = new ArrayList<>();
+        for (int i:list){
+            rlist.add(staffRepository.selectOne(i));
+        }
+        return rlist;
     }
 
 }

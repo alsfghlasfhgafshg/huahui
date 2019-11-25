@@ -1,6 +1,7 @@
 package com.aaa.huahui.repository;
 
 import com.aaa.huahui.model.Shop;
+import com.aaa.huahui.model.Staff;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
@@ -38,9 +39,6 @@ public interface ShopRepository {
     @Insert("insert into periodreport (staffid,shopid,txt,period,createtime) values(#{shopid},#{txt},#{period},#{createtime})")
     int insertReport(@Param("staffid") int staffid, @Param("shopid") int shopid, @Param("txt") String txt, @Param("period") String period, @Param("createtime") String createtime);
 
-    @Delete("delete from periodreport where id=#{id}")
-    int deletereport(@Param("id") int id);
-
     @Select("select txt from periodreport where staffid=#{staffid} and createtime=#{date}")
     String selectOneReport(@Param("staffid") int staffid, @Param("date") String date);
 
@@ -53,4 +51,14 @@ public interface ShopRepository {
     @Select("select count(*) from staff where shopid=#{shopid}")
     int selectCountShopStaff(@Param("shopid") int shopid);
 
+    //录入员相关
+    @Insert("insert into shop_reporter (shopid,staffid) values(#{shopid},#{staffid})")
+    int addReporter(@Param("shopid") int shopid,@Param("staffid")int staffid);
+
+    //删除录入员
+    @Delete("delete from shop_reporter where staffid=#{staffid}")
+    int deleteReporter(@Param("staffid")int staffid);
+
+    @Select("select staffid from shop_reporter where shopid=#{shopid}")
+    ArrayList<Integer> selectAllReporterId(@Param("shopid")int shopid);
 }
