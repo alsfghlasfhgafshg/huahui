@@ -113,10 +113,7 @@
        from settlementnew
        where shopid=#{shopid} and consumptioncategory in ('卡扣产品','卡扣实操','现金产品','现金实操') and createtime between #{start} and  #{end}
        group by customer) t
-       union all
-       select '总计' as customer,sum(money) as smoney
-       from settlementnew
-       where shopid=#{shopid} and consumptioncategory in ('卡扣产品','卡扣实操','现金产品','现金实操') and createtime between #{start} and  #{end}
+       order by smoney desc
     </select>
 
     <select id="downtoStorePercent" resultType="java.util.HashMap">
@@ -151,6 +148,15 @@
         select 3 times,0 con
         union
         select 4 times,0 con)tt group by times
+    </select>
+
+    <select id="cashMoney" resultType="java.util.HashMap">
+      select * from(
+       select customer,sum(money) as smoney
+       from settlementnew
+       where shopid=#{shopid} and consumptioncategory in ('现金产品','现金卡','现金实操') and createtime between #{start} and  #{end}
+       group by customer) t
+       order by smoney desc
     </select>
 
 </mapper>

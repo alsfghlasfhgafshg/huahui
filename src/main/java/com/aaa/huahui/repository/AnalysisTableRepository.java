@@ -37,12 +37,17 @@ public interface AnalysisTableRepository {
                                                        @Param("start")Timestamp start,
                                                        @Param("end")Timestamp end);
     //实耗
-    ArrayList<HashMap<String,String>> actualMoney(@Param("shopid")int shopid,
+    ArrayList<HashMap<String,Object>> actualMoney(@Param("shopid")int shopid,
                                                   @Param("start")Timestamp start,
                                                   @Param("end")Timestamp end);
     //饼图
     ArrayList<HashMap<String,Object>> downtoStorePercent(@Param("shopid")int shopid,
                                                          @Param("start")Timestamp start,
                                                          @Param("end")Timestamp end);
+
+    //现金
+    ArrayList<HashMap<String,Object>> cashMoney(@Param("shopid")int shopid,
+                                                @Param("start")Timestamp start,
+                                                @Param("end")Timestamp end);
 
 }

@@ -44,8 +44,8 @@ public class AnalysisTableController {
     public @ResponseBody
     JSONObject getCustomerFlow(UsernamePasswordAuthenticationToken token,
                                @RequestParam(value = "shopid", required = false) Integer shopid,
-                               @RequestParam(value = "starttime", required = false) String startTime,
-                               @RequestParam(value = "endtime", required = false) String endTime){
+                               @RequestParam(value = "starttime") String startTime,
+                               @RequestParam(value = "endtime") String endTime){
         return analysisTableService.getCustomerFlow(token,shopid,startTime,endTime);
     }
 

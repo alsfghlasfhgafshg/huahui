@@ -160,7 +160,7 @@ public class StaffController {
         int shopId = user.getId();
         User staffUser = null;
         try {
-            staffUser = userService.newUser(username, password, password, "ROLE_STAFF");
+            staffUser = userService.newUser(phone, password, password, "ROLE_STAFF");
         } catch (NewUserFailException e) {
             e.printStackTrace();
             String errors = e.getErrors();
