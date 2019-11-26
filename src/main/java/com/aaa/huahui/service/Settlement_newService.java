@@ -53,4 +53,12 @@ public class Settlement_newService {
     public ArrayList<Settlement_new> allSettlement(int shopid,Timestamp start,Timestamp end){
         return settlement_newRepository.selectSettlementByDate(shopid,start,end);
     }
+
+    public boolean examine(int settlementid){
+        return settlement_newRepository.examine(settlementid)==1;
+    }
+
+    public int getShopIdBySettlementid(int settlementid){
+        return settlement_newRepository.getShopidBySettlementId(settlementid);
+    }
 }

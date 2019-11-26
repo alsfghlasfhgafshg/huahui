@@ -8,13 +8,11 @@ import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.service.Settlement_newService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
-import com.aaa.huahui.vo.Settlement_newVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -79,11 +77,12 @@ public class Settlement_newController {
             t.put("settltmentid", settlement_new.getSettlementid());
             t.put("time", DateUtils.formatTimeStrap(settlement_new.getCreatetime()));
             t.put("customer", settlement_new.getCustomer());
-            t.put("classify", settlement_new.getClasify());
+            t.put("classify", settlement_new.getClassify());
             t.put("category", settlement_new.getCategory());
             t.put("brandname", settlement_new.getBrandname());
             t.put("projectname", settlement_new.getProjectname());
             t.put("money", settlement_new.getMoney());
+            t.put("examine", settlement_new.getExamine());
             t.put("consumptioncategory", settlement_new.getConsumptioncategory());
             t.put("consumptionpattern", settlement_new.getConsumptionpattern());
 
@@ -108,7 +107,7 @@ public class Settlement_newController {
 
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('ROLE_SHOP')")
+    @PreAuthorize("hasRole('ROLE_REPORTER')")
     public JSONObject addSettlement(UsernamePasswordAuthenticationToken token,
                                     @RequestParam("customer") String customer,
                                     @RequestParam("classify") String classify,
@@ -122,8 +121,8 @@ public class Settlement_newController {
                                     @RequestParam("consumptionpattern") String consumptionpattern,
                                     @RequestParam(value = "allocate", required = false) String allocate,
                                     @RequestParam("beautician1") Integer beautician1,
-                                    @RequestParam(value = "beautician2", required = false,defaultValue = "0") Integer beautician2,
-                                    @RequestParam(value = "cardcategory",required = false) String cardcategory,
+                                    @RequestParam(value = "beautician2", required = false, defaultValue = "0") Integer beautician2,
+                                    @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                     @RequestParam(value = "consultant", required = false) String consultant,
                                     @RequestParam(value = "checker", required = false) String checker,
                                     @RequestParam("createtime") String time) {
@@ -142,25 +141,26 @@ public class Settlement_newController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_SHOP,ROLE_REPORTER')")
     public JSONObject getAllSettlement(UsernamePasswordAuthenticationToken token,
                                        @RequestParam("createtime") String createtime,
-                                       @RequestParam("endtime")String endtime){
-        Timestamp start  = DateUtils.getTimeStampStart(createtime);
+                                       @RequestParam("endtime") String endtime) {
+        Timestamp start = DateUtils.getTimeStampStart(createtime);
         Timestamp end = DateUtils.getTimeStampEnd(endtime);
         int shopid = ((User) token.getPrincipal()).getId();
-        ArrayList<Settlement_new> allSettlement = settlement_newService.allSettlement(shopid,start,end);
+        ArrayList<Settlement_new> allSettlement = settlement_newService.allSettlement(shopid, start, end);
         JSONArray data = new JSONArray();
         for (Settlement_new settlement_new : allSettlement) {
             JSONObject t = new JSONObject();
             t.put("settltmentid", settlement_new.getSettlementid());
             t.put("time", DateUtils.formatTimeStrap(settlement_new.getCreatetime()));
             t.put("customer", settlement_new.getCustomer());
-            t.put("classify", settlement_new.getClasify());
+            t.put("classify", settlement_new.getClassify());
             t.put("category", settlement_new.getCategory());
             t.put("brandname", settlement_new.getBrandname());
             t.put("projectname", settlement_new.getProjectname());
             t.put("money", settlement_new.getMoney());
+            t.put("examine", settlement_new.getExamine());
             t.put("consumptioncategory", settlement_new.getConsumptioncategory());
             t.put("consumptionpattern", settlement_new.getConsumptionpattern());
 
@@ -184,7 +184,7 @@ public class Settlement_newController {
     }
 
     @GetMapping("/selectone")
-    @PreAuthorize("hasRole('ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_SHOP,ROLE_REPORTER')")
     public JSONObject selectOneSettlement(@RequestParam("settlementid") int settlementid,
                                           UsernamePasswordAuthenticationToken token) {
 
@@ -204,12 +204,13 @@ public class Settlement_newController {
         JSONObject t = new JSONObject();
         t.put("settltmentid", s.getSettlementid());
         t.put("time", DateUtils.formatTimeStrap(s.getCreatetime()));
-        t.put("times",s.getTimes());
+        t.put("times", s.getTimes());
         t.put("customer", s.getCustomer());
-        t.put("classify", s.getClasify());
+        t.put("classify", s.getClassify());
         t.put("category", s.getCategory());
         t.put("brandname", s.getBrandname());
         t.put("projectname", s.getProjectname());
+        t.put("examine", s.getExamine());
         t.put("money", s.getMoney());
         t.put("consumptioncategory", s.getConsumptioncategory());
         t.put("consumptionpattern", s.getConsumptionpattern());
@@ -226,17 +227,17 @@ public class Settlement_newController {
             beauticianname += "/" + beautician2.getName();
         }
         t.put("beautician", beauticianname);
-        t.put("hand",s.getHand());
-        t.put("cardcategory",s.getCardcategory());
-        t.put("sonsultant",s.getConsultant());
-        t.put("checker",s.getChecker());
-        t.put("allocate",s.getAllocate());
+        t.put("hand", s.getHand());
+        t.put("cardcategory", s.getCardcategory());
+        t.put("sonsultant", s.getConsultant());
+        t.put("checker", s.getChecker());
+        t.put("allocate", s.getAllocate());
 
         return ResponseGenerate.genSuccessResponse(t);
     }
 
     @PostMapping("/deleteone")
-    @PreAuthorize("hasRole('ROLE_SHOP')")
+    @PreAuthorize("hasRole('ROLE_REPORTER')")
     public JSONObject deleteOneSettlement(@RequestParam("settlementid") int settlementid) {
         if (settlement_newService.deleteSettlement(settlementid)) {
             return ResponseGenerate.genSuccessResponse("删除成功");
@@ -245,7 +246,7 @@ public class Settlement_newController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ROLE_SHOP')")
+    @PreAuthorize("hasRole('ROLE_REPORTER')")
     public JSONObject updateOneSettlement(UsernamePasswordAuthenticationToken token,
                                           @RequestParam("settlementid") int settlementid,
                                           @RequestParam(value = "customer", required = false) String customer,
@@ -260,7 +261,7 @@ public class Settlement_newController {
                                           @RequestParam(value = "consumptionpattern", required = false) String consumptionpattern,
                                           @RequestParam(value = "allocate", required = false) String allocate,
                                           @RequestParam(value = "beautician1", required = false) Integer beautician1,
-                                          @RequestParam(value = "beautician2", required = false,defaultValue = "0") Integer beautician2,
+                                          @RequestParam(value = "beautician2", required = false, defaultValue = "0") Integer beautician2,
                                           @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                           @RequestParam(value = "consultant", required = false) String consultant,
                                           @RequestParam(value = "checker", required = false) String checker,
@@ -285,7 +286,7 @@ public class Settlement_newController {
         }
 
         if (classify != null) {
-            settlement_new.setClasify(classify);
+            settlement_new.setClassify(classify);
         }
         if (category != null) {
             settlement_new.setCategory(category);
@@ -327,7 +328,7 @@ public class Settlement_newController {
             settlement_new.setBeautician1(beautician1);
         }
 
-        if (beautician2 != null&&!beautician2.equals("无")) {
+        if (beautician2 != null && !beautician2.equals("无")) {
             settlement_new.setBeautician2(beautician2);
         }
 
@@ -352,4 +353,21 @@ public class Settlement_newController {
         }
         return ResponseGenerate.genFailResponse(1, "修改失败");
     }
+
+    @PostMapping("/examine")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public JSONObject examineSettlement(UsernamePasswordAuthenticationToken token,
+                                        @RequestParam("settlementid") int settlementid) {
+
+        if (((User) token.getPrincipal()).getId() == settlement_newService.getShopIdBySettlementid(settlementid)) {
+            if (settlement_newService.examine(settlementid)) {
+                return ResponseGenerate.genSuccessResponse("已审核");
+            } else {
+                return ResponseGenerate.genFailResponse(1, "审核失败");
+            }
+        } else {
+            return ResponseGenerate.genFailResponse(1, "无权操作他店");
+        }
+    }
+
 }

@@ -22,6 +22,7 @@ public class Settlement_new {
     private String consultant;
     private String checker;
     private Timestamp createtime;
+    private int examine;
 
     public Settlement_new() {
     }
@@ -71,12 +72,12 @@ public class Settlement_new {
         this.customer = customer;
     }
 
-    public String getClasify() {
+    public String getClassify() {
         return classify;
     }
 
-    public void setClasify(String clasify) {
-        this.classify = clasify;
+    public void setClassify(String classify) {
+        this.classify = classify;
     }
 
     public String getCategory() {
@@ -155,7 +156,7 @@ public class Settlement_new {
         return beautician1;
     }
 
-    public void setBeautician1(int beautician1) {
+    public void setBeautician1(Integer beautician1) {
         this.beautician1 = beautician1;
     }
 
@@ -163,7 +164,7 @@ public class Settlement_new {
         return beautician2;
     }
 
-    public void setBeautician2(int beautician2) {
+    public void setBeautician2(Integer beautician2) {
         this.beautician2 = beautician2;
     }
 
@@ -197,5 +198,13 @@ public class Settlement_new {
 
     public void setCreatetime(Timestamp createtime) {
         this.createtime = createtime;
+    }
+
+    public int getExamine() {
+        return examine;
+    }
+
+    public void setExamine(int examine) {
+        this.examine = examine;
     }
 }

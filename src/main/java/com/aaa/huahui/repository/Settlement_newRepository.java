@@ -40,4 +40,9 @@ public interface Settlement_newRepository {
 
     int projectremainingtimes(@Param("customer") String customer,@Param("projectname") String projectname,@Param("shopid") int shopid);
 
+    @Update("update settlementnew set examine=1 where settlementid=#{settlementid}")
+    int examine(@Param("settlementid")int settlementid);
+
+    @Select("select shopid from settlementnew where settlementid=#{settlementid}")
+    int getShopidBySettlementId(@Param("settlementid") int settlementid);
 }
