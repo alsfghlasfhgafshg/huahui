@@ -1,23 +1,15 @@
 package com.aaa.huahui.controller;
 
-import com.aaa.huahui.model.User;
-import com.aaa.huahui.repository.ShopRepository;
 import com.aaa.huahui.service.AnalysisTableService;
-import com.aaa.huahui.utils.DateUtils;
-import com.aaa.huahui.utils.ResponseGenerate;
-import com.aaa.huahui.vo.CustomerHandsVO;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/analysis")
