@@ -50,4 +50,8 @@ public interface AnalysisTableRepository {
                                                 @Param("start")Timestamp start,
                                                 @Param("end")Timestamp end);
 
+    ArrayList<HashMap<String,Object>> getBrandData(@Param("brandid")int brandid,
+                                        @Param("start")Timestamp start,
+                                        @Param("end")Timestamp end);
+
 }

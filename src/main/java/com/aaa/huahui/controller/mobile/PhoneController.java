@@ -143,4 +143,17 @@ public class PhoneController {
         }
     }
 
+
+    @GetMapping("/m/brandData")
+    @PreAuthorize("hasRole('ROLE_BRAND')")
+    public @ResponseBody
+    JSONObject getBrandData(UsernamePasswordAuthenticationToken token,
+                            @RequestParam("starttime")String startTime,
+                            @RequestParam("endtime")String endTime){
+        int brandid = ((User) token.getPrincipal()).getId();
+        Timestamp start = DateUtils.getTimeStampStart(startTime);
+        Timestamp end = DateUtils.getTimeStampEnd(endTime);
+        return analysisTableService.getBrandData(brandid,start,end);
+    }
+
 }

@@ -58,6 +58,10 @@ public class AnalysisTableService {
         return analysisTableRepository.downtoStoreTimes(shopid, start, end);
     }
 
+    public ArrayList<HashMap<String,Object>> brandData(int brandid,Timestamp start,Timestamp end){
+        return analysisTableRepository.getBrandData(brandid,start,end);
+    }
+
     public ArrayList<HashMap<String, Object>> actualMoney(int shopid, Timestamp start, Timestamp end) {
         ArrayList<HashMap<String, Object>> list = analysisTableRepository.actualMoney(shopid, start, end);
         double sum = 0;
@@ -70,6 +74,18 @@ public class AnalysisTableService {
         temp.put("排名",list.size()+1);
         list.add(temp);
         return list;
+    }
+
+    public JSONObject getBrandData(int brandid,Timestamp start,Timestamp end){
+        JSONArray array = new JSONArray();
+        for (HashMap<String,Object> map:brandData(brandid,start,end)){
+            JSONObject object = new JSONObject();
+           for (Map.Entry entry:map.entrySet()){
+               object.put(entry.getKey().toString(),entry.getValue());
+           }
+           array.add(object);
+        }
+        return ResponseGenerate.genSuccessResponse(array);
     }
 
     public ArrayList<HashMap<String, Object>> cashMoney(int shopid, Timestamp start, Timestamp end) {
