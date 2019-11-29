@@ -18,6 +18,8 @@ public class Settlement_new {
     private String allocate;
     private Integer beautician1;
     private Integer beautician2;
+    private Integer beautician3;
+    private Integer beautician4;
     private String cardcategory;
     private String consultant;
     private String checker;
@@ -27,7 +29,7 @@ public class Settlement_new {
     public Settlement_new() {
     }
 
-    public Settlement_new(int shopid, String customer, String classify, String category, String brandname, String projectname, int times, int hand, double money, String consumptioncategory, String consumptionpattern, String allocate, int beautician1, int beautician2, String cardcategory, String consultant, String checker, Timestamp createtime) {
+    public Settlement_new(int shopid, String customer, String classify, String category, String brandname, String projectname, int times, int hand, double money, String consumptioncategory, String consumptionpattern, String allocate, int beautician1, int beautician2, String cardcategory, String consultant, String checker, Timestamp createtime,int beautician3,int beautician4) {
         this.shopid = shopid;
         this.customer = customer;
         this.classify = classify;
@@ -42,10 +44,28 @@ public class Settlement_new {
         this.allocate = allocate;
         this.beautician1 = beautician1;
         this.beautician2 = beautician2;
+        this.beautician3 = beautician3;
+        this.beautician4 = beautician4;
         this.cardcategory = cardcategory;
         this.consultant = consultant;
         this.checker = checker;
         this.createtime = createtime;
+    }
+
+    public Integer getBeautician3() {
+        return beautician3;
+    }
+
+    public void setBeautician3(Integer beautician3) {
+        this.beautician3 = beautician3;
+    }
+
+    public Integer getBeautician4() {
+        return beautician4;
+    }
+
+    public void setBeautician4(Integer beautician4) {
+        this.beautician4 = beautician4;
     }
 
     public int getSettlementid() {

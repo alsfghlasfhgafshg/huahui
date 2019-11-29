@@ -44,4 +44,8 @@
 
     </select>
 
+    <select id="getAllTodayAndUnexaminedSettlement" resultType="java.util.HashMap">
+        select customer,projectname,money,consumptionpattern, from
+    </select>
+
 </mapper>
