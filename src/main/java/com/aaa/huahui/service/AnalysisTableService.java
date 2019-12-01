@@ -11,16 +11,14 @@ import com.aaa.huahui.vo.CustomerHandsVO;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AnalysisTableService {
@@ -60,6 +58,12 @@ public class AnalysisTableService {
 
     public ArrayList<HashMap<String,Object>> brandData(int brandid,Timestamp start,Timestamp end){
         return analysisTableRepository.getBrandData(brandid,start,end);
+    }
+
+    public ArrayList<HashMap<String, Object>> getAllTodayAndUnexaminedSettlement(int shopid){
+        Timestamp start = DateUtils.nDaysAgo(1);
+        Timestamp end = DateUtils.nDaysAgo(0);
+        return analysisTableRepository.getAllTodayAndUnexaminedSettlement(shopid,start,end);
     }
 
     public ArrayList<HashMap<String, Object>> actualMoney(int shopid, Timestamp start, Timestamp end) {
@@ -108,7 +112,9 @@ public class AnalysisTableService {
         for (HashMap<String, Object> map : list) {
             sum += (Long) map.get("con");
         }
-        if (sum == 0) sum = 1;
+        if (sum == 0){
+            sum = 1;
+        }
         //补0
         DecimalFormat df = new DecimalFormat("0.00%");
         for (HashMap<String, Object> map : list) {

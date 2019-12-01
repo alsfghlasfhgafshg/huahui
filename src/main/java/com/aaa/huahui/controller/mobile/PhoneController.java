@@ -5,15 +5,16 @@ import com.aaa.huahui.repository.ShopRepository;
 import com.aaa.huahui.service.AnalysisTableService;
 import com.aaa.huahui.service.PhoneService;
 import com.aaa.huahui.service.ShopService;
+import com.aaa.huahui.service.StaffService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,6 +37,9 @@ public class PhoneController {
 
     @Autowired
     AnalysisTableService analysisTableService;
+
+    @Autowired
+    StaffService staffService;
 
     @GetMapping("/m/todaydata")
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
@@ -154,6 +158,59 @@ public class PhoneController {
         Timestamp start = DateUtils.getTimeStampStart(startTime);
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
         return analysisTableService.getBrandData(brandid,start,end);
+    }
+
+    @GetMapping("/m/todayexamine")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public @ResponseBody
+    JSONObject getAndExamineToday(UsernamePasswordAuthenticationToken token){
+        int shopid = ((User) token.getPrincipal()).getId();
+        ArrayList<HashMap<String, Object>> list = analysisTableService.getAllTodayAndUnexaminedSettlement(shopid);
+        JSONArray array = new JSONArray();
+        JSONObject object;
+        for (HashMap<String, Object> map:list){
+            object = new JSONObject();
+            StringBuilder sb = new StringBuilder();
+            for (Map.Entry entry:map.entrySet()){
+                String nows = entry.getKey().toString();
+                if (nows.equals("name4")){
+                    sb.insert(0,entry.getValue());
+                    continue;
+                }
+                if (nows.equals("name3")){
+                    if (sb.length()==0){
+                        sb.insert(0,entry.getValue());
+                    }else {
+                        sb.insert(0,"/");
+                        sb.insert(0,entry.getValue());
+                    }
+                    continue;
+                }
+                if (nows.equals("name2")){
+                    if (sb.length()==0){
+                        sb.insert(0,entry.getValue());
+                    }else {
+                        sb.insert(0,"/");
+                        sb.insert(0,entry.getValue());
+                    }
+                    continue;
+                }
+                if (nows.equals("name1")){
+                    if (sb.length()==0){
+                        sb.insert(0,entry.getValue());
+                    }else {
+                        sb.insert(0,"/");
+                        sb.insert(0,entry.getValue());
+                    }
+                    continue;
+                }
+
+                object.put(entry.getKey().toString(),entry.getValue());
+            }
+            object.put("beauticianname",sb.toString());
+            array.add(object);
+        }
+        return ResponseGenerate.genSuccessResponse(array);
     }
 
 }

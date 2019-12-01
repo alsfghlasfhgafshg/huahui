@@ -82,7 +82,14 @@ public class Settlement_newController {
             t.put("brandname", settlement_new.getBrandname());
             t.put("projectname", settlement_new.getProjectname());
             t.put("money", settlement_new.getMoney());
-            t.put("examine", settlement_new.getExamine());
+            int ex = settlement_new.getExamine();
+            if (ex==0){
+                t.put("examine", "未审核");
+            }else if (ex==-1){
+                t.put("examine","审核未通过");
+            }else {
+                t.put("examine","审核通过");
+            }
             t.put("consumptioncategory", settlement_new.getConsumptioncategory());
             t.put("consumptionpattern", settlement_new.getConsumptionpattern());
 
@@ -93,11 +100,27 @@ public class Settlement_newController {
             Integer beautician2id = settlement_new.getBeautician2();
             Staff beautician2 = staffRepository.selectOne(beautician2id);
 
-            String beauticianname = beautician1.getName();
+            int beautician3id = settlement_new.getBeautician3();
+            Staff beautician3 = staffRepository.selectOne(beautician3id);
+
+            int beautician4id = settlement_new.getBeautician4();
+            Staff beautician4 = staffRepository.selectOne(beautician4id);
+
+            StringBuilder sb = new StringBuilder(beautician1.getName());
             if (beautician2 != null) {
-                beauticianname += "/" + beautician2.getName();
+                sb.append("/");
+                sb.append(beautician2.getName());
             }
-            t.put("beautician", beauticianname);
+            if (beautician3 != null) {
+                sb.append("/");
+                sb.append(beautician3.getName());
+            }
+            if (beautician4 != null) {
+                sb.append("/");
+                sb.append(beautician4.getName());
+            }
+
+            t.put("beautician", sb.toString());
             data.add(t);
         }
         JSONObject repsonsejson = ResponseGenerate.genSuccessResponse(data);
@@ -122,6 +145,8 @@ public class Settlement_newController {
                                     @RequestParam(value = "allocate", required = false) String allocate,
                                     @RequestParam("beautician1") Integer beautician1,
                                     @RequestParam(value = "beautician2", required = false, defaultValue = "0") Integer beautician2,
+                                    @RequestParam(value = "beautician3",required = false,defaultValue = "0") Integer beautician3,
+                                    @RequestParam(value = "beautician4",required = false,defaultValue = "0") Integer beautician4,
                                     @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                     @RequestParam(value = "consultant", required = false) String consultant,
                                     @RequestParam(value = "checker", required = false) String checker,
@@ -132,7 +157,7 @@ public class Settlement_newController {
 
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
-                consultant, checker, createtime);
+                consultant, checker, createtime,beautician3,beautician4);
         if (settlement_newService.addSettlement(settlement_new)) {
             return ResponseGenerate.genSuccessResponse("添加成功");
         } else {
@@ -160,7 +185,14 @@ public class Settlement_newController {
             t.put("brandname", settlement_new.getBrandname());
             t.put("projectname", settlement_new.getProjectname());
             t.put("money", settlement_new.getMoney());
-            t.put("examine", settlement_new.getExamine());
+            int ex = settlement_new.getExamine();
+            if (ex==0){
+                t.put("examine", "未审核");
+            }else if (ex==-1){
+                t.put("examine","审核未通过");
+            }else {
+                t.put("examine","审核通过");
+            }
             t.put("consumptioncategory", settlement_new.getConsumptioncategory());
             t.put("consumptionpattern", settlement_new.getConsumptionpattern());
 
@@ -170,12 +202,27 @@ public class Settlement_newController {
 
             Integer beautician2id = settlement_new.getBeautician2();
             Staff beautician2 = staffRepository.selectOne(beautician2id);
+            int beautician3id = settlement_new.getBeautician3();
+            Staff beautician3 = staffRepository.selectOne(beautician3id);
 
-            String beauticianname = beautician1.getName();
+            int beautician4id = settlement_new.getBeautician4();
+            Staff beautician4 = staffRepository.selectOne(beautician4id);
+
+            StringBuilder sb = new StringBuilder(beautician1.getName());
             if (beautician2 != null) {
-                beauticianname += "/" + beautician2.getName();
+                sb.append("/");
+                sb.append(beautician2.getName());
             }
-            t.put("beautician", beauticianname);
+            if (beautician3 != null) {
+                sb.append("/");
+                sb.append(beautician3.getName());
+            }
+            if (beautician4 != null) {
+                sb.append("/");
+                sb.append(beautician4.getName());
+            }
+
+            t.put("beautician", sb.toString());
             data.add(t);
         }
         JSONObject repsonsejson = ResponseGenerate.genSuccessResponse(data);
@@ -210,23 +257,44 @@ public class Settlement_newController {
         t.put("category", s.getCategory());
         t.put("brandname", s.getBrandname());
         t.put("projectname", s.getProjectname());
-        t.put("examine", s.getExamine());
+        int ex = s.getExamine();
+        if (ex==0){
+            t.put("examine", "未审核");
+        }else if (ex==-1){
+            t.put("examine","审核未通过");
+        }else {
+            t.put("examine","审核通过");
+        }
         t.put("money", s.getMoney());
         t.put("consumptioncategory", s.getConsumptioncategory());
         t.put("consumptionpattern", s.getConsumptionpattern());
 
         int beautician1id = s.getBeautician1();
-
         Staff beautician1 = staffRepository.selectOne(beautician1id);
 
         Integer beautician2id = s.getBeautician2();
         Staff beautician2 = staffRepository.selectOne(beautician2id);
+        int beautician3id = s.getBeautician3();
+        Staff beautician3 = staffRepository.selectOne(beautician3id);
 
-        String beauticianname = beautician1.getName();
+        int beautician4id = s.getBeautician4();
+        Staff beautician4 = staffRepository.selectOne(beautician4id);
+
+        StringBuilder sb = new StringBuilder(beautician1.getName());
         if (beautician2 != null) {
-            beauticianname += "/" + beautician2.getName();
+            sb.append("/");
+            sb.append(beautician2.getName());
         }
-        t.put("beautician", beauticianname);
+        if (beautician3 != null) {
+            sb.append("/");
+            sb.append(beautician3.getName());
+        }
+        if (beautician4 != null) {
+            sb.append("/");
+            sb.append(beautician4.getName());
+        }
+
+        t.put("beautician", sb.toString());
         t.put("hand", s.getHand());
         t.put("cardcategory", s.getCardcategory());
         t.put("sonsultant", s.getConsultant());
@@ -262,6 +330,8 @@ public class Settlement_newController {
                                           @RequestParam(value = "allocate", required = false) String allocate,
                                           @RequestParam(value = "beautician1", required = false) Integer beautician1,
                                           @RequestParam(value = "beautician2", required = false, defaultValue = "0") Integer beautician2,
+                                          @RequestParam(value = "beautician3",required = false,defaultValue = "0") Integer beautician3,
+                                          @RequestParam(value = "beautician4",required = false,defaultValue = "0") Integer beautician4,
                                           @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                           @RequestParam(value = "consultant", required = false) String consultant,
                                           @RequestParam(value = "checker", required = false) String checker,
@@ -328,8 +398,15 @@ public class Settlement_newController {
             settlement_new.setBeautician1(beautician1);
         }
 
-        if (beautician2 != null && !beautician2.equals("无")) {
+        if (beautician2 != null && beautician2!=0) {
             settlement_new.setBeautician2(beautician2);
+        }
+
+        if (beautician3 != null && beautician3!=0) {
+            settlement_new.setBeautician3(beautician3);
+        }
+        if (beautician4 != null && beautician4!=0) {
+            settlement_new.setBeautician4(beautician4);
         }
 
         if (cardcategory != null) {

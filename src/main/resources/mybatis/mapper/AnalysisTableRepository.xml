@@ -182,4 +182,21 @@
           ) cc on ca.userid=cc.id
     </select>
 
+    <select id="getAllTodayAndUnexaminedSettlement" resultType="java.util.HashMap">
+        select customer,
+       projectname,
+       money,
+       consumptionpattern,
+       a.name name1,
+       b.name name2,
+       c.name name3,
+       d.name name4
+from settlementnew
+       left  join staff a on a.staffid = settlementnew.beautician1
+       left  join staff b on b.staffid = settlementnew.beautician2
+       left  join staff c on c.staffid = settlementnew.beautician3
+       left  join staff d on d.staffid = settlementnew.beautician4
+where settlementnew.shopid=#{shopid} and examine = 0
+    </select>
+
 </mapper>

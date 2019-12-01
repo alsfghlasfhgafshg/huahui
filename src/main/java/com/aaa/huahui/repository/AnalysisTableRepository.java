@@ -1,5 +1,6 @@
 package com.aaa.huahui.repository;
 
+import com.aaa.huahui.model.Settlement_new;
 import com.aaa.huahui.vo.CustomerHandsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -53,5 +54,9 @@ public interface AnalysisTableRepository {
     ArrayList<HashMap<String,Object>> getBrandData(@Param("brandid")int brandid,
                                         @Param("start")Timestamp start,
                                         @Param("end")Timestamp end);
+
+    ArrayList<HashMap<String, Object>> getAllTodayAndUnexaminedSettlement(@Param("shopid")int shopid,
+                                                                 @Param("start")Timestamp start,
+                                                                 @Param("end")Timestamp end);
 
 }
