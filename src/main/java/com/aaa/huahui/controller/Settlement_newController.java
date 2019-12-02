@@ -202,8 +202,6 @@ public class Settlement_newController {
 
             Integer beautician2id = settlement_new.getBeautician2();
             Staff beautician2 = staffRepository.selectOne(beautician2id);
-            int beautician3id = settlement_new.getBeautician3();
-            Staff beautician3 = staffRepository.selectOne(beautician3id);
 
             int beautician4id = settlement_new.getBeautician4();
             Staff beautician4 = staffRepository.selectOne(beautician4id);
@@ -270,6 +268,7 @@ public class Settlement_newController {
         t.put("consumptionpattern", s.getConsumptionpattern());
 
         int beautician1id = s.getBeautician1();
+
         Staff beautician1 = staffRepository.selectOne(beautician1id);
 
         Integer beautician2id = s.getBeautician2();
