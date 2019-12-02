@@ -203,6 +203,9 @@ public class Settlement_newController {
             Integer beautician2id = settlement_new.getBeautician2();
             Staff beautician2 = staffRepository.selectOne(beautician2id);
 
+            Integer beautician3id = settlement_new.getBeautician2();
+            Staff beautician3 = staffRepository.selectOne(beautician2id);
+
             int beautician4id = settlement_new.getBeautician4();
             Staff beautician4 = staffRepository.selectOne(beautician4id);
 
