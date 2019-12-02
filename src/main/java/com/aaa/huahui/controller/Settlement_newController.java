@@ -122,6 +122,8 @@ public class Settlement_newController {
                                     @RequestParam(value = "allocate", required = false) String allocate,
                                     @RequestParam("beautician1") Integer beautician1,
                                     @RequestParam(value = "beautician2", required = false, defaultValue = "0") Integer beautician2,
+                                    @RequestParam(value = "beautician3", required = false, defaultValue = "0") Integer beautician3,
+                                    @RequestParam(value = "beautician4", required = false, defaultValue = "0") Integer beautician4,
                                     @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                     @RequestParam(value = "consultant", required = false) String consultant,
                                     @RequestParam(value = "checker", required = false) String checker,
@@ -132,7 +134,7 @@ public class Settlement_newController {
 
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
-                consultant, checker, createtime);
+                consultant, checker, createtime,beautician3,beautician4);
         if (settlement_newService.addSettlement(settlement_new)) {
             return ResponseGenerate.genSuccessResponse("添加成功");
         } else {
