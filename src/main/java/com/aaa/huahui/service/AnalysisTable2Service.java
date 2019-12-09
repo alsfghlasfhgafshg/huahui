@@ -38,7 +38,7 @@ public class AnalysisTable2Service {
     AnalysisTable2Repository analysisTable2Repository;
 
     static final int MANAGEMENT_TABLE = 0;
-    static final int BEAUTICIAN_TABLE = 0;
+    static final int BEAUTICIAN_TABLE = 1;
 
 
     //经营分析
