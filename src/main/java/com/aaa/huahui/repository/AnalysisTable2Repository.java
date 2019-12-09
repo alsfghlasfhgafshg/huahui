@@ -1,10 +1,7 @@
 package com.aaa.huahui.repository;
 
 
-import com.aaa.huahui.vo.AnalysisVO;
-import com.aaa.huahui.vo.BeauticianProjectVO;
-import com.aaa.huahui.vo.CustomerVO;
-import com.aaa.huahui.vo.ProjectTableVO;
+import com.aaa.huahui.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

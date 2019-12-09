@@ -1,9 +1,33 @@
 package com.aaa.huahui.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProjectTableVO {
     String name;
     double summoney;
     double sumcount;
+
+    public ProjectTableVO(String name, double summoney, double sumcount, List<Project> details) {
+        this.name = name;
+        this.summoney = summoney;
+        this.sumcount = sumcount;
+        this.details = details;
+    }
+
+    List<Project> details;
+
+    public void setDetails(List<Project> details) {
+        this.details = details;
+    }
+
+    public List<Project> getDetails() {
+        return details;
+    }
+
+    public void setProjects(ArrayList<Project> projects) {
+        this.details = projects;
+    }
 
     public ProjectTableVO(String name, double summoney, double sumcount) {
         this.name = name;

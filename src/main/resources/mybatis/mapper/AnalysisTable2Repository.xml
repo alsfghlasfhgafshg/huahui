@@ -49,7 +49,7 @@
     where analysisintermediatetable.category = "实操类"
     )t3 left join
     (
-         select *
+         select category,customer,consumptioncategory,sum(money) money,sum(times) times
          from settlementnew
          where shopid = #{shopid}
         <if test="condition=='beautician'">
@@ -60,7 +60,7 @@
             and (consultant=#{consultantname} )
         </if>
            and createtime between #{from} and #{to}
-           and (category = "美容" or category = "美体" or category = "仪器")) t4
+           and (category = "美容" or category = "美体" or category = "仪器")group by category, customer,consumptioncategory) t4
     on t4.category=t3.category2
 
 
@@ -97,7 +97,7 @@
     where analysisintermediatetable.category = "产品类"
 
     )t3 left join(
-      select *
+      select consumptioncategory,customer,sum(money) money,sum(times) times
                  from settlementnew
                  where shopid = #{shopid}
         <if test="condition=='beautician'">
@@ -109,6 +109,7 @@
         </if>
                    and createtime between #{from} and #{to}
                    and category = "产品"
+        group by customer,consumptioncategory
     )t4
     on t4.consumptioncategory=t3.category2
 
@@ -144,7 +145,7 @@
     ) t2 on t2.category2 = analysisintermediatetable.category2
     where analysisintermediatetable.category = "现金类"
     )t3 left join(
-      select *
+      select consumptioncategory,customer,sum(money) money,sum(times) times
                  from settlementnew
                  where shopid = #{shopid}
 
@@ -157,6 +158,7 @@
         </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")
+        group by customer,consumptioncategory
     )t4  on t4.consumptioncategory=t3.category2
 
 
@@ -192,7 +194,7 @@
     ) t2 on t2.category2 = analysisintermediatetable.category2
     where analysisintermediatetable.category = "实耗类"
      )t3 left join(
-       select *
+       select consumptioncategory,customer,sum(money) money,sum(times) times
                      from settlementnew
                      where shopid = #{shopid}
 
@@ -209,6 +211,7 @@
                          or consumptioncategory = "赠送实操"
                          or consumptioncategory = "现金实操"
                            )
+        group by customer,consumptioncategory
      )t4  on t4.consumptioncategory=t3.category2
 
 
@@ -241,7 +244,7 @@
     ) t2 on t2.category2 = analysisintermediatetable.category2
     where analysisintermediatetable.category = "赠送类"
     )t3 left join(
-     select *
+     select consumptioncategory,customer,sum(money) money,sum(times) times
                  from settlementnew
                  where shopid = #{shopid}
         <if test="condition=='beautician'">
@@ -254,6 +257,7 @@
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
                      )
+        group by customer,consumptioncategory
       )t4  on t4.consumptioncategory=t3.category2
     ;
 
@@ -393,10 +397,31 @@
 
     </select>
 
-    <select id="categoryAnalysis" resultType="com.aaa.huahui.vo.ProjectTableVO">
+
+    <resultMap id="ProjectTableVO" type="com.aaa.huahui.vo.ProjectTableVO">
+        <id column="name" property="name"/>
+        <result column="summoney" property="summoney"/>
+        <result column="sumcount" property="sumcount"/>
+        <collection property="details" ofType="com.aaa.huahui.vo.Project">
+            <result property="customer" column="customer"/>
+            <result property="money" column="money"/>
+            <result property="times" column="times"/>
+        </collection>
+    </resultMap>
+
+    <select id="categoryAnalysis" resultMap="ProjectTableVO">
+
+    select t.name                                             name,
+       t.summoney                                         summoney,
+       t.sumcount                                         sumcount,
+
+       t2.customer                                        customer,
+       concat(t2.money, '(', t2.consumptioncategory, ')') money,
+       t2.times                                           times
+    from (
 
     select projectname  name,
-           count(money) summoney,
+           sum(money) summoney,
            count(times) sumcount
     from settlementnew
     where shopid = #{shopid}
@@ -404,7 +429,18 @@
         and #{to}
       and category = #{category}
     group by projectname
-    order by summoney,sumcount
+    order by summoney,sumcount ) t
+
+        left join (
+
+             SELECT projectname name, customer customer, sum(times) times, sum(money) money, consumptioncategory consumptioncategory
+    FROM settlementnew
+    where shopid = #{shopid}
+      and createtime between #{from}
+        and #{to}
+      and category = #{category}
+      group by projectname,customer,consumptioncategory
+        ) t2 on t.name = t2.name
 
     </select>
 
