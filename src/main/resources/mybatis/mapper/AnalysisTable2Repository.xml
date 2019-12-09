@@ -36,6 +36,12 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
                    and createtime between #{from} and #{to}
                    and (category = "美容" or category = "美体" or category = "仪器")) t
         group by category
@@ -46,11 +52,23 @@
          select *
          from settlementnew
          where shopid = #{shopid}
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
            and createtime between #{from} and #{to}
            and (category = "美容" or category = "美体" or category = "仪器")) t4
     on t4.category=t3.category2
 
+
+
     union all
+
+
+
     select t3.category, category2, summoney, sumcount,t4.customer,concat(money,'(',consumptioncategory,')') money,cast(times as unsigned) times from (
 
     select analysisintermediatetable.category  category,
@@ -64,6 +82,14 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
+
                    and createtime between #{from} and #{to}
                    and category = "产品") t
         group by consumptioncategory
@@ -74,12 +100,23 @@
       select *
                  from settlementnew
                  where shopid = #{shopid}
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
                    and createtime between #{from} and #{to}
                    and category = "产品"
     )t4
     on t4.consumptioncategory=t3.category2
 
+
+
     union all
+
+
 
     select t3.category, category2, summoney, sumcount,t4.customer,concat(money,'(',consumptioncategory,')') money,cast(times as unsigned) times from (
     select analysisintermediatetable.category  category,
@@ -93,6 +130,14 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
+
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")) t
         group by consumptioncategory
@@ -102,6 +147,14 @@
       select *
                  from settlementnew
                  where shopid = #{shopid}
+
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")
     )t4  on t4.consumptioncategory=t3.category2
@@ -121,6 +174,14 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
+
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "卡扣产品" or consumptioncategory = "卡扣实操"
                             or consumptioncategory = "现金产品"
@@ -134,6 +195,14 @@
        select *
                      from settlementnew
                      where shopid = #{shopid}
+
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
                        and createtime between #{from} and #{to}
                        and (consumptioncategory = "卡扣产品" or consumptioncategory = "卡扣实操"
                                 or consumptioncategory = "现金产品"
@@ -142,7 +211,10 @@
                            )
      )t4  on t4.consumptioncategory=t3.category2
 
+
     union all
+
+
     select t3.category, category2, summoney, sumcount,t4.customer,concat(money,'(',consumptioncategory,')') money,cast(times as unsigned) times from (
     select analysisintermediatetable.category  category,
            analysisintermediatetable.category2 category2,
@@ -155,6 +227,13 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
                      )) t
@@ -165,6 +244,13 @@
      select *
                  from settlementnew
                  where shopid = #{shopid}
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
                      )

@@ -16,10 +16,20 @@ import java.util.List;
 @Mapper
 public interface AnalysisTable2Repository {
 
-    //经营分析表
+    public static String CONDITION_BEAUTICIAN = "beautician";//美容师
+    public static String CONDITION_CONSULTANT = "consultant";//顾问
+    public static String CONDITION_MANAGE = "manage";//经营
+
+    //经营，美容师，顾问 分析表
     List<AnalysisVO> managementAnalysis(@Param("shopid") int shopid,
                                         @Param("from") Timestamp from,
-                                        @Param("to") Timestamp to);
+                                        @Param("to") Timestamp to,
+
+                                        @Param("beauticianid") Integer beauticianid,
+                                        @Param("consultantname") String consultantname,
+
+                                        @Param("condition") String condition);
+
 
     CustomerVO statisticsPeopleByShopId(@Param("shopid") int shopid,
                                         @Param("from") Timestamp from,

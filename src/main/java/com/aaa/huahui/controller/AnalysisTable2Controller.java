@@ -54,6 +54,17 @@ public class AnalysisTable2Controller {
         return analysisTable2Service.beauticiantAnalysisController(token, shopid, beauticianname, startTime, endTime);
     }
 
+    @GetMapping("/consultant")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
+    public @ResponseBody
+    JSONObject consultantAnalysis(UsernamePasswordAuthenticationToken token,
+                                   @RequestParam(value = "shopid", required = false) Integer shopid,
+                                   @RequestParam(value = "consultantname") String consultantname,
+                                   @RequestParam(value = "starttime") String startTime,
+                                   @RequestParam(value = "endtime") String endTime) {
+        return analysisTable2Service.consultantAnalysisController(token, shopid, consultantname, startTime, endTime);
+    }
+
     @GetMapping("/project")
     @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public @ResponseBody
