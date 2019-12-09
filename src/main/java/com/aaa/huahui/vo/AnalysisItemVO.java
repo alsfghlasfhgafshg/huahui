@@ -1,9 +1,21 @@
 package com.aaa.huahui.vo;
 
+import java.util.ArrayList;
+
 public class AnalysisItemVO {
     String category2;
     double summoney;
     double sumcount;
+
+    ArrayList<AnalysisItemDetail> details = new ArrayList<>();
+
+    public ArrayList<AnalysisItemDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(ArrayList<AnalysisItemDetail> details) {
+        this.details = details;
+    }
 
     public AnalysisItemVO() {
     }

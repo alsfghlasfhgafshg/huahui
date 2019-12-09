@@ -7,8 +7,8 @@ public class AnalysisVO {
 
     String type;
 
-//    List<AnalysisItemVO> con;
 
+    //将总计排序到最后
     PriorityQueue<AnalysisItemVO> con = new PriorityQueue<AnalysisItemVO>(new Comparator<AnalysisItemVO>() {
         @Override
         public int compare(AnalysisItemVO o1, AnalysisItemVO o2) {

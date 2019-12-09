@@ -14,7 +14,7 @@
           select 1 id, count(customer) 实操数, IFNULL(sum(money), 0) actualmoney
           from settlementnew
           where DATE_FORMAT(createtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') and shopid=#{shopid}
-            and factory in ('美容', '美体', '仪器')) b on a.id = b.id
+            and category in ('美容', '美体', '仪器')) b on a.id = b.id
                left join(
           select 1 id, ifnull(sum(money), 0) cash
           from settlementnew

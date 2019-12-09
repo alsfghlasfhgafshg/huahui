@@ -11,12 +11,19 @@
             <result property="category2" column="category2"/>
             <result property="sumcount" column="sumcount" javaType="double"/>
             <result property="summoney" column="summoney" javaType="double"/>
+            <collection property="details" ofType="com.aaa.huahui.vo.AnalysisItemDetail">
+                <result property="customer" column="customer"/>
+                <result property="money" column="money"/>
+                <result property="times" column="times"/>
+            </collection>
         </collection>
     </resultMap>
 
 
     <!--经营分析表-->
     <select id="managementAnalysis" resultMap="AnalysisVO">
+    select t3.category, category2, summoney, sumcount,t4.customer,concat(money,'(',consumptioncategory,')') money,cast(times as unsigned) times from (
+
 
     select analysisintermediatetable.category  category,
            analysisintermediatetable.category2 category2,
@@ -34,8 +41,17 @@
         group by category
     ) t2 on t2.category2 = analysisintermediatetable.category2
     where analysisintermediatetable.category = "实操类"
+    )t3 left join
+    (
+         select *
+         from settlementnew
+         where shopid = #{shopid}
+           and createtime between #{from} and #{to}
+           and (category = "美容" or category = "美体" or category = "仪器")) t4
+    on t4.category=t3.category2
 
     union all
+    select t3.category, category2, summoney, sumcount,t4.customer,concat(money,'(',consumptioncategory,')') money,cast(times as unsigned) times from (
 
     select analysisintermediatetable.category  category,
            analysisintermediatetable.category2 category2,
@@ -54,8 +70,18 @@
     ) t2 on t2.category2 = analysisintermediatetable.category2
     where analysisintermediatetable.category = "产品类"
 
+    )t3 left join(
+      select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                   and createtime between #{from} and #{to}
+                   and category = "产品"
+    )t4
+    on t4.consumptioncategory=t3.category2
+
     union all
 
+    select t3.category, category2, summoney, sumcount,t4.customer,concat(money,'(',consumptioncategory,')') money,cast(times as unsigned) times from (
     select analysisintermediatetable.category  category,
            analysisintermediatetable.category2 category2,
            ifnull(t2.summoney, 0)              summoney,
@@ -72,9 +98,18 @@
         group by consumptioncategory
     ) t2 on t2.category2 = analysisintermediatetable.category2
     where analysisintermediatetable.category = "现金类"
+    )t3 left join(
+      select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                   and createtime between #{from} and #{to}
+                   and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")
+    )t4  on t4.consumptioncategory=t3.category2
+
 
     union all
 
+    select t3.category, category2, summoney, sumcount,t4.customer,concat(money,'(',consumptioncategory,')') money,cast(times as unsigned) times from (
     select analysisintermediatetable.category  category,
            analysisintermediatetable.category2 category2,
            ifnull(t2.summoney, 0)              summoney,
@@ -95,9 +130,20 @@
         group by consumptioncategory
     ) t2 on t2.category2 = analysisintermediatetable.category2
     where analysisintermediatetable.category = "实耗类"
+     )t3 left join(
+       select *
+                     from settlementnew
+                     where shopid = #{shopid}
+                       and createtime between #{from} and #{to}
+                       and (consumptioncategory = "卡扣产品" or consumptioncategory = "卡扣实操"
+                                or consumptioncategory = "现金产品"
+                         or consumptioncategory = "赠送实操"
+                         or consumptioncategory = "现金实操"
+                           )
+     )t4  on t4.consumptioncategory=t3.category2
 
     union all
-
+    select t3.category, category2, summoney, sumcount,t4.customer,concat(money,'(',consumptioncategory,')') money,cast(times as unsigned) times from (
     select analysisintermediatetable.category  category,
            analysisintermediatetable.category2 category2,
            ifnull(t2.summoney, 0)              summoney,
@@ -115,7 +161,14 @@
         group by consumptioncategory
     ) t2 on t2.category2 = analysisintermediatetable.category2
     where analysisintermediatetable.category = "赠送类"
-
+    )t3 left join(
+     select *
+                 from settlementnew
+                 where shopid = #{shopid}
+                   and createtime between #{from} and #{to}
+                   and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
+                     )
+      )t4  on t4.consumptioncategory=t3.category2
     ;
 
     </select>
@@ -286,12 +339,12 @@
 
     <select id="beauticiantTableAnalysis" resultMap="BeauticianProjectVO">
 
-        select staff.name                  name,
+        select staff.name name,
         settlementnew.createtime as time,
-        settlementnew.projectname   projectname,
-        sum(money)                  summoney,
-        count(projectname)          count,
-        sum(hand)                   sumhand
+        settlementnew.projectname projectname,
+        sum(money) summoney,
+        count(projectname) count,
+        sum(hand) sumhand
         from settlementnew
         inner join staff on (settlementnew.beautician1 = staff.staffid or settlementnew.beautician2 = staff.staffid)
         <if test="staffid!=-1">
