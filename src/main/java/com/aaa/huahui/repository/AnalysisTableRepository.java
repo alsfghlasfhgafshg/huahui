@@ -1,6 +1,5 @@
 package com.aaa.huahui.repository;
 
-import com.aaa.huahui.model.Settlement_new;
 import com.aaa.huahui.vo.CustomerHandsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,32 +14,38 @@ public interface AnalysisTableRepository {
     ArrayList<CustomerHandsVO> selectCustomerHands(@Param("customer") String customer,
                                                    @Param("shopid")int shopid,
                                                    @Param("starttime")Timestamp startTime,
-                                                   @Param("endtime")Timestamp endTime);
+                                                   @Param("endtime")Timestamp endTime,
+                                                   @Param("staffid")int staffid);
 
     ArrayList<CustomerHandsVO> selectCustomerCash(@Param("customer") String customer,
                                                    @Param("shopid")int shopid,
                                                    @Param("starttime")Timestamp startTime,
-                                                   @Param("endtime")Timestamp endTime);
+                                                   @Param("endtime")Timestamp endTime,
+                                                  @Param("staffid")int staffid);
 
     ArrayList<CustomerHandsVO> selectAllCustomer(
                                                  @Param("shopid")int shopid,
                                                  @Param("start")Timestamp start,
-                                                 @Param("end")Timestamp end);
+                                                 @Param("end")Timestamp end,
+                                                 @Param("staffid")int staffid);
 
     ArrayList<CustomerHandsVO> selectAllCustomerByName(@Param("customer") String customer,
                                                        @Param("shopid")int shopid,
                                                        @Param("start")Timestamp start,
-                                                       @Param("end")Timestamp end);
+                                                       @Param("end")Timestamp end,
+                                                       @Param("staffid")int staffid);
 
     //客流分析
     //到店次数
     ArrayList<HashMap<String,Object>> downtoStoreTimes(@Param("shopid")int shopid,
                                                        @Param("start")Timestamp start,
-                                                       @Param("end")Timestamp end);
+                                                       @Param("end")Timestamp end,
+                                                       @Param("staffid")int staffid);
     //实耗
     ArrayList<HashMap<String,Object>> actualMoney(@Param("shopid")int shopid,
                                                   @Param("start")Timestamp start,
-                                                  @Param("end")Timestamp end);
+                                                  @Param("end")Timestamp end,
+                                                  @Param("staffid")int staffid);
     //饼图
     ArrayList<HashMap<String,Object>> downtoStorePercent(@Param("shopid")int shopid,
                                                          @Param("start")Timestamp start,
@@ -49,7 +54,8 @@ public interface AnalysisTableRepository {
     //现金
     ArrayList<HashMap<String,Object>> cashMoney(@Param("shopid")int shopid,
                                                 @Param("start")Timestamp start,
-                                                @Param("end")Timestamp end);
+                                                @Param("end")Timestamp end,
+                                                @Param("staffid")int staffid);
 
     ArrayList<HashMap<String,Object>> getBrandData(@Param("brandid")int brandid,
                                         @Param("start")Timestamp start,

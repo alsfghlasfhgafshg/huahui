@@ -20,7 +20,7 @@ public class AnalysisTableController {
 
 
     @GetMapping("/customer")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
     public @ResponseBody
     JSONObject getCustomerAnalysis(UsernamePasswordAuthenticationToken token,
                                    @RequestParam(value = "customer",required = false,defaultValue = "无") String customer,
@@ -32,7 +32,7 @@ public class AnalysisTableController {
     }
 
     @GetMapping("/cuflow")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
     public @ResponseBody
     JSONObject getCustomerFlow(UsernamePasswordAuthenticationToken token,
                                @RequestParam(value = "shopid", required = false) Integer shopid,
