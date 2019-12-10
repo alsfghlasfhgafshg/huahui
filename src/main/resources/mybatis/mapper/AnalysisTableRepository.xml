@@ -25,14 +25,14 @@
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
         <if test="staffid!=-1">
-            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid}
+            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
         </if>
         union all
         select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times,sum(hand) as hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
         <if test="staffid!=-1">
-            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid}
+            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
         </if>
         ) bb where aa.customer=bb.customer
     </select>
@@ -57,14 +57,14 @@
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
         <if test="staffid!=-1">
-            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid}
+            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
         </if>
         union all
         select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times,sum(hand) as hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
         <if test="staffid!=-1">
-            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid}
+            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
         </if>
         ) bb where aa.customer=bb.customer
     </select>
@@ -89,7 +89,7 @@
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and createtime between #{start} and #{end}
         <if test="staffid!=-1">
-            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid}
+            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
         </if>
         order by createtime desc) bb on aa.customer=bb.customer
     </select>
@@ -114,7 +114,7 @@
         from settlementnew
         where shopid=#{shopid} and createtime between #{start} and #{end}
         <if test="staffid!=-1">
-            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid}
+            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
         </if>
         order by createtime desc) bb on aa.customer=bb.customer
     </select>
@@ -124,7 +124,7 @@
        from settlementnew
        where shopid=#{shopid} and createtime between #{start} and  #{end}
        <if test="staffid!=-1">
-           and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid}
+           and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
        </if>
        group by customer
        order by times desc;
@@ -136,7 +136,7 @@
        from settlementnew
        where shopid=#{shopid} and consumptioncategory in ('卡扣产品','卡扣实操','现金产品','现金实操','赠送实操') and createtime between #{start} and  #{end}
        <if test="staffid!=-1">
-           and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid}
+           and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
        </if>
        group by customer) t
        order by smoney desc
@@ -182,7 +182,7 @@
        from settlementnew
        where shopid=#{shopid} and consumptioncategory in ('现金产品','现金卡','现金实操') and createtime between #{start} and  #{end}
         <if test="staffid!=-1">
-            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid}
+            and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
         </if>
        group by customer) t
        order by smoney desc

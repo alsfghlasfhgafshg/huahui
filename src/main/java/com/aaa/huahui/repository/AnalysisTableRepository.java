@@ -15,37 +15,43 @@ public interface AnalysisTableRepository {
                                                    @Param("shopid")int shopid,
                                                    @Param("starttime")Timestamp startTime,
                                                    @Param("endtime")Timestamp endTime,
-                                                   @Param("staffid")int staffid);
+                                                   @Param("staffid")int staffid,
+                                                   @Param("consultant")String consultant);
 
     ArrayList<CustomerHandsVO> selectCustomerCash(@Param("customer") String customer,
                                                    @Param("shopid")int shopid,
                                                    @Param("starttime")Timestamp startTime,
                                                    @Param("endtime")Timestamp endTime,
-                                                  @Param("staffid")int staffid);
+                                                  @Param("staffid")int staffid,
+                                                  @Param("consultant")String consultant);
 
     ArrayList<CustomerHandsVO> selectAllCustomer(
                                                  @Param("shopid")int shopid,
                                                  @Param("start")Timestamp start,
                                                  @Param("end")Timestamp end,
-                                                 @Param("staffid")int staffid);
+                                                 @Param("staffid")int staffid,
+                                                 @Param("consultant")String consultant);
 
     ArrayList<CustomerHandsVO> selectAllCustomerByName(@Param("customer") String customer,
                                                        @Param("shopid")int shopid,
                                                        @Param("start")Timestamp start,
                                                        @Param("end")Timestamp end,
-                                                       @Param("staffid")int staffid);
+                                                       @Param("staffid")int staffid,
+                                                       @Param("consultant")String consultant);
 
     //客流分析
     //到店次数
     ArrayList<HashMap<String,Object>> downtoStoreTimes(@Param("shopid")int shopid,
                                                        @Param("start")Timestamp start,
                                                        @Param("end")Timestamp end,
-                                                       @Param("staffid")int staffid);
+                                                       @Param("staffid")int staffid,
+                                                       @Param("consultant")String consultant);
     //实耗
     ArrayList<HashMap<String,Object>> actualMoney(@Param("shopid")int shopid,
                                                   @Param("start")Timestamp start,
                                                   @Param("end")Timestamp end,
-                                                  @Param("staffid")int staffid);
+                                                  @Param("staffid")int staffid,
+                                                  @Param("consultant")String consultant);
     //饼图
     ArrayList<HashMap<String,Object>> downtoStorePercent(@Param("shopid")int shopid,
                                                          @Param("start")Timestamp start,
@@ -55,7 +61,8 @@ public interface AnalysisTableRepository {
     ArrayList<HashMap<String,Object>> cashMoney(@Param("shopid")int shopid,
                                                 @Param("start")Timestamp start,
                                                 @Param("end")Timestamp end,
-                                                @Param("staffid")int staffid);
+                                                @Param("staffid")int staffid,
+                                                @Param("consultant")String consultant);
 
     ArrayList<HashMap<String,Object>> getBrandData(@Param("brandid")int brandid,
                                         @Param("start")Timestamp start,
