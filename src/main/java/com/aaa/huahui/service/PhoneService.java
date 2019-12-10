@@ -15,4 +15,8 @@ public class PhoneService {
     public Map<String,Object> getTodayData(int shopid){
         return phoneRepository.todayData(shopid);
     }
+
+    public Map<String,Object> getTodayData_Staff(int shopid,String staffname){
+        return phoneRepository.todayData_staff(shopid,staffname);
+    }
 }
