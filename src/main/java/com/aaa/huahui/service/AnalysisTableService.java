@@ -1,6 +1,6 @@
 package com.aaa.huahui.service;
 
-import com.aaa.huahui.model.Settlement_new;
+import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.AnalysisTableRepository;
 import com.aaa.huahui.repository.Settlement_newRepository;
@@ -35,25 +35,28 @@ public class AnalysisTableService {
     @Autowired
     Settlement_newRepository settlement_newRepository;
 
+    @Autowired
+    StaffService staffService;
 
-    public ArrayList<CustomerHandsVO> customerHandsVOS(String customer, int shopid, Timestamp startTime, Timestamp endTime) {
-        return analysisTableRepository.selectCustomerHands(customer, shopid, startTime, endTime);
+
+    public ArrayList<CustomerHandsVO> customerHandsVOS(String customer, int shopid, Timestamp startTime, Timestamp endTime,int staffid) {
+        return analysisTableRepository.selectCustomerHands(customer, shopid, startTime, endTime,staffid);
     }
 
-    public ArrayList<CustomerHandsVO> customerCashVOS(String customer, int shopid, Timestamp startTime, Timestamp endTime) {
-        return analysisTableRepository.selectCustomerCash(customer, shopid, startTime, endTime);
+    public ArrayList<CustomerHandsVO> customerCashVOS(String customer, int shopid, Timestamp startTime, Timestamp endTime,int staffid) {
+        return analysisTableRepository.selectCustomerCash(customer, shopid, startTime, endTime,staffid);
     }
 
-    public ArrayList<CustomerHandsVO> AllCustomerVO(int shopid, Timestamp start, Timestamp end) {
-        return analysisTableRepository.selectAllCustomer(shopid, start, end);
+    public ArrayList<CustomerHandsVO> AllCustomerVO(int shopid, Timestamp start, Timestamp end,int staffid) {
+        return analysisTableRepository.selectAllCustomer(shopid, start, end,staffid);
     }
 
-    public ArrayList<CustomerHandsVO> AllCustomerVObyName(String customer, int shopid, Timestamp start, Timestamp end) {
-        return analysisTableRepository.selectAllCustomerByName(customer, shopid, start, end);
+    public ArrayList<CustomerHandsVO> AllCustomerVObyName(String customer, int shopid, Timestamp start, Timestamp end,int staffid) {
+        return analysisTableRepository.selectAllCustomerByName(customer, shopid, start, end,staffid);
     }
 
-    public ArrayList<HashMap<String, Object>> downtoStoreTimes(int shopid, Timestamp start, Timestamp end) {
-        return analysisTableRepository.downtoStoreTimes(shopid, start, end);
+    public ArrayList<HashMap<String, Object>> downtoStoreTimes(int shopid, Timestamp start, Timestamp end,int staffid) {
+        return analysisTableRepository.downtoStoreTimes(shopid, start, end,staffid);
     }
 
     public ArrayList<HashMap<String,Object>> brandData(int brandid,Timestamp start,Timestamp end){
@@ -66,8 +69,8 @@ public class AnalysisTableService {
         return analysisTableRepository.getAllTodayAndUnexaminedSettlement(shopid,start,end);
     }
 
-    public ArrayList<HashMap<String, Object>> actualMoney(int shopid, Timestamp start, Timestamp end) {
-        ArrayList<HashMap<String, Object>> list = analysisTableRepository.actualMoney(shopid, start, end);
+    public ArrayList<HashMap<String, Object>> actualMoney(int shopid, Timestamp start, Timestamp end,int staffid) {
+        ArrayList<HashMap<String, Object>> list = analysisTableRepository.actualMoney(shopid, start, end,staffid);
         double sum = 0;
         for (HashMap map:list){
             sum+=Double.valueOf(map.get("smoney").toString());
@@ -92,8 +95,8 @@ public class AnalysisTableService {
         return ResponseGenerate.genSuccessResponse(array);
     }
 
-    public ArrayList<HashMap<String, Object>> cashMoney(int shopid, Timestamp start, Timestamp end) {
-        ArrayList<HashMap<String, Object>> list = analysisTableRepository.cashMoney(shopid, start, end);
+    public ArrayList<HashMap<String, Object>> cashMoney(int shopid, Timestamp start, Timestamp end,int staffid) {
+        ArrayList<HashMap<String, Object>> list = analysisTableRepository.cashMoney(shopid, start, end,staffid);
         double sum = 0;
         for (HashMap map:list){
             sum+=Double.valueOf(map.get("smoney").toString());
@@ -132,26 +135,33 @@ public class AnalysisTableService {
                                           String endTime,
                                           String handorcash) {
         Integer id;
+        int staffid = -1;
         User user = (User) token.getPrincipal();
         //brand的话看是哪个店,shop的话只能当前店
         if (user.hasRole("ROLE_BRAND")) {
             if (shopRepository.selectCountBrandShop(shopid, user.getId()) == 1) {
                 id = shopid;
-            } else return ResponseGenerate.genFailResponse(1, "当前用户无shopid操作权限");
-        } else {
+            } else {
+                return ResponseGenerate.genFailResponse(1, "当前用户无shopid操作权限");
+            }
+        } else if (user.hasRole("ROLE_SHOP")){
             id = user.getId();
+        }else{
+            Staff staff = staffService.selectOneStaff(user.getId());
+            id = staff.getShopid();
+            staffid = staff.getStaffid();
         }
         ArrayList<CustomerHandsVO> list;
         Timestamp start = DateUtils.getTimeStampStart(startTime);
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
         if (handorcash.equals("现金") && !customer.equals("无")) {//选择现金查顾客现金表否则顾客实操表
-            list = customerCashVOS(customer, id, start, end);
+            list = customerCashVOS(customer, id, start, end,staffid);
         } else if (handorcash.equals("实操") && !customer.equals("无")) {
-            list = customerHandsVOS(customer, id, start, end);
+            list = customerHandsVOS(customer, id, start, end,staffid);
         } else if (handorcash.equals("所有")) {
-            list = AllCustomerVObyName(customer, id, start, end);
+            list = AllCustomerVObyName(customer, id, start, end,staffid);
         } else {//默认按时间排序
-            list = AllCustomerVO(id, start, end);
+            list = AllCustomerVO(id, start, end,staffid);
         }
 
         int handSum = 0;
@@ -187,8 +197,14 @@ public class AnalysisTableService {
             responsejson = ResponseGenerate.genSuccessResponse(object);
         } else {
             JSONObject object = new JSONObject();
-            int days = settlement_newRepository.dayslaststoshop(customer, id);
-            object.put("距离上次", days);
+            if (!customer.equals("无")) {
+                Integer days = settlement_newRepository.dayslaststoshop(customer, id);
+                if (days!=null) {
+                    object.put("距离上次", days);
+                }else {
+                    object.put("距离上次",-1);
+                }
+            }
             object.put("客户信息", array);
             responsejson = ResponseGenerate.genSuccessResponse(object);
         }
@@ -200,14 +216,21 @@ public class AnalysisTableService {
                                       String startTime,
                                       String endTime) {
         Integer id;
+        int staffid = -1;
         User user = (User) token.getPrincipal();
         //brand的话看是哪个店,shop的话只能当前店
         if (user.hasRole("ROLE_BRAND")) {
             if (shopRepository.selectCountBrandShop(shopid, user.getId()) == 1) {
                 id = shopid;
-            } else return ResponseGenerate.genFailResponse(1, "当前用户无shopid操作权限");
-        } else {
+            } else {
+                return ResponseGenerate.genFailResponse(1, "当前用户无shopid操作权限");
+            }
+        } else if (user.hasRole("ROLE_SHOP")){
             id = user.getId();
+        }else{
+            Staff staff = staffService.selectOneStaff(user.getId());
+            staffid = staff.getStaffid();
+            id = staff.getShopid();
         }
         Timestamp start;
         Timestamp end;
@@ -217,10 +240,10 @@ public class AnalysisTableService {
         } catch (Exception e) {
             return ResponseGenerate.genFailResponse(1, "传入时间格式错误");
         }
-        ArrayList<HashMap<String, Object>> list2 = actualMoney(id, start, end);
-        ArrayList<HashMap<String, Object>> list1 = downtoStoreTimes(id, start, end);
+        ArrayList<HashMap<String, Object>> list2 = actualMoney(id, start, end,staffid);
+        ArrayList<HashMap<String, Object>> list1 = downtoStoreTimes(id, start, end,staffid);
         //ArrayList<HashMap<String,Object>> list3 = downToStorePercent(id,start,end);
-        ArrayList<HashMap<String, Object>> list4 = cashMoney(id, start, end);
+        ArrayList<HashMap<String, Object>> list4 = cashMoney(id, start, end,staffid);
 
         //总返回列表
         JSONArray sumArray = new JSONArray();

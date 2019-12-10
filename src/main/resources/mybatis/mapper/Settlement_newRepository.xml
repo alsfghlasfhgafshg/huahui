@@ -6,7 +6,7 @@
 
     <select id="dayslaststoshop" resultType="java.lang.Integer">
 
-    select if(count(createtime) = 0, -1, datediff(now(), createtime)) lastsdays
+    select if(count(t.createtime) = 0, -1, datediff(now(), createtime)) lastsdays
     from (
              select createtime
              from settlementnew
@@ -14,8 +14,8 @@
                and customer = #{customer}
              order by createtime desc
              limit 1
-         ) t;
-
+         ) t
+    group by t.createtime;
     </select>
     <select id="projectremainingtimes" resultType="java.lang.Integer">
 
