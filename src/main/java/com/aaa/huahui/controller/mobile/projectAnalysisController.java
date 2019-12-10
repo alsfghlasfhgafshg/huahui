@@ -19,7 +19,7 @@ public class projectAnalysisController {
     AnalysisTable2Service analysisTable2Service;
 
     @GetMapping("/m/project")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
     public @ResponseBody
     JSONObject projectAnalysisToday(UsernamePasswordAuthenticationToken token,
                                     @RequestParam(value = "shopid", required = false) Integer shopid,

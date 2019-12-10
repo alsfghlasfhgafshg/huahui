@@ -18,7 +18,7 @@ public class beauticiantTableAnalysisController {
     AnalysisTable2Service analysisTable2Service;
 
     @GetMapping("/m/beauticianttable")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
     public @ResponseBody
     JSONObject beauticiantTableAnalysisToday(UsernamePasswordAuthenticationToken token,
                                              @RequestParam(value = "shopid", required = false) Integer shopid,

@@ -4,7 +4,6 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.AnalysisTable2Repository;
-import com.aaa.huahui.repository.AnalysisTableRepository;
 import com.aaa.huahui.repository.ShopRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.utils.DateUtils;
@@ -12,14 +11,9 @@ import com.aaa.huahui.utils.ResponseGenerate;
 import com.aaa.huahui.vo.*;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -33,48 +27,49 @@ public class AnalysisTable2Service {
     StaffRepository staffRepository;
 
     @Autowired
-    AnalysisTable2Service analysisTable2Service;
-
-    @Autowired
     AnalysisTable2Repository analysisTable2Repository;
 
     static final int MANAGEMENT_TABLE = 0;
     static final int BEAUTICIAN_TABLE = 1;
     static final int CONSULTANT_TABLE = 2;
+    static final int CONSULTANT_OR_BEAUTICIAN_TABLE = 3;
 
 
     //经营分析
     public JSONObject managementAnalysis(int shopid, Timestamp from, Timestamp to) {
-        return analysis(shopid, from, to, MANAGEMENT_TABLE, 0,null);
+        return analysis(shopid, from, to, MANAGEMENT_TABLE, 0, null);
     }
 
     //技师分析
     public JSONObject beauticiantAnalysis(int shopid, Timestamp from, Timestamp to, int beauticianid) {
-        return analysis(shopid, from, to, BEAUTICIAN_TABLE, beauticianid,null);
+        return analysis(shopid, from, to, BEAUTICIAN_TABLE, beauticianid, null);
     }
 
     //技师分析
     public JSONObject beauticiantAnalysis(int shopid, Timestamp from, Timestamp to, String beauticianname) {
         int id = staffRepository.findIdByStaffName(beauticianname);
-        return beauticiantAnalysis(shopid, from, to,id);
+        return beauticiantAnalysis(shopid, from, to, id);
     }
 
 
     //顾问分析
     public JSONObject consultantAnalysis(int shopid, Timestamp from, Timestamp to, String consultantname) {
-        return analysis(shopid, from, to, CONSULTANT_TABLE, 0,consultantname);
+        return analysis(shopid, from, to, CONSULTANT_TABLE, 0, consultantname);
     }
 
+    //美容师or顾问 ：staff登录时候用
+    public JSONObject beauticiantorConsultantAnalysis(int shopid, Timestamp from, Timestamp to, int beauticiantid, String consultantname) {
+        return analysis(shopid, from, to, CONSULTANT_OR_BEAUTICIAN_TABLE, beauticiantid, consultantname);
+    }
 
     /**
-     *
      * 经营分析，美容师分析，顾问分析表
      *
-     * @param shopid 商店id
-     * @param from 开始时间
-     * @param to 结束时间
-     * @param table 表
-     * @param beauticianid 美容师id
+     * @param shopid         商店id
+     * @param from           开始时间
+     * @param to             结束时间
+     * @param table          表
+     * @param beauticianid   美容师id
      * @param consultantname 顾问名字
      * @return
      */
@@ -84,14 +79,17 @@ public class AnalysisTable2Service {
         int averagePrice = 0;
 
         if (table == MANAGEMENT_TABLE) {
-            analysiss = analysisTable2Repository.managementAnalysis(shopid, from, to,null,null, AnalysisTable2Repository.CONDITION_MANAGE);
-            customer = analysisTable2Repository.statisticsPeopleByShopId(shopid, from, to);
+            analysiss = analysisTable2Repository.managementAnalysis(shopid, from, to, null, null, AnalysisTable2Repository.CONDITION_MANAGE);
+            customer = analysisTable2Repository.statisticsPeople(shopid, from, to, AnalysisTable2Repository.CONDITION_MANAGE, null, null);
         } else if (table == BEAUTICIAN_TABLE) {
-            analysiss = analysisTable2Repository.managementAnalysis(shopid, from, to,beauticianid,null, AnalysisTable2Repository.CONDITION_BEAUTICIAN);
-            customer = analysisTable2Repository.statisticsPeopleByShopIdAndBeautician(shopid, from, to, beauticianid);
-        }else if (table == CONSULTANT_TABLE) {
-            analysiss = analysisTable2Repository.managementAnalysis(shopid, from, to,null,consultantname, AnalysisTable2Repository.CONDITION_CONSULTANT);
-            customer = analysisTable2Repository.statisticsPeopleByShopIdAndBeautician(shopid, from, to, beauticianid);
+            analysiss = analysisTable2Repository.managementAnalysis(shopid, from, to, beauticianid, null, AnalysisTable2Repository.CONDITION_BEAUTICIAN);
+            customer = analysisTable2Repository.statisticsPeople(shopid, from, to, AnalysisTable2Repository.CONDITION_BEAUTICIAN, beauticianid, null);
+        } else if (table == CONSULTANT_TABLE) {
+            analysiss = analysisTable2Repository.managementAnalysis(shopid, from, to, null, consultantname, AnalysisTable2Repository.CONDITION_CONSULTANT);
+            customer = analysisTable2Repository.statisticsPeople(shopid, from, to, AnalysisTable2Repository.CONDITION_CONSULTANT, beauticianid, consultantname);
+        } else if (table == CONSULTANT_OR_BEAUTICIAN_TABLE) {
+            analysiss = analysisTable2Repository.managementAnalysis(shopid, from, to, beauticianid, consultantname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
+            customer = analysisTable2Repository.statisticsPeople(shopid, from, to, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN, beauticianid, consultantname);
         } else {
             return null;
         }
@@ -153,11 +151,20 @@ public class AnalysisTable2Service {
     }
 
     //项目分析表
-    public JSONObject projectAnalysis(int shopid, Timestamp from, Timestamp to) {
+    public JSONObject projectAnalysis(int shopid, Timestamp from, Timestamp to, int fenxi, Integer staffid, String staffname) {
 
-        List<ProjectTableVO> beauty = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容");
-        List<ProjectTableVO> body = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体");
-        List<ProjectTableVO> product = analysisTable2Repository.categoryAnalysis(shopid, from, to, "产品");
+        List<ProjectTableVO> beauty = null;
+        List<ProjectTableVO> body = null;
+        List<ProjectTableVO> product = null;
+        if (fenxi == CONSULTANT_OR_BEAUTICIAN_TABLE) {
+            beauty = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
+            body = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
+            product = analysisTable2Repository.categoryAnalysis(shopid, from, to, "产品", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
+        } else {
+            beauty = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容", null, null, null);
+            body = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体", null, null, null);
+            product = analysisTable2Repository.categoryAnalysis(shopid, from, to, "产品", null, null, null);
+        }
 
         calculateTotalCategory(beauty);
         calculateTotalCategory(body);
@@ -227,7 +234,7 @@ public class AnalysisTable2Service {
                                                          Integer shopid, String staffname, int fenxi, String startTime, String endTime) {
 
 
-        int id;
+        int id = 0;
         User user = (User) token.getPrincipal();
 
         //brand的话看是哪个店,shop的话只能当前店
@@ -241,10 +248,15 @@ public class AnalysisTable2Service {
                 return j;
             }
             id = shopid;
-        } else {
+        } else if (user.hasRole(ROLE.SHOP)) {
             id = user.getId();
+        } else if (user.hasRole(ROLE.STAFF)) {
+            id = staffRepository.queryShopIdByStaffId(user.getId());
+            staffname = staffRepository.findNameByStaffid(user.getId()).get();
+        } else {
+            return null;
         }
-        if (!(staffname==null||staffname.equals(""))){
+        if (!(staffname == null || staffname.equals(""))) {
             Integer staffid = staffRepository.findIdByStaffName(staffname);
             if (staffid == null || staffRepository.selectCountShopStaff(id, staffid) == 0) {
                 JSONObject fail = ResponseGenerate.genFailResponse(1, "无此美容师");
@@ -255,7 +267,7 @@ public class AnalysisTable2Service {
         Timestamp start = DateUtils.getTimeStampStart(startTime);
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
-        JSONArray data = analysisTable2Service.beauticiantTableAnalysis(id, start, end, staffname, fenxi);
+        JSONArray data = beauticiantTableAnalysis(id, start, end, staffname, fenxi);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
@@ -264,8 +276,13 @@ public class AnalysisTable2Service {
 
     public JSONObject projectAnalysisController(UsernamePasswordAuthenticationToken token,
                                                 Integer shopid, String startTime, String endTime) {
-        int id;
+        int id = 0;
         User user = (User) token.getPrincipal();
+
+        Timestamp start = DateUtils.getTimeStampStart(startTime);
+        Timestamp end = DateUtils.getTimeStampEnd(endTime);
+
+        JSONObject data = null;
 
         //brand的话看是哪个店,shop的话只能当前店
         if (user.hasRole(ROLE.BRAND)) {
@@ -278,15 +295,14 @@ public class AnalysisTable2Service {
                 return j;
             }
             id = shopid;
-        } else {
+            data = projectAnalysis(id, start, end, 0, null, null);
+        } else if (user.hasRole(ROLE.SHOP)) {
             id = user.getId();
+            data = projectAnalysis(id, start, end, 0, null, null);
+        } else if (user.hasRole(ROLE.STAFF)) {
+            id = staffRepository.queryShopIdByStaffId(user.getId());
+            data = projectAnalysis(id, start, end, CONSULTANT_OR_BEAUTICIAN_TABLE, user.getId(), user.getName());
         }
-
-        Timestamp start = DateUtils.getTimeStampStart(startTime);
-        Timestamp end = DateUtils.getTimeStampEnd(endTime);
-
-        JSONObject data = analysisTable2Service.projectAnalysis(id, start, end);
-
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
     }
@@ -316,16 +332,16 @@ public class AnalysisTable2Service {
         Timestamp start = DateUtils.getTimeStampStart(startTime);
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
-        JSONObject data = analysisTable2Service.beauticiantAnalysis(id, start, end, beauticianname);
+        JSONObject data = beauticiantAnalysis(id, start, end, beauticianname);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
     }
 
     public JSONObject consultantAnalysisController(UsernamePasswordAuthenticationToken token,
-                                                    Integer shopid, String consultantname,
-                                                    String startTime, String endTime) {
-        int id;
+                                                   Integer shopid, String consultantname,
+                                                   String startTime, String endTime) {
+        int id = 0;
         User user = (User) token.getPrincipal();
 
         //brand的话看是哪个店,shop的话只能当前店
@@ -339,14 +355,19 @@ public class AnalysisTable2Service {
                 return j;
             }
             id = shopid;
-        } else {
+        } else if (user.hasRole(ROLE.SHOP)) {
             id = user.getId();
+        } else if (user.hasRole(ROLE.STAFF)) {
+            id = staffRepository.queryShopIdByStaffId(user.getId());
+            consultantname = staffRepository.findNameByStaffid(user.getId()).get();
+        } else {
+            return null;
         }
 
         Timestamp start = DateUtils.getTimeStampStart(startTime);
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
-        JSONObject data = analysisTable2Service.consultantAnalysis(id, start, end, consultantname);
+        JSONObject data = consultantAnalysis(id, start, end, consultantname);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
@@ -354,9 +375,13 @@ public class AnalysisTable2Service {
 
 
     public JSONObject managementAnalysisController(UsernamePasswordAuthenticationToken token,
-                                         Integer shopid, String startTime, String endTime) {
-        int id;
+                                                   Integer shopid, String startTime, String endTime) {
+        int id = 0;
         User user = (User) token.getPrincipal();
+        JSONObject data = null;
+
+        Timestamp start = DateUtils.getTimeStampStart(startTime);
+        Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
         //brand的话看是哪个店,shop的话只能当前店
         if (user.hasRole(ROLE.BRAND)) {
@@ -369,14 +394,15 @@ public class AnalysisTable2Service {
                 return j;
             }
             id = shopid;
-        } else {
+            data = managementAnalysis(id, start, end);
+        } else if (user.hasRole(ROLE.SHOP)) {
             id = user.getId();
+            data = managementAnalysis(id, start, end);
+        } else if (user.hasRole(ROLE.STAFF)) {
+            data = beauticiantorConsultantAnalysis(staffRepository.queryShopIdByStaffId(user.getId()), start, end, user.getId(), staffRepository.findNameByStaffid(user.getId()).get());
+        } else {
+            return null;
         }
-
-        Timestamp start = DateUtils.getTimeStampStart(startTime);
-        Timestamp end = DateUtils.getTimeStampEnd(endTime);
-
-        JSONObject data = analysisTable2Service.managementAnalysis(id, start, end);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;

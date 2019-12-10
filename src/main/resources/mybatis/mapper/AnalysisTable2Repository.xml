@@ -37,10 +37,13 @@
                  from settlementnew
                  where shopid = #{shopid}
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid} )
         </if>
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
                    and createtime between #{from} and #{to}
                    and (category = "美容" or category = "美体" or category = "仪器")) t
@@ -53,13 +56,17 @@
          from settlementnew
          where shopid = #{shopid}
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
 
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
         </if>
-           and createtime between #{from} and #{to}
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
+        </if>
+
+        and createtime between #{from} and #{to}
            and (category = "美容" or category = "美体" or category = "仪器")group by category, customer,consumptioncategory) t4
     on t4.category=t3.category2
 
@@ -83,11 +90,14 @@
                  from settlementnew
                  where shopid = #{shopid}
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
 
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
 
                    and createtime between #{from} and #{to}
@@ -101,11 +111,14 @@
                  from settlementnew
                  where shopid = #{shopid}
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
 
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
                    and createtime between #{from} and #{to}
                    and category = "产品"
@@ -133,11 +146,14 @@
                  where shopid = #{shopid}
 
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
 
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")) t
@@ -150,11 +166,14 @@
                  where shopid = #{shopid}
 
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
 
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")
@@ -178,11 +197,14 @@
                  where shopid = #{shopid}
 
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
 
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "卡扣产品" or consumptioncategory = "卡扣实操"
@@ -199,11 +221,14 @@
                      where shopid = #{shopid}
 
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
 
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
                        and createtime between #{from} and #{to}
                        and (consumptioncategory = "卡扣产品" or consumptioncategory = "卡扣实操"
@@ -231,11 +256,14 @@
                  from settlementnew
                  where shopid = #{shopid}
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
 
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
@@ -248,11 +276,14 @@
                  from settlementnew
                  where shopid = #{shopid}
         <if test="condition=='beautician'">
-            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
 
         <if test="condition=='consultant'">
             and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
@@ -264,12 +295,22 @@
     </select>
 
 
-    <select id="statisticsPeopleByShopId" resultType="com.aaa.huahui.vo.CustomerVO">
+    <select id="statisticsPeople" resultType="com.aaa.huahui.vo.CustomerVO">
 
     select count(distinct customer) "distinctcustomer", count(customer) "customer"
     from settlementnew
     where shopid = #{shopid}
       and createtime between #{from} and #{to}
+        <if test="condition=='beautician'">
+            and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
+        </if>
+
+        <if test="condition=='consultant'">
+            and (consultant=#{consultantname} )
+        </if>
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
+        </if>
 
     </select>
 
@@ -428,6 +469,10 @@
       and createtime between #{from}
         and #{to}
       and category = #{category}
+
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
+        </if>
     group by projectname
     order by summoney,sumcount ) t
 
@@ -439,6 +484,10 @@
       and createtime between #{from}
         and #{to}
       and category = #{category}
+
+        <if test="condition=='consultantorbeautician'">
+            and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
+        </if>
       group by projectname,customer,consumptioncategory
         ) t2 on t.name = t2.name
 

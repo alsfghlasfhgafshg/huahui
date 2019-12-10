@@ -9,6 +9,9 @@ import java.util.Optional;
 @Mapper
 public interface StaffRepository {
 
+    @Select("select shopid from staff where staffid=#{staffid}  ")
+    int queryShopIdByStaffId(@Param("staffid") int staffid);
+
     @Select("select avatar from staff where staffid=#{staffid} and del=false")
     String queryAvatar(@Param("staffid") int staffid);
 
@@ -66,6 +69,6 @@ public interface StaffRepository {
     Optional<String> findNameByStaffid(@Param("staffid") int staffid);
 
     @Select("select staffid from staff where name=#{staffname} and del=false limit 1")
-    Integer findIdByStaffName(@Param("staffname")String staffname);
+    Integer findIdByStaffName(@Param("staffname") String staffname);
 
 }
