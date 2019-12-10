@@ -1,5 +1,6 @@
 package com.aaa.huahui.controller.mobile;
 
+import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.ShopRepository;
 import com.aaa.huahui.service.AnalysisTableService;
@@ -8,6 +9,7 @@ import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.StaffService;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
+import com.alibaba.druid.sql.visitor.functions.If;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,7 @@ public class PhoneController {
     StaffService staffService;
 
     @GetMapping("/m/todaydata")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
     public @ResponseBody
     JSONObject getTodayData(UsernamePasswordAuthenticationToken token){
         Integer id;
@@ -53,6 +55,7 @@ public class PhoneController {
             ArrayList<Integer> list = shopService.selectAllShopId(id);
             HashMap<String,Double> resultMap = new HashMap<>();
             for (int i=0;i<list.size();i++){
+                //Brand名下所有店统计
                 Map<String,Object> map = phoneService.getTodayData(list.get(i));
                 for (Map.Entry entry:map.entrySet()){
                     String key = (String) entry.getKey();
@@ -60,7 +63,9 @@ public class PhoneController {
                     if (resultMap.containsKey(key)){
                         double n = resultMap.get(key)+value;
                         resultMap.put(key,n);
-                    }else resultMap.put(key,value);
+                    }else {
+                        resultMap.put(key,value);
+                    }
                 }
             }
             JSONObject reJson = new JSONObject();
@@ -68,9 +73,19 @@ public class PhoneController {
                 reJson.put((String) entry.getKey(),entry.getValue());
             }
             return ResponseGenerate.genSuccessResponse(reJson);
-        } else {
+        } else if (user.hasRole("ROLE_SHOP")){
             id = user.getId();
             Map<String,Object> map = phoneService.getTodayData(id);
+            JSONObject reJson = new JSONObject();
+            for (Map.Entry entry:map.entrySet()){
+                reJson.put((String) entry.getKey(),entry.getValue());
+            }
+            return ResponseGenerate.genSuccessResponse(reJson);
+        }else{
+            Staff staff = staffService.selectOneStaff(user.getId());
+            id = staff.getShopid();
+            String staffname = staff.getName();
+            Map<String,Object> map = phoneService.getTodayData_Staff(id,staffname);
             JSONObject reJson = new JSONObject();
             for (Map.Entry entry:map.entrySet()){
                 reJson.put((String) entry.getKey(),entry.getValue());
@@ -81,7 +96,7 @@ public class PhoneController {
     }
 
     @GetMapping("/m/customer")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
     public @ResponseBody
     JSONObject getCustomerAnalysis(UsernamePasswordAuthenticationToken token,
                                    @RequestParam(value = "customer",required = false) String customer,
@@ -116,7 +131,7 @@ public class PhoneController {
 
 
     @GetMapping("/m/cuflow")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP,ROLE_STAFF')")
     public @ResponseBody
     JSONObject getCustomerFlow(UsernamePasswordAuthenticationToken token,
                                @RequestParam(value = "shopid", required = false) Integer shopid,

@@ -9,4 +9,6 @@ import java.util.Map;
 public interface PhoneRepository {
 
     Map<String, Object> todayData(@Param("shopid") int shopid);
+
+    Map<String, Object> todayData_staff(@Param("shopid") int shopid,@Param("staffname")String staffname);
 }
