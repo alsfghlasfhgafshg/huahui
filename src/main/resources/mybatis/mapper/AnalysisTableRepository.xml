@@ -189,26 +189,33 @@
     </select>
 
     <select id="getBrandData" resultType="java.util.HashMap">
-        select cc.name,ca.times,ca.xianjin,ca.shihao,ca.rentou from (
-        select a.shopid userid, sum(times) times, sum(a.money) xianjin, sum(b.money) shihao,count(a.shopid) rentou
+        select cc.name, ca.times, ca.xianjin, ca.shicao, ca.rentou
         from (
-               select times, money,shopid
-               from settlementnew
-               where createtime between #{start} and #{end}
-                 and consumptioncategory in ('现金产品', '现金卡', '现金实操')
-                 and shopid in
-                     (select shopid from shop where brandid = #{brandid})) a
-               left join
-             (select shopid, money
-              from settlementnew
-              where createtime between #{start} and #{end}
-                and consumptioncategory in ('卡扣产品','卡扣实操','现金产品','现金实操','赠送实操')
-                and shopid in
-                    (select shopid from shop where brandid = #{brandid})) b on a.shopid= b.shopid
-        group by a.shopid) ca
-        left join (
-          select c.id, c.name from user c
-          ) cc on ca.userid=cc.id
+               select sum(times) times, sum(money) xianjin, sum(money1) shicao, count(shopid) rentou, shopid
+               from (
+                      select times, money, '0' as money1, shopid
+                      from settlementnew
+                      where createtime between #{start} and #{end}
+                        and consumptioncategory in ('现金产品', '现金卡', '现金实操')
+                        and shopid in
+                            (select shopid
+                             from shop
+                             where brandid = #{brandid})
+                        union all
+                        select '0' as times
+                          , '0' as money
+                          , money as money1
+                          , shopid
+                        from settlementnew
+                        where createtime between #{start} and #{end}
+                        and consumptioncategory in ('卡扣产品', '卡扣实操', '现金产品', '现金实操', '赠送实操')
+                        and shopid in
+                            (select shopid from shop where brandid = #{brandid})) a
+               group by shopid) ca
+               left join (
+          select c.id, c.name
+          from user c
+        ) cc on ca.shopid = cc.id
     </select>
 
     <select id="getAllTodayAndUnexaminedSettlement" resultType="java.util.HashMap">
