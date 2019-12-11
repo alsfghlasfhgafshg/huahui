@@ -233,17 +233,29 @@ public class Settlement_newController {
             t.put("consumptionpattern", settlement_new.getConsumptionpattern());
 
 
-            int beautician1id = settlement_new.getBeautician1();
-            Staff beautician1 = staffRepository.selectOne(beautician1id);
+            Integer beautician1id = settlement_new.getBeautician1();
+            Staff beautician1 = null;
+            if (beautician1id != null) {
+                beautician1 = staffRepository.selectOne(beautician1id);
+            }
 
             Integer beautician2id = settlement_new.getBeautician2();
-            Staff beautician2 = staffRepository.selectOne(beautician2id);
+            Staff beautician2 = null;
+            if (beautician2id != null) {
+                beautician2 = staffRepository.selectOne(beautician2id);
+            }
 
             Integer beautician3id = settlement_new.getBeautician2();
-            Staff beautician3 = staffRepository.selectOne(beautician3id);
+            Staff beautician3 = null;
+            if (beautician3 != null) {
+                beautician3 = staffRepository.selectOne(beautician3id);
+            }
 
-            int beautician4id = settlement_new.getBeautician4();
-            Staff beautician4 = staffRepository.selectOne(beautician4id);
+            Integer beautician4id = settlement_new.getBeautician4();
+            Staff beautician4 = null;
+            if (beautician4id != null) {
+                beautician4 = staffRepository.selectOne(beautician4id);
+            }
 
             StringBuilder sb = new StringBuilder(beautician1.getName());
             if (beautician2 != null) {
@@ -469,13 +481,20 @@ public class Settlement_newController {
         return ResponseGenerate.genFailResponse(1, "修改失败");
     }
 
+
+    /**
+     * @param token
+     * @param settlementid
+     * @param pass         1 审核通过，-1 未通过
+     * @return
+     */
     @PostMapping("/examine")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public JSONObject examineSettlement(UsernamePasswordAuthenticationToken token,
                                         @RequestParam("settlementid") int settlementid,
-                                        @RequestParam(value = "passornot",required = false,defaultValue = "1") int pass) {
+                                        @RequestParam(value = "passornot", required = false, defaultValue = "1") int pass) {
         if (((User) token.getPrincipal()).getId() == settlement_newService.getShopIdBySettlementid(settlementid)) {
-            if (settlement_newService.examine(settlementid,pass)) {
+            if (settlement_newService.examine(settlementid, pass)) {
                 return ResponseGenerate.genSuccessResponse("已审核");
             } else {
                 return ResponseGenerate.genFailResponse(1, "审核失败");

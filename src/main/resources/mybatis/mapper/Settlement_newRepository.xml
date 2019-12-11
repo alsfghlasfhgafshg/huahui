@@ -8,7 +8,7 @@
         <if test="pass==1">
             set examine=1
         </if>
-        <if test="pass==0">
+        <if test="pass==-1">
             set examine = -1
         </if>
         where settlementid=#{settlementid}
