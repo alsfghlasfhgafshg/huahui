@@ -124,7 +124,7 @@ public class DataImportService {
         }
         int a=1;
         for (Settlement_new settlement : settlements) {
-            settlement_newService.examine(settlement.getSettlementid());
+            settlement_newService.examine(settlement.getSettlementid(),1);
         }
 
     }
