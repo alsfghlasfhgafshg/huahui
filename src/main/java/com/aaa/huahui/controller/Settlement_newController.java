@@ -5,7 +5,9 @@ import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.Settlement_newRepository;
 import com.aaa.huahui.repository.StaffRepository;
+import com.aaa.huahui.service.DataImportService;
 import com.aaa.huahui.service.Settlement_newService;
+import com.aaa.huahui.service.WorkBookCache;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
@@ -14,13 +16,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/settlement")
 public class Settlement_newController {
+
+    @Autowired
+    DataImportService dataImportService;
 
     @Autowired
     Settlement_newService settlement_newService;
@@ -83,12 +90,12 @@ public class Settlement_newController {
             t.put("projectname", settlement_new.getProjectname());
             t.put("money", settlement_new.getMoney());
             int ex = settlement_new.getExamine();
-            if (ex==0){
+            if (ex == 0) {
                 t.put("examine", "未审核");
-            }else if (ex==-1){
-                t.put("examine","审核未通过");
-            }else {
-                t.put("examine","审核通过");
+            } else if (ex == -1) {
+                t.put("examine", "审核未通过");
+            } else {
+                t.put("examine", "审核通过");
             }
             t.put("consumptioncategory", settlement_new.getConsumptioncategory());
             t.put("consumptionpattern", settlement_new.getConsumptionpattern());
@@ -128,7 +135,36 @@ public class Settlement_newController {
         return repsonsejson;
     }
 
+    //导入excel
+    @PostMapping("/importexceldata")
+    @PreAuthorize("hasRole('ROLE_BRAND')")
+    public JSONObject importExcel(UsernamePasswordAuthenticationToken token,
+                                  @RequestParam("fileSerialNumber") String fileSerialNumber,
+                                  @RequestParam("sheetNames") String sheetNames) {
 
+        try {
+            dataImportService.dataImport(fileSerialNumber, sheetNames, ((User) token.getPrincipal()));
+        } catch (Exception e) {
+            return ResponseGenerate.genFailResponse(1, e.getMessage());
+        }
+        return ResponseGenerate.genSuccessResponse("导入成功");
+    }
+
+    //上传excel
+    @PostMapping("/updloadexcel")
+    @PreAuthorize("hasRole('ROLE_BRAND')")
+    public JSONObject uploadExcel(UsernamePasswordAuthenticationToken token,
+                                  @RequestParam("file") MultipartFile file) {
+        try {
+            JSONObject jsonObject = dataImportService.allSheet(file);
+            return ResponseGenerate.genSuccessResponse(jsonObject);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseGenerate.genFailResponse(1, "上传失败");
+        }
+    }
+
+    //添加
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_REPORTER')")
     public JSONObject addSettlement(UsernamePasswordAuthenticationToken token,
@@ -145,8 +181,8 @@ public class Settlement_newController {
                                     @RequestParam(value = "allocate", required = false) String allocate,
                                     @RequestParam("beautician1") Integer beautician1,
                                     @RequestParam(value = "beautician2", required = false, defaultValue = "0") Integer beautician2,
-                                    @RequestParam(value = "beautician3",required = false,defaultValue = "0") Integer beautician3,
-                                    @RequestParam(value = "beautician4",required = false,defaultValue = "0") Integer beautician4,
+                                    @RequestParam(value = "beautician3", required = false, defaultValue = "0") Integer beautician3,
+                                    @RequestParam(value = "beautician4", required = false, defaultValue = "0") Integer beautician4,
                                     @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                     @RequestParam(value = "consultant", required = false) String consultant,
                                     @RequestParam(value = "checker", required = false) String checker,
@@ -157,7 +193,7 @@ public class Settlement_newController {
 
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
-                consultant, checker, createtime,beautician3,beautician4);
+                consultant, checker, createtime, beautician3, beautician4);
         if (settlement_newService.addSettlement(settlement_new)) {
             return ResponseGenerate.genSuccessResponse("添加成功");
         } else {
@@ -186,12 +222,12 @@ public class Settlement_newController {
             t.put("projectname", settlement_new.getProjectname());
             t.put("money", settlement_new.getMoney());
             int ex = settlement_new.getExamine();
-            if (ex==0){
+            if (ex == 0) {
                 t.put("examine", "未审核");
-            }else if (ex==-1){
-                t.put("examine","审核未通过");
-            }else {
-                t.put("examine","审核通过");
+            } else if (ex == -1) {
+                t.put("examine", "审核未通过");
+            } else {
+                t.put("examine", "审核通过");
             }
             t.put("consumptioncategory", settlement_new.getConsumptioncategory());
             t.put("consumptionpattern", settlement_new.getConsumptionpattern());
@@ -259,12 +295,12 @@ public class Settlement_newController {
         t.put("brandname", s.getBrandname());
         t.put("projectname", s.getProjectname());
         int ex = s.getExamine();
-        if (ex==0){
+        if (ex == 0) {
             t.put("examine", "未审核");
-        }else if (ex==-1){
-            t.put("examine","审核未通过");
-        }else {
-            t.put("examine","审核通过");
+        } else if (ex == -1) {
+            t.put("examine", "审核未通过");
+        } else {
+            t.put("examine", "审核通过");
         }
         t.put("money", s.getMoney());
         t.put("consumptioncategory", s.getConsumptioncategory());
@@ -332,8 +368,8 @@ public class Settlement_newController {
                                           @RequestParam(value = "allocate", required = false) String allocate,
                                           @RequestParam(value = "beautician1", required = false) Integer beautician1,
                                           @RequestParam(value = "beautician2", required = false, defaultValue = "0") Integer beautician2,
-                                          @RequestParam(value = "beautician3",required = false,defaultValue = "0") Integer beautician3,
-                                          @RequestParam(value = "beautician4",required = false,defaultValue = "0") Integer beautician4,
+                                          @RequestParam(value = "beautician3", required = false, defaultValue = "0") Integer beautician3,
+                                          @RequestParam(value = "beautician4", required = false, defaultValue = "0") Integer beautician4,
                                           @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                           @RequestParam(value = "consultant", required = false) String consultant,
                                           @RequestParam(value = "checker", required = false) String checker,
@@ -400,14 +436,14 @@ public class Settlement_newController {
             settlement_new.setBeautician1(beautician1);
         }
 
-        if (beautician2 != null && beautician2!=0) {
+        if (beautician2 != null && beautician2 != 0) {
             settlement_new.setBeautician2(beautician2);
         }
 
-        if (beautician3 != null && beautician3!=0) {
+        if (beautician3 != null && beautician3 != 0) {
             settlement_new.setBeautician3(beautician3);
         }
-        if (beautician4 != null && beautician4!=0) {
+        if (beautician4 != null && beautician4 != 0) {
             settlement_new.setBeautician4(beautician4);
         }
 

@@ -71,4 +71,10 @@ public interface StaffRepository {
     @Select("select staffid from staff where name=#{staffname} and del=false limit 1")
     Integer findIdByStaffName(@Param("staffname") String staffname);
 
+    @Select("select staff.staffid from staff, brand, shop where staff.shopid=shop.shopid and shop.brandid=brand.brandid and staff.name=#{staffname} and brand.brandid=#{brandid}")
+    Integer findIdByStaffNameAndBrandId(@Param("staffname") String staffname,@Param("brandid") int brandid);
+
+    @Select("select staff.* from staff, shop where staff.shopid=shop.shopid and shop.shopid=#{shopid} and staff.name=#{staffname}")
+    Integer findIdByStaffNameAndShopId(@Param("staffname") String staffname,@Param("shopid") int shopid);
+
 }

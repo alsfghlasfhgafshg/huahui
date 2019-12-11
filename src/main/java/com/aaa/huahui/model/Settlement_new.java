@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Settlement_new {
     private int settlementid;
-    private int shopid;
+    private Integer shopid;
     private String customer;
     private String classify;
     private String category;
@@ -76,7 +76,7 @@ public class Settlement_new {
         this.settlementid = settlementid;
     }
 
-    public int getShopid() {
+    public Integer getShopid() {
         return shopid;
     }
 

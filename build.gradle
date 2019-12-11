@@ -33,5 +33,7 @@ dependencies {
     compile group: 'com.alibaba', name: 'fastjson', version: '1.2.47'
     compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
 
-
+    //解析Excel
+    compile group: 'org.apache.poi', name: 'poi', version: '4.1.1'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.1'
 }

@@ -16,6 +16,7 @@ public interface Settlement_newRepository {
             "values(#{shopid},#{customer},#{classify},#{category},#{brandname},#{projectname}," +
             "#{times},#{hand},#{money},#{consumptioncategory},#{consumptionpattern},#{allocate},#{beautician1}," +
             "#{beautician2},#{beautician3},#{beautician4},#{cardcategory},#{consultant},#{checker},#{createtime})")
+    @Options(useGeneratedKeys = true, keyProperty = "settlementid")
     int addSettlement(Settlement_new settlement_new);
 
     @Select("select * from settlementnew where settlementid=#{settlementid}")
