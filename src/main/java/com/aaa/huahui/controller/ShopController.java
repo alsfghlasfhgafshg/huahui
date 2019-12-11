@@ -245,6 +245,9 @@ public class ShopController {
         User user = (User) token.getPrincipal();
         int shopid = user.getId();
         if (staffService.selectOneStaff(staffid).getShopid() == shopid) {
+            if(shopService.ifExist(shopid,staffid)==true){
+                return ResponseGenerate.genFailResponse(1, "已经存在此录入员");
+            }
             if (shopService.addReporter(shopid, staffid)) {
                 roleService.changeToReporter(staffid);
                 return ResponseGenerate.genSuccessResponse("添加成功");
@@ -285,9 +288,7 @@ public class ShopController {
         JSONObject object;
         JSONArray array = new JSONArray();
         for (Staff staff:list){
-            object = new JSONObject();
-            object.put("staff",staff);
-            array.add(object);
+            array.add(staff);
         }
         return ResponseGenerate.genSuccessResponse(array);
     }

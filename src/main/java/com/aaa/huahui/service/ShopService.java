@@ -152,6 +152,12 @@ public class ShopService {
         return shopRepository.addReporter(shopid,staffid)==1;
     }
 
+    //查询是否已经存在
+    public boolean ifExist(int shopid,int staffid){
+        return shopRepository.countShopReporter(shopid,staffid)==1;
+    }
+
+
     //删除
     public boolean deleteReporter(int staffid){
         return shopRepository.deleteReporter(staffid)==1;

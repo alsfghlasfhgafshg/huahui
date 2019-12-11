@@ -68,7 +68,7 @@ public class DataBaseTest {
 
     @Test
     public void adsfadsa(){
-        List<ProjectTableVO> 产品 = analysisTable2Repository.categoryAnalysis(12, start, end, "产品");
+//        List<ProjectTableVO> 产品 = analysisTable2Repository.categoryAnalysis(12, start, end, "产品");
         int a=1234;
     }
 

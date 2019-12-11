@@ -55,6 +55,9 @@ public interface ShopRepository {
     @Insert("insert into shop_reporter (shopid,staffid) values(#{shopid},#{staffid})")
     int addReporter(@Param("shopid") int shopid,@Param("staffid")int staffid);
 
+    @Select("select count(*) from shop_reporter where shopid=#{shopid} and staffid=#{staffid}")
+    int countShopReporter(@Param("shopid") int shopid,@Param("staffid")int staffid);
+
     //删除录入员
     @Delete("delete from shop_reporter where staffid=#{staffid}")
     int deleteReporter(@Param("staffid")int staffid);
