@@ -3,6 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aaa.huahui.repository.Settlement_newRepository">
+    <update id="examine">
+        update settlementnew
+        <if test="pass==1">
+            set examine=1
+        </if>
+        <if test="pass==0">
+            set examine = -1
+        </if>
+        where settlementid=#{settlementid}
+    </update>
 
     <select id="dayslaststoshop" resultType="java.lang.Integer">
 

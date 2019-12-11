@@ -212,7 +212,8 @@
     </select>
 
     <select id="getAllTodayAndUnexaminedSettlement" resultType="java.util.HashMap">
-        select customer,
+        select settlementid,
+        customer,
        projectname,
        money,
        consumptionpattern,

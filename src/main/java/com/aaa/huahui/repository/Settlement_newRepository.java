@@ -32,7 +32,7 @@ public interface Settlement_newRepository {
             "brandname=#{brandname},projectname=#{projectname},times=#{times},hand=#{hand},money=#{money}" +
             ",consumptioncategory=#{consumptioncategory},consumptionpattern=#{consumptionpattern},allocate=#{allocate}," +
             "beautician1=#{beautician1},beautician2=#{beautician2},beautician3=#{beautician3},beautician4=#{beautician4},cardcategory=#{cardcategory},consultant=#{consultant}," +
-            "checker=#{checker},createtime=#{createtime} where settlementid=#{settlementid}")
+            "checker=#{checker},createtime=#{createtime},examine=0 where settlementid=#{settlementid}")
     int updateSettlement(Settlement_new settlement_new);
 
     @Select("select count(*) from settlementnew where settlementid=#{settlementid} and shopid=#{shopid}")
@@ -42,8 +42,7 @@ public interface Settlement_newRepository {
 
     int projectremainingtimes(@Param("customer") String customer,@Param("projectname") String projectname,@Param("shopid") int shopid);
 
-    @Update("update settlementnew set examine=1 where settlementid=#{settlementid}")
-    int examine(@Param("settlementid")int settlementid);
+    int examine(@Param("settlementid")int settlementid,@Param("pass")int pass);
 
     @Select("select shopid from settlementnew where settlementid=#{settlementid}")
     int getShopidBySettlementId(@Param("settlementid") int settlementid);

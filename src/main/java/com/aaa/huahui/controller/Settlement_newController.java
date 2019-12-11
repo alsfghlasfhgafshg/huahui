@@ -240,7 +240,7 @@ public class Settlement_newController {
             Staff beautician2 = staffRepository.selectOne(beautician2id);
 
             Integer beautician3id = settlement_new.getBeautician2();
-            Staff beautician3 = staffRepository.selectOne(beautician2id);
+            Staff beautician3 = staffRepository.selectOne(beautician3id);
 
             int beautician4id = settlement_new.getBeautician4();
             Staff beautician4 = staffRepository.selectOne(beautician4id);
@@ -472,10 +472,10 @@ public class Settlement_newController {
     @PostMapping("/examine")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public JSONObject examineSettlement(UsernamePasswordAuthenticationToken token,
-                                        @RequestParam("settlementid") int settlementid) {
-
+                                        @RequestParam("settlementid") int settlementid,
+                                        @RequestParam(value = "passornot",required = false,defaultValue = "1") int pass) {
         if (((User) token.getPrincipal()).getId() == settlement_newService.getShopIdBySettlementid(settlementid)) {
-            if (settlement_newService.examine(settlementid)) {
+            if (settlement_newService.examine(settlementid,pass)) {
                 return ResponseGenerate.genSuccessResponse("已审核");
             } else {
                 return ResponseGenerate.genFailResponse(1, "审核失败");

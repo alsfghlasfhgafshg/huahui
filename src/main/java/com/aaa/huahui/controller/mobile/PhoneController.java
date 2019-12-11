@@ -174,7 +174,7 @@ public class PhoneController {
         return analysisTableService.getBrandData(brandid,start,end);
     }
 
-    @GetMapping("/m/todayexamine")
+    @GetMapping("/m/allexamine")
     @PreAuthorize("hasRole('ROLE_SHOP')")
     public @ResponseBody
     JSONObject getAndExamineToday(UsernamePasswordAuthenticationToken token){

@@ -54,8 +54,8 @@ public class Settlement_newService {
         return settlement_newRepository.selectSettlementByDate(shopid,start,end);
     }
 
-    public boolean examine(int settlementid){
-        return settlement_newRepository.examine(settlementid)==1;
+    public boolean examine(int settlementid,int pass){
+        return settlement_newRepository.examine(settlementid,pass)==1;
     }
 
     public int getShopIdBySettlementid(int settlementid){
