@@ -19,7 +19,7 @@ public class beauticiantAnalysisController {
 
 
     @GetMapping("/m/beauticiant")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
     public @ResponseBody
     JSONObject beauticiantAnalysisToday(UsernamePasswordAuthenticationToken token,
                                         @RequestParam(value = "shopid", required = false) Integer shopid,

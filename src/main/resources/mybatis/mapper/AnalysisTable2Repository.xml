@@ -330,7 +330,7 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
-                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
                    and createtime between #{from} and #{to}
                    and (category = "美容" or category = "美体" or category = "仪器")) t
         group by category
@@ -350,7 +350,7 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
-                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
                    and createtime between #{from} and #{to}
                    and category = "产品") t
         group by consumptioncategory
@@ -370,7 +370,7 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
-                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid} )
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "现金产品" or consumptioncategory = "现金卡" or consumptioncategory = "现金实操")) t
         group by consumptioncategory
@@ -390,7 +390,7 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
-                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid}  or beautician3=#{beauticianid} or beautician4=#{beauticianid} )
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "卡扣产品" or consumptioncategory = "卡扣实操"
                             or consumptioncategory = "现金产品"
@@ -414,7 +414,7 @@
                  select *
                  from settlementnew
                  where shopid = #{shopid}
-                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+                 and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid} )
                    and createtime between #{from} and #{to}
                    and (consumptioncategory = "赠送产品" or consumptioncategory = "赠送实操"
                      )) t
@@ -432,7 +432,7 @@
     select count(distinct customer) "distinctcustomer", count(customer) "customer"
     from settlementnew
     where shopid = #{shopid}
-    and (beautician1=#{beauticianid} or beautician2=#{beauticianid} )
+    and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid} )
       and createtime between #{from} and #{to}
 
 
@@ -517,7 +517,7 @@
         count(projectname) count,
         sum(hand) sumhand
         from settlementnew
-        inner join staff on (settlementnew.beautician1 = staff.staffid or settlementnew.beautician2 = staff.staffid)
+        inner join staff on (settlementnew.beautician1 = staff.staffid or settlementnew.beautician2 = staff.staffid or settlementnew.beautician3 = staff.staffid or settlementnew.beautician4 = staff.staffid)
         <if test="staffid!=-1">
             and staff.staffid = #{staffid}
         </if>

@@ -20,7 +20,7 @@ public class managementAnalysisController {
 
 
     @GetMapping("/m/management")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
     public @ResponseBody
     JSONObject managementAnalysisToday(UsernamePasswordAuthenticationToken token,
                                        @RequestParam(value = "shopid", required = false) Integer shopid,
