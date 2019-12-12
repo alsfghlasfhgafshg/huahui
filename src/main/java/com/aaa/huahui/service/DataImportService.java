@@ -113,6 +113,7 @@ public class DataImportService {
         }
 
         insertIntoDb(settlements);
+        workBookCache.delWorkBook(fileSerialNumber);
 
         return true;
     }
