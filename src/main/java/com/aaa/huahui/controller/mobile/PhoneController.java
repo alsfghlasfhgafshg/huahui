@@ -130,7 +130,7 @@ public class PhoneController {
 
 
     @GetMapping("/m/cuflow")
-    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP,ROLE_STAFF')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP','ROLE_STAFF')")
     public @ResponseBody
     JSONObject getCustomerFlow(UsernamePasswordAuthenticationToken token,
                                @RequestParam(value = "shopid", required = false) Integer shopid,
