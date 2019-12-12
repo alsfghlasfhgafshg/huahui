@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -169,4 +172,14 @@ public class UserController {
         return responsejson;
     }
 
+    //清除jessionid
+    @GetMapping("/clearjessionid")
+    public @ResponseBody
+    String clearJESSIONID(HttpServletResponse response){
+        Cookie cookie=new Cookie("JSESSIONID",null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return  "clear cookies JSESSIONID";
+    }
 }
