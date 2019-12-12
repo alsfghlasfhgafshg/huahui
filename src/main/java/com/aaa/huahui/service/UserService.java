@@ -95,6 +95,11 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            user = userRepository.findByStaffPhoneNumber(username);
+        }
+
         if (user == null) {
             throw new UsernameNotFoundException("用户名未找到");
         } else {
@@ -111,7 +116,7 @@ public class UserService implements UserDetailsService {
             errmsg.add("密码不一致");
         }
 
-        if (password.length()<6&& password.length()>16){
+        if (password.length() < 6 && password.length() > 16) {
             errmsg.add("密码需要在6-16位之间");
         }
 
@@ -200,24 +205,24 @@ public class UserService implements UserDetailsService {
     }
 
     //查询brand
-    public ArrayList<Brand> queryBrand(String namekeyword){
+    public ArrayList<Brand> queryBrand(String namekeyword) {
         return userRepository.selectBrandByKeyword(namekeyword);
     }
 
     //查询admin
-    public ArrayList<JSONObject> queryAdmin(String namekeyword){
+    public ArrayList<JSONObject> queryAdmin(String namekeyword) {
         ArrayList<User> users = userRepository.selectAdminByKeyword(namekeyword);
-        ArrayList<JSONObject> admins=new ArrayList<>();
+        ArrayList<JSONObject> admins = new ArrayList<>();
         for (User user : users) {
-            JSONObject temp=new JSONObject();
-            temp.put("username",user.getName());
-            temp.put("userid",user.getId());
+            JSONObject temp = new JSONObject();
+            temp.put("username", user.getName());
+            temp.put("userid", user.getId());
             admins.add(temp);
         }
         return admins;
     }
 
-    public User getUserByUserid(int userid){
+    public User getUserByUserid(int userid) {
         User user = userRepository.findById(userid);
         return user;
     }
