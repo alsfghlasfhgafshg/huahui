@@ -1,5 +1,6 @@
 package com.aaa.huahui.controller;
 
+import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.TodayWork;
@@ -56,13 +57,22 @@ public class StaffController {
     @GetMapping("/staff/allstaff")
     public @ResponseBody
     JSONObject getAllStaff(UsernamePasswordAuthenticationToken token, @RequestParam(value = "page", defaultValue = "1") int page) {
-        User shopController = (User) token.getPrincipal();
-        ArrayList<Staff> list = staffService.allStaff(shopController.getId(), page);
+        User user = (User) token.getPrincipal();
+        int shopid = 0;
+
+        if (user.hasRole(ROLE.SHOP)) {
+            shopid = user.getId();
+        }
+
+        if (user.hasRole(ROLE.REPORTER)) {
+            shopid=staffService.findShopidByRerporterId(user.getId());
+        }
+        ArrayList<Staff> list = staffService.allStaff(shopid, page);
         JSONArray array = new JSONArray();
 
         for (Staff staff : list) {
             JSONObject temp = new JSONObject();
-            temp.put("id",staff.getStaffid());
+            temp.put("id", staff.getStaffid());
             temp.put("name", staff.getName());
             temp.put("male", staff.getMale());
             temp.put("birthday", DateUtils.formatTimeStrap(staff.getBirthday()));
@@ -74,10 +84,10 @@ public class StaffController {
             temp.put("phone", staff.getPhone());
             temp.put("emergencyphone", staff.getEmergencyphone());
             temp.put("employment", staff.getEmployment());
-            if (staff.getRole().equals("beautician")){
+            if (staff.getRole().equals("beautician")) {
                 temp.put("role", "美容师");
             }
-            if (staff.getRole().equals("consultant")){
+            if (staff.getRole().equals("consultant")) {
                 temp.put("role", "顾问");
             }
 
@@ -97,27 +107,27 @@ public class StaffController {
             SimpleDateFormat f = new SimpleDateFormat("yyyy年MM月dd日");
             String ss = f.format(staff.getBirthday());
             JSONObject object = new JSONObject();
-            object.put("name",staff.getName());
-            object.put("staffid",staffId);
-            object.put("role",staff.getEmployment());
-            object.put("male",staff.getMale());
-            object.put("nation",staff.getNation());
-            object.put("party",staff.getParty());
-            object.put("healthy",staff.getHealthy());
-            object.put("nativeplace",staff.getNativeplace());
-            object.put("address",staff.getAddress());
-            object.put("phone",staff.getPhone());
-            object.put("emergencyphone",staff.getEmergencyphone());
-            object.put("p1name",staff.getP1name());
-            object.put("p1male",staff.getP1male());
-            object.put("p1company",staff.getP1company());
-            object.put("p1relationship",staff.getP1relationship());
-            object.put("p2name",staff.getP1name());
-            object.put("p2male",staff.getP1male());
-            object.put("p2company",staff.getP1company());
-            object.put("p2relationship",staff.getP1relationship());
-            object.put("shopid",staff.getShopid());
-            object.put("birthday",ss);
+            object.put("name", staff.getName());
+            object.put("staffid", staffId);
+            object.put("role", staff.getEmployment());
+            object.put("male", staff.getMale());
+            object.put("nation", staff.getNation());
+            object.put("party", staff.getParty());
+            object.put("healthy", staff.getHealthy());
+            object.put("nativeplace", staff.getNativeplace());
+            object.put("address", staff.getAddress());
+            object.put("phone", staff.getPhone());
+            object.put("emergencyphone", staff.getEmergencyphone());
+            object.put("p1name", staff.getP1name());
+            object.put("p1male", staff.getP1male());
+            object.put("p1company", staff.getP1company());
+            object.put("p1relationship", staff.getP1relationship());
+            object.put("p2name", staff.getP1name());
+            object.put("p2male", staff.getP1male());
+            object.put("p2company", staff.getP1company());
+            object.put("p2relationship", staff.getP1relationship());
+            object.put("shopid", staff.getShopid());
+            object.put("birthday", ss);
             return ResponseGenerate.genSuccessResponse(object);
         } catch (Exception e) {
             return ResponseGenerate.genFailResponse(1, "staffId is wrong");
@@ -132,7 +142,7 @@ public class StaffController {
     JSONObject addStaff(@RequestParam("username") String username,
 //                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar,
 //                        @RequestParam(value = "name", defaultValue = "", required = false) String name,
-                        @RequestParam(value = "employment",required = false,defaultValue = "true") boolean employment,
+                        @RequestParam(value = "employment", required = false, defaultValue = "true") boolean employment,
                         @RequestParam("male") int male,
                         @RequestParam("password") String password,
                         @RequestParam("birthday") String birth,
@@ -143,18 +153,18 @@ public class StaffController {
                         @RequestParam("address") String address,
                         @RequestParam("phone") String phone,
                         @RequestParam("emergencyphone") String emergencyphone,
-                        @RequestParam(value = "p1name", required = false,defaultValue = "无") String p1name,
-                        @RequestParam(value = "p1male", required = false,defaultValue = "0") int p1male,
-                        @RequestParam(value = "p1company", required = false,defaultValue = "无") String p1company,
-                        @RequestParam(value = "p1relationship", required = false,defaultValue = "无") String p1relationship,
-                        @RequestParam(value = "p2name", required = false,defaultValue = "无") String p2name,
-                        @RequestParam(value = "p2male", required = false,defaultValue = "0") int p2male,
-                        @RequestParam(value = "p2company", required = false,defaultValue = "无") String p2company,
-                        @RequestParam(value = "p2relationship", required = false,defaultValue = "无") String p2relationship,
+                        @RequestParam(value = "p1name", required = false, defaultValue = "无") String p1name,
+                        @RequestParam(value = "p1male", required = false, defaultValue = "0") int p1male,
+                        @RequestParam(value = "p1company", required = false, defaultValue = "无") String p1company,
+                        @RequestParam(value = "p1relationship", required = false, defaultValue = "无") String p1relationship,
+                        @RequestParam(value = "p2name", required = false, defaultValue = "无") String p2name,
+                        @RequestParam(value = "p2male", required = false, defaultValue = "0") int p2male,
+                        @RequestParam(value = "p2company", required = false, defaultValue = "无") String p2company,
+                        @RequestParam(value = "p2relationship", required = false, defaultValue = "无") String p2relationship,
                         @RequestParam("role") String role,
                         UsernamePasswordAuthenticationToken token) {
 
-        Timestamp birthday=DateUtils.getTimeStampEnd(birth);
+        Timestamp birthday = DateUtils.getTimeStampEnd(birth);
 
         User user = (User) token.getPrincipal();
         int shopId = user.getId();
@@ -187,7 +197,7 @@ public class StaffController {
 //                           @RequestParam(value = "avatar", required = false) MultipartFile avatar,
                            @RequestParam("username") String name,
                            @RequestParam("male") int male,
-                           @RequestParam(value = "employment",required = false,defaultValue = "true") boolean employment,
+                           @RequestParam(value = "employment", required = false, defaultValue = "true") boolean employment,
                            @RequestParam("birthday") String birth,
                            @RequestParam("nation") String nation,
                            @RequestParam("party") String party,
@@ -196,17 +206,17 @@ public class StaffController {
                            @RequestParam("address") String address,
                            @RequestParam("phone") String phone,
                            @RequestParam("emergencyphone") String emergencyphone,
-                           @RequestParam(value = "p1name", required = false,defaultValue = "无") String p1name,
-                           @RequestParam(value = "p1male", required = false,defaultValue ="0") int p1male,
-                           @RequestParam(value = "p1company", required = false,defaultValue = "无") String p1company,
-                           @RequestParam(value = "p1relationship", required = false,defaultValue = "无") String p1relationship,
-                           @RequestParam(value = "p2name", required = false,defaultValue = "无") String p2name,
-                           @RequestParam(value = "p2male", required = false,defaultValue = "0") int p2male,
-                           @RequestParam(value = "p2company", required = false,defaultValue = "无") String p2company,
-                           @RequestParam(value = "p2relationship", required = false,defaultValue = "无") String p2relationship,
+                           @RequestParam(value = "p1name", required = false, defaultValue = "无") String p1name,
+                           @RequestParam(value = "p1male", required = false, defaultValue = "0") int p1male,
+                           @RequestParam(value = "p1company", required = false, defaultValue = "无") String p1company,
+                           @RequestParam(value = "p1relationship", required = false, defaultValue = "无") String p1relationship,
+                           @RequestParam(value = "p2name", required = false, defaultValue = "无") String p2name,
+                           @RequestParam(value = "p2male", required = false, defaultValue = "0") int p2male,
+                           @RequestParam(value = "p2company", required = false, defaultValue = "无") String p2company,
+                           @RequestParam(value = "p2relationship", required = false, defaultValue = "无") String p2relationship,
                            @RequestParam(value = "role") String role,
                            UsernamePasswordAuthenticationToken token) {
-        Timestamp birthday=DateUtils.getTimeStampEnd(birth);
+        Timestamp birthday = DateUtils.getTimeStampEnd(birth);
 
         User user = (User) token.getPrincipal();
         if (user.getId() != staffService.selectOneStaff(staffid).getShopid()) {
@@ -310,12 +320,12 @@ public class StaffController {
         }
 
         TodayWork todayWork = todayWorkService.getTodayWork(staffid, DateUtils.getTimeStampEnd(date));
-        JSONObject data=new JSONObject();
+        JSONObject data = new JSONObject();
 
-        data.put("recordingservice",todayWork.isRecordingservice());
-        data.put("remindcustomers",todayWork.isRemindcustomers());
-        data.put("returningcustomers",todayWork.isReturningcustomers());
-        data.put("servicenote",todayWork.isServicenote());
+        data.put("recordingservice", todayWork.isRecordingservice());
+        data.put("remindcustomers", todayWork.isRemindcustomers());
+        data.put("returningcustomers", todayWork.isReturningcustomers());
+        data.put("servicenote", todayWork.isServicenote());
 
         JSONObject jsonObject = ResponseGenerate.genSuccessResponse(data);
         return jsonObject;
@@ -323,23 +333,23 @@ public class StaffController {
 
     //本店所有顾问
     @GetMapping("/staff/allconsultant")
-    public JSONObject allConsultant(UsernamePasswordAuthenticationToken token){
+    public JSONObject allConsultant(UsernamePasswordAuthenticationToken token) {
         User user = (User) token.getPrincipal();
         int id = user.getId();
 
         JSONArray objects = staffService.allConsultant(id);
-        JSONObject responsejson=ResponseGenerate.genSuccessResponse(objects);
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(objects);
         return responsejson;
     }
 
     //本店所有美容师
     @GetMapping("/staff/allbeautician")
-    public JSONObject allBeautician(UsernamePasswordAuthenticationToken token){
+    public JSONObject allBeautician(UsernamePasswordAuthenticationToken token) {
         User user = (User) token.getPrincipal();
         int id = user.getId();
 
         JSONArray objects = staffService.allBeautician(id);
-        JSONObject responsejson=ResponseGenerate.genSuccessResponse(objects);
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(objects);
         return responsejson;
     }
 }

@@ -44,6 +44,12 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @GetMapping("/me")
+    public @ResponseBody
+    JSONObject me(UsernamePasswordAuthenticationToken token) {
+        return ResponseGenerate.genSuccessResponse(((User) token.getPrincipal()));
+    }
+
     @GetMapping("/role")
     public @ResponseBody
     String getRole(UsernamePasswordAuthenticationToken token) {
@@ -64,8 +70,8 @@ public class UserController {
     @GetMapping("/info")
     public @ResponseBody
     JSONObject getInfo(UsernamePasswordAuthenticationToken token) {
-        if (token==null){
-            ResponseGenerate.genFailResponse(1,"未登录");
+        if (token == null) {
+            ResponseGenerate.genFailResponse(1, "未登录");
         }
         User user = (User) token.getPrincipal();
 
@@ -82,8 +88,8 @@ public class UserController {
         data.put("username", userName);
         data.put("userid", user.getId());
 
-        if (user.hasRole(ROLE.SHOP)){
-            data.put("geo",shopService.selectOneShop(user.getId()).getGeo());
+        if (user.hasRole(ROLE.SHOP)) {
+            data.put("geo", shopService.selectOneShop(user.getId()).getGeo());
         }
 
         return ResponseGenerate.genSuccessResponse(data);
@@ -175,11 +181,11 @@ public class UserController {
     //清除jessionid
     @GetMapping("/clearjessionid")
     public @ResponseBody
-    String clearJESSIONID(HttpServletResponse response){
-        Cookie cookie=new Cookie("JSESSIONID",null);
+    String clearJESSIONID(HttpServletResponse response) {
+        Cookie cookie = new Cookie("JSESSIONID", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
-        return  "clear cookies JSESSIONID";
+        return "clear cookies JSESSIONID";
     }
 }
