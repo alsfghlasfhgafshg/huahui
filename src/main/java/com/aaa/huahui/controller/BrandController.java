@@ -4,10 +4,8 @@ package com.aaa.huahui.controller;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.*;
-import com.aaa.huahui.service.AvatarService;
-import com.aaa.huahui.service.BrandService;
-import com.aaa.huahui.service.ShopService;
-import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.repository.StaffRepository;
+import com.aaa.huahui.service.*;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -38,6 +36,9 @@ public class BrandController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    StaffService staffService;
 
     //index
     @GetMapping("/brand")
@@ -160,6 +161,7 @@ public class BrandController {
         if (result == true) {
             rejeson.put("error", 0);
         }
+        rejeson.put("code", 1);
         rejeson.put("error", 1);
         rejeson.put("msg", "删除失败");
         return rejeson;
@@ -230,7 +232,15 @@ public class BrandController {
     JSONObject queryCategory2(UsernamePasswordAuthenticationToken token) {
         JSONObject rejeson = new JSONObject();
         User user = ((User) token.getPrincipal());
-        int brandid = user.getId();
+
+        int brandid = 0;
+        if (user.hasRole(ROLE.BRAND)) {
+            brandid = user.getId();
+        } else if (user.hasRole(ROLE.REPORTER)) {
+            int shopid = staffService.findShopidByStaffId(user.getId());
+            brandid = staffService.findBrandidByShopid(shopid);
+        }
+
 
         if (user.hasRole(ROLE.SHOP)) {
             brandid = shopService.shopBrand(brandid).getId();
@@ -238,6 +248,7 @@ public class BrandController {
 
         ArrayList<Factory> projects = brandService.allFactoryAndProject(brandid);
         rejeson.put("error", 0);
+        rejeson.put("code", 0);
         rejeson.put("data", projects);
         return rejeson;
     }

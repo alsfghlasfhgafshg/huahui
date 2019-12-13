@@ -3,6 +3,7 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.model.FamilyMember;
 import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.repository.BrandRepository;
 import com.aaa.huahui.repository.FamilyMemberRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.alibaba.fastjson.JSONArray;
@@ -25,6 +26,9 @@ public class StaffService {
     FamilyMemberRepository familyMemberRepository;
 
     @Autowired
+    BrandRepository brandRepository;
+
+    @Autowired
     StaffRepository staffRepository;
 
     public int addStaff(Staff staff) {
@@ -35,7 +39,7 @@ public class StaffService {
         return staffRepository.selectAllStaffId(shopId);
     }
 
-    public ArrayList<Staff> allStaff(int shopId,int page) {
+    public ArrayList<Staff> allStaff(int shopId, int page) {
         int offset = (page - 1) * pageSize;
 
         int pagesize = this.pageSize;
@@ -44,7 +48,7 @@ public class StaffService {
             offset = 0;
             pagesize = Integer.MAX_VALUE;
         }
-        return staffRepository.selectAllStaff(shopId,offset,pagesize);
+        return staffRepository.selectAllStaff(shopId, offset, pagesize);
     }
 
     public int updateStaffAvatar(int staffId, String avatar) {
@@ -62,35 +66,39 @@ public class StaffService {
     }
 
     //查看所有美容师
-    public ArrayList<Staff> selectAllBeautician(){return staffRepository.selectAllBeautician();}
+    public ArrayList<Staff> selectAllBeautician() {
+        return staffRepository.selectAllBeautician();
+    }
 
     //查看所有顾问
-    public ArrayList<Staff> selectAllConsultant(){return staffRepository.selectAllConsultant();}
+    public ArrayList<Staff> selectAllConsultant() {
+        return staffRepository.selectAllConsultant();
+    }
 
     //一个店铺里面所有顾问
-    public JSONArray allConsultant(int shopid){
+    public JSONArray allConsultant(int shopid) {
         ArrayList<Staff> staffs = staffRepository.AllConsultant(shopid);
 
-        JSONArray  allconsultant=new JSONArray();
+        JSONArray allconsultant = new JSONArray();
         for (Staff staff : staffs) {
-            JSONObject temp=new JSONObject();
-            temp.put("staffid",staff.getStaffid());
-            temp.put("name",staff.getName());
+            JSONObject temp = new JSONObject();
+            temp.put("staffid", staff.getStaffid());
+            temp.put("name", staff.getName());
             allconsultant.add(temp);
         }
         return allconsultant;
     }
 
     //一个店铺里面所有美容师
-    public JSONArray allBeautician(int shopid){
+    public JSONArray allBeautician(int shopid) {
 
         ArrayList<Staff> beauticians = staffRepository.AllBeautician(shopid);
 
-        JSONArray allbeautician=new JSONArray();
+        JSONArray allbeautician = new JSONArray();
         for (Staff staff : beauticians) {
-            JSONObject temp=new JSONObject();
-            temp.put("staffid",staff.getStaffid());
-            temp.put("name",staff.getName());
+            JSONObject temp = new JSONObject();
+            temp.put("staffid", staff.getStaffid());
+            temp.put("name", staff.getName());
             allbeautician.add(temp);
         }
         return allbeautician;
@@ -142,14 +150,36 @@ public class StaffService {
         return true;
     }
 
-    public String findNameById(int staffid){
+    public String findNameById(int staffid) {
         Optional<String> nameByStaffid = staffRepository.findNameByStaffid(staffid);
-        if (nameByStaffid.isPresent()){
+        if (nameByStaffid.isPresent()) {
             return nameByStaffid.get();
-        }else {
+        } else {
             return "未指定";
         }
     }
 
+    public Integer findShopidByRerporterId(int reporterid) {
+        Integer id = staffRepository.selectShopidByReporterid(reporterid);
+        return id;
+    }
+
+    public Integer findShopidByStaffId(int staffid) {
+        Integer id = staffRepository.queryShopIdByStaffId(staffid);
+        return id;
+    }
+
+    public Integer findBrandidbyStaffid(int staffid) {
+        Integer shopid = staffRepository.queryShopIdByStaffId(staffid);
+        if (shopid != null) {
+            return brandRepository.findBrandidByShopid(shopid);
+        } else {
+            return null;
+        }
+    }
+
+    public Integer findBrandidByShopid(int shopid) {
+        return brandRepository.findBrandidByShopid(shopid);
+    }
 
 }

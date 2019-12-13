@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface StaffRepository {
 
     @Select("select shopid from staff where staffid=#{staffid}  ")
-    int queryShopIdByStaffId(@Param("staffid") int staffid);
+    Integer queryShopIdByStaffId(@Param("staffid") int staffid);
 
     @Select("select avatar from staff where staffid=#{staffid} and del=false")
     String queryAvatar(@Param("staffid") int staffid);
@@ -72,9 +72,11 @@ public interface StaffRepository {
     Integer findIdByStaffName(@Param("staffname") String staffname);
 
     @Select("select staff.staffid from staff, brand, shop where staff.shopid=shop.shopid and shop.brandid=brand.brandid and staff.name=#{staffname} and brand.brandid=#{brandid}")
-    Integer findIdByStaffNameAndBrandId(@Param("staffname") String staffname,@Param("brandid") int brandid);
+    Integer findIdByStaffNameAndBrandId(@Param("staffname") String staffname, @Param("brandid") int brandid);
 
     @Select("select staff.* from staff, shop where staff.shopid=shop.shopid and shop.shopid=#{shopid} and staff.name=#{staffname}")
-    Integer findIdByStaffNameAndShopId(@Param("staffname") String staffname,@Param("shopid") int shopid);
+    Integer findIdByStaffNameAndShopId(@Param("staffname") String staffname, @Param("shopid") int shopid);
 
+    @Select("select shopid from shop_reporter where staffid=#{staffid}")
+    Integer selectShopidByReporterid(@Param("staffid") int staffid);
 }

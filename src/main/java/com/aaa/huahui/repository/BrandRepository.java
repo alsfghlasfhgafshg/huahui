@@ -48,4 +48,8 @@ public interface BrandRepository {
     int selectCountBrandAndProject(@Param("brandid") int brandid, @Param("projectid") int projectid);
 
     List<CategoryVO> selectAllFactoryAndProject(@Param("brandid") int brandid);
+
+    @Select("select brandid from shop where shopid=#{shopid}")
+    Integer findBrandidByShopid(@Param("shopid") int shopid);
+
 }

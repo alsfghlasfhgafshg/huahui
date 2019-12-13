@@ -1,5 +1,6 @@
 package com.aaa.huahui.controller;
 
+import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.Settlement_new;
 import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
@@ -7,6 +8,7 @@ import com.aaa.huahui.repository.Settlement_newRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.service.DataImportService;
 import com.aaa.huahui.service.Settlement_newService;
+import com.aaa.huahui.service.StaffService;
 import com.aaa.huahui.service.WorkBookCache;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.ResponseGenerate;
@@ -37,6 +39,9 @@ public class Settlement_newController {
 
     @Autowired
     Settlement_newRepository settlement_newRepository;
+
+    @Autowired
+    StaffService staffService;
 
     @GetMapping("/dayslaststoshop")
     @PreAuthorize("hasRole('ROLE_SHOP')")
@@ -187,7 +192,12 @@ public class Settlement_newController {
                                     @RequestParam(value = "consultant", required = false) String consultant,
                                     @RequestParam(value = "checker", required = false) String checker,
                                     @RequestParam("createtime") String time) {
-        int shopid = ((User) token.getPrincipal()).getId();
+
+        int reporterid = ((User) token.getPrincipal()).getId();
+        Integer shopid = staffService.findShopidByRerporterId(reporterid);
+        if (shopid == null) {
+            return ResponseGenerate.genFailResponse(1, "此账号无对应的店铺");
+        }
 
         Timestamp createtime = DateUtils.getTimeStampStart(time);
 
@@ -208,7 +218,15 @@ public class Settlement_newController {
                                        @RequestParam("endtime") String endtime) {
         Timestamp start = DateUtils.getTimeStampStart(createtime);
         Timestamp end = DateUtils.getTimeStampEnd(endtime);
-        int shopid = ((User) token.getPrincipal()).getId();
+        User user = (User) token.getPrincipal();
+
+        int shopid = 0;
+        if (user.hasRole(ROLE.SHOP)) {
+            shopid = user.getId();
+        } else if (user.hasRole(ROLE.REPORTER)) {
+            shopid = staffService.findShopidByRerporterId(user.getId());
+        }
+
         ArrayList<Settlement_new> allSettlement = settlement_newService.allSettlement(shopid, start, end);
         JSONArray data = new JSONArray();
         for (Settlement_new settlement_new : allSettlement) {
@@ -284,7 +302,14 @@ public class Settlement_newController {
     public JSONObject selectOneSettlement(@RequestParam("settlementid") int settlementid,
                                           UsernamePasswordAuthenticationToken token) {
 
-        int shopid = ((User) token.getPrincipal()).getId();
+        User user = (User) token.getPrincipal();
+
+        int shopid = 0;
+        if (user.hasRole(ROLE.SHOP)) {
+            shopid = user.getId();
+        } else if (user.hasRole(ROLE.REPORTER)) {
+            shopid = staffService.findShopidByRerporterId(user.getId());
+        }
 
         if (settlement_newRepository.selectCountShopidSettlementId(shopid, settlementid) == 0) {
             JSONObject jsonObject = ResponseGenerate.genFailResponse(2, "无此结算单");
@@ -395,7 +420,13 @@ public class Settlement_newController {
             return ResponseGenerate.genFailResponse(1, "id非法");
         }
 
-        int shopid = principal.getId();
+        int shopid = 0;
+        if (principal.hasRole(ROLE.SHOP)) {
+            shopid = principal.getId();
+        } else if (principal.hasRole(ROLE.REPORTER)) {
+            shopid = staffService.findShopidByRerporterId(principal.getId());
+        }
+
 
         if (settlement_new.getShopid() != shopid) {
             return ResponseGenerate.genFailResponse(1, "此结算单不属于此商店，更新失败");
