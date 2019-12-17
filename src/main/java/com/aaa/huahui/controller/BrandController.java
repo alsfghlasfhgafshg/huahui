@@ -3,23 +3,29 @@ package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
-import com.aaa.huahui.model.*;
-import com.aaa.huahui.repository.StaffRepository;
+import com.aaa.huahui.model.Brand;
+import com.aaa.huahui.model.Factory;
+import com.aaa.huahui.model.Project;
+import com.aaa.huahui.model.User;
 import com.aaa.huahui.service.*;
+import com.aaa.huahui.utils.CookieEncode;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 @Controller
@@ -304,5 +310,62 @@ public class BrandController {
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(data);
         return responsejson;
     }
+
+    //切换为shop
+    @GetMapping("/brand/toshop")
+    @PreAuthorize("hasRole('ROLE_BRAND')")
+    public @ResponseBody JSONObject toShopAuth(UsernamePasswordAuthenticationToken token,
+                            @RequestParam("shopid")int shopid,
+                             HttpServletResponse response){
+        int brandid = ((User) token.getPrincipal()).getId();
+        ArrayList<Integer> list = shopService.selectAllShopId(brandid);
+        if(list.contains(shopid)){
+            //设置cookie
+            String value = CookieEncode.encryptAndDencrypt(String.valueOf(brandid));
+            Cookie cookie = new Cookie("change",value);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
+            //更改权限
+            User principal = userService.queryUser(shopid);
+            Object credentials = principal.getPassword();
+            Collection<? extends GrantedAuthority> authorities = principal.getAuthorities();
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(principal, credentials, authorities);
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+            //跳转
+            return ResponseGenerate.genSuccessResponse(value);
+        }else {
+            return ResponseGenerate.genFailResponse(1,"无权限");
+        }
+    }
+
+    @GetMapping("/brand/tobrand")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public @ResponseBody JSONObject toBrandAuth(UsernamePasswordAuthenticationToken token,
+                                  HttpServletResponse response,
+                                  @CookieValue("change")Cookie cookie){
+        int shopid = ((User) token.getPrincipal()).getId();
+        int brandid = shopService.shopBrand(shopid).getId();
+        String value = cookie.getValue();
+        value = CookieEncode.encryptAndDencrypt(value);
+        if (Integer.parseInt(value)==brandid){
+            //更改权限
+            User brand = userService.queryUser(brandid);
+            Object credentials = brand.getPassword();
+            Collection<? extends GrantedAuthority> authorities = brand.getAuthorities();
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(brand, credentials, authorities);
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+            //消除cookie
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            return ResponseGenerate.genSuccessResponse("切换成功");
+        }else {
+            return ResponseGenerate.genFailResponse(1,"无权限");
+        }
+    }
+
+
 
 }

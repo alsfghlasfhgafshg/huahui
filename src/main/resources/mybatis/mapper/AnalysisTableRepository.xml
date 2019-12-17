@@ -143,7 +143,7 @@
     </select>
 
     <select id="downtoStorePercent" resultType="java.util.HashMap">
-        select times, cast(sum(con) as int) con from (
+        select times, cast(sum(con) as unsigned) con from (
         select times, count(*) con
         from (
         select customer, count(customer) as times

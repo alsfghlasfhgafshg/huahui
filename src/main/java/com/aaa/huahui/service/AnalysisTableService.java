@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -113,7 +114,8 @@ public class AnalysisTableService {
         float sum = 0;
         //求总数
         for (HashMap<String, Object> map : list) {
-            sum += (Long) map.get("con");
+            BigInteger bigInteger = (BigInteger) map.get("con");
+            sum += bigInteger.floatValue();
         }
         if (sum == 0){
             sum = 1;
@@ -121,7 +123,9 @@ public class AnalysisTableService {
         //补0
         DecimalFormat df = new DecimalFormat("0.00%");
         for (HashMap<String, Object> map : list) {
-            float zi = (Long) map.get("con");
+            BigInteger bigInteger = (BigInteger) map.get("con");
+            float zi = bigInteger.floatValue();
+
             String s = df.format(zi / sum);
             map.put("百分比", s);
         }
@@ -245,8 +249,8 @@ public class AnalysisTableService {
         }
         ArrayList<HashMap<String, Object>> list2 = actualMoney(id, start, end,staffid,consultantname);
         ArrayList<HashMap<String, Object>> list1 = downtoStoreTimes(id, start, end,staffid,consultantname);
-        //ArrayList<HashMap<String,Object>> list3 = downToStorePercent(id,start,end);
         ArrayList<HashMap<String, Object>> list4 = cashMoney(id, start, end,staffid,consultantname);
+        ArrayList<HashMap<String,Object>> list3 = downToStorePercent(id,start,end);
 
         //总返回列表
         JSONArray sumArray = new JSONArray();
@@ -290,17 +294,7 @@ public class AnalysisTableService {
         reJson.put("con", array);
         sumArray.add(reJson);
 
-//        array = new JSONArray();
-//        for (HashMap<String,Object> map:list3){
-//            mtemp = new JSONObject();
-//            for (Map.Entry<String,Object> entry:map.entrySet()){
-//                mtemp.put(entry.getKey(),entry.getValue());
-//            }array.add(mtemp);
-//        }
-//        reJson = new JSONObject();
-//        reJson.put("type","到店次数统计");
-//        reJson.put("con",array);
-//        sumArray.add(reJson);
+
         array = new JSONArray();
         for (HashMap<String, Object> map : list4) {
             mtemp = new JSONObject();
@@ -312,6 +306,18 @@ public class AnalysisTableService {
         reJson = new JSONObject();
         reJson.put("type", "现金");
         reJson.put("con", array);
+        sumArray.add(reJson);
+
+        array = new JSONArray();
+        for (HashMap<String,Object> map:list3){
+            mtemp = new JSONObject();
+            for (Map.Entry<String,Object> entry:map.entrySet()){
+                mtemp.put(entry.getKey(),entry.getValue());
+            }array.add(mtemp);
+        }
+        reJson = new JSONObject();
+        reJson.put("type","到店次数统计");
+        reJson.put("con",array);
         sumArray.add(reJson);
 
         return ResponseGenerate.genSuccessResponse(sumArray);
