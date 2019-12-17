@@ -334,7 +334,7 @@ public class BrandController {
             SecurityContextHolder.getContext().setAuthentication(newAuth);
 
             //跳转
-            return ResponseGenerate.genSuccessResponse("/shop");
+            return ResponseGenerate.genSuccessResponse(value);
         }else {
             return ResponseGenerate.genFailResponse(1,"无权限");
         }
