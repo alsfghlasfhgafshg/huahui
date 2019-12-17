@@ -150,14 +150,14 @@ public class DateUtils {
     //今天开始
     public static String todayStart() {
         long now = System.currentTimeMillis();
-        Timestamp todaystartTimestamp = new Timestamp(now - now % onedayTimeMillis);
+        Timestamp todaystartTimestamp = new Timestamp(now - now % onedayTimeMillis+28800000);
         return formatTimeStrap(todaystartTimestamp);
     }
 
     //n之前
     public static Timestamp nDaysAgo(int ndays) {
         long now = System.currentTimeMillis();
-        Timestamp todaystartTimestamp = new Timestamp(now - now % onedayTimeMillis - ndays * onedayTimeMillis);
+        Timestamp todaystartTimestamp = new Timestamp(now - now % onedayTimeMillis - ndays * onedayTimeMillis+28800000);
         return todaystartTimestamp;
     }
 
