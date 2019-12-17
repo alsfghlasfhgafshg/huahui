@@ -333,6 +333,10 @@ public class AnalysisTable2Service {
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
         JSONObject data = beauticiantAnalysis(id, start, end, beauticianname);
+        JSONObject date=new JSONObject();
+        date.put("starttime",startTime);
+        date.put("endtime",endTime);
+        data.put("date",date);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
@@ -368,6 +372,10 @@ public class AnalysisTable2Service {
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
         JSONObject data = consultantAnalysis(id, start, end, consultantname);
+        JSONObject date=new JSONObject();
+        date.put("starttime",startTime);
+        date.put("endtime",endTime);
+        data.put("date",date);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
@@ -403,6 +411,10 @@ public class AnalysisTable2Service {
         } else {
             return null;
         }
+        JSONObject date=new JSONObject();
+        date.put("starttime",startTime);
+        date.put("endtime",endTime);
+        data.put("date",date);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
