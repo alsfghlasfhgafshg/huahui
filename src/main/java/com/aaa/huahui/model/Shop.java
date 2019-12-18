@@ -2,11 +2,18 @@ package com.aaa.huahui.model;
 
 public class Shop {
     int shopid;
-    String description;
     String province;
     String city;
     String district;
     String geo;
+    String controller;
+    String phoneOrWechat;
+    String mianji;
+    String mainProject;
+    Integer rooms;
+    String rent;
+    Integer beds;
+    String single;
     int brandid;
 
     public String getProvince() {
@@ -33,12 +40,20 @@ public class Shop {
         this.district = district;
     }
 
-    public Shop(String description, String province, String city, String district, String geo, int brandid) {
-        this.description = description;
+    public Shop(int shopid, String province, String city, String district, String geo, String controller, String phoneOrWechat, String mianji, String mainProject, Integer rooms, String rent, Integer beds, String single, int brandid) {
+        this.shopid = shopid;
         this.province = province;
         this.city = city;
         this.district = district;
         this.geo = geo;
+        this.controller = controller;
+        this.phoneOrWechat = phoneOrWechat;
+        this.mianji = mianji;
+        this.mainProject = mainProject;
+        this.rooms = rooms;
+        this.rent = rent;
+        this.beds = beds;
+        this.single = single;
         this.brandid = brandid;
     }
 
@@ -47,13 +62,6 @@ public class Shop {
     }
 
     public void setBrandid(int brandid) {
-        this.brandid = brandid;
-    }
-
-    public Shop(int shopid, String description, String geo, int brandid) {
-        this.shopid = shopid;
-        this.description = description;
-        this.geo = geo;
         this.brandid = brandid;
     }
 
@@ -68,20 +76,76 @@ public class Shop {
     public Shop() {
     }
 
+    public String getController() {
+        return controller;
+    }
+
+    public void setController(String controller) {
+        this.controller = controller;
+    }
+
+    public String getPhoneOrWechat() {
+        return phoneOrWechat;
+    }
+
+    public void setPhoneOrWechat(String phoneOrWechat) {
+        this.phoneOrWechat = phoneOrWechat;
+    }
+
+    public String getMianji() {
+        return mianji;
+    }
+
+    public void setMianji(String mianji) {
+        this.mianji = mianji;
+    }
+
+    public String getMainProject() {
+        return mainProject;
+    }
+
+    public void setMainProject(String mainProject) {
+        this.mainProject = mainProject;
+    }
+
+    public Integer getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Integer rooms) {
+        this.rooms = rooms;
+    }
+
+    public String getRent() {
+        return rent;
+    }
+
+    public void setRent(String rent) {
+        this.rent = rent;
+    }
+
+    public Integer getBeds() {
+        return beds;
+    }
+
+    public void setBeds(Integer beds) {
+        this.beds = beds;
+    }
+
+    public String getSingle() {
+        return single;
+    }
+
+    public void setSingle(String single) {
+        this.single = single;
+    }
+
     public int getShopid() {
         return shopid;
     }
 
     public void setShopid(int shopid) {
         this.shopid = shopid;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
 

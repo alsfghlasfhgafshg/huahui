@@ -12,13 +12,15 @@ public interface ShopRepository {
     @Delete("delete from shop where shopid=#{shopid}")
     int deleteShop(@Param("shopid") int shopid);
 
-    @Insert("insert into shop (shopid,description,province,city,district,geo,brandid)values(#{shopid},#{description},#{province},#{city},#{district},#{geo},#{brandid})")
-    int insertShop(@Param("shopid") int shopid, @Param("description") String description,
+    @Insert("insert into shop (shopid,province,city,district,geo,controller,phoneOrWechat,mianji,mainProject,rooms,rent,beds,single,brandid)values(#{shopid},#{province},#{city},#{district},#{geo},#{controller},#{phoneOrWechat},#{mianji},#{mainProject},#{rooms},#{rent},#{beds},#{single},#{brandid})")
+    int insertShop(@Param("shopid") int shopid,
                    @Param("province") String province, @Param("city") String city, @Param("district") String district, @Param("geo") String geo,
+                   @Param("controller")String controller,@Param("phoneOrWechat")String phoneOrWechat,@Param("mianji")String mianji,@Param("mainProject")String mainProject,
+                   @Param("rooms")Integer rooms,@Param("rent")String rent,@Param("beds")Integer beds,@Param("single")String single,
                    @Param("brandid") int brandid);
 
-    @Update("update shop set description=#{description},geo=#{geo},province=#{province},city=#{city},district=#{district} where shopid=#{shopid}")
-    int updateShopInfo(@Param("shopid") int shopid, @Param("description") String description, @Param("geo") String geo,@Param("province")String province,@Param("city")String city,@Param("district")String district);
+    @Update("update shop set geo=#{geo},province=#{province},city=#{city},district=#{district},controller=#{controller},phoneOrWechat=#{phoneOrWechat},mianji=#{mianji},mainProject=#{mainProject},rooms=#{rooms},rent=#{rent},beds=#{beds},single=#{single} where shopid=#{shopid}")
+    int updateShopInfo(@Param("shopid") int shopid, @Param("geo")String geo,@Param("province")String province,@Param("city")String city,@Param("district")String district,@Param("controller")String controller,@Param("phoneOrWechat")String phoneOrWechat,@Param("mianji")String mianji,@Param("mainProject")String mainProject,@Param("rooms")Integer rooms,@Param("rent")String rent,@Param("beds")Integer beds,@Param("single")String single);
 
     @Select("select shopid from shop where brandid=#{brandid}")
     ArrayList<Integer> selectAllShopId(@Param("brandid") int brandid);

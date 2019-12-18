@@ -70,7 +70,14 @@ public class ShopController {
         for (Shop shop : list) {
             JSONObject temp = new JSONObject();
             temp.put("shopname", userService.queryUser(shop.getShopid()).getName());
-            temp.put("description", shop.getDescription());
+            temp.put("controller", shop.getController());
+            temp.put("phoneorwechat", shop.getPhoneOrWechat());
+            temp.put("mianji", shop.getMianji());
+            temp.put("mainproject", shop.getMainProject());
+            temp.put("rooms", shop.getRooms());
+            temp.put("rent", shop.getRent());
+            temp.put("beds", shop.getBeds());
+            temp.put("single", shop.getSingle());
             temp.put("shopid", shop.getShopid());
             temp.put("geo", shop.getGeo());
             array.add(temp);
@@ -86,7 +93,14 @@ public class ShopController {
     JSONObject addStaff(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         @RequestParam("repeatpassword") String repeatpassword,
-                        @RequestParam("description") String description,
+                        @RequestParam("controller") String controller,
+                        @RequestParam("phoneOrWechat") String phoneOrWechat,
+                        @RequestParam("mianji") String mianji,
+                        @RequestParam("mainproject") String mainproject,
+                        @RequestParam("rooms") Integer rooms,
+                        @RequestParam("rent") String rent,
+                        @RequestParam("beds") Integer beds,
+                        @RequestParam("single") String single,
                         @RequestParam(value = "province", defaultValue = "") String province,
                         @RequestParam(value = "city", defaultValue = "") String city,
                         @RequestParam(value = "district", defaultValue = "") String district,
@@ -105,7 +119,7 @@ public class ShopController {
             return rejeson;
         }
 
-        int i = shopService.insertShop(shopManager.getId(), description, province, city, district, geo, brandId);
+        int i = shopService.insertShop(shopManager.getId(), province, city, district, geo,controller,phoneOrWechat,mianji,mainproject,rooms,rent,beds,single, brandId);
         if (i == 1) {
             JSONObject data = new JSONObject();
             data.put("shopid", shopManager.getId());
@@ -122,14 +136,21 @@ public class ShopController {
     public @ResponseBody
     JSONObject updateStaff(UsernamePasswordAuthenticationToken token,
                            @RequestParam("shopid") int shopid,
-                           @RequestParam(value = "description", defaultValue = "") String description,
+                           @RequestParam("controller") String controller,
+                           @RequestParam("phoneOrWechat") String phoneOrWechat,
+                           @RequestParam("mianji") String mianji,
+                           @RequestParam("mainproject") String mainproject,
+                           @RequestParam("rooms") Integer rooms,
+                           @RequestParam("rent") String rent,
+                           @RequestParam("beds") Integer beds,
+                           @RequestParam("single") String single,
                            @RequestParam(value = "province", defaultValue = "") String province,
                            @RequestParam(value = "city", defaultValue = "") String city,
                            @RequestParam(value = "district", defaultValue = "") String district,
                            @RequestParam(value = "geo", defaultValue = "") String geo) {
         JSONObject reobject = new JSONObject();
         int brandid = ((User) token.getPrincipal()).getId();
-        boolean result = shopService.updateShopInfo(brandid, shopid, description, geo, province, city, district);
+        boolean result = shopService.updateShopInfo(brandid,shopid,geo,province, city, district, controller,phoneOrWechat,mianji,mainproject,rooms,rent,beds,single);
         if (result == true) {
             reobject = ResponseGenerate.genSuccessResponse("修改成功");
             return reobject;

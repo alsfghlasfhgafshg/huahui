@@ -3,14 +3,16 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
-import com.aaa.huahui.repository.*;
+import com.aaa.huahui.repository.SettlementRepository;
+import com.aaa.huahui.repository.ShopRepository;
+import com.aaa.huahui.repository.StaffRepository;
+import com.aaa.huahui.repository.UserRepository;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 @Service
@@ -76,20 +78,41 @@ public class ShopService {
     }
 
     //添加一个shop
-    public int insertShop(int shopid, String description, String province, String city, String district, String geo, int brandid) {
-        return shopRepository.insertShop(shopid, description, province, city, district, geo, brandid);
+    public int insertShop(int shopid, String province, String city, String district, String geo,String controller,String phoneOrWechat,String mianji,String mainProject,Integer rooms,String rent,Integer beds,String single, int brandid) {
+        return shopRepository.insertShop(shopid, province, city, district, geo,controller,phoneOrWechat,mianji,mainProject,rooms,rent,beds,single, brandid);
     }
 
     //更改shop信息
-    public boolean updateShopInfo(int brandid, int shopid, String description, String geo,String province,String city,String district) {
+    public boolean updateShopInfo(int brandid, int shopid, String geo,String province,String city,String district,String controller,String phoneOrWechat,String mianji,String mainProject,Integer rooms,String rent,Integer beds,String single) {
 
         if (shopRepository.selectCountBrandShop(shopid, brandid) == 0) {
             return false;
         }
 
         Shop shop = shopRepository.selectById(shopid);
-        if (description == null || description.equals("")) {
-            description = shop.getDescription();
+        if (controller == null || controller.equals("")) {
+            controller = shop.getController();
+        }
+        if (beds == null || beds.equals("")) {
+            beds = shop.getBeds();
+        }
+        if (single == null || single.equals("")) {
+            single = shop.getSingle();
+        }
+        if (rooms == null || rooms.equals("")) {
+            rooms = shop.getRooms();
+        }
+        if (rent == null || rent.equals("")) {
+            rent = shop.getRent();
+        }
+        if (phoneOrWechat == null || phoneOrWechat.equals("")) {
+            phoneOrWechat = shop.getPhoneOrWechat();
+        }
+        if (mianji == null || mianji.equals("")) {
+            mianji = shop.getMianji();
+        }
+        if (mainProject == null || mainProject.equals("")) {
+            mainProject = shop.getMainProject();
         }
         if (geo == null || geo.equals("")) {
             geo = shop.getGeo();
@@ -104,7 +127,7 @@ public class ShopService {
             district = shop.getDistrict();
         }
 
-        int i = shopRepository.updateShopInfo(shopid, description, geo,province,city,district);
+        int i = shopRepository.updateShopInfo(shopid, geo,province,city,district,controller,phoneOrWechat,mianji,mainProject,rooms,rent,beds,single);
         if (i == 1) {
             return true;
         }
