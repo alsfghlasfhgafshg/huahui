@@ -83,6 +83,7 @@ public class BrandController {
 
             Brand brand = brandService.getBrand(userid);
             temp.put("avatar", brand.getAvatar());
+            temp.put("controller",brand.getController());
             temp.put("description", brand.getDescription());
 
             array.add(temp);
@@ -112,6 +113,7 @@ public class BrandController {
     JSONObject newBrand(@RequestParam("name") String name,
                         @RequestParam("password") String password,
                         @RequestParam("repeatpassword") String repeatpassword,
+                        @RequestParam("controller")String controller,
                         @RequestParam("description") String description,
                         @RequestParam("img") MultipartFile file) {
         JSONObject rejeson = new JSONObject();
@@ -119,7 +121,7 @@ public class BrandController {
         User user = null;
         try {
             user = userService.newUser(name, password, repeatpassword, ROLE.BRAND);
-            brandService.newBrand(user, description, file);
+            brandService.newBrand(user,controller, description, file);
             rejeson.put("error", 0);
         } catch (NewUserFailException e) {
             rejeson.put("error", 1);
@@ -135,7 +137,7 @@ public class BrandController {
     public @ResponseBody
     JSONObject adminUpdateBrand(@RequestParam("brandid") int brandid,
                                 @RequestParam("description") String description,
-                                @RequestParam("img") MultipartFile file) {
+                                @RequestParam(value = "img",required = false) MultipartFile file) {
 
         JSONObject rejeson = new JSONObject();
         brandService.updateBrand(brandid, description, file);

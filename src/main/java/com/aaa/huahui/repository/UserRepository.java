@@ -26,6 +26,12 @@ public interface UserRepository {
     @Select("select user.* from user, staff where user.id = staff.staffid and staff.phone = #{phonenum} ")
     User findByStaffPhoneNumber(@Param("phonenum")String phonenum);
 
+    @Select("select user.* from user, shop where user.id = shop.shopid and shop.controller = #{controller}")
+    User findByShopName(@Param("controller")String controller);
+
+    @Select("select user.* from user, brand where user.id = brand.brandid and brand.controller = #{controller}")
+    User findByBrandName(@Param("controller")String controller);
+
     @Select("select count(*) from user where name=#{name} and password=#{password}")
     int findByUserAndPasswd(@Param("name") String name, @Param("password") String password);
 

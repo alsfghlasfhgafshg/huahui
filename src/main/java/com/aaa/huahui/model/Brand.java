@@ -3,6 +3,7 @@ package com.aaa.huahui.model;
 public class Brand {
     int brandid;
     String description;
+    String controller;
     String avatar;
 
     public Brand(int brandid, String description, String avatar) {
@@ -11,7 +12,22 @@ public class Brand {
         this.avatar = avatar;
     }
 
+    public Brand(int brandid, String description, String controller, String avatar) {
+        this.brandid = brandid;
+        this.description = description;
+        this.controller = controller;
+        this.avatar = avatar;
+    }
+
     public Brand() {
+    }
+
+    public String getController() {
+        return controller;
+    }
+
+    public void setController(String controller) {
+        this.controller = controller;
     }
 
     public int getBrandid() {

@@ -83,13 +83,13 @@ public class BrandService {
      * 新的品牌
      **/
     @Transactional
-    public boolean newBrand(User user, String description, MultipartFile file) {
+    public boolean newBrand(User user,String controller, String description, MultipartFile file) {
         if (user == null) {
             return false;
         }
 
 
-        int i = brandRepository.newBrand(user.getId(), description);
+        int i = brandRepository.newBrand(user.getId(), description,controller);
 
         if (file != null) {
             String avatarfile = fileService.uploadImage(file);
@@ -111,11 +111,10 @@ public class BrandService {
 
     //更新brand
     public boolean updateBrand(int brandid, String description, MultipartFile file) {
-        if (description == null || description.equals("")) {
-            return true;
-        }
         brandRepository.updateBrandDescription(brandid, description);
-        avatarService.updateAvatar(brandid, file);
+        if (file==null||!file.isEmpty()){
+            avatarService.updateAvatar(brandid, file);
+        }
         return true;
     }
 

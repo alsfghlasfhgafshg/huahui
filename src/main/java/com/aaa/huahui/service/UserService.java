@@ -101,6 +101,14 @@ public class UserService implements UserDetailsService {
         }
 
         if (user == null) {
+            user = userRepository.findByShopName(username);
+        }
+
+        if (user==null){
+            user = userRepository.findByBrandName(username);
+        }
+
+        if (user == null) {
             throw new UsernameNotFoundException("用户名未找到");
         } else {
             return user;
