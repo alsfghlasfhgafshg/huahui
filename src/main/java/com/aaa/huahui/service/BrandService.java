@@ -131,7 +131,13 @@ public class BrandService {
     }
 
     //删除厂家
+    @Transactional
     public boolean deleteFactory(int brandid, int factoryid) {
+        ArrayList<Project> projects = projectRepository.selectAllProject(factoryid);
+        for (Project project : projects) {
+            projectRepository.deleteProjectById(project.getProjectid());
+        }
+
         int i = factoryRepository.deleteFactory(factoryid);
         if (i == 1) {
             return true;

@@ -19,8 +19,8 @@ public interface ProjectRepository {
     @Delete("delete from project where projectid=#{projectid}")
     int deleteProject(Project project);
 
-    @Select("select * from project where factoryid=#{projectid}")
-    ArrayList<Project> selectAllProject(@Param("projectid") int projectid);
+    @Select("select * from project where factoryid=#{factoryid}")
+    ArrayList<Project> selectAllProject(@Param("factoryid") int factoryid);
 
     @Update("update project set projectname=#{projectname} where projectid=#{projectid}")
     int updateProject(@Param("projectid") int projectid, @Param("projectname") String projectname);

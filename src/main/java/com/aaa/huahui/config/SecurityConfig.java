@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/index", "/img/**", "/file/**", "/lib/**").permitAll();
 
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/login", "/register").permitAll();
-        http.authorizeRequests().antMatchers("/login", "/register").permitAll();
+        http.authorizeRequests().antMatchers("/login", "/register","/wxlogin").permitAll();
 
         //基于 Form 表单登录验证
         http.formLogin().loginPage("/login")

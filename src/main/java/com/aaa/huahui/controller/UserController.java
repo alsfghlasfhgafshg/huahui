@@ -7,11 +7,15 @@ import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.repository.UserRoleRepository;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.service.WxService;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,12 +27,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 @Controller
 public class UserController {
+    @Autowired
+    WxService wxService;
+
     @Autowired
     UserService userService;
 
@@ -182,10 +190,43 @@ public class UserController {
     @GetMapping("/clearjessionid")
     public @ResponseBody
     String clearJESSIONID(HttpServletResponse response) {
-        Cookie cookie = new Cookie("JSESSIONID", null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        SecurityContextHolder.getContext().setAuthentication(null);
+
+//        Cookie cookie = new Cookie("JSESSIONID", null);
+//        cookie.setMaxAge(0);
+//        cookie.setPath("/");
+//        response.addCookie(cookie);
         return "clear cookies JSESSIONID";
     }
+
+    @GetMapping("/wxlogin")
+    public @ResponseBody
+    JSONObject wxLogin(HttpServletRequest request,
+                       @RequestParam("code") String code, @RequestParam("state") String state) {
+        String openid = wxService.code2Openid(code);
+        User principal = wxService.openid2User(openid);
+
+        JSONObject jsonObject = new JSONObject();
+
+        //如果用户从未登录
+        if (principal == null) {
+            HttpSession session = request.getSession();
+                session.setAttribute("openid", openid);
+
+            jsonObject.put("needlogin", true);
+
+        //如果用户已经微信登陆过
+        } else {
+            Object credentials = principal.getPassword();
+            Collection<? extends GrantedAuthority> authorities = principal.getAuthorities();
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(principal, credentials, authorities);
+
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+            jsonObject.put("needlogin", false);
+        }
+        return ResponseGenerate.genSuccessResponse("ok", jsonObject);
+
+    }
+
 }

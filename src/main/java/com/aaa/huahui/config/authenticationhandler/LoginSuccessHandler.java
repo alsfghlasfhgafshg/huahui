@@ -2,6 +2,7 @@ package com.aaa.huahui.config.authenticationhandler;
 
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.service.ShopService;
+import com.aaa.huahui.service.WxService;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.aaa.huahui.utils.ResponseUtil;
 import com.alibaba.fastjson.JSONArray;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +29,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     ShopService shopService;
 
+    @Autowired
+    WxService wxService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
@@ -34,6 +39,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         User user = (User) authentication.getPrincipal();
+
+        HttpSession session = request.getSession();
+        String openid = (String) session.getAttribute("openid");
+        if (openid != null) {
+            wxService.saveWxUser(user, openid);
+        }
+
         JSONObject responseJson = null;
         if (authorities.size() == 0) {
             responseJson = ResponseGenerate.genFailResponse(1, "用户名或密码错误");
