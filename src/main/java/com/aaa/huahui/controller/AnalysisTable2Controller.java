@@ -34,7 +34,7 @@ public class AnalysisTable2Controller {
     public @ResponseBody
     JSONObject beauticiantAnalysis(UsernamePasswordAuthenticationToken token,
                                    @RequestParam(value = "shopid", required = false) Integer shopid,
-                                   @RequestParam(value = "beauticianname") String beauticianname,
+                                   @RequestParam(value = "beauticianname",required = false) String beauticianname,
                                    @RequestParam(value = "starttime") String startTime,
                                    @RequestParam(value = "endtime") String endTime) {
         return analysisTable2Service.beauticiantAnalysisController(token, shopid, beauticianname, startTime, endTime);
@@ -45,7 +45,7 @@ public class AnalysisTable2Controller {
     public @ResponseBody
     JSONObject consultantAnalysis(UsernamePasswordAuthenticationToken token,
                                    @RequestParam(value = "shopid", required = false) Integer shopid,
-                                   @RequestParam(value = "consultantname") String consultantname,
+                                   @RequestParam(value = "consultantname",required = false) String consultantname,
                                    @RequestParam(value = "starttime") String startTime,
                                    @RequestParam(value = "endtime") String endTime) {
         return analysisTable2Service.consultantAnalysisController(token, shopid, consultantname, startTime, endTime);
