@@ -311,7 +311,7 @@ public class AnalysisTable2Service {
     public JSONObject beauticiantAnalysisController(UsernamePasswordAuthenticationToken token,
                                                     Integer shopid, String beauticianname,
                                                     String startTime, String endTime) {
-        int id;
+        int id= 0;
         User user = (User) token.getPrincipal();
 
         //brand的话看是哪个店,shop的话只能当前店
@@ -325,8 +325,13 @@ public class AnalysisTable2Service {
                 return j;
             }
             id = shopid;
-        } else {
+        } else if (user.hasRole(ROLE.SHOP)){
             id = user.getId();
+        }else if (user.hasRole(ROLE.STAFF)){
+            id = staffRepository.queryShopIdByStaffId(user.getId());
+            beauticianname = staffRepository.findNameByStaffid(user.getId()).get();
+        }else{
+            return null;
         }
 
         Timestamp start = DateUtils.getTimeStampStart(startTime);
