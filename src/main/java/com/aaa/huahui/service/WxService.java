@@ -71,6 +71,7 @@ public class WxService {
         String url = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s", appid, appsecert);
         String response = restTemplate.getForObject(url, String.class);
         JSONObject jsonObject = JSONObject.parseObject(response);
+        System.out.println(jsonObject.getString("access_token"));
         return jsonObject;
     }
 

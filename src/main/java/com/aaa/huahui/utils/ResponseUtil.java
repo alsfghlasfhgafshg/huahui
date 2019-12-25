@@ -31,14 +31,14 @@ public class ResponseUtil {
 
         boolean firstHeader = true;
         Collection<String> cookiesHeaders = response.getHeaders("Set-Cookie");
-        for (String header : cookiesHeaders) {
-            if (firstHeader) {
-                response.setHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=Strict"));
-                firstHeader = false;
-                continue;
-            }
-            response.addHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=Strict"));
-        }
+//        for (String header : cookiesHeaders) {
+//            if (firstHeader) {
+//                response.setHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=Strict"));
+//                firstHeader = false;
+//                continue;
+//            }
+//            response.addHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=Strict"));
+//        }
 
         try {
             ServletOutputStream outputStream = response.getOutputStream();

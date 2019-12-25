@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Mapper
 public interface WxUserRepository {
 
@@ -15,5 +18,7 @@ public interface WxUserRepository {
     @Insert("insert into wx_user(userid, wxopenid) values(#{wxopenid} , #{userid} )")
     int insertWxUser(@Param("wxopenid") Integer wxopenid, @Param("userid") String userid);
 
+    @Select("select user.name username, wx_user.wxopenid openid from user, wx_user where wx_user.userid = user.id")
+    List<HashMap> allUserNameOpenid();
 
 }

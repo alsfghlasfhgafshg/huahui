@@ -11,9 +11,11 @@ import com.aaa.huahui.service.WxService;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -190,7 +192,9 @@ public class UserController {
     @GetMapping("/clearjessionid")
     public @ResponseBody
     String clearJESSIONID(HttpServletResponse response) {
-        SecurityContextHolder.getContext().setAuthentication(null);
+
+//        SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken("key", "anonymous",
+//                AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")));
 
 //        Cookie cookie = new Cookie("JSESSIONID", null);
 //        cookie.setMaxAge(0);

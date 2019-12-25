@@ -8,8 +8,10 @@ import com.aaa.huahui.utils.ResponseUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -36,14 +38,21 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
+
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         User user = (User) authentication.getPrincipal();
+
+        Object credentials = user.getPassword();
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(user, credentials, authorities);
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
 
         HttpSession session = request.getSession();
         String openid = (String) session.getAttribute("openid");
         if (openid != null) {
             wxService.saveWxUser(user, openid);
+            session.removeAttribute("openid");
         }
 
         JSONObject responseJson = null;
@@ -56,18 +65,18 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             String authority = grantedAuthority.getAuthority();
             authority = authority.substring(5).toLowerCase();
-            JSONArray array=null;
-            if (authority.equals("brand")){
+            JSONArray array = null;
+            if (authority.equals("brand")) {
                 array = new JSONArray();
                 ArrayList<Integer> list = shopService.selectAllShopId(user.getId());
                 list.forEach(array::add);
-                j.put("shopid",array);
+                j.put("shopid", array);
             }
             j.put("role", authority);
             responseJson = ResponseGenerate.genSuccessResponse(j);
         }
 
-        ResponseUtil.returnJsonU8(request,response, responseJson);
+        ResponseUtil.returnJsonU8(request, response, responseJson);
 
     }
 }
