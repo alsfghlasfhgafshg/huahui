@@ -2,8 +2,7 @@ package com.aaa.huahui.service;
 
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
-import com.aaa.huahui.model.Brand;
-import com.aaa.huahui.model.User;
+import com.aaa.huahui.model.*;
 import com.aaa.huahui.repository.*;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -49,6 +50,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     UserRoleRepository userRoleRepository;
+
+    @Autowired
+    WxUserRepository wxUserRepository;
 
 
     //列出所有用户
@@ -104,7 +108,7 @@ public class UserService implements UserDetailsService {
             user = userRepository.findByShopName(username);
         }
 
-        if (user==null){
+        if (user == null) {
             user = userRepository.findByBrandName(username);
         }
 
@@ -235,4 +239,31 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    //获取openid,负责人
+    public ArrayList<WxOpenidChargerName> allOpenidUsername() {
+        List<WxUseridOpenid> wxUseridOpenids = wxUserRepository.allUseridOpenid();
+        ArrayList<WxOpenidChargerName> wxOpenidChargerNames = new ArrayList<>();
+
+        wxUseridOpenids.stream().forEach(u -> {
+            WxOpenidChargerName wxOpenidChargerName = new WxOpenidChargerName();
+            wxOpenidChargerName.setOpenid(u.getOpenid());
+            User user = userRepository.findById(u.getUserid());
+
+            if (user.hasRole(ROLE.ADMIN) || user.hasRole(ROLE.STAFF) || user.hasRole(ROLE.REPORTER)) {
+                wxOpenidChargerName.setCharger(user.getName());
+            } else if (user.hasRole(ROLE.BRAND)) {
+                String s = brandRepository.selectController(user.getId());
+                wxOpenidChargerName.setCharger(s);
+            } else if (user.hasRole(ROLE.SHOP)) {
+                String s = shopRepository.selectController(user.getId());
+                wxOpenidChargerName.setCharger(s);
+            } else {
+                //pass
+            }
+
+            wxOpenidChargerNames.add(wxOpenidChargerName);
+        });
+
+        return wxOpenidChargerNames;
+    }
 }

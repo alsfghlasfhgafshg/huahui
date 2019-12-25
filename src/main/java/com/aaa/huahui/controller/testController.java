@@ -1,7 +1,9 @@
 package com.aaa.huahui.controller;
 
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.model.WxOpenidChargerName;
 import com.aaa.huahui.service.FileService;
+import com.aaa.huahui.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,17 @@ import java.util.List;
 public class testController {
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     FileService fileService;
+
+    @GetMapping("/aaaa")
+    public String asdfasdfadsf(){
+        ArrayList<WxOpenidChargerName> wxOpenidChargerNames = userService.allOpenidUsername();
+        int a=1;
+        return "dsf";
+    }
 
     @PostMapping("/testpuploadfile")
     public String upload(@RequestParam("aaa") MultipartFile file) {

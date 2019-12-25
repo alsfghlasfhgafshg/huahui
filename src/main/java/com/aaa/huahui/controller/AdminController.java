@@ -199,6 +199,33 @@ public class AdminController {
         return responsejson;
     }
 
+    //获取微信提示语
+    @GetMapping("/setting/wxfirst")
+    public @ResponseBody
+    JSONObject queryWxFirst(){
+        String name = systemService.queryWxFirst();
+
+        JSONObject data=new JSONObject();
+        data.put("name",name);
+        JSONObject responsejson = ResponseGenerate.genSuccessResponse(data);
+        return responsejson;
+    }
+
+    //设置微信提示语
+    @PostMapping("/setting/wxfirst")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody
+    JSONObject setWxFirst( @RequestParam("name")String str){
+        boolean result = systemService.setWxFirst(str);
+        if (result==true){
+            JSONObject responsejson = ResponseGenerate.genSuccessResponse("成功");
+            return responsejson;
+        }
+        JSONObject responsejson = ResponseGenerate.genFailResponse(1,"设置失败");
+        return responsejson;
+    }
+
+
     //首页状态
     @GetMapping("/status/admin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Mapper
@@ -80,4 +81,6 @@ public interface UserRepository {
     @Select("select name from user where id=#{userid}")
     String queryUserName(@Param("userid")int userid);
 
+    @Select("select  * from user")
+    List<User> allUser();
 }

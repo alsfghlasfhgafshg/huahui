@@ -66,4 +66,8 @@ public interface ShopRepository {
 
     @Select("select staffid from shop_reporter where shopid=#{shopid}")
     ArrayList<Integer> selectAllReporterId(@Param("shopid")int shopid);
+
+    @Select("select shop.controller from shop where shopid=#{shopid}")
+    String selectController(@Param("shopid") int shopid);
+
 }

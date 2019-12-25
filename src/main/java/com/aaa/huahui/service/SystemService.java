@@ -46,6 +46,27 @@ public class SystemService {
         return webSettingRepository.queryKey("websitename");
     }
 
+    public boolean setWxFirst(String str) {
+
+        if (webSettingRepository.queryCountKey("wxfirst") == 1) {
+            if (webSettingRepository.updateWebSiteName(str) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (webSettingRepository.insertKV("wxfirst", str) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public String queryWxFirst() {
+        return webSettingRepository.queryKey("wxfirst");
+    }
+
     public JSONObject adminstatus() {
         JSONObject data = new JSONObject();
         data.put("shopcount", shopRepository.allCountShop());

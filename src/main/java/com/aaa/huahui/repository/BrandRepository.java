@@ -18,7 +18,7 @@ public interface BrandRepository {
     int updateBrandDescription(@Param("brandid") int brandid, @Param("description") String description);
 
     @Insert("insert into brand (brandid,description,controller) values(#{brandid},#{description},#{controller})")
-    int newBrand(@Param("brandid") int brandid, @Param("description") String description,@Param("controller")String controller);
+    int newBrand(@Param("brandid") int brandid, @Param("description") String description, @Param("controller") String controller);
 
     @Update("update brand set avatar=#{avatar} where brandid=#{brandid}")
     int updateBrandAvatar(@Param("brandid") int brandid, @Param("avatar") String avatar);
@@ -52,4 +52,6 @@ public interface BrandRepository {
     @Select("select brandid from shop where shopid=#{shopid}")
     Integer findBrandidByShopid(@Param("shopid") int shopid);
 
+    @Select("select brand.controller from brand where brandid=#{brandid}")
+    String selectController(@Param("brandid") int brandid);
 }
