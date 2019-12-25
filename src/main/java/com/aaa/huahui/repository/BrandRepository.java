@@ -41,7 +41,7 @@ public interface BrandRepository {
     @Select("select count(*) from shop where brandid=#{brandid}")
     int selectCountBrandShop(@Param("brandid") int brandid);
 
-    @Select("select count(*) from staff,shop,brand where staff.staffid=shop.shopid and shop.shopid=shop.brandid and brand.brandid=#{brandid}")
+    @Select("select count(*) from staff where shopid in (select shopid from brand where brandid = #{brandid})")
     int selectCountBrandStaff(@Param("brandid") int brandid);
 
     @Select("select count(*) from factory,project where factory.brandid=#{brandid} and factory.id=project.factoryid and project.projectid=#{projectid}")
