@@ -4,6 +4,7 @@ public class Brand {
     int brandid;
     String description;
     String controller;
+    String charger;
     String avatar;
 
     public Brand(int brandid, String description, String avatar) {
@@ -20,6 +21,14 @@ public class Brand {
     }
 
     public Brand() {
+    }
+
+    public String getCharger() {
+        return charger;
+    }
+
+    public void setCharger(String charger) {
+        this.charger = charger;
     }
 
     public String getController() {
