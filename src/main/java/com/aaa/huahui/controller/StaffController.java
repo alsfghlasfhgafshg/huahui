@@ -56,7 +56,7 @@ public class StaffController {
     //获得所有staff
     @GetMapping("/staff/allstaff")
     public @ResponseBody
-    JSONObject getAllStaff(UsernamePasswordAuthenticationToken token, @RequestParam(value = "page", defaultValue = "1") int page) {
+    JSONObject getAllStaff(UsernamePasswordAuthenticationToken token) {
         User user = (User) token.getPrincipal();
         int shopid = 0;
 
@@ -67,7 +67,7 @@ public class StaffController {
         if (user.hasRole(ROLE.REPORTER)) {
             shopid=staffService.findShopidByRerporterId(user.getId());
         }
-        ArrayList<Staff> list = staffService.allStaff(shopid, page);
+        ArrayList<Staff> list = staffService.allStaff(shopid);
         JSONArray array = new JSONArray();
 
         for (Staff staff : list) {
@@ -84,13 +84,6 @@ public class StaffController {
             temp.put("phone", staff.getPhone());
             temp.put("emergencyphone", staff.getEmergencyphone());
             temp.put("employment", staff.getEmployment());
-            if (staff.getRole().equals("beautician")) {
-                temp.put("role", "美容师");
-            }
-            if (staff.getRole().equals("consultant")) {
-                temp.put("role", "顾问");
-            }
-
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
@@ -142,7 +135,7 @@ public class StaffController {
     JSONObject addStaff(@RequestParam("username") String username,
 //                                             @RequestParam(value = "avatar",required = false) MultipartFile avatar,
 //                        @RequestParam(value = "name", defaultValue = "", required = false) String name,
-                        @RequestParam(value = "employment", required = false, defaultValue = "true") boolean employment,
+                        @RequestParam(value = "employment", required = false, defaultValue = "1") int employment,
                         @RequestParam("male") int male,
                         @RequestParam("password") String password,
                         @RequestParam("birthday") String birth,
@@ -161,7 +154,6 @@ public class StaffController {
                         @RequestParam(value = "p2male", required = false, defaultValue = "0") int p2male,
                         @RequestParam(value = "p2company", required = false, defaultValue = "无") String p2company,
                         @RequestParam(value = "p2relationship", required = false, defaultValue = "无") String p2relationship,
-                        @RequestParam("role") String role,
                         UsernamePasswordAuthenticationToken token) {
 
         Timestamp birthday = DateUtils.getTimeStampEnd(birth);
@@ -177,7 +169,7 @@ public class StaffController {
             JSONObject responsejson = ResponseGenerate.genFailResponse(1, errors);
             return responsejson;
         }
-        Staff staff = new Staff(staffUser.getId(), username, male, birthday, nation, party, healthy, nativeplace, address, phone, emergencyphone, p1name, p1male, p1company, p1relationship, p2name, p2male, p2company, p2relationship, role, shopId);
+        Staff staff = new Staff(staffUser.getId(), username, male, birthday, nation, party, healthy, nativeplace, address, phone, emergencyphone, p1name, p1male, p1company, p1relationship, p2name, p2male, p2company, p2relationship, shopId);
         staff.setEmployment(employment);
         int success = staffService.addStaff(staff);
         if (success == 1) {
@@ -197,7 +189,7 @@ public class StaffController {
 //                           @RequestParam(value = "avatar", required = false) MultipartFile avatar,
                            @RequestParam("username") String name,
                            @RequestParam("male") int male,
-                           @RequestParam(value = "employment", required = false, defaultValue = "true") boolean employment,
+                           @RequestParam(value = "employment", required = false, defaultValue = "1") int employment,
                            @RequestParam("birthday") String birth,
                            @RequestParam("nation") String nation,
                            @RequestParam("party") String party,
@@ -214,7 +206,6 @@ public class StaffController {
                            @RequestParam(value = "p2male", required = false, defaultValue = "0") int p2male,
                            @RequestParam(value = "p2company", required = false, defaultValue = "无") String p2company,
                            @RequestParam(value = "p2relationship", required = false, defaultValue = "无") String p2relationship,
-                           @RequestParam(value = "role") String role,
                            UsernamePasswordAuthenticationToken token) {
         Timestamp birthday = DateUtils.getTimeStampEnd(birth);
 
@@ -242,7 +233,6 @@ public class StaffController {
         originStaff.setP2company(p2company);
         originStaff.setP1relationship(p1relationship);
         originStaff.setP2relationship(p2relationship);
-        originStaff.setRole(role);
         int success = staffService.updateStaff(originStaff);
         if (success == 1) {
             return ResponseGenerate.genSuccessResponse("modify success");
