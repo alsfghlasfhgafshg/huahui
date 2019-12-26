@@ -83,7 +83,7 @@ public class ShopService {
     }
 
     //添加一个shop
-    public int insertShop(int shopid, String province, String city, String district, String geo,String controller,String phoneOrWechat,String mianji,String mainProject,Integer rooms,String rent,Integer beds,String single, int brandid) {
+    public int insertShop(int shopid, String province, String city, String district, String geo,String controller,String phoneOrWechat,String mianji,String mainProject,String rooms,String rent,String beds,String single, int brandid) {
         return shopRepository.insertShop(shopid, province, city, district, geo,controller,phoneOrWechat,mianji,mainProject,rooms,rent,beds,single, brandid);
     }
 
