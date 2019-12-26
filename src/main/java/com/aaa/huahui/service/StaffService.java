@@ -39,16 +39,8 @@ public class StaffService {
         return staffRepository.selectAllStaffId(shopId);
     }
 
-    public ArrayList<Staff> allStaff(int shopId, int page) {
-        int offset = (page - 1) * pageSize;
-
-        int pagesize = this.pageSize;
-
-        if (page == -1) {
-            offset = 0;
-            pagesize = Integer.MAX_VALUE;
-        }
-        return staffRepository.selectAllStaff(shopId, offset, pagesize);
+    public ArrayList<Staff> allStaff(int shopId) {
+        return staffRepository.selectAllStaff(shopId);
     }
 
     public int updateStaffAvatar(int staffId, String avatar) {

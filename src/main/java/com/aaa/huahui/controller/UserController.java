@@ -5,6 +5,7 @@ import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.repository.UserRoleRepository;
+import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.UserService;
 import com.aaa.huahui.service.WxService;
@@ -49,6 +50,9 @@ public class UserController {
     UserRepository userRepository;
 
     @Autowired
+    BrandService brandService;
+
+    @Autowired
     UserRoleRepository userRoleRepository;
 
     @Autowired
@@ -57,13 +61,23 @@ public class UserController {
     @GetMapping("/me")
     public @ResponseBody
     JSONObject me(UsernamePasswordAuthenticationToken token) {
-        return ResponseGenerate.genSuccessResponse(((User) token.getPrincipal()));
+        User user = (User) token.getPrincipal();
+        JSONObject re = new JSONObject();
+        if (user.hasRole("ROLE_SHOP")){
+            String brandname = brandService.getBrandName(shopService.selectOneShop(user.getId()).getBrandid());
+            re.put("name",brandname+"-"+user.getName());
+            re.put("user", ((User) token.getPrincipal()));
+            return ResponseGenerate.genSuccessResponse(re);
+        }else{
+            re.put("name",user.getName());
+            re.put("user", ((User) token.getPrincipal()));
+            return ResponseGenerate.genSuccessResponse(re);
+        }
     }
 
     @GetMapping("/role")
     public @ResponseBody
     String getRole(UsernamePasswordAuthenticationToken token) {
-
         if (token == null) {
             return "null";
         }
