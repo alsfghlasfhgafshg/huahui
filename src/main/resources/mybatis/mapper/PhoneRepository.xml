@@ -7,7 +7,7 @@
 
     <select id="todayData" resultType="java.util.Map">
         select 客流, 人头, 实操数, 项目数, ifnull(convert(actualmoney / 客流,decimal(10,2)), 0) as 客人单价, cash 现金
-        from (select 1 id, count(customer) as 客流, count(distinct customer) as 人头, count(customer) 项目数
+        from (select 1 id, count(customer) as 客流, count(distinct customer) as 人头, count(distinct projectname) 项目数
               from settlementnew
               where DATE_FORMAT(createtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') and shopid=#{shopid}) a
                left join(
@@ -25,7 +25,7 @@
 
     <select id="todayData_staff" resultType="java.util.Map">
           select 客流, 人头, 实操数, 项目数, ifnull(convert(actualmoney / 客流,decimal(10,2)), 0) as 客人单价, cash 现金
-        from (select 1 id, count(customer) as 客流, count(distinct customer) as 人头, count(customer) 项目数
+        from (select 1 id, count(customer) as 客流, count(distinct customer) as 人头, count(distinct projectname) 项目数
               from settlementnew
               where DATE_FORMAT(createtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') and shopid=#{shopid}
               and beautician1=#{shopid} or beautician2=#{shopid} or beautician3=#{shopid} or beautician4=#{shopid} or consultant=#{staffname}) a
