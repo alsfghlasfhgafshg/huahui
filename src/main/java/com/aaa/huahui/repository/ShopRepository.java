@@ -5,6 +5,7 @@ import com.aaa.huahui.model.Staff;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Mapper
 public interface ShopRepository {
@@ -28,8 +29,12 @@ public interface ShopRepository {
     @Select("select * from shop where brandid=#{brandid}")
     ArrayList<Shop> selectAllShop(@Param("brandid") int brandid);
 
+    @Select("select user.name,shop.* from shop,user where shopid=id and shopid=#{shopid}")
+    HashMap<String, Object> selectOneShop(@Param("shopid") int shopid);
+
     @Select("select * from shop where shopid=#{shopid}")
     Shop selectById(@Param("shopid") int shopid);
+
 
     @Select("select count(*) from shop where shopid=#{shopid} and brandid=#{brandid}")
     int selectCountBrandShop(@Param("shopid") int shopid, @Param("brandid") int brandid);

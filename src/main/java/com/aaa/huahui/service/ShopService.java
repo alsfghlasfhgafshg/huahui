@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Service
 public class ShopService {
@@ -41,6 +42,10 @@ public class ShopService {
 
     public Shop selectOneShop(int shopid){
         return shopRepository.selectById(shopid);
+    }
+
+    public HashMap<String, Object> selectOneShopWithName(int shopid){
+        return shopRepository.selectOneShop(shopid);
     }
 
 
