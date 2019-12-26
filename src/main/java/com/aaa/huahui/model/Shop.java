@@ -68,6 +68,13 @@ public class Shop {
     public String getGeo() {
         return geo;
     }
+    public String getAllGeo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(province);
+        sb.append(city);
+        sb.append(district);
+        return sb.toString();
+    }
 
     public void setGeo(String geo) {
         this.geo = geo;

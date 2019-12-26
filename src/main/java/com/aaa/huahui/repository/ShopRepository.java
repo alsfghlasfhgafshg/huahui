@@ -5,6 +5,7 @@ import com.aaa.huahui.model.Staff;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Mapper
 public interface ShopRepository {
@@ -16,7 +17,7 @@ public interface ShopRepository {
     int insertShop(@Param("shopid") int shopid,
                    @Param("province") String province, @Param("city") String city, @Param("district") String district, @Param("geo") String geo,
                    @Param("controller")String controller,@Param("phoneOrWechat")String phoneOrWechat,@Param("mianji")String mianji,@Param("mainProject")String mainProject,
-                   @Param("rooms")Integer rooms,@Param("rent")String rent,@Param("beds")Integer beds,@Param("single")String single,
+                   @Param("rooms")String rooms,@Param("rent")String rent,@Param("beds")String beds,@Param("single")String single,
                    @Param("brandid") int brandid);
 
     @Update("update shop set geo=#{geo},province=#{province},city=#{city},district=#{district},controller=#{controller},phoneOrWechat=#{phoneOrWechat},mianji=#{mianji},mainProject=#{mainProject},rooms=#{rooms},rent=#{rent},beds=#{beds},single=#{single} where shopid=#{shopid}")
@@ -28,8 +29,12 @@ public interface ShopRepository {
     @Select("select * from shop where brandid=#{brandid}")
     ArrayList<Shop> selectAllShop(@Param("brandid") int brandid);
 
+    @Select("select user.name,shop.* from shop,user where shopid=id and shopid=#{shopid}")
+    HashMap<String, Object> selectOneShop(@Param("shopid") int shopid);
+
     @Select("select * from shop where shopid=#{shopid}")
     Shop selectById(@Param("shopid") int shopid);
+
 
     @Select("select count(*) from shop where shopid=#{shopid} and brandid=#{brandid}")
     int selectCountBrandShop(@Param("shopid") int shopid, @Param("brandid") int brandid);

@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/shop")
@@ -79,7 +81,7 @@ public class ShopController {
             temp.put("beds", shop.getBeds());
             temp.put("single", shop.getSingle());
             temp.put("shopid", shop.getShopid());
-            temp.put("geo", shop.getGeo());
+            temp.put("geo", shop.getAllGeo());
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
@@ -97,9 +99,9 @@ public class ShopController {
                         @RequestParam("phoneOrWechat") String phoneOrWechat,
                         @RequestParam("mianji") String mianji,
                         @RequestParam("mainproject") String mainproject,
-                        @RequestParam("rooms") Integer rooms,
+                        @RequestParam("rooms") String rooms,
                         @RequestParam("rent") String rent,
-                        @RequestParam("beds") Integer beds,
+                        @RequestParam("beds") String beds,
                         @RequestParam("single") String single,
                         @RequestParam(value = "province", defaultValue = "") String province,
                         @RequestParam(value = "city", defaultValue = "") String city,
@@ -159,6 +161,19 @@ public class ShopController {
         return reobject;
 
     }
+
+    @GetMapping("/oneshop")
+    @PreAuthorize("hasRole('ROLE_BRAND')")
+    public @ResponseBody
+    JSONObject selectOneShop(@RequestParam("shopid") int shopid){
+        JSONObject jsonObject = new JSONObject();
+        HashMap<String, Object> map  = shopService.selectOneShopWithName(shopid);
+        for (Map.Entry<String, Object> entry:map.entrySet()){
+            jsonObject.put(entry.getKey(),entry.getValue());
+        }
+        return ResponseGenerate.genSuccessResponse(jsonObject);
+    }
+
 
     //删除shop
     @PostMapping("/deleteshop")
