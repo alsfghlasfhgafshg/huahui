@@ -44,12 +44,15 @@ public class Settlement_newController {
     StaffService staffService;
 
     @GetMapping("/dayslaststoshop")
-    @PreAuthorize("hasRole('ROLE_SHOP')")
+    @PreAuthorize("hasRole('ROLE_REPORTER')")
     public JSONObject dayslaststoshop(UsernamePasswordAuthenticationToken token,
                                       @RequestParam("customer") String customer) {
-        int shopid = ((User) token.getPrincipal()).getId();
 
-        int day = settlement_newRepository.dayslaststoshop(customer, shopid);
+        int staffid = ((User) token.getPrincipal()).getId();
+
+        Integer integer = staffRepository.selectShopidByReporterid(staffid);
+
+        int day = settlement_newRepository.dayslaststoshop(customer, integer);
         JSONObject data = new JSONObject();
         data.put("day", day);
         return ResponseGenerate.genSuccessResponse(data);
@@ -193,6 +196,7 @@ public class Settlement_newController {
                                     @RequestParam(value = "checker", required = false) String checker,
                                     @RequestParam("createtime") String time) {
 
+        checker=((User) token.getPrincipal()).getName();
         int reporterid = ((User) token.getPrincipal()).getId();
         Integer shopid = staffService.findShopidByRerporterId(reporterid);
         if (shopid == null) {
