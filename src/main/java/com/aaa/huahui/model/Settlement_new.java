@@ -23,13 +23,19 @@ public class Settlement_new {
     private String cardcategory;
     private String consultant;
     private String checker;
+    private String courses;
     private Timestamp createtime;
     private int examine;
 
     public Settlement_new() {
     }
 
-    public Settlement_new(int shopid, String customer, String classify, String category, String brandname, String projectname, int times, int hand, double money, String consumptioncategory, String consumptionpattern, String allocate, int beautician1, int beautician2, String cardcategory, String consultant, String checker, Timestamp createtime,int beautician3,int beautician4) {
+    public Settlement_new(int shopid, String customer, String classify, String category,
+                          String brandname, String projectname, int times, int hand, double money,
+                          String consumptioncategory, String consumptionpattern, String allocate,
+                          int beautician1, int beautician2, String cardcategory, String consultant,
+                          String checker, Timestamp createtime,int beautician3,int beautician4,String courses) {
+
         this.shopid = shopid;
         this.customer = customer;
         this.classify = classify;
@@ -50,6 +56,7 @@ public class Settlement_new {
         this.consultant = consultant;
         this.checker = checker;
         this.createtime = createtime;
+        this.courses=courses;
     }
 
     public Integer getBeautician3() {

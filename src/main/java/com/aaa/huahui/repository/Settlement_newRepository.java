@@ -12,10 +12,10 @@ public interface Settlement_newRepository {
 
     @Insert("insert into settlementnew (shopid,customer,classify,category,brandname,projectname,times,hand,money," +
             "consumptioncategory,consumptionpattern" +
-            ",allocate,beautician1,beautician2,beautician3,beautician4,cardcategory,consultant,checker,createtime) " +
+            ",allocate,beautician1,beautician2,beautician3,beautician4,cardcategory,consultant,checker,createtime,courses) " +
             "values(#{shopid},#{customer},#{classify},#{category},#{brandname},#{projectname}," +
             "#{times},#{hand},#{money},#{consumptioncategory},#{consumptionpattern},#{allocate},#{beautician1}," +
-            "#{beautician2},#{beautician3},#{beautician4},#{cardcategory},#{consultant},#{checker},#{createtime})")
+            "#{beautician2},#{beautician3},#{beautician4},#{cardcategory},#{consultant},#{checker},#{createtime},#{courses})")
     @Options(useGeneratedKeys = true, keyProperty = "settlementid")
     int addSettlement(Settlement_new settlement_new);
 

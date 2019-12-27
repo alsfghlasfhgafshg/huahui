@@ -43,6 +43,7 @@ public class Settlement_newController {
     @Autowired
     StaffService staffService;
 
+
     @GetMapping("/dayslaststoshop")
     @PreAuthorize("hasRole('ROLE_REPORTER')")
     public JSONObject dayslaststoshop(UsernamePasswordAuthenticationToken token,
@@ -59,21 +60,20 @@ public class Settlement_newController {
     }
 
     @GetMapping("/projectremainingtimes")
-    @PreAuthorize("hasRole('ROLE_SHOP')")
+    @PreAuthorize("hasRole('ROLE_REPORTER')")
     public JSONObject projectRemainingTimes(UsernamePasswordAuthenticationToken token,
                                             @RequestParam("customer") String customer,
                                             @RequestParam("projectname") String projectname) {
-        int shopid = ((User) token.getPrincipal()).getId();
+        int staffid = ((User) token.getPrincipal()).getId();
+        Integer shopid = staffRepository.selectShopidByReporterid(staffid);
 
         int projectremainingtimes = settlement_newRepository.projectremainingtimes(customer, projectname, shopid);
         if (projectremainingtimes >= 0) {
             JSONObject data = new JSONObject();
             data.put("remainingtimes", projectremainingtimes);
             return ResponseGenerate.genSuccessResponse(data);
-        } else if (projectremainingtimes == -1) {
-            return ResponseGenerate.genFailResponse(1, "顾客没有购买此项目");
         } else if (projectremainingtimes == -2) {
-            return ResponseGenerate.genFailResponse(1, "顾客未消费过此项目");
+            return ResponseGenerate.genFailResponse(1, "顾客未购买过此项目");
         } else {
             return ResponseGenerate.genFailResponse(1, "错误");
         }
@@ -194,9 +194,10 @@ public class Settlement_newController {
                                     @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                     @RequestParam(value = "consultant", required = false) String consultant,
                                     @RequestParam(value = "checker", required = false) String checker,
+                                    @RequestParam(value = "courses", required = false, defaultValue = "0") String courses,
                                     @RequestParam("createtime") String time) {
 
-        checker=((User) token.getPrincipal()).getName();
+        checker = ((User) token.getPrincipal()).getName();
         int reporterid = ((User) token.getPrincipal()).getId();
         Integer shopid = staffService.findShopidByRerporterId(reporterid);
         if (shopid == null) {
@@ -207,7 +208,7 @@ public class Settlement_newController {
 
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
-                consultant, checker, createtime, beautician3, beautician4);
+                consultant, checker, createtime, beautician3, beautician4, courses);
         if (settlement_newService.addSettlement(settlement_new)) {
             return ResponseGenerate.genSuccessResponse("添加成功");
         } else {
