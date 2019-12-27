@@ -149,10 +149,16 @@ public class ShopController {
                            @RequestParam(value = "province", defaultValue = "") String province,
                            @RequestParam(value = "city", defaultValue = "") String city,
                            @RequestParam(value = "district", defaultValue = "") String district,
-                           @RequestParam(value = "geo", defaultValue = "") String geo) {
+                           @RequestParam(value = "geo", defaultValue = "") String geo,
+                           @RequestParam("editpassword") String editpassword) {
         JSONObject reobject = new JSONObject();
         int brandid = ((User) token.getPrincipal()).getId();
         boolean result = shopService.updateShopInfo(brandid,shopid,geo,province, city, district, controller,phoneOrWechat,mianji,mainproject,rooms,rent,beds,single);
+        if (editpassword!=null){
+            if (!userService.changePasswordByUserid(shopid,editpassword)){
+                return ResponseGenerate.genFailResponse(1,"修改密码失败");
+            }
+        }
         if (result == true) {
             reobject = ResponseGenerate.genSuccessResponse("修改成功");
             return reobject;

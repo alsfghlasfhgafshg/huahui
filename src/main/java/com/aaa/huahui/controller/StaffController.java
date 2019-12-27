@@ -206,12 +206,19 @@ public class StaffController {
                            @RequestParam(value = "p2male", required = false, defaultValue = "0") int p2male,
                            @RequestParam(value = "p2company", required = false, defaultValue = "无") String p2company,
                            @RequestParam(value = "p2relationship", required = false, defaultValue = "无") String p2relationship,
+                           @RequestParam(value = "editpassword",required = false)String editpassword,
                            UsernamePasswordAuthenticationToken token) {
         Timestamp birthday = DateUtils.getTimeStampEnd(birth);
 
         User user = (User) token.getPrincipal();
         if (user.getId() != staffService.selectOneStaff(staffid).getShopid()) {
             return ResponseGenerate.genFailResponse(1, "not be permitted");
+        }
+
+        if (editpassword!=null){
+            if (!userService.changePasswordByUserid(staffid,editpassword)){
+                return ResponseGenerate.genFailResponse(1,"修改密码失败");
+            }
         }
         Staff originStaff = staffService.selectOneStaff(staffid);
         originStaff.setName(name);
