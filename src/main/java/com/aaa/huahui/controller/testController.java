@@ -1,11 +1,13 @@
 package com.aaa.huahui.controller;
 
+import com.aaa.huahui.config.ScheduleWxPush;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.model.WxOpenidChargerName;
 import com.aaa.huahui.service.FileService;
 import com.aaa.huahui.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +26,16 @@ public class testController {
 
     @Autowired
     FileService fileService;
+
+    @Autowired
+    ScheduleWxPush scheduleWxPush;
+
+    @GetMapping("/testwxpush")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String execWxPush(){
+        scheduleWxPush.configTask();
+        return "exec";
+    }
 
     @GetMapping("/aaaa")
     public String asdfasdfadsf(){
