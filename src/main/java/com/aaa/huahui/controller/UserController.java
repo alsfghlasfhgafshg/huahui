@@ -231,7 +231,7 @@ public class UserController {
         User principal = null;
         if (openid != null) {
             principal = wxService.openid2User(openid);
-        } else {
+        } else if (token != null) {
             principal = ((User) token.getPrincipal());
         }
 

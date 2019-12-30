@@ -20,7 +20,7 @@ public interface ShopRepository {
                    @Param("rooms")String rooms,@Param("rent")String rent,@Param("beds")String beds,@Param("single")String single,
                    @Param("brandid") int brandid);
 
-    @Update("update shop set geo=#{geo},province=#{province},city=#{city},district=#{district},controller=#{controller},phoneOrWechat=#{phoneOrWechat},mianji=#{mianji},mainProject=#{mainProject},rooms=#{rooms},rent=#{rent},beds=#{beds},single=#{single} where shopid=#{shopid}")
+    @Update("update shop set geo=#{geo},province=#{province},city=#{city},district=#{district},controller=#{controller},phoneOrWechat=#{phoneOrWechat},mianji=#{mianji},mainProject=#{mainProject},rooms=#{rooms},controller=#{controller},rent=#{rent},beds=#{beds},single=#{single} where shopid=#{shopid}")
     int updateShopInfo(@Param("shopid") int shopid, @Param("geo")String geo,@Param("province")String province,@Param("city")String city,@Param("district")String district,@Param("controller")String controller,@Param("phoneOrWechat")String phoneOrWechat,@Param("mianji")String mianji,@Param("mainProject")String mainProject,@Param("rooms")Integer rooms,@Param("rent")String rent,@Param("beds")Integer beds,@Param("single")String single);
 
     @Select("select shopid from shop where brandid=#{brandid}")

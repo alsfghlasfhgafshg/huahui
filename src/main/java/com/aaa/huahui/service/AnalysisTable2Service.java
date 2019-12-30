@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AnalysisTable2Service {
@@ -153,27 +154,67 @@ public class AnalysisTable2Service {
     //项目分析表
     public JSONObject projectAnalysis(int shopid, Timestamp from, Timestamp to, int fenxi, Integer staffid, String staffname) {
 
-        List<ProjectTableVO> beauty = null;
-        List<ProjectTableVO> body = null;
-        List<ProjectTableVO> product = null;
+        List<ProjectTableVO> beautycount = null;
+        List<ProjectTableVO> bodycount = null;
+        List<ProjectTableVO> productcount = null;
+
+        List<ProjectTableVO> beautymoney = null;
+        List<ProjectTableVO> bodymoney = null;
+        List<ProjectTableVO> productmoney = null;
+
         if (fenxi == CONSULTANT_OR_BEAUTICIAN_TABLE) {
-            beauty = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
-            body = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
-            product = analysisTable2Repository.categoryAnalysis(shopid, from, to, "产品", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
+            beautymoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
+            beautycount = beautymoney.stream().sorted((p1, p2) -> {
+                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+            }).collect(Collectors.toList());
+
+            bodymoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
+
+            bodycount = bodymoney.stream().sorted((p1, p2) -> {
+                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+            }).collect(Collectors.toList());
+
+            productmoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "产品", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
+            productcount = productmoney.stream().sorted((p1, p2) -> {
+                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+            }).collect(Collectors.toList());
         } else {
-            beauty = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容", null, null, null);
-            body = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体", null, null, null);
-            product = analysisTable2Repository.categoryAnalysis(shopid, from, to, "产品", null, null, null);
+            beautymoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容", null, null, null);
+            beautycount = beautymoney.stream().sorted((p1, p2) -> {
+                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+            }).collect(Collectors.toList());
+
+
+            bodymoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体", null, null, null);
+            bodycount = bodymoney.stream().sorted((p1, p2) -> {
+                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+            }).collect(Collectors.toList());
+
+
+            productmoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "产品", null, null, null);
+            productcount = productmoney.stream().sorted((p1, p2) -> {
+                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+            }).collect(Collectors.toList());
+
         }
 
-        calculateTotalCategory(beauty);
-        calculateTotalCategory(body);
-        calculateTotalCategory(product);
+        calculateTotalCategory(beautycount);
+        calculateTotalCategory(bodycount);
+        calculateTotalCategory(productcount);
+
+        calculateTotalCategory(beautymoney);
+        calculateTotalCategory(bodymoney);
+        calculateTotalCategory(productmoney);
 
         JSONObject j = new JSONObject();
-        j.put("beauty", beauty);
-        j.put("body", body);
-        j.put("product", product);
+
+        j.put("beautycount", beautycount);
+        j.put("bodycount", bodycount);
+        j.put("productcount", productcount);
+
+        j.put("beautymoney", beautymoney);
+        j.put("bodymoney", bodymoney);
+        j.put("productmoney", productmoney);
 
         return j;
     }
@@ -311,7 +352,7 @@ public class AnalysisTable2Service {
     public JSONObject beauticiantAnalysisController(UsernamePasswordAuthenticationToken token,
                                                     Integer shopid, String beauticianname,
                                                     String startTime, String endTime) {
-        int id= 0;
+        int id = 0;
         User user = (User) token.getPrincipal();
 
         //brand的话看是哪个店,shop的话只能当前店
@@ -325,12 +366,12 @@ public class AnalysisTable2Service {
                 return j;
             }
             id = shopid;
-        } else if (user.hasRole(ROLE.SHOP)){
+        } else if (user.hasRole(ROLE.SHOP)) {
             id = user.getId();
-        }else if (user.hasRole(ROLE.STAFF)){
+        } else if (user.hasRole(ROLE.STAFF)) {
             id = staffRepository.queryShopIdByStaffId(user.getId());
             beauticianname = staffRepository.findNameByStaffid(user.getId()).get();
-        }else{
+        } else {
             return null;
         }
 
@@ -338,10 +379,10 @@ public class AnalysisTable2Service {
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
         JSONObject data = beauticiantAnalysis(id, start, end, beauticianname);
-        JSONObject date=new JSONObject();
-        date.put("starttime",startTime);
-        date.put("endtime",endTime);
-        data.put("date",date);
+        JSONObject date = new JSONObject();
+        date.put("starttime", startTime);
+        date.put("endtime", endTime);
+        data.put("date", date);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
@@ -377,10 +418,10 @@ public class AnalysisTable2Service {
         Timestamp end = DateUtils.getTimeStampEnd(endTime);
 
         JSONObject data = consultantAnalysis(id, start, end, consultantname);
-        JSONObject date=new JSONObject();
-        date.put("starttime",startTime);
-        date.put("endtime",endTime);
-        data.put("date",date);
+        JSONObject date = new JSONObject();
+        date.put("starttime", startTime);
+        date.put("endtime", endTime);
+        data.put("date", date);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
@@ -416,10 +457,10 @@ public class AnalysisTable2Service {
         } else {
             return null;
         }
-        JSONObject date=new JSONObject();
-        date.put("starttime",startTime);
-        date.put("endtime",endTime);
-        data.put("date",date);
+        JSONObject date = new JSONObject();
+        date.put("starttime", startTime);
+        date.put("endtime", endTime);
+        data.put("date", date);
 
         JSONObject j = ResponseGenerate.genSuccessResponse(data);
         return j;
