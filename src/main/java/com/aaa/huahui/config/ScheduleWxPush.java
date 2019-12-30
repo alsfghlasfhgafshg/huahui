@@ -124,14 +124,14 @@ public class ScheduleWxPush {
         firstData.put("value", "尊敬的" + username + ", " + wxFirst);
 
         JSONObject keyword1 = new JSONObject();
-        firstData.put("value", "点击查看");
+        keyword1.put("value", "点击查看");
 
         JSONObject keyword2 = new JSONObject();
-        firstData.put("value", "今日");
+        keyword2.put("value", "今日");
 
         data.put("first", firstData);
-        data.put("keyword1", firstData);
-        data.put("keyword2", firstData);
+        data.put("keyword1", keyword1);
+        data.put("keyword2", keyword2);
 
         Template t = new Template();
         t.setUrl(wx_template_redirect);
