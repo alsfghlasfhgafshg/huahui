@@ -76,10 +76,11 @@ public class DataImportService {
 
 
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+            System.out.println(i);
             if (errors.size() != 0) {
                 StringBuilder error = new StringBuilder();
                 for (String s : errors) {
-                    error.append(s + "<br>");
+                    error.append(s + " ");
                 }
                 throw new RuntimeException(error.toString());
             }
@@ -87,6 +88,7 @@ public class DataImportService {
             Row temprow = sheet.getRow(i);
             int cellnum = 1;
             for (Cell cell : temprow) {
+
                 String stringCellValue = null;
                 try {
                     stringCellValue = cell.getStringCellValue();
@@ -94,8 +96,18 @@ public class DataImportService {
                     stringCellValue = String.valueOf(cell.getNumericCellValue());
                 }
                 if (lineColumnName.get(cellnum).equals("日期")) {
-                    Timestamp timestamp = new Timestamp(cell.getDateCellValue().getTime());
-                    stringCellValue = DateUtils.formatTimeStrap(timestamp);
+                    if (cell.toString().equals("")) {
+                        settlement_new = null;
+                        continue;
+                    } else {
+                        try {
+                            Timestamp timestamp = new Timestamp(cell.getDateCellValue().getTime());
+                            stringCellValue = DateUtils.formatTimeStrap(timestamp);
+                        } catch (Exception e) {
+                            errors.add("第" + (i + 1) + "行：时间格式错误");
+                        }
+                    }
+
                 }
                 try {
                     setValue(settlement_new, lineColumnName, cellnum++, stringCellValue, i, errors, user);
@@ -120,11 +132,13 @@ public class DataImportService {
     @Transactional
     public void insertIntoDb(ArrayList<Settlement_new> settlements) {
         for (Settlement_new settlement : settlements) {
-            settlement_newService.addSettlement(settlement);
+            if (!(settlement.getCustomer() == null || settlement.getCustomer().equals(""))) {
+                settlement_newService.addSettlement(settlement);
+            }
         }
-        int a=1;
+        int a = 1;
         for (Settlement_new settlement : settlements) {
-            settlement_newService.examine(settlement.getSettlementid(),1);
+            settlement_newService.examine(settlement.getSettlementid(), 1);
         }
 
     }
@@ -152,7 +166,7 @@ public class DataImportService {
 
 
         switch (s) {
-            case "店名":
+            case "店铺名":
 
                 if (cellValue.equals("")) {
                     throw new ShopNullException();
