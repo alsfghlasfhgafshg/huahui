@@ -3,6 +3,8 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.*;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,6 +17,9 @@ public class WxService {
 
     String appid;
     String appsecret;
+
+    Logger logger = LoggerFactory.getLogger(WxService.class);
+
 
     @Autowired
     WxUserRepository wxUserRepository;
@@ -61,7 +66,7 @@ public class WxService {
         String response = restTemplate.getForObject(url, String.class);
 
         JSONObject jsonObject = JSONObject.parseObject(response);
-
+        logger.info("code2OpenidAndAccessToken：" + jsonObject.toJSONString());
         return jsonObject;
     }
 
@@ -72,6 +77,7 @@ public class WxService {
         String response = restTemplate.getForObject(url, String.class);
         JSONObject jsonObject = JSONObject.parseObject(response);
         System.out.println(jsonObject.getString("access_token"));
+        logger.info("appidAppSecert2AccessToken：" + jsonObject.toJSONString());
         return jsonObject;
     }
 
@@ -85,6 +91,7 @@ public class WxService {
 
         String response = restTemplate.getForObject(url, String.class);
         JSONObject jsonObject = JSONObject.parseObject(response);
+        logger.info("当前菜单：" + jsonObject.toJSONString());
 
         return jsonObject.getJSONObject("selfmenu_info");
     }
@@ -95,6 +102,7 @@ public class WxService {
 
         String response = restTemplate.getForObject(url, String.class);
         JSONObject jsonObject = JSONObject.parseObject(response);
+        logger.info("createMenu：" + jsonObject.toJSONString());
 
         if (jsonObject.getInteger("errcode") == 0) {
             return true;
@@ -126,6 +134,8 @@ public class WxService {
 
         String response = restTemplate.getForObject(url, String.class);
         JSONObject jsonObject = JSONObject.parseObject(response);
+        logger.info("code2Openid：" + jsonObject.toJSONString());
+
         return jsonObject.getString("openid");
     }
 
