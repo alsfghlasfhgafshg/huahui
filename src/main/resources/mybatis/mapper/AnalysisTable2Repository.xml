@@ -489,7 +489,7 @@
             and ((beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid}) or (consultant=#{consultantname} ))
         </if>
       group by projectname,customer,consumptioncategory
-        ) t2 on t.name = t2.name
+        ) t2 on t.name = t2.name order by summoney desc
 
     </select>
 

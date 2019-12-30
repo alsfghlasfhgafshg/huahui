@@ -165,35 +165,35 @@ public class AnalysisTable2Service {
         if (fenxi == CONSULTANT_OR_BEAUTICIAN_TABLE) {
             beautymoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
             beautycount = beautymoney.stream().sorted((p1, p2) -> {
-                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+                return new Double(p2.getSumcount() - p1.getSumcount()).intValue();
             }).collect(Collectors.toList());
 
             bodymoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
 
             bodycount = bodymoney.stream().sorted((p1, p2) -> {
-                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+                return new Double(p2.getSumcount() - p1.getSumcount()).intValue();
             }).collect(Collectors.toList());
 
             productmoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "产品", staffid, staffname, AnalysisTable2Repository.CONDITION_CONSULTANT_OR_BEAUTICIAN);
             productcount = productmoney.stream().sorted((p1, p2) -> {
-                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+                return new Double(p2.getSumcount() - p1.getSumcount()).intValue();
             }).collect(Collectors.toList());
         } else {
             beautymoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美容", null, null, null);
             beautycount = beautymoney.stream().sorted((p1, p2) -> {
-                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+                return new Double(p2.getSumcount() - p1.getSumcount()).intValue();
             }).collect(Collectors.toList());
 
 
             bodymoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "美体", null, null, null);
             bodycount = bodymoney.stream().sorted((p1, p2) -> {
-                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+                return new Double(p2.getSumcount() - p1.getSumcount()).intValue();
             }).collect(Collectors.toList());
 
 
             productmoney = analysisTable2Repository.categoryAnalysis(shopid, from, to, "产品", null, null, null);
             productcount = productmoney.stream().sorted((p1, p2) -> {
-                return new Double(p1.getSummoney() - p2.getSummoney()).intValue();
+                return new Double(p2.getSumcount() - p1.getSumcount()).intValue();
             }).collect(Collectors.toList());
 
         }
