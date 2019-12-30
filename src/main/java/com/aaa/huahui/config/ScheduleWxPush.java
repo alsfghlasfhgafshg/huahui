@@ -89,7 +89,8 @@ public class ScheduleWxPush {
         JSONObject jsonObject = wxService.appidSecert2AccessToken();
         String accesstoken = null;
 
-        if (jsonObject.getInteger("errcode") != 0) {
+        if (jsonObject.containsKey("errcode")&&jsonObject.getInteger("errcode") != 0) {
+            logger.error("wx push err");
             return;
         } else {
             accesstoken = jsonObject.getString("access_token");
