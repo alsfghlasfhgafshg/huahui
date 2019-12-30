@@ -135,7 +135,7 @@ public class AdminController {
                         @RequestParam("repeatbrandpasswd") String repeatpassword,
                         @RequestParam("controller")String controller,
                         @RequestParam("description") String description,
-                        @RequestParam("img") MultipartFile file) {
+                        @RequestParam(value = "img",required = false) MultipartFile file) {
         JSONObject responsejson = new JSONObject();
         JSONArray msgs = new JSONArray();
 
