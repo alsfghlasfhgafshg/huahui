@@ -85,6 +85,7 @@ public class ScheduleWxPush {
     //每天18点推送
     @Scheduled(cron = "0 0 18 * * ?")
     public void configTask() {
+        logger.info("exec wx push");
         JSONObject jsonObject = wxService.appidSecert2AccessToken();
         String accesstoken = null;
 
