@@ -89,7 +89,7 @@ public class ScheduleWxPush {
         JSONObject jsonObject = wxService.appidSecert2AccessToken();
         String accesstoken = null;
 
-        if (jsonObject.containsKey("errcode")&&jsonObject.getInteger("errcode") != 0) {
+        if (jsonObject.containsKey("errcode") && jsonObject.getInteger("errcode") != 0) {
             logger.error("wx push err");
             return;
         } else {
@@ -122,13 +122,21 @@ public class ScheduleWxPush {
         JSONObject data = new JSONObject();
         JSONObject firstData = new JSONObject();
         firstData.put("value", "尊敬的" + username + ", " + wxFirst);
+
+        JSONObject keyword1 = new JSONObject();
+        firstData.put("value", "点击查看");
+
+        JSONObject keyword2 = new JSONObject();
+        firstData.put("value", "今日");
+
         data.put("first", firstData);
+        data.put("keyword1", firstData);
+        data.put("keyword2", firstData);
 
         Template t = new Template();
         t.setUrl(wx_template_redirect);
         t.setTemplate_id(wx_template_id);
         t.setData(data);
-        t.setTemplate_id("MnQoYC0yyNs97rJWYZalNl4CH5ijGV98qa1P6DNdRN0");
         t.setTouser(openid);
 
         String requestbody = JSONObject.toJSONString(t);
