@@ -11,6 +11,8 @@ import com.aaa.huahui.service.UserService;
 import com.aaa.huahui.service.WxService;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -58,18 +60,20 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @GetMapping("/me")
     public @ResponseBody
     JSONObject me(UsernamePasswordAuthenticationToken token) {
         User user = (User) token.getPrincipal();
         JSONObject re = new JSONObject();
-        if (user.hasRole("ROLE_SHOP")){
+        if (user.hasRole("ROLE_SHOP")) {
             String brandname = brandService.getBrandName(shopService.selectOneShop(user.getId()).getBrandid());
-            re.put("name",brandname+"-"+user.getName());
+            re.put("name", brandname + "-" + user.getName());
             re.put("user", ((User) token.getPrincipal()));
             return ResponseGenerate.genSuccessResponse(re);
-        }else{
-            re.put("name",user.getName());
+        } else {
+            re.put("name", user.getName());
             re.put("user", ((User) token.getPrincipal()));
             return ResponseGenerate.genSuccessResponse(re);
         }
@@ -220,20 +224,27 @@ public class UserController {
     @GetMapping("/wxlogin")
     public @ResponseBody
     JSONObject wxLogin(HttpServletRequest request,
-                       @RequestParam("code") String code, @RequestParam("state") String state) {
+                       @RequestParam("code") String code, @RequestParam("state") String state,
+                       UsernamePasswordAuthenticationToken token) {
+
         String openid = wxService.code2Openid(code);
-        User principal = wxService.openid2User(openid);
+        User principal = null;
+        if (openid != null) {
+            principal = wxService.openid2User(openid);
+        } else {
+            principal = ((User) token.getPrincipal());
+        }
 
         JSONObject jsonObject = new JSONObject();
 
         //如果用户从未登录
         if (principal == null) {
             HttpSession session = request.getSession();
-                session.setAttribute("openid", openid);
+            session.setAttribute("openid", openid);
 
             jsonObject.put("needlogin", true);
 
-        //如果用户已经微信登陆过
+            //如果用户已经微信登陆过
         } else {
             Object credentials = principal.getPassword();
             Collection<? extends GrantedAuthority> authorities = principal.getAuthorities();
@@ -243,6 +254,7 @@ public class UserController {
 
             jsonObject.put("needlogin", false);
         }
+        logger.info("wx login result" + jsonObject.toJSONString());
         return ResponseGenerate.genSuccessResponse("ok", jsonObject);
 
     }

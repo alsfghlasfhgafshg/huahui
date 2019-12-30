@@ -1,5 +1,6 @@
 package com.aaa.huahui.config.authenticationhandler;
 
+import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.WxService;
@@ -50,7 +51,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         HttpSession session = request.getSession();
         String openid = (String) session.getAttribute("openid");
-        if (openid != null) {
+        if (openid != null && user.hasRole(ROLE.ADMIN) == false) {
             wxService.saveWxUser(user, openid);
             session.removeAttribute("openid");
         }
