@@ -215,6 +215,9 @@
                    right join (
               select c.id, c.name
               from user c
+              where c.id in (select shopid
+                 from shop
+                 where brandid = #{brandid})
             ) cc on ca.shopid = cc.id
     </select>
 
