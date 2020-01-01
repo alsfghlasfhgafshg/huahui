@@ -502,6 +502,7 @@
             <result property="projectname" column="projectname"/>
             <result property="summoney" column="summoney"/>
             <result property="count" column="count"/>
+            <result property="allocate" column="allocate"/>
             <result property="sumhand" column="sumhand"/>
 
         </collection>
@@ -509,13 +510,13 @@
 
 
     <select id="beauticiantTableAnalysis" resultMap="BeauticianProjectVO">
-
         select staff.name name,
         settlementnew.createtime as time,
         settlementnew.projectname projectname,
         sum(money) summoney,
         count(projectname) count,
-        sum(hand) sumhand
+        sum(hand) sumhand,
+        settlementnew.allocate allocate
         from settlementnew
         inner join staff on (settlementnew.beautician1 = staff.staffid or settlementnew.beautician2 = staff.staffid or settlementnew.beautician3 = staff.staffid or settlementnew.beautician4 = staff.staffid)
         <if test="staffid!=-1">
@@ -532,8 +533,7 @@
 
         and settlementnew.createtime between #{from} and #{to}
         and settlementnew.shopid=#{shopid}
-        group by staff.staffid,createtime
-
+        group by staff.staffid,createtime,allocate;
     </select>
 
 

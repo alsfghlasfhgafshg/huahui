@@ -8,6 +8,7 @@ public class BeauticianProjectItemVO {
 
     Timestamp time;
     String projectname;
+    String allocate;
     long summoney;
     long count;
     long sumhand;
@@ -18,6 +19,15 @@ public class BeauticianProjectItemVO {
         } else {
             return DateUtils.formatTimeStrap(time);
         }
+    }
+
+
+    public String getAllocate() {
+        return allocate;
+    }
+
+    public void setAllocate(String allocate) {
+        this.allocate = allocate;
     }
 
     public void setTime(Timestamp time) {
@@ -59,11 +69,5 @@ public class BeauticianProjectItemVO {
     public BeauticianProjectItemVO() {
     }
 
-    public BeauticianProjectItemVO(Timestamp time, String projectname, long summoney, long count, long sumhand) {
-        this.time = time;
-        this.projectname = projectname;
-        this.summoney = summoney;
-        this.count = count;
-        this.sumhand = sumhand;
-    }
+
 }

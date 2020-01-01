@@ -55,8 +55,7 @@ public class DateTest {
         Timestamp from = DateUtils.getTimeStampStart(2019, 10, 01);
         Timestamp to = DateUtils.getTimeStampEnd(2019, 11, 01);
 
-        List<Map> maps = settlementRepository.selectCategory2SumCountAndSumPrice(12, from, to);
-        Assert.assertTrue(true);
+
 
     }
 }
