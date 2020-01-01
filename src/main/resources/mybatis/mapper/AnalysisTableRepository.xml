@@ -191,7 +191,7 @@
     <select id="getBrandData" resultType="java.util.HashMap">
             select cc.name, IFNULL(ca.times,0) times,IFNULL(ca.xianjin,0) xianjin,IFNULL(ca.shicao,0) shicao,IFNULL(ca.rentou,0) rentou
             from (
-                   select count(times) times, sum(money) xianjin, sum(money1) shicao, count(distinct customer) rentou, shopid
+                   select sum(times) times, sum(money) xianjin, sum(money1) shicao, count(distinct customer) rentou, shopid
                    from (
                           select times, money, '0' as money1, shopid,customer
                           from settlementnew
@@ -215,6 +215,9 @@
                    right join (
               select c.id, c.name
               from user c
+              where c.id in (select shopid
+                 from shop
+                 where brandid = #{brandid})
             ) cc on ca.shopid = cc.id
     </select>
 
