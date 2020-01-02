@@ -297,8 +297,38 @@
 
     <select id="statisticsPeople" resultType="com.aaa.huahui.vo.CustomerVO">
 
-    select count(distinct customer) "distinctcustomer", count(customer) "customer"
-    from settlementnew
+    select count(distinct customer) "distinctcustomer",
+
+        <if test="condition!='beautician'">
+            count(customer) "customer"
+        </if>
+        <if test="condition=='beautician'">
+
+            (select count(*)
+            from (
+            select distinct customer, createtime, beautician1 beautician
+            from settlementnew
+            where (shopid = #{shopid} and beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
+            beautician4 = #{beauticianid})
+            union
+            select customer, createtime, beautician2 beautician
+            from settlementnew
+            where (shopid = #{shopid} and beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
+            beautician4 = #{beauticianid})
+            union
+            select customer, createtime, beautician3 beautician
+            from settlementnew
+            where (shopid = #{shopid} and beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
+            beautician4 = #{beauticianid})
+            union
+            select customer, createtime, beautician4 beautician
+            from settlementnew
+            where (shopid = #{shopid} and beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
+            beautician4 = #{beauticianid})
+            ) ttt
+            where beautician is not null) as "customer"
+        </if>
+        from settlementnew
     where shopid = #{shopid}
       and createtime between #{from} and #{to}
         <if test="condition=='beautician'">

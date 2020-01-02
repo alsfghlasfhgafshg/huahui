@@ -101,7 +101,7 @@ public class DataImportService {
                         continue;
                     } else {
                         try {
-                            Timestamp timestamp = new Timestamp(cell.getDateCellValue().getTime());
+                            Timestamp timestamp = new Timestamp(cell.getDateCellValue().getTime() + 28800000);
                             stringCellValue = DateUtils.formatTimeStrap(timestamp);
                         } catch (Exception e) {
                             errors.add("第" + (i + 1) + "行：时间格式错误");

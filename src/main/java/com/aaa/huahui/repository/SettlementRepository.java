@@ -61,7 +61,7 @@ public interface SettlementRepository {
     int sumPriceByPayMentMethod(@Param("shopid") int shopid, @Param("paymentmethod") int paymentmethod, @Param("from") Timestamp from, @Param("to") Timestamp to);
 
 
-    @Select("select count(distinct customername) from settlement where shopid=#{shopid}")
+    @Select("select count(distinct customer) from settlementnew where shopid=#{shopid}")
     int selectCountShopCustomer(@Param("shopid")int shopid);
 
     //2

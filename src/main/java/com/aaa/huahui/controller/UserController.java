@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -257,6 +258,21 @@ public class UserController {
         logger.info("wx login result" + jsonObject.toJSONString());
         return ResponseGenerate.genSuccessResponse("ok", jsonObject);
 
+    }
+
+    @GetMapping("/changeprincipal")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody String toShopAuth(UsernamePasswordAuthenticationToken token,
+                                               @RequestParam("id")int id,
+                                               HttpServletResponse response){
+        //更改权限
+        User principal = userService.queryUser(id);
+        Object credentials = principal.getPassword();
+        Collection<? extends GrantedAuthority> authorities = principal.getAuthorities();
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(principal, credentials, authorities);
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+        return "change role";
     }
 
 }
