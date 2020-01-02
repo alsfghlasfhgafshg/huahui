@@ -166,7 +166,7 @@ public class DataImportService {
 
 
         switch (s) {
-            case "店铺名":
+            case "店名":
 
                 if (cellValue.equals("")) {
                     throw new ShopNullException();
