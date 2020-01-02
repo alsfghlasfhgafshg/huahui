@@ -245,6 +245,7 @@ public class AnalysisTable2Service {
 
         BeauticianProjectItemVO sumitem = new BeauticianProjectItemVO();
         sumitem.setProjectname("");
+        sumitem.setAllocate("");
         sumitem.setTime(new Timestamp(0));
         sumitem.setCount(0);
         sumitem.setSumhand(0);
