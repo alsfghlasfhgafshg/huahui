@@ -40,19 +40,19 @@ public class AnalysisTableService {
     StaffService staffService;
 
 
-    public ArrayList<CustomerHandsVO> customerHandsVOS(String customer, int shopid, Timestamp startTime, Timestamp endTime,int staffid,String consultant) {
+    public ArrayList<CustomerHandsVO> customerHandsVOS(String customer, int shopid, String startTime, String endTime, int staffid, String consultant) {
         return analysisTableRepository.selectCustomerHands(customer, shopid, startTime, endTime,staffid,consultant);
     }
 
-    public ArrayList<CustomerHandsVO> customerCashVOS(String customer, int shopid, Timestamp startTime, Timestamp endTime,int staffid,String consultant) {
+    public ArrayList<CustomerHandsVO> customerCashVOS(String customer, int shopid, String startTime, String endTime, int staffid, String consultant) {
         return analysisTableRepository.selectCustomerCash(customer, shopid, startTime, endTime,staffid,consultant);
     }
 
-    public ArrayList<CustomerHandsVO> AllCustomerVO(int shopid, Timestamp start, Timestamp end,int staffid,String consultant) {
+    public ArrayList<CustomerHandsVO> AllCustomerVO(int shopid, String start, String end, int staffid, String consultant) {
         return analysisTableRepository.selectAllCustomer(shopid, start, end,staffid,consultant);
     }
 
-    public ArrayList<CustomerHandsVO> AllCustomerVObyName(String customer, int shopid, Timestamp start, Timestamp end,int staffid,String consultant) {
+    public ArrayList<CustomerHandsVO> AllCustomerVObyName(String customer, int shopid, String start, String end,int staffid,String consultant) {
         return analysisTableRepository.selectAllCustomerByName(customer, shopid, start, end,staffid,consultant);
     }
 
@@ -157,8 +157,8 @@ public class AnalysisTableService {
             consultantname = staff.getName();
         }
         ArrayList<CustomerHandsVO> list;
-        Timestamp start = DateUtils.getTimeStampStart(startTime);
-        Timestamp end = DateUtils.getTimeStampEnd(endTime);
+        String start = DateUtils.getTimeStampStart(startTime).toString();
+        String end = DateUtils.getTimeStampEnd(endTime).toString();
         if (handorcash.equals("现金") && !customer.equals("无")) {//选择现金查顾客现金表否则顾客实操表
             list = customerCashVOS(customer, id, start, end,staffid,consultantname);
         } else if (handorcash.equals("实操") && !customer.equals("无")) {
