@@ -13,29 +13,29 @@ public interface AnalysisTableRepository {
 
     ArrayList<CustomerHandsVO> selectCustomerHands(@Param("customer") String customer,
                                                    @Param("shopid")int shopid,
-                                                   @Param("starttime")Timestamp startTime,
-                                                   @Param("endtime")Timestamp endTime,
+                                                   @Param("starttime") String startTime,
+                                                   @Param("endtime") String endTime,
                                                    @Param("staffid")int staffid,
                                                    @Param("consultant")String consultant);
 
     ArrayList<CustomerHandsVO> selectCustomerCash(@Param("customer") String customer,
                                                    @Param("shopid")int shopid,
-                                                   @Param("starttime")Timestamp startTime,
-                                                   @Param("endtime")Timestamp endTime,
+                                                   @Param("starttime") String startTime,
+                                                   @Param("endtime") String endTime,
                                                   @Param("staffid")int staffid,
                                                   @Param("consultant")String consultant);
 
     ArrayList<CustomerHandsVO> selectAllCustomer(
                                                  @Param("shopid")int shopid,
-                                                 @Param("start")Timestamp start,
-                                                 @Param("end")Timestamp end,
+                                                 @Param("start") String start,
+                                                 @Param("end") String end,
                                                  @Param("staffid")int staffid,
                                                  @Param("consultant")String consultant);
 
     ArrayList<CustomerHandsVO> selectAllCustomerByName(@Param("customer") String customer,
                                                        @Param("shopid")int shopid,
-                                                       @Param("start")Timestamp start,
-                                                       @Param("end")Timestamp end,
+                                                       @Param("start")String start,
+                                                       @Param("end")String end,
                                                        @Param("staffid")int staffid,
                                                        @Param("consultant")String consultant);
 
