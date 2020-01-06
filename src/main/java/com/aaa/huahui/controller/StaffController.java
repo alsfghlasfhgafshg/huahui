@@ -56,7 +56,8 @@ public class StaffController {
     //获得所有staff
     @GetMapping("/staff/allstaff")
     public @ResponseBody
-    JSONObject getAllStaff(UsernamePasswordAuthenticationToken token) {
+    JSONObject getAllStaff(UsernamePasswordAuthenticationToken token,
+                           @RequestParam(value = "showdel", required = false, defaultValue = "false") boolean showdel) {
         User user = (User) token.getPrincipal();
         int shopid = 0;
 
@@ -65,9 +66,15 @@ public class StaffController {
         }
 
         if (user.hasRole(ROLE.REPORTER)) {
-            shopid=staffService.findShopidByRerporterId(user.getId());
+            shopid = staffService.findShopidByRerporterId(user.getId());
         }
-        ArrayList<Staff> list = staffService.allStaff(shopid);
+        ArrayList<Staff> list = null;
+        if (showdel == false) {
+            list = staffService.allStaff(shopid, false);
+        } else {
+            list = staffService.allStaff(shopid, true);
+        }
+
         JSONArray array = new JSONArray();
 
         for (Staff staff : list) {
@@ -84,6 +91,7 @@ public class StaffController {
             temp.put("phone", staff.getPhone());
             temp.put("emergencyphone", staff.getEmergencyphone());
             temp.put("employment", staff.getEmployment());
+            temp.put("del", staff.isDel());
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
@@ -206,7 +214,7 @@ public class StaffController {
                            @RequestParam(value = "p2male", required = false, defaultValue = "0") int p2male,
                            @RequestParam(value = "p2company", required = false, defaultValue = "无") String p2company,
                            @RequestParam(value = "p2relationship", required = false, defaultValue = "无") String p2relationship,
-                           @RequestParam(value = "editpassword",required = false)String editpassword,
+                           @RequestParam(value = "editpassword", required = false) String editpassword,
                            UsernamePasswordAuthenticationToken token) {
         Timestamp birthday = DateUtils.getTimeStampEnd(birth);
 
@@ -215,9 +223,9 @@ public class StaffController {
             return ResponseGenerate.genFailResponse(1, "not be permitted");
         }
 
-        if (editpassword!=null){
-            if (!userService.changePasswordByUserid(staffid,editpassword)){
-                return ResponseGenerate.genFailResponse(1,"修改密码失败");
+        if (editpassword != null) {
+            if (!userService.changePasswordByUserid(staffid, editpassword)) {
+                return ResponseGenerate.genFailResponse(1, "修改密码失败");
             }
         }
         Staff originStaff = staffService.selectOneStaff(staffid);
@@ -265,6 +273,24 @@ public class StaffController {
             return ResponseGenerate.genSuccessResponse("delete success");
         } else {
             return ResponseGenerate.genFailResponse(1, "delete fail");
+        }
+    }
+
+    //恢复staff
+    @PostMapping("/staff/restorestaff")
+    @PreAuthorize("hasRole('ROLE_SHOP')")
+    public @ResponseBody
+    JSONObject restoreStaff(UsernamePasswordAuthenticationToken token, @RequestParam("staffid") int staffId) {
+        User user = (User) token.getPrincipal();
+        int shopid = staffService.selectOneStaffDel(staffId).getShopid();
+        if (user.getId() != shopid) {
+            return ResponseGenerate.genFailResponse(1, "not be permitted");
+        }
+        boolean success = staffService.restoreStaff(staffId);
+        if (success) {
+            return ResponseGenerate.genSuccessResponse("恢复成功");
+        } else {
+            return ResponseGenerate.genFailResponse(1, "恢复失败");
         }
     }
 

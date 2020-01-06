@@ -25,6 +25,8 @@ public class Staff {
     private String p2company;
     private String p2relationship;
     private int shopid;
+    private boolean del;
+
 
     public Staff(int staffid, String name, int male, Timestamp birthday, String nation, String party, String healthy, String nativeplace, String address, String phone, String emergencyphone, String p1name, int p1male, String p1company, String p1relationship, String p2name, int p2male, String p2company, String p2relationship, int shopid) {
         this.staffid = staffid;
@@ -47,6 +49,14 @@ public class Staff {
         this.p2company = p2company;
         this.p2relationship = p2relationship;
         this.shopid = shopid;
+    }
+
+    public boolean isDel() {
+        return del;
+    }
+
+    public void setDel(boolean del) {
+        this.del = del;
     }
 
     public int getEmployment() {

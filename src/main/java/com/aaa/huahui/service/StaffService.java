@@ -39,9 +39,14 @@ public class StaffService {
         return staffRepository.selectAllStaffId(shopId);
     }
 
-    public ArrayList<Staff> allStaff(int shopId) {
-        return staffRepository.selectAllStaff(shopId);
+    public ArrayList<Staff> allStaff(int shopId,boolean showDel) {
+        if (showDel==false){
+            return staffRepository.selectAllStaff(shopId);
+        }else {
+            return staffRepository.selectAllStaffWithDel(shopId);
+        }
     }
+
 
     public int updateStaffAvatar(int staffId, String avatar) {
         return staffRepository.updateStaffAvatar(staffId, avatar);
@@ -55,6 +60,11 @@ public class StaffService {
     //查看一个staff
     public Staff selectOneStaff(int staffid) {
         return staffRepository.selectOne(staffid);
+    }
+
+    //查看一个已经删除的staff
+    public Staff selectOneStaffDel(int staffid) {
+        return staffRepository.selectOneDel(staffid);
     }
 
     //查看所有美容师
@@ -103,6 +113,18 @@ public class StaffService {
         familyMemberRepository.deleteAllStaffFamilyMember(staffid);
 
         if (staffRepository.deleteStaff(staffid) == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    //删除一个staff
+    @Transactional
+    public boolean restoreStaff(int staffid) {
+
+        familyMemberRepository.deleteAllStaffFamilyMember(staffid);
+
+        if (staffRepository.restoreStaff(staffid) == 1) {
             return true;
         }
         return false;

@@ -26,6 +26,9 @@ public interface StaffRepository {
     @Delete("update staff set del=true where staffid=#{staffid}")
     int deleteStaff(@Param("staffid") int staffid);
 
+    @Update("update staff set del=false where staffid=#{staffid}")
+    int restoreStaff(@Param("staffid") int staffid);
+
     @Select("select staffid from staff where shopid=#{shopid} and  and del=false")
     ArrayList<Integer> selectAllStaffId(@Param("shopid") int shopid);
 
@@ -35,8 +38,11 @@ public interface StaffRepository {
             " where staffid=#{staffid}")
     int updateStaff(Staff staff);
 
-    @Select("select * from staff where shopid=#{shopid} and del=false")
+    @Select("select * from staff where shopid=#{shopid} and del=false and employment=true ")
     ArrayList<Staff> selectAllStaff(@Param("shopid") int shopid);
+
+    @Select("select * from staff where shopid=#{shopid} order by del ")
+    ArrayList<Staff> selectAllStaffWithDel(@Param("shopid") int shopid);
 
     @Select("select * from staff where shopid=#{shopid} and del=false")
     ArrayList<Staff> AllStaff(@Param("shopid") int shopid);
@@ -47,8 +53,11 @@ public interface StaffRepository {
     @Select("select * from staff where shopid=#{shopid} and role='beautician' and del=false")
     ArrayList<Staff> AllBeautician(@Param("shopid") int shopid);
 
-    @Select("select * from staff where staffid=#{staffid}  and del=false")
+    @Select("select * from staff where staffid=#{staffid} and del=false")
     Staff selectOne(@Param("staffid") int staffid);
+
+    @Select("select * from staff where staffid=#{staffid} and del=true")
+    Staff selectOneDel(@Param("staffid") int staffid);
 
     @Select("select * from staff where role='consultant' and del=false")
     ArrayList<Staff> selectAllConsultant();
