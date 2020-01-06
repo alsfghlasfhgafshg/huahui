@@ -153,14 +153,9 @@ public class UserController {
     }
 
 
-    //注册
-    @GetMapping("register")
-    public String register() {
-        return "register";
-    }
 
-    //注册
-    @PostMapping("register")
+    //测试用，禁止注册
+//    @PostMapping("register")
     public String registerpost(@RequestParam("username") String username,
                                @RequestParam("password") String password,
                                @RequestParam("repeatpassword") String repeatpassword,
