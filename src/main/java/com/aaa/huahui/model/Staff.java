@@ -26,9 +26,9 @@ public class Staff {
     private String p2relationship;
     private int shopid;
     private boolean del;
+    String growth;
 
-
-    public Staff(int staffid, String name, int male, Timestamp birthday, String nation, String party, String healthy, String nativeplace, String address, String phone, String emergencyphone, String p1name, int p1male, String p1company, String p1relationship, String p2name, int p2male, String p2company, String p2relationship, int shopid) {
+    public Staff(int staffid, String name, int male, Timestamp birthday, String nation, String party, String healthy, String nativeplace, String address, String phone, String emergencyphone, String p1name, int p1male, String p1company, String p1relationship, String p2name, int p2male, String p2company, String p2relationship, int shopid, String growth) {
         this.staffid = staffid;
         this.name = name;
         this.male = male;
@@ -49,6 +49,15 @@ public class Staff {
         this.p2company = p2company;
         this.p2relationship = p2relationship;
         this.shopid = shopid;
+        this.growth=growth;
+    }
+
+    public String getGrowth() {
+        return growth;
+    }
+
+    public void setGrowth(String growth) {
+        this.growth = growth;
     }
 
     public boolean isDel() {

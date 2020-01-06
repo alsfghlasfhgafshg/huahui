@@ -18,9 +18,9 @@ public interface StaffRepository {
     @Update("update staff set avatar=#{avatar} where staffid=#{staffid} and del=false")
     int updateStaffAvatar(@Param("staffid") int staffid, @Param("avatar") String avatar);
 
-    @Insert("insert into staff (staffid,avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,p1name,p1male,p1company,p1relationship,p2name,p2male,p2company,p2relationship,shopid,employment)" +
+    @Insert("insert into staff (staffid,avatar,name,male,birthday,nation,party,healthy,nativeplace,address,phone,emergencyphone,p1name,p1male,p1company,p1relationship,p2name,p2male,p2company,p2relationship,shopid,employment,growth)" +
             "values(#{staffid},#{avatar},#{name},#{male},#{birthday},#{nation},#{party},#{healthy},#{nativeplace}," +
-            "#{address},#{phone},#{emergencyphone},#{p1name},#{p1male},#{p1company},#{p1relationship},#{p2name},#{p2male},#{p2company},#{p2relationship},#{shopid},#{employment})")
+            "#{address},#{phone},#{emergencyphone},#{p1name},#{p1male},#{p1company},#{p1relationship},#{p2name},#{p2male},#{p2company},#{p2relationship},#{shopid},#{employment},#{growth})")
     int insertStaff(Staff staff);
 
     @Delete("update staff set del=true where staffid=#{staffid}")
@@ -34,7 +34,7 @@ public interface StaffRepository {
 
     @Update("update staff " +
             "set avatar=#{avatar},name=#{name},male=#{male},birthday=#{birthday},nation=#{nation},party=#{party},healthy=#{healthy},nativeplace=#{nativeplace},address=#{address},phone=#{phone},employment=#{employment}" +
-            ",emergencyphone=#{emergencyphone},p1name=#{p1name},p1male=#{p1male},p1company=#{p1company},p1relationship=#{p1relationship},p2name=#{p2name},p2male=#{p2male},p2company=#{p2company},p2relationship=#{p2relationship},shopid=#{shopid}" +
+            ",emergencyphone=#{emergencyphone},p1name=#{p1name},p1male=#{p1male},p1company=#{p1company},p1relationship=#{p1relationship},p2name=#{p2name},p2male=#{p2male},p2company=#{p2company},p2relationship=#{p2relationship},shopid=#{shopid},growth=#{growth}" +
             " where staffid=#{staffid}")
     int updateStaff(Staff staff);
 

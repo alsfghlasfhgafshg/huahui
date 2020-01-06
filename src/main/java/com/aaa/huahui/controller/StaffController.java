@@ -128,6 +128,7 @@ public class StaffController {
             object.put("p2company", staff.getP1company());
             object.put("p2relationship", staff.getP1relationship());
             object.put("shopid", staff.getShopid());
+            object.put("growth", staff.getGrowth());
             object.put("birthday", ss);
             return ResponseGenerate.genSuccessResponse(object);
         } catch (Exception e) {
@@ -153,6 +154,7 @@ public class StaffController {
                         @RequestParam("nativeplace") String nativeplace,
                         @RequestParam("address") String address,
                         @RequestParam("phone") String phone,
+                        @RequestParam(value = "growth", required = false, defaultValue = "") String growth,
                         @RequestParam("emergencyphone") String emergencyphone,
                         @RequestParam(value = "p1name", required = false, defaultValue = "无") String p1name,
                         @RequestParam(value = "p1male", required = false, defaultValue = "0") int p1male,
@@ -177,7 +179,7 @@ public class StaffController {
             JSONObject responsejson = ResponseGenerate.genFailResponse(1, errors);
             return responsejson;
         }
-        Staff staff = new Staff(staffUser.getId(), username, male, birthday, nation, party, healthy, nativeplace, address, phone, emergencyphone, p1name, p1male, p1company, p1relationship, p2name, p2male, p2company, p2relationship, shopId);
+        Staff staff = new Staff(staffUser.getId(), username, male, birthday, nation, party, healthy, nativeplace, address, phone, emergencyphone, p1name, p1male, p1company, p1relationship, p2name, p2male, p2company, p2relationship, shopId, growth);
         staff.setEmployment(employment);
         int success = staffService.addStaff(staff);
         if (success == 1) {
@@ -205,6 +207,7 @@ public class StaffController {
                            @RequestParam("nativeplace") String nativeplace,
                            @RequestParam("address") String address,
                            @RequestParam("phone") String phone,
+                           @RequestParam(value = "growth", required = false, defaultValue = "") String growth,
                            @RequestParam("emergencyphone") String emergencyphone,
                            @RequestParam(value = "p1name", required = false, defaultValue = "无") String p1name,
                            @RequestParam(value = "p1male", required = false, defaultValue = "0") int p1male,
@@ -230,6 +233,7 @@ public class StaffController {
         }
         Staff originStaff = staffService.selectOneStaff(staffid);
         originStaff.setName(name);
+        originStaff.setGrowth(growth);
         originStaff.setMale(male);
         originStaff.setEmployment(employment);
         originStaff.setBirthday(birthday);
