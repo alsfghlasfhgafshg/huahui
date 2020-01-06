@@ -223,7 +223,7 @@ public class StaffController {
             return ResponseGenerate.genFailResponse(1, "not be permitted");
         }
 
-        if (editpassword != null) {
+        if (editpassword != null && !editpassword.equals("")) {
             if (!userService.changePasswordByUserid(staffid, editpassword)) {
                 return ResponseGenerate.genFailResponse(1, "修改密码失败");
             }
