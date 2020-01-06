@@ -145,7 +145,7 @@ public class Settlement_newController {
 
     //导入excel
     @PostMapping("/importexceldata")
-    @PreAuthorize("hasRole('ROLE_BRAND')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public JSONObject importExcel(UsernamePasswordAuthenticationToken token,
                                   @RequestParam("fileSerialNumber") String fileSerialNumber,
                                   @RequestParam("sheetNames") String sheetNames) {
@@ -160,7 +160,7 @@ public class Settlement_newController {
 
     //上传excel
     @PostMapping("/updloadexcel")
-    @PreAuthorize("hasRole('ROLE_BRAND')")
+    @PreAuthorize("hasAnyRole('ROLE_BRAND','ROLE_SHOP')")
     public JSONObject uploadExcel(UsernamePasswordAuthenticationToken token,
                                   @RequestParam("file") MultipartFile file) {
         try {

@@ -3,6 +3,7 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.Settlement_new;
 import com.aaa.huahui.model.User;
+import com.aaa.huahui.repository.BrandRepository;
 import com.aaa.huahui.repository.ShopRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.repository.UserRepository;
@@ -24,6 +25,10 @@ import java.util.HashMap;
 
 @Service
 public class DataImportService {
+
+
+    @Autowired
+    BrandRepository brandRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -175,12 +180,19 @@ public class DataImportService {
                 User u = userRepository.findByUsername(cellValue);
                 //  || !user.hasRole(ROLE.BRAND)
                 if (u == null) {
-                    errors.add("第" + (rownum + 1) + "行：店铺名不存在");
+                    errors.add("第" + (rownum + 1) + "行：店名不存在");
                     return;
                 } else {
                     int shopid = u.getId();
                     settlement.setShopid(shopid);
                 }
+                if (user.hasRole(ROLE.BRAND) && brandRepository.selectBrandShop(user.getId(), u.getId()) != 1) {
+                    errors.add("第" + (rownum + 1) + "行：店不属于这个公司");
+                }
+                if (user.hasRole(ROLE.SHOP) && !u.getName().equals(user.getName())) {
+                    errors.add("第" + (rownum + 1) + "行：不是本店的数据");
+                }
+
                 return;
             case "日期":
                 settlement.setCreatetime(DateUtils.getTimeStampStart(cellValue));
@@ -241,6 +253,9 @@ public class DataImportService {
                     Integer staffname = null;
                     if (user.hasRole(ROLE.BRAND)) {
                         staffname = staffRepository.findIdByStaffNameAndBrandId(split[i], user.getId());
+                    }
+                    if (user.hasRole(ROLE.SHOP)) {
+                        staffname = staffRepository.findIdByStaffNameAndShopId(split[i], user.getId());
                     }
 
                     if (staffname == null) {
