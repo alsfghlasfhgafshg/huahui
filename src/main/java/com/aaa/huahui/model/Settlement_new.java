@@ -59,6 +59,14 @@ public class Settlement_new {
         this.courses=courses;
     }
 
+    public String getCourses() {
+        return courses;
+    }
+
+    public void setCourses(String courses) {
+        this.courses = courses;
+    }
+
     public Integer getBeautician3() {
         return beautician3;
     }

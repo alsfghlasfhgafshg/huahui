@@ -347,6 +347,7 @@ public class Settlement_newController {
         t.put("money", s.getMoney());
         t.put("consumptioncategory", s.getConsumptioncategory());
         t.put("consumptionpattern", s.getConsumptionpattern());
+        t.put("courses", s.getCourses());
 
         int beautician1id = s.getBeautician1();
 
@@ -385,7 +386,7 @@ public class Settlement_newController {
     }
 
     @PostMapping("/deleteone")
-    @PreAuthorize("hasRole('ROLE_REPORTER')")
+    @PreAuthorize("hasAnyRole('ROLE_REPORTER','ROLE_SHOP')")
     public JSONObject deleteOneSettlement(@RequestParam("settlementid") int settlementid) {
         if (settlement_newService.deleteSettlement(settlementid)) {
             return ResponseGenerate.genSuccessResponse("删除成功");
@@ -394,7 +395,7 @@ public class Settlement_newController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("hasRole('ROLE_REPORTER')")
+    @PreAuthorize("hasAnyRole('ROLE_REPORTER','ROLE_SHOP')")
     public JSONObject updateOneSettlement(UsernamePasswordAuthenticationToken token,
                                           @RequestParam("settlementid") int settlementid,
                                           @RequestParam(value = "customer", required = false) String customer,
@@ -415,7 +416,8 @@ public class Settlement_newController {
                                           @RequestParam(value = "cardcategory", required = false) String cardcategory,
                                           @RequestParam(value = "consultant", required = false) String consultant,
                                           @RequestParam(value = "checker", required = false) String checker,
-                                          @RequestParam(value = "createtime", required = false) String createtimestr) {
+                                          @RequestParam(value = "createtime", required = false) String createtimestr,
+                                          @RequestParam(value = "courses", required = false, defaultValue = "0") String courses) {
         Settlement_new settlement_new = null;
         User principal = (User) token.getPrincipal();
 
@@ -501,6 +503,10 @@ public class Settlement_newController {
 
         if (consultant != null) {
             settlement_new.setConsultant(consultant);
+        }
+
+        if (courses != null && !courses.equals("")) {
+            settlement_new.setCourses(courses);
         }
 
         if (checker != null) {

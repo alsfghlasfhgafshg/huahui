@@ -32,7 +32,7 @@ public interface Settlement_newRepository {
             "brandname=#{brandname},projectname=#{projectname},times=#{times},hand=#{hand},money=#{money}" +
             ",consumptioncategory=#{consumptioncategory},consumptionpattern=#{consumptionpattern},allocate=#{allocate}," +
             "beautician1=#{beautician1},beautician2=#{beautician2},beautician3=#{beautician3},beautician4=#{beautician4},cardcategory=#{cardcategory},consultant=#{consultant}," +
-            "checker=#{checker},createtime=#{createtime},examine=0 where settlementid=#{settlementid}")
+            "checker=#{checker},createtime=#{createtime},courses=#{courses},examine=0 where settlementid=#{settlementid}")
     int updateSettlement(Settlement_new settlement_new);
 
     @Select("select count(*) from settlementnew where settlementid=#{settlementid} and shopid=#{shopid}")

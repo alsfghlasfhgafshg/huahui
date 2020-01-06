@@ -33,7 +33,7 @@
 
         select if(sumcourses=0,-2,sumcourses-count) lasttimes
         from (
-        select count(*) count
+        select ifnull(count(*),0) count
         from settlementnew
         where customer =    #{customer}
         and shopid =      #{shopid}
@@ -41,9 +41,7 @@
         and consumptioncategory = "卡扣实操"
         limit 1
         ) t1,
-
-        (
-        select sum(courses) as sumcourses
+        (select ifnull(sum(courses),0) as sumcourses
         from settlementnew
         where customer =    #{customer}
         and shopid =      #{shopid}
