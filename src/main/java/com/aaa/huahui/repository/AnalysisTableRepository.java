@@ -65,8 +65,8 @@ public interface AnalysisTableRepository {
                                                 @Param("consultant")String consultant);
 
     ArrayList<HashMap<String,Object>> getBrandData(@Param("brandid")int brandid,
-                                        @Param("start")Timestamp start,
-                                        @Param("end")Timestamp end);
+                                        @Param("start") String start,
+                                        @Param("end") String end);
 
     ArrayList<HashMap<String, Object>> getAllTodayAndUnexaminedSettlement(@Param("shopid")int shopid,
                                                                  @Param("start")Timestamp start,

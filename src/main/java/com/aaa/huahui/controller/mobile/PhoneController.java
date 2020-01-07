@@ -169,8 +169,8 @@ public class PhoneController {
                             @RequestParam("starttime")String startTime,
                             @RequestParam("endtime")String endTime){
         int brandid = ((User) token.getPrincipal()).getId();
-        Timestamp start = DateUtils.getTimeStampStart(startTime);
-        Timestamp end = DateUtils.getTimeStampEnd(endTime);
+        String start = DateUtils.getTimeStampStart(startTime).toString();
+        String end = DateUtils.getTimeStampEnd(endTime).toString();
         return analysisTableService.getBrandData(brandid,start,end);
     }
 

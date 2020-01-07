@@ -60,7 +60,7 @@ public class AnalysisTableService {
         return analysisTableRepository.downtoStoreTimes(shopid, start, end,staffid,consultant);
     }
 
-    public ArrayList<HashMap<String,Object>> brandData(int brandid,Timestamp start,Timestamp end){
+    public ArrayList<HashMap<String,Object>> brandData(int brandid, String start, String end){
         return analysisTableRepository.getBrandData(brandid,start,end);
     }
 
@@ -84,7 +84,7 @@ public class AnalysisTableService {
         return list;
     }
 
-    public JSONObject getBrandData(int brandid,Timestamp start,Timestamp end){
+    public JSONObject getBrandData(int brandid, String start, String end){
         JSONArray array = new JSONArray();
         for (HashMap<String,Object> map:brandData(brandid,start,end)){
             JSONObject object = new JSONObject();
