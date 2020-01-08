@@ -90,7 +90,7 @@ public class Settlement_newController {
         for (Settlement_new settlement_new : settlementthisMonth) {
             JSONObject t = new JSONObject();
             t.put("settltmentid", settlement_new.getSettlementid());
-            t.put("time", settlement_new.getCreatetime().substring(0,10));
+            t.put("time", settlement_new.getCreatetime().substring(0, 10));
             t.put("customer", settlement_new.getCustomer());
             t.put("classify", settlement_new.getClassify());
             t.put("category", settlement_new.getCategory());
@@ -182,8 +182,8 @@ public class Settlement_newController {
                                     @RequestParam(value = "brandname", required = false) String brandname,
                                     @RequestParam("projectname") String projectname,
                                     @RequestParam("times") Integer times,
-                                    @RequestParam(value = "hand", required = false) Integer hand,
-                                    @RequestParam(value = "money", required = false) Double money,
+                                    @RequestParam(value = "hand", required = false, defaultValue = "0") Integer hand,
+                                    @RequestParam(value = "money", required = false, defaultValue = "0") Double money,
                                     @RequestParam("consumptioncategory") String consumptioncategory,
                                     @RequestParam("consumptionpattern") String consumptionpattern,
                                     @RequestParam(value = "allocate", required = false) String allocate,
@@ -237,7 +237,7 @@ public class Settlement_newController {
         for (Settlement_new settlement_new : allSettlement) {
             JSONObject t = new JSONObject();
             t.put("settltmentid", settlement_new.getSettlementid());
-            t.put("time", settlement_new.getCreatetime().substring(0,10));
+            t.put("time", settlement_new.getCreatetime().substring(0, 10));
             t.put("customer", settlement_new.getCustomer());
             t.put("classify", settlement_new.getClassify());
             t.put("category", settlement_new.getCategory());
@@ -329,7 +329,7 @@ public class Settlement_newController {
         }
         JSONObject t = new JSONObject();
         t.put("settltmentid", s.getSettlementid());
-        t.put("time", s.getCreatetime().substring(0,10));
+        t.put("time", s.getCreatetime().substring(0, 10));
         t.put("times", s.getTimes());
         t.put("customer", s.getCustomer());
         t.put("classify", s.getClassify());
