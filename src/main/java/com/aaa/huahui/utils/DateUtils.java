@@ -22,6 +22,12 @@ public class DateUtils {
         return timestr;
     }
 
+    public static String formatTimeStrap2(long time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String timestr = sdf.format(new Date(time));
+        return timestr;
+    }
+
     public static Timestamp getMonthStart(long time) {
         String line = formatTimeStrap(time);
         String pattern = "(\\d*)年(\\d*)月(\\d*)日";
@@ -144,7 +150,8 @@ public class DateUtils {
     //现在
     public static String nowString() {
         long now = System.currentTimeMillis();
-        return formatTimeStrap(new Timestamp(now));
+        Timestamp time = new Timestamp(now);
+        return formatTimeStrap(time);
     }
 
     //今天开始
