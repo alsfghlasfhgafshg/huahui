@@ -90,7 +90,7 @@ public class Settlement_newController {
         for (Settlement_new settlement_new : settlementthisMonth) {
             JSONObject t = new JSONObject();
             t.put("settltmentid", settlement_new.getSettlementid());
-            t.put("time", DateUtils.formatTimeStrap(settlement_new.getCreatetime()));
+            t.put("time", settlement_new.getCreatetime().substring(0,10));
             t.put("customer", settlement_new.getCustomer());
             t.put("classify", settlement_new.getClassify());
             t.put("category", settlement_new.getCategory());
@@ -204,7 +204,7 @@ public class Settlement_newController {
             return ResponseGenerate.genFailResponse(1, "此账号无对应的店铺");
         }
 
-        Timestamp createtime = DateUtils.getTimeStampStart(time);
+        String createtime = DateUtils.getTimeStampStart(time).toString();
 
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
@@ -237,7 +237,7 @@ public class Settlement_newController {
         for (Settlement_new settlement_new : allSettlement) {
             JSONObject t = new JSONObject();
             t.put("settltmentid", settlement_new.getSettlementid());
-            t.put("time", DateUtils.formatTimeStrap(settlement_new.getCreatetime()));
+            t.put("time", settlement_new.getCreatetime().substring(0,10));
             t.put("customer", settlement_new.getCustomer());
             t.put("classify", settlement_new.getClassify());
             t.put("category", settlement_new.getCategory());
@@ -329,7 +329,7 @@ public class Settlement_newController {
         }
         JSONObject t = new JSONObject();
         t.put("settltmentid", s.getSettlementid());
-        t.put("time", DateUtils.formatTimeStrap(s.getCreatetime()));
+        t.put("time", s.getCreatetime().substring(0,10));
         t.put("times", s.getTimes());
         t.put("customer", s.getCustomer());
         t.put("classify", s.getClassify());
@@ -513,7 +513,7 @@ public class Settlement_newController {
             settlement_new.setChecker(checker);
         }
         if (createtimestr != null) {
-            Timestamp createtime = DateUtils.getTimeStampStart(createtimestr);
+            String createtime = DateUtils.getTimeStampStart(createtimestr).toString();
             settlement_new.setCreatetime(createtime);
         }
 

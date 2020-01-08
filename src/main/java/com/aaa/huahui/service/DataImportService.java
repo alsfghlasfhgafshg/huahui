@@ -195,7 +195,7 @@ public class DataImportService {
 
                 return;
             case "日期":
-                settlement.setCreatetime(DateUtils.getTimeStampStart(cellValue));
+                settlement.setCreatetime(cellValue);
                 return;
             case "顾客姓名":
                 settlement.setCustomer(cellValue);

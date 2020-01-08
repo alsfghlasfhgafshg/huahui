@@ -24,7 +24,7 @@ public class Settlement_new {
     private String consultant;
     private String checker;
     private String courses;
-    private Timestamp createtime;
+    private String createtime;
     private int examine;
 
     public Settlement_new() {
@@ -34,7 +34,7 @@ public class Settlement_new {
                           String brandname, String projectname, int times, int hand, double money,
                           String consumptioncategory, String consumptionpattern, String allocate,
                           int beautician1, int beautician2, String cardcategory, String consultant,
-                          String checker, Timestamp createtime,int beautician3,int beautician4,String courses) {
+                          String checker, String createtime, int beautician3, int beautician4, String courses) {
 
         this.shopid = shopid;
         this.customer = customer;
@@ -227,11 +227,11 @@ public class Settlement_new {
         this.checker = checker;
     }
 
-    public Timestamp getCreatetime() {
+    public String getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Timestamp createtime) {
+    public void setCreatetime(String createtime) {
         this.createtime = createtime;
     }
 
