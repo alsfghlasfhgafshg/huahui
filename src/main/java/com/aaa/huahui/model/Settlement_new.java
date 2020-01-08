@@ -1,7 +1,5 @@
 package com.aaa.huahui.model;
 
-import java.sql.Timestamp;
-
 public class Settlement_new {
     private int settlementid;
     private Integer shopid;
@@ -10,8 +8,8 @@ public class Settlement_new {
     private String category;
     private String brandname;
     private String projectname;
-    private int times;
-    private int hand;
+    private Double times;
+    private Double hand;
     private double money;
     private String consumptioncategory;
     private String consumptionpattern;
@@ -31,7 +29,7 @@ public class Settlement_new {
     }
 
     public Settlement_new(int shopid, String customer, String classify, String category,
-                          String brandname, String projectname, int times, int hand, double money,
+                          String brandname, String projectname, Double times, double hand, double money,
                           String consumptioncategory, String consumptionpattern, String allocate,
                           int beautician1, int beautician2, String cardcategory, String consultant,
                           String checker, String createtime, int beautician3, int beautician4, String courses) {
@@ -139,19 +137,19 @@ public class Settlement_new {
         this.projectname = projectname;
     }
 
-    public int getTimes() {
+    public double getTimes() {
         return times;
     }
 
-    public void setTimes(int times) {
+    public void setTimes(double times) {
         this.times = times;
     }
 
-    public int getHand() {
+    public double getHand() {
         return hand;
     }
 
-    public void setHand(int hand) {
+    public void setHand(double hand) {
         this.hand = hand;
     }
 

@@ -21,14 +21,14 @@
       where customer=#{customer}
      ) t)aa
      inner join (
-        select customer,createtime,projectname,money,times,hand
+        select customer,createtime,projectname,money,round(times,2) times,round(hand,2) hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
         <if test="staffid!=-1">
             and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
         </if>
         union all
-        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times,sum(hand) as hand
+        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,round(sum(times),2) as times,round(sum(hand),2) as hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and category in ('美容','美体','仪器') and createtime between #{starttime} and #{endtime}
         <if test="staffid!=-1">
@@ -53,14 +53,14 @@
       where customer=#{customer}
      ) t)aa
      inner join (
-        select customer,createtime,projectname,money,times,hand
+        select customer,createtime,projectname,money,round(times,2) times,round(hand,2) hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
         <if test="staffid!=-1">
             and beautician1=#{staffid} or beautician2=#{staffid} or beautician3=#{staffid} or beautician4=#{staffid} or consultant=#{consultant}
         </if>
         union all
-        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,sum(times) as times,sum(hand) as hand
+        select '总计' as customer,''as createtime,''as projectname,sum(money) as money,round(sum(times),2) as times,round(sum(hand),2) as hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and consumptioncategory in ('现金卡','现金产品','现金实操') and createtime between #{starttime} and #{endtime}
         <if test="staffid!=-1">
@@ -95,7 +95,7 @@
     </select>
 
     <select id="selectAllCustomer" resultType="com.aaa.huahui.vo.CustomerHandsVO">
-        select * from(
+        select customer, status, createtime, projectname, money, times, hand from(
         select customer,
                if(sum(t1 + t2 + t3) = 0, "睡眠客",
                   if(sum(t1 + t2 + t3) = 2, "活客", if(sum(t1 + t2 + t3) = 3, "有效客", "其他"))) as status
@@ -189,7 +189,7 @@
     </select>
 
     <select id="getBrandData" resultType="java.util.HashMap">
-            select cc.name, IFNULL(ca.times,0) times,IFNULL(ca.xianjin,0) xianjin,IFNULL(ca.shicao,0) shicao,IFNULL(ca.rentou,0) rentou
+            select cc.name, round(IFNULL(ca.times,0),2) times,IFNULL(ca.xianjin,0) xianjin,round(IFNULL(ca.shicao,0),2) shicao,IFNULL(ca.rentou,0) rentou
             from (
                    select count(customer) times, sum(money) xianjin, sum(money1) shicao, count(distinct customer) rentou, shopid
                    from (
