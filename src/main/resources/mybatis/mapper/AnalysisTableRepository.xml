@@ -85,7 +85,7 @@
              ) t
         group by customer) aa
         inner join(
-        select customer,createtime,projectname,money,times,hand
+        select customer,createtime,projectname,money,round(times,2) times,round(hand,2) hand
         from settlementnew
         where customer=#{customer} and shopid=#{shopid} and createtime between #{start} and #{end}
         <if test="staffid!=-1">
@@ -95,7 +95,7 @@
     </select>
 
     <select id="selectAllCustomer" resultType="com.aaa.huahui.vo.CustomerHandsVO">
-        select customer, status, createtime, projectname, money, times, hand from(
+        select customer, status, createtime, projectname, money, round(times,2) times, round(hand,2) hand from(
         select customer,
                if(sum(t1 + t2 + t3) = 0, "睡眠客",
                   if(sum(t1 + t2 + t3) = 2, "活客", if(sum(t1 + t2 + t3) = 3, "有效客", "其他"))) as status
