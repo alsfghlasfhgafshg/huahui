@@ -270,4 +270,15 @@ public class UserController {
         return "change role";
     }
 
+    @PostMapping("/wxout")
+    public @ResponseBody JSONObject delwxuser(UsernamePasswordAuthenticationToken token){
+        User user = (User) token.getPrincipal();
+        int id = user.getId();
+        if (wxService.deleteWXid(id)){
+            return ResponseGenerate.genSuccessResponse("id删除");
+        }else{
+            return ResponseGenerate.genFailResponse(1,"删除失败");
+        }
+    }
+
 }

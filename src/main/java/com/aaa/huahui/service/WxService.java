@@ -155,4 +155,8 @@ public class WxService {
             return true;
         }
     }
+
+    public boolean deleteWXid(int id){
+        return wxUserRepository.deleteWXid(id)==1;
+    }
 }

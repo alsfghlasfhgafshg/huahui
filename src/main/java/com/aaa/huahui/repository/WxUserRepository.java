@@ -2,10 +2,8 @@ package com.aaa.huahui.repository;
 
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.model.WxUseridOpenid;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.springframework.security.core.parameters.P;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,4 +25,7 @@ public interface WxUserRepository {
 
     @Select("select wx_user.wxopenid openid from wx_user where userid=#{userid}")
     String selectOpenidByUserid(@Param("userid") int userid);
+
+    @Delete("delete from wx_user where userid=#{id}")
+    int deleteWXid(@Param("id")int id);
 }
