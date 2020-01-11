@@ -10,8 +10,8 @@ public class Settlement_newVO {
     private String category;
     private String brandname;
     private String projectname;
-    private int times;
-    private int hand;
+    private double times;
+    private double hand;
     private double money;
     private String consumptioncategory;
     private String consumptionpattern;
@@ -75,16 +75,18 @@ public class Settlement_newVO {
         this.projectname = projectname;
     }
 
-    public int getTimes() {
-        return times;
+    public Double getTimes() {
+        String sc = String.format("%.2f", times);
+        return Double.parseDouble(sc);
     }
 
     public void setTimes(int times) {
         this.times = times;
     }
 
-    public int getHand() {
-        return hand;
+    public Double getHand() {
+        String sc = String.format("%.2f", hand);
+        return Double.parseDouble(sc);
     }
 
     public void setHand(int hand) {
@@ -92,7 +94,8 @@ public class Settlement_newVO {
     }
 
     public double getMoney() {
-        return money;
+        String sc = String.format("%.2f", money);
+        return Double.parseDouble(sc);
     }
 
     public void setMoney(double money) {

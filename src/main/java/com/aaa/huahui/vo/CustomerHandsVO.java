@@ -9,14 +9,14 @@ public class CustomerHandsVO {
     String createtime;
     String projectname;
     double money;
-    int times;
-    int hand;
+    Double times;
+    Double hand;
 
-    public int getHand() {
+    public Double getHand() {
         return hand;
     }
 
-    public void setHand(int hand) {
+    public void setHand(Double hand) {
         this.hand = hand;
     }
 
@@ -57,11 +57,12 @@ public class CustomerHandsVO {
         this.money = money;
     }
 
-    public int getTimes() {
-        return times;
+    public Double getTimes() {
+        String sc = String.format("%.2f", times);
+        return Double.parseDouble(sc);
     }
 
-    public void setTimes(int times) {
+    public void setTimes(Double times) {
         this.times = times;
     }
 

@@ -9,9 +9,9 @@ public class BeauticianProjectItemVO {
     Timestamp time;
     String projectname;
     String allocate;
-    long summoney;
-    long count;
-    long sumhand;
+    Double summoney;
+    Double count;
+    Double sumhand;
 
     public String getTime() {
         if (time.getTime() == 0) {
@@ -42,27 +42,30 @@ public class BeauticianProjectItemVO {
         this.projectname = projectname;
     }
 
-    public long getSummoney() {
-        return summoney;
+    public Double getSummoney() {
+        String sc = String.format("%.2f", summoney);
+        return Double.parseDouble(sc);
     }
 
-    public void setSummoney(long summoney) {
+    public void setSummoney(Double summoney) {
         this.summoney = summoney;
     }
 
-    public long getCount() {
-        return count;
+    public Double getCount() {
+        String sc = String.format("%.2f", count);
+        return Double.parseDouble(sc);
     }
 
-    public void setCount(long count) {
+    public void setCount(Double count) {
         this.count = count;
     }
 
-    public long getSumhand() {
-        return sumhand;
+    public Double getSumhand() {
+        String sc = String.format("%.2f", sumhand);
+        return Double.parseDouble(sc);
     }
 
-    public void setSumhand(long sumhand) {
+    public void setSumhand(Double sumhand) {
         this.sumhand = sumhand;
     }
 

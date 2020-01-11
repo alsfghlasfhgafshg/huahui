@@ -4,8 +4,8 @@ public class SettlementItemVO {
     int id;
     int settlementid;
     String projectname;
-    int times;
-    int price;
+    double times;
+    double price;
     String staff1name;
     String staff2name;
 
@@ -34,16 +34,18 @@ public class SettlementItemVO {
         this.projectname = projectname;
     }
 
-    public int getTimes() {
-        return times;
+    public double getTimes() {
+        String sc = String.format("%.2f", times);
+        return Double.parseDouble(sc);
     }
 
     public void setTimes(int times) {
         this.times = times;
     }
 
-    public int getPrice() {
-        return price;
+    public double getPrice() {
+        String sc = String.format("%.2f", price);
+        return Double.parseDouble(sc);
     }
 
     public void setPrice(int price) {

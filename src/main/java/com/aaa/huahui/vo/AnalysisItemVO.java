@@ -35,7 +35,8 @@ public class AnalysisItemVO {
     }
 
     public Double getSummoney() {
-        return summoney;
+        String sc = String.format("%.2f", summoney);//保留两位小数
+        return Double.parseDouble(sc);
     }
 
     public void setSummoney(double summoney) {
@@ -43,7 +44,8 @@ public class AnalysisItemVO {
     }
 
     public Double getSumcount() {
-        return sumcount;
+        String sc = String.format("%.2f", sumcount);
+        return Double.parseDouble(sc);
     }
 
     public void setSumcount(double sumcount) {

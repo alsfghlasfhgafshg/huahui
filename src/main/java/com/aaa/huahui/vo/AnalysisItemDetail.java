@@ -4,7 +4,7 @@ public class AnalysisItemDetail {
 
     String customer;
     String money;
-    Integer times;
+    Double times;
 
     public String getCustomer() {
         return customer;
@@ -22,18 +22,19 @@ public class AnalysisItemDetail {
         this.money = money;
     }
 
-    public Integer getTimes() {
-        return times;
+    public Double getTimes() {
+        String sc = String.format("%.2f", times);
+        return Double.parseDouble(sc);
     }
 
-    public void setTimes(Integer times) {
+    public void setTimes(Double times) {
         this.times = times;
     }
 
     public AnalysisItemDetail() {
     }
 
-    public AnalysisItemDetail(String customer, String money, Integer times) {
+    public AnalysisItemDetail(String customer, String money, Double times) {
         this.customer = customer;
         this.money = money;
         this.times = times;
