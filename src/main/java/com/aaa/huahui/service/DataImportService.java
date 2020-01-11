@@ -10,6 +10,8 @@ import com.aaa.huahui.repository.UserRepository;
 import com.aaa.huahui.utils.DateUtils;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,8 @@ public class DataImportService {
 
     @Autowired
     Settlement_newService settlement_newService;
+
+    Logger logger = LoggerFactory.getLogger(DataImportService.class);
 
 
     //返回所有表格名
@@ -100,7 +104,14 @@ public class DataImportService {
                 } catch (Exception e) {
                     stringCellValue = String.valueOf(cell.getNumericCellValue());
                 }
-                if (lineColumnName.get(cellnum).equals("日期")) {
+                //只有22列，如果在右侧输入过在删除，会是''，所以不算这一列
+                if (cellnum >= 23) {
+                    break;
+                }
+                String name = lineColumnName.get(cellnum);
+                logger.info("列号：" + cellnum + "列名：" + lineColumnName.get(cellnum));
+
+                if (name.equals("日期")) {
                     if (cell.toString().equals("")) {
                         settlement_new = null;
                         continue;
