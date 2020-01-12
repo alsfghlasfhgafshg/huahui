@@ -6,7 +6,7 @@
 
 
     <select id="todayData" resultType="java.util.Map">
-        select 客流, 人头, format(实操数,2) 实操数, 项目数, ifnull(convert(actualmoney / 客流,decimal(10,2)), 0) as 客人单价, cash 现金
+        select 客流, 人头, convert(实操数,decimal (12,2)) 实操数, 项目数, ifnull(convert(actualmoney / 客流,decimal(10,2)), 0) as 客人单价, cash 现金
         from (select 1 id, count(customer) as 客流, count(distinct customer) as 人头, count(distinct projectname) 项目数
               from settlementnew
               where DATE_FORMAT(createtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') and shopid=#{shopid}) a
@@ -24,7 +24,7 @@
     </select>
 
     <select id="todayData_staff" resultType="java.util.Map">
-          select 客流, 人头, format(实操数,2) 实操数, 项目数, ifnull(convert(actualmoney / 客流,decimal(10,2)), 0) as 客人单价, cash 现金
+          select 客流, 人头, convert(实操数,decimal (12,2)) 实操数, 项目数, ifnull(convert(actualmoney / 客流,decimal(10,2)), 0) as 客人单价, cash 现金
         from (select 1 id, count(customer) as 客流, count(distinct customer) as 人头, count(distinct projectname) 项目数
               from settlementnew
               where DATE_FORMAT(createtime, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') and shopid=#{shopid}
