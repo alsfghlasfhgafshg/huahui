@@ -308,29 +308,29 @@
             from (
             select distinct customer, createtime, beautician1 beautician
             from settlementnew
-            where (shopid = #{shopid} and beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
-            beautician4 = #{beauticianid})
+            where (shopid = #{shopid} and (beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
+            beautician4 = #{beauticianid}) and category in ('美容', '美体', '仪器'))
             union
             select customer, createtime, beautician2 beautician
             from settlementnew
-            where (shopid = #{shopid} and beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
-            beautician4 = #{beauticianid})
+            where (shopid = #{shopid} and (beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
+            beautician4 = #{beauticianid}) and category in ('美容', '美体', '仪器'))
             union
             select customer, createtime, beautician3 beautician
             from settlementnew
-            where (shopid = #{shopid} and beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
-            beautician4 = #{beauticianid})
+            where (shopid = #{shopid} and (beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
+            beautician4 = #{beauticianid}) and category in ('美容', '美体', '仪器'))
             union
             select customer, createtime, beautician4 beautician
             from settlementnew
-            where (shopid = #{shopid} and beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
-            beautician4 = #{beauticianid})
+            where (shopid = #{shopid} and (beautician1 = #{beauticianid} or beautician2 = #{beauticianid} or beautician3 = #{beauticianid} or
+            beautician4 = #{beauticianid}) and category in ('美容', '美体', '仪器'))
             ) ttt
             where beautician is not null) as "customer"
         </if>
         from settlementnew
     where shopid = #{shopid}
-      and createtime between #{from} and #{to}
+      and createtime between #{from} and #{to} and category in ('美容', '美体', '仪器')
         <if test="condition=='beautician'">
             and (beautician1=#{beauticianid} or beautician2=#{beauticianid} or beautician3=#{beauticianid} or beautician4=#{beauticianid})
         </if>
