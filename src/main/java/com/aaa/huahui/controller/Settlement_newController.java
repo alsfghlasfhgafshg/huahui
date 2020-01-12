@@ -153,6 +153,7 @@ public class Settlement_newController {
         try {
             dataImportService.dataImport(fileSerialNumber, sheetNames, ((User) token.getPrincipal()));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseGenerate.genFailResponse(1, e.getMessage());
         }
         return ResponseGenerate.genSuccessResponse("导入成功");
