@@ -355,12 +355,24 @@ public class Settlement_newController {
         Staff beautician1 = staffRepository.selectOne(beautician1id);
 
         Integer beautician2id = s.getBeautician2();
-        Staff beautician2 = staffRepository.selectOne(beautician2id);
-        int beautician3id = s.getBeautician3();
-        Staff beautician3 = staffRepository.selectOne(beautician3id);
+        Staff beautician2 = null;
 
-        int beautician4id = s.getBeautician4();
-        Staff beautician4 = staffRepository.selectOne(beautician4id);
+        if (beautician2id != null) {
+            beautician2 = staffRepository.selectOne(beautician2id);
+        }
+
+        Integer beautician3id = s.getBeautician3();
+        Staff beautician3 = null;
+        if (beautician3id != null) {
+            beautician3 = staffRepository.selectOne(beautician3id);
+        }
+
+        Integer beautician4id = s.getBeautician4();
+
+        Staff beautician4 = null;
+        if (beautician4id != null) {
+            beautician4 = staffRepository.selectOne(beautician4id);
+        }
 
         StringBuilder sb = new StringBuilder(beautician1.getName());
         if (beautician2 != null) {
