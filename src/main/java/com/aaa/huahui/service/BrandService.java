@@ -131,6 +131,18 @@ public class BrandService {
         return factory;
     }
 
+    public Factory selectFactoryByIdAndBrand(int brandid,int factoryid){
+        return factoryRepository.selectFactoryByBrandidAndFactoryId(brandid, factoryid);
+    }
+
+    public boolean editFactory(int facotyid,String factoryname){
+        int i = factoryRepository.updateFactoryByFactoryId(factoryname, facotyid);
+        if (i==0){
+            return false;
+        }
+        return true;
+    }
+
     //删除厂家
     @Transactional
     public boolean deleteFactory(int brandid, int factoryid) {

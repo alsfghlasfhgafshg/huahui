@@ -216,6 +216,29 @@ public class BrandController {
         return rejeson;
     }
 
+    //编辑厂家
+    @PostMapping("/brand/editfactory")
+    public @ResponseBody
+    JSONObject editFactory(UsernamePasswordAuthenticationToken token,
+                           @RequestParam("factoryid") Integer factoryid,
+                           @RequestParam("factoryname") String factoryName) {
+        int brandid = ((User) token.getPrincipal()).getId();
+        JSONObject rejeson = new JSONObject();
+
+        Factory factory = brandService.selectFactoryByIdAndBrand(brandid, factoryid);
+        if (factory==null){
+            return ResponseGenerate.genFailResponse(1,"更新失败");
+        }else {
+            boolean b = brandService.editFactory(factoryid, factoryName);
+            if (b==true){
+                return ResponseGenerate.genSuccessResponse("更新成功");
+            }else {
+                return ResponseGenerate.genFailResponse(1,"更新失败");
+            }
+        }
+    }
+
+
     //删除厂家
     @PostMapping("/brand/deletefactory")
     public @ResponseBody

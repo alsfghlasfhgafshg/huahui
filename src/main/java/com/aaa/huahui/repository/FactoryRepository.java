@@ -32,4 +32,14 @@ public interface FactoryRepository {
 
     @Select("select count(*) from factory where id=#{id} and brandid=#{brandid}")
     int selectCountBrandIdFactoryId(@Param("brandid") int brandid, @Param("id") int id);
+
+    @Select("select * from factory where brandid=#{brandid}")
+    Factory selectFactoryByBrandid(@Param("brandid")int brandid);
+
+    @Select("select * from factory where brandid=#{brandid} and factory.id=#{factoryid}")
+    Factory selectFactoryByBrandidAndFactoryId(@Param("brandid")int brandid,@Param("factoryid")int factoryid);
+
+    @Update("update factory set factory.name=#{factoryname} where factory.id=#{factoryid} ")
+    int updateFactoryByFactoryId(@Param("factoryname")String factoryName, @Param("factoryid")int factoryid);
+
 }
