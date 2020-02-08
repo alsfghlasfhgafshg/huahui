@@ -83,13 +83,14 @@ public class BrandService {
      * 新的品牌
      **/
     @Transactional
-    public boolean newBrand(User user,String controller, String description, MultipartFile file) {
+    public boolean newBrand(User user,String controller, String description, MultipartFile file,String province,String city,
+                            String district,String geo) {
         if (user == null) {
             return false;
         }
 
 
-        int i = brandRepository.newBrand(user.getId(), description,controller);
+        int i = brandRepository.newBrand(user.getId(), description,controller,province,city,district,geo);
 
         if (file != null) {
             String avatarfile = fileService.uploadImage(file);

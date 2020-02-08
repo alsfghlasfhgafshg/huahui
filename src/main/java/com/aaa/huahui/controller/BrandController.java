@@ -107,29 +107,29 @@ public class BrandController {
     }
 
     //新的brand
-    @PostMapping("/brand/newbrand")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public @ResponseBody
-    JSONObject newBrand(@RequestParam("name") String name,
-                        @RequestParam("password") String password,
-                        @RequestParam("repeatpassword") String repeatpassword,
-                        @RequestParam("controller")String controller,
-                        @RequestParam("description") String description,
-                        @RequestParam("img") MultipartFile file) {
-        JSONObject rejeson = new JSONObject();
-
-        User user = null;
-        try {
-            user = userService.newUser(name, password, repeatpassword, ROLE.BRAND);
-            brandService.newBrand(user,controller, description, file);
-            rejeson.put("error", 0);
-        } catch (NewUserFailException e) {
-            rejeson.put("error", 1);
-            rejeson.put("msgs", e.getErrors());
-            e.printStackTrace();
-        }
-        return rejeson;
-    }
+//    @PostMapping("/brand/newbrand")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    public @ResponseBody
+//    JSONObject newBrand(@RequestParam("name") String name,
+//                        @RequestParam("password") String password,
+//                        @RequestParam("repeatpassword") String repeatpassword,
+//                        @RequestParam("controller")String controller,
+//                        @RequestParam("description") String description,
+//                        @RequestParam("img") MultipartFile file) {
+//        JSONObject rejeson = new JSONObject();
+//
+//        User user = null;
+//        try {
+//            user = userService.newUser(name, password, repeatpassword, ROLE.BRAND);
+//            brandService.newBrand(user,controller, description, file);
+//            rejeson.put("error", 0);
+//        } catch (NewUserFailException e) {
+//            rejeson.put("error", 1);
+//            rejeson.put("msgs", e.getErrors());
+//            e.printStackTrace();
+//        }
+//        return rejeson;
+//    }
 
     //更新brand
     @PostMapping("/brand/updatebrandadmin")

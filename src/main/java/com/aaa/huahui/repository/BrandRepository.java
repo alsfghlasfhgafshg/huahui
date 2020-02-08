@@ -17,8 +17,8 @@ public interface BrandRepository {
     @Update("update brand set description=#{description} where brandid=#{brandid}")
     int updateBrandDescription(@Param("brandid") int brandid, @Param("description") String description);
 
-    @Insert("insert into brand (brandid,description,controller) values(#{brandid},#{description},#{controller})")
-    int newBrand(@Param("brandid") int brandid, @Param("description") String description, @Param("controller") String controller);
+    @Insert("insert into brand (brandid,description,controller,province,city,district,geo) values(#{brandid},#{description},#{controller},#{province},#{city},#{district},#{geo})")
+    int newBrand(@Param("brandid") int brandid, @Param("description") String description, @Param("controller") String controller,@Param("province") String province,@Param("city")String city,@Param("district")String district,@Param("geo")String geo);
 
     @Update("update brand set avatar=#{avatar} where brandid=#{brandid}")
     int updateBrandAvatar(@Param("brandid") int brandid, @Param("avatar") String avatar);

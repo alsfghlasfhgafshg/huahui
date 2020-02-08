@@ -135,6 +135,10 @@ public class AdminController {
                         @RequestParam("repeatbrandpasswd") String repeatpassword,
                         @RequestParam("controller")String controller,
                         @RequestParam("description") String description,
+                        @RequestParam("province") String province,
+                        @RequestParam("city") String city,
+                        @RequestParam("district") String district,
+                        @RequestParam("geo") String geo,
                         @RequestParam(value = "img",required = false) MultipartFile file) {
         JSONObject responsejson = new JSONObject();
         JSONArray msgs = new JSONArray();
@@ -142,7 +146,7 @@ public class AdminController {
 
         try {
             User user = userService.newUser(username, password, repeatpassword, ROLE.BRAND);
-            brandService.newBrand(user,controller, description, file);
+            brandService.newBrand(user,controller, description, file,province,city,district,geo);
 
             JSONObject data = new JSONObject();
             data.put("brandid", user.getId());
