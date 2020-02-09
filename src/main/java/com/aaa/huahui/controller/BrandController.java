@@ -104,6 +104,7 @@ public class BrandController {
         rejeson.put("code", 0);
         rejeson.put("msg", "成功");
         rejeson.put("data", brand);
+        rejeson.put("geo",brand.getGeo());
         return rejeson;
     }
 
@@ -290,9 +291,10 @@ public class BrandController {
     public @ResponseBody
     JSONObject addCategory2(UsernamePasswordAuthenticationToken token,
                             @RequestParam("factoryid") int factoryid,
-                            @RequestParam("projectname") String projcetname) {
+                            @RequestParam("projectname") String projcetname,
+                            @RequestParam("category")String category)  {
         int brandid = ((User) token.getPrincipal()).getId();
-        Project project = brandService.addProject(brandid, factoryid, projcetname);
+        Project project = brandService.addProject(brandid, factoryid, projcetname, category);
 
         JSONObject rejeson = null;
         if (project != null) {

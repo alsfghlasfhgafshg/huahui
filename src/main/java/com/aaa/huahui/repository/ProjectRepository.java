@@ -9,7 +9,7 @@ import java.util.Optional;
 @Mapper
 public interface ProjectRepository {
 
-    @Insert("insert into project(factoryid,projectname)values(#{factoryid},#{projectname})")
+    @Insert("insert into project(factoryid,projectname,category)values(#{factoryid},#{projectname},#{category})")
     @Options(useGeneratedKeys = true, keyProperty = "projectid")
     int insertProject(Project project);
 

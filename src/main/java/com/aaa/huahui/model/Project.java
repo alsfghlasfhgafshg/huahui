@@ -5,13 +5,15 @@ public class Project {
     int factoryid;
     int projectid;
     String projectname;
+    String category;
 
     public Project() {
     }
 
-    public Project(int factoryid, String projectname) {
+    public Project(int factoryid, String projectname,String category) {
         this.factoryid = factoryid;
         this.projectname = projectname;
+        this.category = category;
     }
 
     public Project(int projectid, int factoryid, String projectname) {
@@ -20,6 +22,20 @@ public class Project {
         this.projectname = projectname;
     }
 
+    public Project(int factoryid, int projectid, String projectname, String category) {
+        this.factoryid = factoryid;
+        this.projectid = projectid;
+        this.projectname = projectname;
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public int getProjectid() {
         return projectid;
