@@ -85,6 +85,7 @@ public class BrandController {
             temp.put("avatar", brand.getAvatar());
             temp.put("controller",brand.getController());
             temp.put("description", brand.getDescription());
+            temp.put("position",brand.getProvince()+brand.getCity()+brand.getDistrict()+brand.getGeo());
 
             array.add(temp);
         }
