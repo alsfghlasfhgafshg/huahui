@@ -83,8 +83,9 @@ public class BrandController {
 
             Brand brand = brandService.getBrand(userid);
             temp.put("avatar", brand.getAvatar());
-            temp.put("controller", brand.getController());
+            temp.put("controller",brand.getController());
             temp.put("description", brand.getDescription());
+            temp.put("position",brand.getProvince()+brand.getCity()+brand.getDistrict()+brand.getGeo());
 
             array.add(temp);
         }
@@ -103,6 +104,7 @@ public class BrandController {
         rejeson.put("code", 0);
         rejeson.put("msg", "成功");
         rejeson.put("data", brand);
+        rejeson.put("geo",brand.getGeo());
         return rejeson;
     }
 
@@ -137,7 +139,7 @@ public class BrandController {
     public @ResponseBody
     JSONObject adminUpdateBrand(@RequestParam("brandid") int brandid,
                                 @RequestParam("description") String description,
-                                @RequestParam(value = "img", required = false) MultipartFile file) {
+                                @RequestParam(value = "img",required = false) MultipartFile file) {
 
         JSONObject rejeson = new JSONObject();
         brandService.updateBrand(brandid, description, file);
@@ -226,14 +228,14 @@ public class BrandController {
         JSONObject rejeson = new JSONObject();
 
         Factory factory = brandService.selectFactoryByIdAndBrand(brandid, factoryid);
-        if (factory == null) {
-            return ResponseGenerate.genFailResponse(1, "更新失败");
-        } else {
+        if (factory==null){
+            return ResponseGenerate.genFailResponse(1,"更新失败");
+        }else {
             boolean b = brandService.editFactory(factoryid, factoryName);
-            if (b == true) {
+            if (b==true){
                 return ResponseGenerate.genSuccessResponse("更新成功");
-            } else {
-                return ResponseGenerate.genFailResponse(1, "更新失败");
+            }else {
+                return ResponseGenerate.genFailResponse(1,"更新失败");
             }
         }
     }
@@ -347,16 +349,15 @@ public class BrandController {
     //切换为shop
     @GetMapping("/brand/toshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
-    public @ResponseBody
-    JSONObject toShopAuth(UsernamePasswordAuthenticationToken token,
-                          @RequestParam("shopid") int shopid,
-                          HttpServletResponse response) {
+    public @ResponseBody JSONObject toShopAuth(UsernamePasswordAuthenticationToken token,
+                            @RequestParam("shopid")int shopid,
+                             HttpServletResponse response){
         int brandid = ((User) token.getPrincipal()).getId();
         ArrayList<Integer> list = shopService.selectAllShopId(brandid);
-        if (list.contains(shopid)) {
+        if(list.contains(shopid)){
             //设置cookie
             String value = CookieEncode.encryptAndDencrypt(String.valueOf(brandid));
-            Cookie cookie = new Cookie("change", value);
+            Cookie cookie = new Cookie("change",value);
             cookie.setPath("/");
             response.addCookie(cookie);
 
@@ -369,22 +370,21 @@ public class BrandController {
 
             //跳转
             return ResponseGenerate.genSuccessResponse(value);
-        } else {
-            return ResponseGenerate.genFailResponse(1, "无权限");
+        }else {
+            return ResponseGenerate.genFailResponse(1,"无权限");
         }
     }
 
     @GetMapping("/brand/tobrand")
     @PreAuthorize("hasRole('ROLE_SHOP')")
-    public @ResponseBody
-    JSONObject toBrandAuth(UsernamePasswordAuthenticationToken token,
-                           HttpServletResponse response,
-                           @CookieValue("change") Cookie cookie) {
+    public @ResponseBody JSONObject toBrandAuth(UsernamePasswordAuthenticationToken token,
+                                  HttpServletResponse response,
+                                  @CookieValue("change")Cookie cookie){
         int shopid = ((User) token.getPrincipal()).getId();
         int brandid = shopService.shopBrand(shopid).getId();
         String value = cookie.getValue();
         value = CookieEncode.encryptAndDencrypt(value);
-        if (Integer.parseInt(value) == brandid) {
+        if (Integer.parseInt(value)==brandid){
             //更改权限
             User brand = userService.queryUser(brandid);
             Object credentials = brand.getPassword();
@@ -396,10 +396,11 @@ public class BrandController {
             cookie.setPath("/");
             response.addCookie(cookie);
             return ResponseGenerate.genSuccessResponse("切换成功");
-        } else {
-            return ResponseGenerate.genFailResponse(1, "无权限");
+        }else {
+            return ResponseGenerate.genFailResponse(1,"无权限");
         }
     }
+
 
 
 }

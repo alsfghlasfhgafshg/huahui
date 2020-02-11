@@ -264,6 +264,7 @@ public class AdminController {
             temp.put("avatar",brand.getAvatar());
             User user = userService.getUserByUserid(brand.getBrandid());
             temp.put("brandname",user.getName());
+            temp.put("position",brand.getProvince()+brand.getCity()+brand.getDistrict()+brand.getGeo());
             data.add(temp);
         }
 
