@@ -179,12 +179,14 @@ public class BrandService {
 
 
     //添加项目
-    public Project addProject(int brandid, int factoryid, String projectname) {
+    public Project addProject(int brandid, int factoryid, String projectname,String category,String pinpai) {
         int i = factoryRepository.selectCountBrandIdFactoryId(brandid, factoryid);
         if (i == 0) {
             return null;
         }
         Project project = new Project(factoryid, projectname);
+        project.setPinpai(pinpai);
+        project.setCategory(category);
         if (projectRepository.insertProject(project) == 1) {
             return project;
         }

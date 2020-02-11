@@ -5,6 +5,8 @@ public class Project {
     int factoryid;
     int projectid;
     String projectname;
+    String category;
+    String pinpai;
 
     public Project() {
     }
@@ -20,6 +22,22 @@ public class Project {
         this.projectname = projectname;
     }
 
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPinpai() {
+        return pinpai;
+    }
+
+    public void setPinpai(String pinpai) {
+        this.pinpai = pinpai;
+    }
 
     public int getProjectid() {
         return projectid;
