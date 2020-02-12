@@ -59,6 +59,9 @@ public interface UserRepository {
     @Select("select user.* from user,user_role,role where user.id=user_role.userid and user_role.roleid=role.id and role.name=#{rolename} limit #{offset},#{num}")
     ArrayList<User> selectAllUserByRoleAndPage(@Param("rolename") String rolename, @Param("offset") int offset, @Param("num") int num);
 
+    @Select("select user.* from user,user_role,role where user.id=user_role.userid and user_role.roleid=role.id and role.name=#{rolename}")
+    ArrayList<User> selectAllUserByRole(@Param("rolename") String rolename);
+
     @Insert("insert into wx_user(userid,wxopenid) values(#{userid},#{wxopenid}) ")
     int insertWxOpenid(@Param("userid") int userid, @Param("wxopenid") String wxopenid);
 

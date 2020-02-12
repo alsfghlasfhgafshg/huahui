@@ -5,6 +5,7 @@ import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.*;
 import com.aaa.huahui.repository.*;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -57,24 +58,17 @@ public class UserService implements UserDetailsService {
 
     //列出所有用户
     public ArrayList<User> listAllUsers(String userrole, int page) {
-        int offset = (page - 1) * pageSize;
 
-        int pagesize = this.pageSize;
-
-        if (page == -1) {
-            offset = 0;
-            pagesize = Integer.MAX_VALUE;
-        }
-
+        PageHelper.startPage(page,10);
         switch (userrole) {
             case ROLE.ADMIN:
-                return userRepository.selectAllUserByRoleAndPage(ROLE.ADMIN, offset, pagesize);
+                return userRepository.selectAllUserByRole(ROLE.ADMIN);
             case ROLE.BRAND:
-                return userRepository.selectAllUserByRoleAndPage(ROLE.BRAND, offset, pagesize);
+                return userRepository.selectAllUserByRole(ROLE.BRAND);
             case ROLE.SHOP:
-                return userRepository.selectAllUserByRoleAndPage(ROLE.SHOP, offset, pagesize);
+                return userRepository.selectAllUserByRole(ROLE.SHOP);
             case ROLE.STAFF:
-                return userRepository.selectAllUserByRoleAndPage(ROLE.STAFF, offset, pagesize);
+                return userRepository.selectAllUserByRole(ROLE.STAFF);
             default:
                 return null;
         }
