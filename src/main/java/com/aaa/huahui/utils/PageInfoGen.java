@@ -14,8 +14,9 @@ public class PageInfoGen {
 
     public static HashMap gen(PageInfo pageInfo) {
         HashMap<String,Integer> pageinfo = new HashMap<>();
-        pageinfo.put("pagenum",pageInfo.getPageNum());
-        pageinfo.put("pages",pageInfo.getPages());
+        pageinfo.put("count",10*pageInfo.getPages());//总数
+        pageinfo.put("current",pageInfo.getPageNum());//当前第几页
+        pageinfo.put("pagessize",10);//每页10条
         return pageinfo;
     }
 }
