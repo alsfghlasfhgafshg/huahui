@@ -185,7 +185,8 @@ public class BrandController {
     //获得所有厂家
     @GetMapping("/brand/getallfactory")
     public @ResponseBody
-    JSONObject getAllCategory(UsernamePasswordAuthenticationToken token) {
+    JSONObject getAllCategory(UsernamePasswordAuthenticationToken token,
+                              @RequestParam(value = "pagenum", required = false, defaultValue = "-1") int pagenum) {
 
         User user = ((User) token.getPrincipal());
         int brandid = user.getId();
@@ -195,11 +196,12 @@ public class BrandController {
         }
 
         JSONObject rejeson = null;
-        ArrayList<Factory> categories = brandService.allFactory(brandid);
+        PageInfo<Factory> pageInfo = new PageInfo<Factory>(brandService.allFactory(brandid,pagenum));
+        List<Factory> categories = pageInfo.getList();
 
-        JSONArray allcategories = new JSONArray(Collections.singletonList(categories));
-        rejeson = ResponseGenerate.genSuccessResponse(allcategories);
 
+        rejeson = ResponseGenerate.genSuccessResponse(categories);
+        rejeson.put("pageinfo", PageInfoGen.gen(pageInfo));
         return rejeson;
     }
 
@@ -267,7 +269,8 @@ public class BrandController {
     //查看项目
     @GetMapping("/brand/allproject")
     public @ResponseBody
-    JSONObject queryCategory2(UsernamePasswordAuthenticationToken token) {
+    JSONObject queryCategory2(UsernamePasswordAuthenticationToken token,
+                              @RequestParam(value = "pagenum", required = false, defaultValue = "1") int pagenum) {
         JSONObject rejeson = new JSONObject();
         User user = ((User) token.getPrincipal());
 
@@ -284,10 +287,14 @@ public class BrandController {
             brandid = shopService.shopBrand(brandid).getId();
         }
 
-        ArrayList<Factory> projects = brandService.allFactoryAndProject(brandid);
+        PageInfo<Factory> pageInfo = new PageInfo<Factory>(brandService.allFactoryAndProject(brandid,pagenum));
+        List<Factory> projects = pageInfo.getList();
+
         rejeson.put("error", 0);
         rejeson.put("code", 0);
         rejeson.put("data", projects);
+        rejeson.put("pageinfo",PageInfoGen.gen(pageInfo));
+
         return rejeson;
     }
 

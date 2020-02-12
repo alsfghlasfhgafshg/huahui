@@ -8,6 +8,7 @@ import com.aaa.huahui.repository.ShopRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.repository.UserRepository;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -145,7 +146,8 @@ public class ShopService {
     }
 
     //获得所有shop
-    public ArrayList<Shop> selectAllShop(int brandid) {
+    public ArrayList<Shop> selectAllShop(int brandid,int page) {
+        PageHelper.startPage(page,10);
         return shopRepository.selectAllShop(brandid);
     }
 

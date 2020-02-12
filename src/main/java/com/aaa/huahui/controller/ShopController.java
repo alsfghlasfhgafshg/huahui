@@ -1,5 +1,6 @@
 package com.aaa.huahui.controller;
 
+import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
 import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.Staff;
@@ -8,9 +9,11 @@ import com.aaa.huahui.service.RoleService;
 import com.aaa.huahui.service.ShopService;
 import com.aaa.huahui.service.StaffService;
 import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.utils.PageInfoGen;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -64,9 +68,12 @@ public class ShopController {
     @GetMapping("/allshop")
     @PreAuthorize("hasRole('ROLE_BRAND')")
     public @ResponseBody
-    JSONObject getAllShop(UsernamePasswordAuthenticationToken token) {
+    JSONObject getAllShop(UsernamePasswordAuthenticationToken token,
+                          @RequestParam(value = "pagenum", required = false, defaultValue = "1") int pagenum) {
         User user = (User) token.getPrincipal();
-        ArrayList<Shop> list = shopService.selectAllShop(user.getId());
+        PageInfo<Shop> pageInfo = new PageInfo<Shop>(shopService.selectAllShop(user.getId(),pagenum));
+
+        List<Shop> list = pageInfo.getList();
         JSONArray array = new JSONArray();
 
         for (Shop shop : list) {
@@ -85,6 +92,7 @@ public class ShopController {
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
+        responsejson.put("pageinfo", PageInfoGen.gen(pageInfo));
         return responsejson;
     }
 

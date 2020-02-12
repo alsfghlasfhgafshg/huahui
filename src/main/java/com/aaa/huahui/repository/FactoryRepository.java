@@ -30,6 +30,8 @@ public interface FactoryRepository {
     @Select("select * from factory where brandid=#{brandid}")
     ArrayList<Factory> selectAllFactory(@Param("brandid") int brandid);
 
+    ArrayList<Factory> selectAllFactoryAndProject(@Param("brandid") int brandid);
+
     @Select("select count(*) from factory where id=#{id} and brandid=#{brandid}")
     int selectCountBrandIdFactoryId(@Param("brandid") int brandid, @Param("id") int id);
 

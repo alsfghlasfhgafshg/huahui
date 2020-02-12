@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.huahui.repository.FactoryRepository">
+
+    <resultMap id="factory" type="com.aaa.huahui.model.Factory">
+        <id column="id" property="id"/>
+        <result column="brandid" property="brandid"/>
+        <result column="name" property="name"/>
+
+        <collection property="projects" ofType="com.aaa.huahui.model.Project">
+            <result property="factoryid" column="factoryid"/>
+            <result property="projectid" column="projectid"/>
+            <result property="projectname" column="projectname"/>
+            <result property="category" column="category"/>
+            <result property="pinpai" column="pinpai"/>
+        </collection>
+
+    </resultMap>
+
+
+    <select id="selectAllFactoryAndProject" resultMap="factory">
+
+        select factory.id, factory.brandid, factory.name,
+               project.projectid,project.factoryid, project.projectname, project.category, project.pinpai
+        from factory,project where brandid=#{brandid} and factory.id=project.factoryid
+
+
+    </select>
+
+
+</mapper>

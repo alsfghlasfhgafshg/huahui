@@ -5,6 +5,7 @@ import com.aaa.huahui.model.*;
 import com.aaa.huahui.repository.*;
 import com.aaa.huahui.vo.CategoryVO;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -160,7 +161,13 @@ public class BrandService {
     }
 
     //获得所有厂家
-    public ArrayList<Factory> allFactory(int brandid) {
+    public ArrayList<Factory> allFactory(int brandid,int page) {
+        int pagesize=10;
+        if(pagesize==-1){
+            pagesize=Integer.MAX_VALUE;
+        }
+        PageHelper.startPage(page,pagesize);
+
         return factoryRepository.selectAllFactory(brandid);
     }
 
@@ -223,14 +230,23 @@ public class BrandService {
     }
 
     //获得所有project
-    public ArrayList<Factory> allFactoryAndProject(int brandid) {
-        ArrayList<Factory> factorys = factoryRepository.selectAllFactory(brandid);
-        ArrayList<Project> projects = new ArrayList<>();
-
-        for (Factory factory : factorys) {
-            ArrayList<Project> temp = projectRepository.selectAllProject(factory.getId());
-            factory.setProjects(temp);
+    public ArrayList<Factory> allFactoryAndProject(int brandid,int page) {
+        int pagesize=10;
+        if (page==-1){
+            pagesize=Integer.MAX_VALUE;
         }
+        PageHelper.startPage(page,pagesize);
+
+        ArrayList<Factory> factorys=factoryRepository.selectAllFactoryAndProject(brandid);
+
+//        ArrayList<Factory> factorys = factoryRepository.selectAllFactory(brandid);
+//        ArrayList<Project> projects = new ArrayList<>();
+//
+//        for (Factory factory : factorys) {
+//            ArrayList<Project> temp = projectRepository.selectAllProject(factory.getId());
+//            factory.setProjects(temp);
+//        }
+
         return factorys;
     }
 

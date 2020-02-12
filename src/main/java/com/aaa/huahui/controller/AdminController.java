@@ -9,9 +9,11 @@ import com.aaa.huahui.repository.UserRoleRepository;
 import com.aaa.huahui.service.BrandService;
 import com.aaa.huahui.service.SystemService;
 import com.aaa.huahui.service.UserService;
+import com.aaa.huahui.utils.PageInfoGen;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -60,7 +63,10 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody
     JSONObject getAllAdmin(@RequestParam(value = "page", defaultValue = "1") int page) {
-        ArrayList<User> users = userService.listAllUsers(ROLE.ADMIN, page);
+
+        PageInfo<User> pageInfo = new PageInfo<User>(userService.listAllUsers(ROLE.ADMIN, page));
+
+        List<User> users=pageInfo.getList();
         JSONArray array = new JSONArray();
 
         for (User user : users) {
@@ -70,7 +76,9 @@ public class AdminController {
             array.add(temp);
         }
 
-        JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
+        JSONObject jsonObject = ResponseGenerate.genSuccessResponse(array);
+        jsonObject.put("pageinfo", PageInfoGen.gen(pageInfo));
+        JSONObject responsejson = jsonObject;
         return responsejson;
     }
 
