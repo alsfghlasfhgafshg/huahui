@@ -205,6 +205,18 @@ public class BrandController {
         return rejeson;
     }
 
+    //根据类别和所属公司获得厂家
+    @GetMapping("/brand/getfactorybycategory")
+    public @ResponseBody JSONObject getFactoryByCategory(UsernamePasswordAuthenticationToken token,String category){
+        User principal = (User) token.getPrincipal();
+        int brandid = shopService.findBrandidByReporterid(principal.getId());
+        List<String> factoryName = new ArrayList<>();
+        if (principal.hasRole(ROLE.REPORTER)){
+            factoryName = brandService.getFactoryByCategory(category, brandid);
+        }
+        return ResponseGenerate.genSuccessResponse(factoryName);
+    }
+
     //添加厂家
     @PostMapping("/brand/addfactory")
     public @ResponseBody

@@ -260,4 +260,18 @@ public class BrandService {
         return categoryVOS;
     }
 
+    //根据类别找到厂家名字
+    public List<String> getFactoryByCategory(String category,int brandid){
+        List<String> nameList = new ArrayList<>();
+        if (null!=category&&!"".equals(category)){
+            ArrayList<Integer> ids = projectRepository.findFactoryidByCategory(category);
+
+            for (int id : ids ){
+                Factory factory = factoryRepository.selectFactoryByBrandidAndFactoryId(brandid,id);
+                nameList.add(factory.getName());
+            }
+        }
+        return nameList;
+    }
+
 }

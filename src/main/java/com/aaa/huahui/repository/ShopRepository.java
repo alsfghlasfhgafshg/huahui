@@ -75,4 +75,8 @@ public interface ShopRepository {
     @Select("select shop.controller from shop where shopid=#{shopid}")
     String selectController(@Param("shopid") int shopid);
 
+    //通过录入员id查看shopid
+    @Select("select shopid from shop_reporter where staffid=#{staffid}")
+    int findShopidByStaffid(int staffid);
+
 }

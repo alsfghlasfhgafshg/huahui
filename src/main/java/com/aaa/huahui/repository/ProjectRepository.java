@@ -24,4 +24,7 @@ public interface ProjectRepository {
 
     @Update("update project set projectname=#{projectname} where projectid=#{projectid}")
     int updateProject(@Param("projectid") int projectid, @Param("projectname") String projectname);
+
+    @Select("select factoryid from project where category=#{category}")
+    ArrayList<Integer> findFactoryidByCategory(String category);
 }

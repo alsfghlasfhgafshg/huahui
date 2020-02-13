@@ -203,4 +203,11 @@ public class ShopService {
         return rlist;
     }
 
+    //通过staffid查找brandid
+    public int findBrandidByReporterid(int reporterid){
+        int shopid = shopRepository.findShopidByStaffid(reporterid);
+        User brand = shopBrand(shopid);
+        return brand.getId();
+    }
+
 }
