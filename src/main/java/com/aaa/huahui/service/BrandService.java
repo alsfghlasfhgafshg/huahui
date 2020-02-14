@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -269,6 +270,21 @@ public class BrandService {
             for (int id : ids ){
                 Factory factory = factoryRepository.selectFactoryByBrandidAndFactoryId(brandid,id);
                 nameList.add(factory.getName());
+            }
+        }
+        return nameList;
+    }
+
+    //根据厂家名字找项目
+    public List<String> getProjectByFactory(UsernamePasswordAuthenticationToken token,String factoryName){
+        User user = (User) token.getPrincipal();
+        int brandid = shopService.findBrandidByReporterid(user.getId());
+        List<String> nameList = new ArrayList<>();
+        if (null!=factoryName&&!"".equals(factoryName)){
+            int factoryid = factoryRepository.findFactoryidByBrandidAndName(brandid, factoryName);
+            ArrayList<Project> projects = projectRepository.selectAllProject(factoryid);
+            for (Project project:projects){
+                nameList.add(project.getProjectname());
             }
         }
         return nameList;

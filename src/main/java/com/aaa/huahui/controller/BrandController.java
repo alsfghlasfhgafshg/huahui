@@ -217,6 +217,14 @@ public class BrandController {
         return ResponseGenerate.genSuccessResponse(factoryName);
     }
 
+    //根据厂家找项目
+    @GetMapping("/brand/getprojectbyfactory")
+    public @ResponseBody
+    JSONObject getProjectByFactory(UsernamePasswordAuthenticationToken token,
+                                   @RequestParam("factoryname") String factoryname){
+        return ResponseGenerate.genSuccessResponse(brandService.getProjectByFactory(token,factoryname));
+    }
+
     //添加厂家
     @PostMapping("/brand/addfactory")
     public @ResponseBody

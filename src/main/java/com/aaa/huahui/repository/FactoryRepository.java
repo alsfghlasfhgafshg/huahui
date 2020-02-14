@@ -2,6 +2,7 @@ package com.aaa.huahui.repository;
 
 import com.aaa.huahui.model.Factory;
 import org.apache.ibatis.annotations.*;
+import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 
@@ -43,5 +44,8 @@ public interface FactoryRepository {
 
     @Update("update factory set factory.name=#{factoryname} where factory.id=#{factoryid} ")
     int updateFactoryByFactoryId(@Param("factoryname")String factoryName, @Param("factoryid")int factoryid);
+
+    @Select("select id from factory where brandid=#{brandid} and name=#{name}")
+    int findFactoryidByBrandidAndName(@Param("brandid") int brandid,@Param("name") String name);
 
 }
