@@ -225,6 +225,14 @@ public class BrandController {
         return ResponseGenerate.genSuccessResponse(brandService.getProjectByFactory(token,factoryname));
     }
 
+    //根据厂家找品牌
+    @GetMapping("/brand/findpinpaibyfactory")
+    public @ResponseBody
+    JSONObject getPinpaiByFactory(UsernamePasswordAuthenticationToken token,
+                                  @RequestParam("factoryname")String factoryname){
+        return ResponseGenerate.genSuccessResponse(brandService.getPinpaiByFactory(token,factoryname));
+    }
+
     //添加厂家
     @PostMapping("/brand/addfactory")
     public @ResponseBody

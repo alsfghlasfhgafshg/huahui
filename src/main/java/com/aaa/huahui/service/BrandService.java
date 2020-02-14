@@ -290,4 +290,16 @@ public class BrandService {
         return nameList;
     }
 
+    //根据厂家找品牌
+    public List<String> getPinpaiByFactory(UsernamePasswordAuthenticationToken token,String factoryName){
+        User user = (User) token.getPrincipal();
+        List<String> pinpaiList = new ArrayList<>();
+        if (user.hasRole(ROLE.REPORTER)){
+            int brandid = shopService.findBrandidByReporterid(user.getId());
+            int factoryid = factoryRepository.findFactoryidByBrandidAndName(brandid,factoryName);
+            pinpaiList = projectRepository.findPinpaiByFactoryid(factoryid);
+        }
+        return pinpaiList;
+    }
+
 }
