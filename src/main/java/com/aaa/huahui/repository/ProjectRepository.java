@@ -28,6 +28,6 @@ public interface ProjectRepository {
     @Select("select factoryid from project where category=#{category}")
     ArrayList<Integer> findFactoryidByCategory(String category);
 
-    @Select("select pinpai from project where factoryid=#{factoryid}")
-    ArrayList<String> findPinpaiByFactoryid(@Param("factoryid")int factoryid);
+    @Select("select pinpai from project where projectid=#{projectid}")
+    String findPinpaiByProjectid(@Param("projectid")int projectid);
 }

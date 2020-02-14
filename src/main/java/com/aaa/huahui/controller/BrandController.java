@@ -225,12 +225,12 @@ public class BrandController {
         return ResponseGenerate.genSuccessResponse(brandService.getProjectByFactory(token,factoryname));
     }
 
-    //根据厂家找品牌
-    @GetMapping("/brand/findpinpaibyfactory")
+    //根据项目找品牌
+    @GetMapping("/brand/findpinbaibyproject")
     public @ResponseBody
-    JSONObject getPinpaiByFactory(UsernamePasswordAuthenticationToken token,
-                                  @RequestParam("factoryname")String factoryname){
-        return ResponseGenerate.genSuccessResponse(brandService.getPinpaiByFactory(token,factoryname));
+    JSONObject getPinpaiByProject(UsernamePasswordAuthenticationToken token,
+                                  @RequestParam("projectid") Integer projectid){
+        return ResponseGenerate.genSuccessResponse(brandService.getPinpaiByProject(token,projectid));
     }
 
     //添加厂家

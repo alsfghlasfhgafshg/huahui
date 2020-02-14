@@ -276,30 +276,25 @@ public class BrandService {
     }
 
     //根据厂家名字找项目
-    public List<String> getProjectByFactory(UsernamePasswordAuthenticationToken token,String factoryName){
+    public List<Project> getProjectByFactory(UsernamePasswordAuthenticationToken token,String factoryName){
         User user = (User) token.getPrincipal();
         int brandid = shopService.findBrandidByReporterid(user.getId());
-        List<String> nameList = new ArrayList<>();
+        List<Project> nameList = new ArrayList<>();
         if (null!=factoryName&&!"".equals(factoryName)){
             int factoryid = factoryRepository.findFactoryidByBrandidAndName(brandid, factoryName);
-            ArrayList<Project> projects = projectRepository.selectAllProject(factoryid);
-            for (Project project:projects){
-                nameList.add(project.getProjectname());
-            }
+            nameList = projectRepository.selectAllProject(factoryid);
         }
         return nameList;
     }
 
     //根据厂家找品牌
-    public List<String> getPinpaiByFactory(UsernamePasswordAuthenticationToken token,String factoryName){
+    public String getPinpaiByProject(UsernamePasswordAuthenticationToken token,Integer projectid){
         User user = (User) token.getPrincipal();
-        List<String> pinpaiList = new ArrayList<>();
+        String pinpai = "";
         if (user.hasRole(ROLE.REPORTER)){
-            int brandid = shopService.findBrandidByReporterid(user.getId());
-            int factoryid = factoryRepository.findFactoryidByBrandidAndName(brandid,factoryName);
-            pinpaiList = projectRepository.findPinpaiByFactoryid(factoryid);
+            pinpai = projectRepository.findPinpaiByProjectid(projectid);
         }
-        return pinpaiList;
+        return pinpai;
     }
 
 }
