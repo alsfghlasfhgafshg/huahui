@@ -3,6 +3,7 @@ package com.aaa.huahui.service;
 import com.aaa.huahui.model.Settlement_new;
 import com.aaa.huahui.repository.Settlement_newRepository;
 import com.aaa.huahui.utils.DateUtils;
+import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,8 @@ public class Settlement_newService {
         return false;
     }
 
-    public ArrayList<Settlement_new> allSettlement(int shopid,Timestamp start,Timestamp end){
+    public ArrayList<Settlement_new> allSettlement(int shopid,Timestamp start,Timestamp end,int pagenum){
+        PageHelper.startPage(pagenum,10);
         return settlement_newRepository.selectSettlementByDate(shopid,start,end);
     }
 

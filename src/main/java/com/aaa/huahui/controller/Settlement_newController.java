@@ -1,6 +1,7 @@
 package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.ROLE;
+import com.aaa.huahui.model.Factory;
 import com.aaa.huahui.model.Settlement_new;
 import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.User;
@@ -11,9 +12,11 @@ import com.aaa.huahui.service.Settlement_newService;
 import com.aaa.huahui.service.StaffService;
 import com.aaa.huahui.service.WorkBookCache;
 import com.aaa.huahui.utils.DateUtils;
+import com.aaa.huahui.utils.PageInfoGen;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/settlement")
@@ -221,7 +225,9 @@ public class Settlement_newController {
     @PreAuthorize("hasAnyRole('ROLE_SHOP,ROLE_REPORTER')")
     public JSONObject getAllSettlement(UsernamePasswordAuthenticationToken token,
                                        @RequestParam("createtime") String createtime,
-                                       @RequestParam("endtime") String endtime) {
+                                       @RequestParam("endtime") String endtime,
+                                       @RequestParam(value = "pagenum",required = false,defaultValue = "1") int pagenum) {
+
         Timestamp start = DateUtils.getTimeStampStart(createtime);
         Timestamp end = DateUtils.getTimeStampEnd(endtime);
         User user = (User) token.getPrincipal();
@@ -233,7 +239,8 @@ public class Settlement_newController {
             shopid = staffService.findShopidByRerporterId(user.getId());
         }
 
-        ArrayList<Settlement_new> allSettlement = settlement_newService.allSettlement(shopid, start, end);
+        PageInfo<Settlement_new> pageInfo = new PageInfo<Settlement_new>(settlement_newService.allSettlement(shopid, start, end,pagenum));
+        List<Settlement_new> allSettlement=pageInfo.getList();
         JSONArray data = new JSONArray();
         for (Settlement_new settlement_new : allSettlement) {
             JSONObject t = new JSONObject();
@@ -305,7 +312,7 @@ public class Settlement_newController {
             data.add(t);
         }
         JSONObject repsonsejson = ResponseGenerate.genSuccessResponse(data);
-
+        repsonsejson.put("pageinfo", PageInfoGen.gen(pageInfo));
         return repsonsejson;
     }
 
