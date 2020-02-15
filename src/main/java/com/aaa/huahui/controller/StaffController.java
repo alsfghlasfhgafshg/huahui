@@ -2,15 +2,18 @@ package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.config.exception.NewUserFailException;
+import com.aaa.huahui.model.Shop;
 import com.aaa.huahui.model.Staff;
 import com.aaa.huahui.model.TodayWork;
 import com.aaa.huahui.model.User;
 import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.service.*;
 import com.aaa.huahui.utils.DateUtils;
+import com.aaa.huahui.utils.PageInfoGen;
 import com.aaa.huahui.utils.ResponseGenerate;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +26,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class StaffController {
@@ -57,7 +61,8 @@ public class StaffController {
     @GetMapping("/staff/allstaff")
     public @ResponseBody
     JSONObject getAllStaff(UsernamePasswordAuthenticationToken token,
-                           @RequestParam(value = "showdel", required = false, defaultValue = "false") boolean showdel) {
+                           @RequestParam(value = "showdel", required = false, defaultValue = "false") boolean showdel,
+                           @RequestParam(value = "pagenum", required = false, defaultValue = "-1") int pagenum) {
         User user = (User) token.getPrincipal();
         int shopid = 0;
 
@@ -68,11 +73,14 @@ public class StaffController {
         if (user.hasRole(ROLE.REPORTER)) {
             shopid = staffService.findShopidByRerporterId(user.getId());
         }
-        ArrayList<Staff> list = null;
+        List<Staff> list = null;
+        PageInfo<Staff> pageInfo = null;
         if (showdel == false) {
-            list = staffService.allStaff(shopid, false);
+            pageInfo = new PageInfo<Staff>(staffService.allStaff(shopid, false, pagenum));
+            list = pageInfo.getList();
         } else {
-            list = staffService.allStaff(shopid, true);
+            pageInfo = new PageInfo<Staff>(staffService.allStaff(shopid, true, pagenum));
+            list = pageInfo.getList();
         }
 
         JSONArray array = new JSONArray();
@@ -95,6 +103,7 @@ public class StaffController {
             array.add(temp);
         }
         JSONObject responsejson = ResponseGenerate.genSuccessResponse(array);
+        responsejson.put("pageinfo",PageInfoGen.gen(pageInfo));
         return responsejson;
     }
 

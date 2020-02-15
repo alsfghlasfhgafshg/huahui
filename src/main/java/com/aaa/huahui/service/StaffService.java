@@ -8,6 +8,7 @@ import com.aaa.huahui.repository.FamilyMemberRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,14 @@ public class StaffService {
         return staffRepository.selectAllStaffId(shopId);
     }
 
-    public ArrayList<Staff> allStaff(int shopId,boolean showDel) {
+    public ArrayList<Staff> allStaff(int shopId, boolean showDel, int pagenum) {
+        //-1不分页，显示所有
+        int pagesize=10;
+        if (pagenum==-1){
+            pagesize=Integer.MAX_VALUE;
+        }
+        PageHelper.startPage(pagenum,pagesize);
+
         if (showDel==false){
             return staffRepository.selectAllStaff(shopId);
         }else {
