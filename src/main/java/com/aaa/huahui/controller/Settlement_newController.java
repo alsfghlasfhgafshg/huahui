@@ -280,8 +280,14 @@ public class Settlement_newController {
             if (beautician4id != null) {
                 beautician4 = staffRepository.selectOne(beautician4id);
             }
+            StringBuilder sb = new StringBuilder();
 
-            StringBuilder sb = new StringBuilder(beautician1.getName());
+            String beautician1name="";
+            if (beautician1!=null){
+                beautician1name= beautician1.getName();
+                sb.append(beautician1name);
+            }
+
             if (beautician2 != null) {
                 sb.append("/");
                 sb.append(beautician2.getName());
