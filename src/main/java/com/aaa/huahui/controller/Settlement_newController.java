@@ -185,6 +185,7 @@ public class Settlement_newController {
                                     @RequestParam("classify") String classify,
                                     @RequestParam("category") String category,
                                     @RequestParam(value = "brandname", required = false) String brandname,
+                                    @RequestParam(value = "pinpai") String pinpai,
                                     @RequestParam("projectname") String projectname,
                                     @RequestParam("times") Double times,
                                     @RequestParam(value = "hand", required = false, defaultValue = "0") Double hand,
@@ -213,7 +214,7 @@ public class Settlement_newController {
 
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
-                consultant, checker, createtime, beautician3, beautician4, courses);
+                consultant, checker, createtime, beautician3, beautician4, courses,pinpai);
         if (settlement_newService.addSettlement(settlement_new)) {
             return ResponseGenerate.genSuccessResponse("添加成功");
         } else {
@@ -267,7 +268,7 @@ public class Settlement_newController {
             Integer beautician1id = settlement_new.getBeautician1();
             Staff beautician1 = null;
             if (beautician1id != null) {
-                beautician1 = staffRepository.selectOne(beautician1id);
+                beautician1 = staffRepository.selectOne(beautician1id.intValue());
             }
 
             Integer beautician2id = settlement_new.getBeautician2();
@@ -429,6 +430,7 @@ public class Settlement_newController {
                                           @RequestParam(value = "category", required = false) String category,
                                           @RequestParam(value = "brandname", required = false) String brandname,
                                           @RequestParam(value = "projectname", required = false) String projectname,
+                                          @RequestParam(value = "pinpai",required = false)String pinpai,
                                           @RequestParam(value = "times", required = false) Integer times,
                                           @RequestParam(value = "hand", required = false) Integer hand,
                                           @RequestParam(value = "money", required = false) Double money,
@@ -484,6 +486,9 @@ public class Settlement_newController {
         }
         if (projectname != null) {
             settlement_new.setProjectname(projectname);
+        }
+        if (pinpai!=null){
+            settlement_new.setPinpai(pinpai);
         }
         if (times != null) {
             settlement_new.setTimes(times);

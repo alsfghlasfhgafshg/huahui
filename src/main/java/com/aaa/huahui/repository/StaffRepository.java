@@ -53,7 +53,7 @@ public interface StaffRepository {
     @Select("select * from staff where shopid=#{shopid} and role='beautician' and del=false")
     ArrayList<Staff> AllBeautician(@Param("shopid") int shopid);
 
-    @Select("select * from staff where staffid=#{staffid} and del=false")
+    @Select("select * from staff where staffid=#{staffid}")
     Staff selectOne(@Param("staffid") int staffid);
 
     @Select("select * from staff where staffid=#{staffid} and del=true")
