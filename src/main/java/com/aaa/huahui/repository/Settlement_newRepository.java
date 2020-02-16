@@ -12,10 +12,10 @@ public interface Settlement_newRepository {
 
     @Insert("insert into settlementnew (shopid,customer,classify,category,brandname,projectname,times,hand,money," +
             "consumptioncategory,consumptionpattern" +
-            ",allocate,beautician1,beautician2,beautician3,beautician4,cardcategory,consultant,checker,createtime,courses) " +
+            ",allocate,beautician1,beautician2,beautician3,beautician4,cardcategory,consultant,checker,createtime,courses,pinpai,telephone) " +
             "values(#{shopid},#{customer},#{classify},#{category},#{brandname},#{projectname}," +
             "#{times},#{hand},#{money},#{consumptioncategory},#{consumptionpattern},#{allocate},#{beautician1}," +
-            "#{beautician2},#{beautician3},#{beautician4},#{cardcategory},#{consultant},#{checker},#{createtime},#{courses})")
+            "#{beautician2},#{beautician3},#{beautician4},#{cardcategory},#{consultant},#{checker},#{createtime},#{courses},#{pinpai},#{telephone})")
     @Options(useGeneratedKeys = true, keyProperty = "settlementid")
     int addSettlement(Settlement_new settlement_new);
 
@@ -29,7 +29,7 @@ public interface Settlement_newRepository {
     int deleteSettlement(@Param("settlementid") int settlementid);
 
     @Update("update settlementnew set customer=#{customer},classify=#{classify},category=#{category}," +
-            "brandname=#{brandname},projectname=#{projectname},pinpai=#{pinpai},times=#{times},hand=#{hand},money=#{money}" +
+            "brandname=#{brandname},projectname=#{projectname},pinpai=#{pinpai},telephone=#{telephone},times=#{times},hand=#{hand},money=#{money}" +
             ",consumptioncategory=#{consumptioncategory},consumptionpattern=#{consumptionpattern},allocate=#{allocate}," +
             "beautician1=#{beautician1},beautician2=#{beautician2},beautician3=#{beautician3},beautician4=#{beautician4},cardcategory=#{cardcategory},consultant=#{consultant}," +
             "checker=#{checker},createtime=#{createtime},courses=#{courses},examine=0 where settlementid=#{settlementid}")

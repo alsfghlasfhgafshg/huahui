@@ -184,6 +184,7 @@ public class Settlement_newController {
                                     @RequestParam("customer") String customer,
                                     @RequestParam("classify") String classify,
                                     @RequestParam("category") String category,
+                                    @RequestParam(value = "telephone",required = false) String telephone,
                                     @RequestParam(value = "brandname", required = false) String brandname,
                                     @RequestParam(value = "pinpai") String pinpai,
                                     @RequestParam("projectname") String projectname,
@@ -214,7 +215,7 @@ public class Settlement_newController {
 
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
-                consultant, checker, createtime, beautician3, beautician4, courses,pinpai);
+                consultant, checker, createtime, beautician3, beautician4, courses,pinpai,telephone);
         if (settlement_newService.addSettlement(settlement_new)) {
             return ResponseGenerate.genSuccessResponse("添加成功");
         } else {

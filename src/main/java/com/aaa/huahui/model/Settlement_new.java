@@ -23,6 +23,7 @@ public class Settlement_new {
     private String checker;
     private String courses;
     private String createtime;
+    private String telephone;
     private int examine;
     private String pinpai;
 
@@ -33,7 +34,7 @@ public class Settlement_new {
                           String brandname, String projectname, Double times, double hand, double money,
                           String consumptioncategory, String consumptionpattern, String allocate,
                           int beautician1, int beautician2, String cardcategory, String consultant,
-                          String checker, String createtime, int beautician3, int beautician4, String courses,String pinpai) {
+                          String checker, String createtime, int beautician3, int beautician4, String courses,String pinpai,String telephone) {
 
         this.shopid = shopid;
         this.customer = customer;
@@ -57,6 +58,7 @@ public class Settlement_new {
         this.createtime = createtime;
         this.pinpai = pinpai;
         this.courses=courses;
+        this.telephone = telephone;
     }
 
     public String getPinpai() {
