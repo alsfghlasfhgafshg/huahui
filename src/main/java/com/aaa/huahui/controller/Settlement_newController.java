@@ -578,4 +578,12 @@ public class Settlement_newController {
         }
     }
 
+    @PostMapping("/addcashcard")
+    @PreAuthorize("hasAnyRole('ROLE_SHOP,ROLE_REPORTER')")
+    public JSONObject addCashCard(UsernamePasswordAuthenticationToken token,
+                                  @RequestParam("customer")String customer,
+                                  @RequestParam("telephone")String telephone,
+                                  @RequestParam("money")Double money,
+                                  @RequestParam("beautician"))
+
 }
