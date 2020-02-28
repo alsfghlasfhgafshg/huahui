@@ -8,10 +8,47 @@ public class Card {
     Double moneyremaining;
     int timesremaining;
     String createtime;
-    String factoryname;
     String projectname;
     int brandid;
     int price;
+
+    String classify;
+    String category;
+    String brandname;
+    String pinpai;
+
+
+    public String getClassify() {
+        return classify;
+    }
+
+    public void setClassify(String classify) {
+        this.classify = classify;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getBrandname() {
+        return brandname;
+    }
+
+    public void setBrandname(String brandname) {
+        this.brandname = brandname;
+    }
+
+    public String getPinpai() {
+        return pinpai;
+    }
+
+    public void setPinpai(String pinpai) {
+        this.pinpai = pinpai;
+    }
 
     public int getPrice() {
         return price;
@@ -83,14 +120,6 @@ public class Card {
 
     public void setCreatetime(String createtime) {
         this.createtime = createtime;
-    }
-
-    public String getFactoryname() {
-        return factoryname;
-    }
-
-    public void setFactoryname(String factoryname) {
-        this.factoryname = factoryname;
     }
 
     public String getProjectname() {

@@ -7,8 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface CardRepository {
-    @Insert("insert into card(name, tel, type, moneyremaining, timesremaining, createtime, factoryname, projectname,brandid) VALUE " +
-            "(#{name}, #{tel}, #{type}, #{moneyremaining}, #{timesremaining}, #{createtime}, #{factoryname}, #{projectname},#{brandid})")
+    @Insert("insert into card(name, tel, type, moneyremaining, timesremaining, createtime, projectname,brandid,classify,category,brandname,pinpai) VALUE " +
+            "(#{name}, #{tel}, #{type}, #{moneyremaining}, #{timesremaining}, now(), #{projectname},#{brandid},#{classify},#{category},#{brandname},#{pinpai})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int insertCard(Card card);
 

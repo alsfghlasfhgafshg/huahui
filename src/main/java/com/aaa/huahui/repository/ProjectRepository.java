@@ -30,4 +30,8 @@ public interface ProjectRepository {
 
     @Select("select pinpai from project where projectid=#{projectid}")
     String findPinpaiByProjectid(@Param("projectid")int projectid);
+
+    @Select("select project.category from project,factory where project.projectname=#{projectname} and project.factoryid=factory.id and factory.brandid=#{brandid}")
+    String findCategoryByProjectName(@Param("projectname") String projectname, @Param("brandid") int brandid);
+
 }

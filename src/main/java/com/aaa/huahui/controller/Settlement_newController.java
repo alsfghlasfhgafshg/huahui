@@ -3,6 +3,7 @@ package com.aaa.huahui.controller;
 import com.aaa.huahui.config.ROLE;
 import com.aaa.huahui.model.*;
 import com.aaa.huahui.repository.CardRepository;
+import com.aaa.huahui.repository.ProjectRepository;
 import com.aaa.huahui.repository.Settlement_newRepository;
 import com.aaa.huahui.repository.StaffRepository;
 import com.aaa.huahui.service.*;
@@ -48,6 +49,8 @@ public class Settlement_newController {
     @Autowired
     BrandService brandService;
 
+    @Autowired
+    ProjectRepository projectRepository;
 
     @GetMapping("/dayslaststoshop")
     @PreAuthorize("hasRole('ROLE_REPORTER')")
@@ -204,6 +207,7 @@ public class Settlement_newController {
                                     @RequestParam(value = "checker", required = false) String checker,
                                     @RequestParam(value = "courses", required = false, defaultValue = "0") String courses,
                                     @RequestParam("createtime") String time,
+                                    @RequestParam(value = "fromcreatekakoucard", required = false, defaultValue = "false") boolean fromcreatekakoucard,
                                     @RequestParam(value = "fromcard", required = false, defaultValue = "false") boolean fromcard,
                                     @RequestParam(value = "fromcardnum", required = false, defaultValue = "0") int fromcardid) {
 
@@ -226,11 +230,29 @@ public class Settlement_newController {
             cardRepository.changeMoney(fromcardid, card.getMoneyremaining() - money, brandService.getBrandidByShopOrStaff(user));
         }
 
+        if(category.equals("卡") && consumptioncategory.equals("卡扣卡")){
+            Card kakoucard=new Card();
+            kakoucard.setName(customer);
+            kakoucard.setBrandid(brandService.getBrandidByShopOrStaff(user));
+            kakoucard.setType(1);
+            kakoucard.setProjectname(projectname);
+            kakoucard.setBrandname(brandname);
+            kakoucard.setTimesremaining(Integer.valueOf(courses));
+            kakoucard.setTel(telephone);
+            kakoucard.setClassify(classify);
+            kakoucard.setCategory(projectRepository.findCategoryByProjectName(projectname,brandService.getBrandidByShopOrStaff(user)));
+            kakoucard.setPinpai(pinpai);
+            cardRepository.insertCard(kakoucard);
+        }
+
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
                 consultant, checker, createtime, beautician3, beautician4, courses,pinpai,telephone);
         if (settlement_newService.addSettlement(settlement_new)) {
-            return ResponseGenerate.genSuccessResponse("添加成功" + "当前卡可用余额为 " + (card.getMoneyremaining() - money) + " 元");
+            if (fromcard == true) {
+                return ResponseGenerate.genSuccessResponse("添加成功" + "当前卡可用余额为 " + (card.getMoneyremaining() - money) + " 元");
+            }
+            return ResponseGenerate.genSuccessResponse("添加成功");
         } else {
             return ResponseGenerate.genFailResponse(1, "添加失败");
         }
