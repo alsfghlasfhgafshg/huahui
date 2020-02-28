@@ -5,13 +5,29 @@ public class Card {
     String name;
     String tel;
     int type;
-    long moneyremaining;
+    Double moneyremaining;
     int timesremaining;
     String createtime;
     String factoryname;
     String projectname;
+    int brandid;
+    int price;
 
+    public int getPrice() {
+        return price;
+    }
 
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getBrandid() {
+        return brandid;
+    }
+
+    public void setBrandid(int brandid) {
+        this.brandid = brandid;
+    }
 
     public int getId() {
         return id;
@@ -45,11 +61,11 @@ public class Card {
         this.type = type;
     }
 
-    public long getMoneyremaining() {
+    public Double getMoneyremaining() {
         return moneyremaining;
     }
 
-    public void setMoneyremaining(long moneyremaining) {
+    public void setMoneyremaining(Double moneyremaining) {
         this.moneyremaining = moneyremaining;
     }
 

@@ -50,6 +50,8 @@ public class BrandService {
     @Autowired
     ProjectRepository projectRepository;
 
+    @Autowired
+    StaffService staffService;
 
     //所有brand
     public ArrayList<User> allBrandByPage(int pagenum) {
@@ -85,14 +87,14 @@ public class BrandService {
      * 新的品牌
      **/
     @Transactional
-    public boolean newBrand(User user,String controller, String description, MultipartFile file,String province,String city,
-                            String district,String geo) {
+    public boolean newBrand(User user, String controller, String description, MultipartFile file, String province, String city,
+                            String district, String geo) {
         if (user == null) {
             return false;
         }
 
 
-        int i = brandRepository.newBrand(user.getId(), description,controller,province,city,district,geo);
+        int i = brandRepository.newBrand(user.getId(), description, controller, province, city, district, geo);
 
         if (file != null) {
             String avatarfile = fileService.uploadImage(file);
@@ -115,7 +117,7 @@ public class BrandService {
     //更新brand
     public boolean updateBrand(int brandid, String description, MultipartFile file) {
         brandRepository.updateBrandDescription(brandid, description);
-        if (file==null||!file.isEmpty()){
+        if (file == null || !file.isEmpty()) {
             avatarService.updateAvatar(brandid, file);
         }
         return true;
@@ -133,13 +135,13 @@ public class BrandService {
         return factory;
     }
 
-    public Factory selectFactoryByIdAndBrand(int brandid,int factoryid){
+    public Factory selectFactoryByIdAndBrand(int brandid, int factoryid) {
         return factoryRepository.selectFactoryByBrandidAndFactoryId(brandid, factoryid);
     }
 
-    public boolean editFactory(int facotyid,String factoryname){
+    public boolean editFactory(int facotyid, String factoryname) {
         int i = factoryRepository.updateFactoryByFactoryId(factoryname, facotyid);
-        if (i==0){
+        if (i == 0) {
             return false;
         }
         return true;
@@ -162,12 +164,12 @@ public class BrandService {
     }
 
     //获得所有厂家
-    public ArrayList<Factory> allFactory(int brandid,int page) {
-        int pagesize=10;
-        if(pagesize==-1){
-            pagesize=Integer.MAX_VALUE;
+    public ArrayList<Factory> allFactory(int brandid, int page) {
+        int pagesize = 10;
+        if (pagesize == -1) {
+            pagesize = Integer.MAX_VALUE;
         }
-        PageHelper.startPage(page,pagesize);
+        PageHelper.startPage(page, pagesize);
 
         return factoryRepository.selectAllFactory(brandid);
     }
@@ -187,7 +189,7 @@ public class BrandService {
 
 
     //添加项目
-    public Project addProject(int brandid, int factoryid, String projectname,String category,String pinpai) {
+    public Project addProject(int brandid, int factoryid, String projectname, String category, String pinpai) {
         int i = factoryRepository.selectCountBrandIdFactoryId(brandid, factoryid);
         if (i == 0) {
             return null;
@@ -231,14 +233,14 @@ public class BrandService {
     }
 
     //获得所有project
-    public ArrayList<Factory> allFactoryAndProject(int brandid,int page) {
-        int pagesize=10;
-        if (page==-1){
-            pagesize=Integer.MAX_VALUE;
+    public ArrayList<Factory> allFactoryAndProject(int brandid, int page) {
+        int pagesize = 10;
+        if (page == -1) {
+            pagesize = Integer.MAX_VALUE;
         }
-        PageHelper.startPage(page,pagesize);
+        PageHelper.startPage(page, pagesize);
 
-        ArrayList<Factory> factorys=factoryRepository.selectAllFactoryAndProject(brandid);
+        ArrayList<Factory> factorys = factoryRepository.selectAllFactoryAndProject(brandid);
 
 //        ArrayList<Factory> factorys = factoryRepository.selectAllFactory(brandid);
 //        ArrayList<Project> projects = new ArrayList<>();
@@ -262,13 +264,13 @@ public class BrandService {
     }
 
     //根据类别找到厂家名字
-    public List<String> getFactoryByCategory(String category,int brandid){
+    public List<String> getFactoryByCategory(String category, int brandid) {
         List<String> nameList = new ArrayList<>();
-        if (null!=category&&!"".equals(category)){
+        if (null != category && !"".equals(category)) {
             ArrayList<Integer> ids = projectRepository.findFactoryidByCategory(category);
 
-            for (int id : ids ){
-                Factory factory = factoryRepository.selectFactoryByBrandidAndFactoryId(brandid,id);
+            for (int id : ids) {
+                Factory factory = factoryRepository.selectFactoryByBrandidAndFactoryId(brandid, id);
                 nameList.add(factory.getName());
             }
         }
@@ -276,11 +278,11 @@ public class BrandService {
     }
 
     //根据厂家名字找项目
-    public List<Project> getProjectByFactory(UsernamePasswordAuthenticationToken token,String factoryName){
+    public List<Project> getProjectByFactory(UsernamePasswordAuthenticationToken token, String factoryName) {
         User user = (User) token.getPrincipal();
         int brandid = shopService.findBrandidByReporterid(user.getId());
         List<Project> nameList = new ArrayList<>();
-        if (null!=factoryName&&!"".equals(factoryName)){
+        if (null != factoryName && !"".equals(factoryName)) {
             int factoryid = factoryRepository.findFactoryidByBrandidAndName(brandid, factoryName);
             nameList = projectRepository.selectAllProject(factoryid);
         }
@@ -288,13 +290,32 @@ public class BrandService {
     }
 
     //根据厂家找品牌
-    public String getPinpaiByProject(UsernamePasswordAuthenticationToken token,Integer projectid){
+    public String getPinpaiByProject(UsernamePasswordAuthenticationToken token, Integer projectid) {
         User user = (User) token.getPrincipal();
         String pinpai = "";
-        if (user.hasRole(ROLE.REPORTER)){
+        if (user.hasRole(ROLE.REPORTER)) {
             pinpai = projectRepository.findPinpaiByProjectid(projectid);
         }
         return pinpai;
+    }
+
+    /**
+     * 根据shopid或者staffid或者reporterid查找他们的brandid
+     */
+    public int getBrandidByShopOrStaff(int userid) {
+        User user = userRepository.selectByUserid(userid);
+        return getBrandidByShopOrStaff(user);
+    }
+    public int getBrandidByShopOrStaff(User user) {
+        if (user.hasRole(ROLE.SHOP)) {
+            Integer brandidByShopid = staffService.findBrandidByShopid(user.getId());
+            return brandidByShopid;
+        } else if (user.hasRole(ROLE.REPORTER)) {
+            Integer brandidbyStaffid = staffService.findBrandidbyStaffid(user.getId());
+            return brandidbyStaffid;
+        } else {
+            return 0;
+        }
     }
 
 }

@@ -27,6 +27,8 @@ public class Settlement_new {
     private int examine;
     private String pinpai;
 
+
+
     public Settlement_new() {
     }
 
@@ -58,6 +60,26 @@ public class Settlement_new {
         this.createtime = createtime;
         this.pinpai = pinpai;
         this.courses=courses;
+        this.telephone = telephone;
+    }
+
+    public void setShopid(Integer shopid) {
+        this.shopid = shopid;
+    }
+
+    public void setTimes(Double times) {
+        this.times = times;
+    }
+
+    public void setHand(Double hand) {
+        this.hand = hand;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 

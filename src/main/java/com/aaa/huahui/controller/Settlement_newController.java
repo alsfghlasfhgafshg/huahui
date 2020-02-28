@@ -1,16 +1,11 @@
 package com.aaa.huahui.controller;
 
 import com.aaa.huahui.config.ROLE;
-import com.aaa.huahui.model.Factory;
-import com.aaa.huahui.model.Settlement_new;
-import com.aaa.huahui.model.Staff;
-import com.aaa.huahui.model.User;
+import com.aaa.huahui.model.*;
+import com.aaa.huahui.repository.CardRepository;
 import com.aaa.huahui.repository.Settlement_newRepository;
 import com.aaa.huahui.repository.StaffRepository;
-import com.aaa.huahui.service.DataImportService;
-import com.aaa.huahui.service.Settlement_newService;
-import com.aaa.huahui.service.StaffService;
-import com.aaa.huahui.service.WorkBookCache;
+import com.aaa.huahui.service.*;
 import com.aaa.huahui.utils.DateUtils;
 import com.aaa.huahui.utils.PageInfoGen;
 import com.aaa.huahui.utils.ResponseGenerate;
@@ -46,6 +41,12 @@ public class Settlement_newController {
 
     @Autowired
     StaffService staffService;
+
+    @Autowired
+    CardRepository cardRepository;
+
+    @Autowired
+    BrandService brandService;
 
 
     @GetMapping("/dayslaststoshop")
@@ -202,9 +203,12 @@ public class Settlement_newController {
                                     @RequestParam(value = "consultant", required = false) String consultant,
                                     @RequestParam(value = "checker", required = false) String checker,
                                     @RequestParam(value = "courses", required = false, defaultValue = "0") String courses,
-                                    @RequestParam("createtime") String time) {
+                                    @RequestParam("createtime") String time,
+                                    @RequestParam(value = "fromcard", required = false, defaultValue = "false") boolean fromcard,
+                                    @RequestParam(value = "fromcardnum", required = false, defaultValue = "0") int fromcardid) {
 
-        checker = ((User) token.getPrincipal()).getName();
+        User user = (User) token.getPrincipal();
+        checker = user.getName();
         int reporterid = ((User) token.getPrincipal()).getId();
         Integer shopid = staffService.findShopidByRerporterId(reporterid);
         if (shopid == null) {
@@ -213,11 +217,20 @@ public class Settlement_newController {
 
         String createtime = DateUtils.getTimeStampStart(time).toString();
 
+        Card card = cardRepository.selectCard(fromcardid, brandService.getBrandidByShopOrStaff((User) token.getPrincipal()));
+
+        if (fromcard == true && card != null) {
+            if(card.getMoneyremaining() - money<0){
+                return ResponseGenerate.genFailResponse(1, "余额不足,当前卡可用余额为 " + card.getMoneyremaining() + " 元");
+            }
+            cardRepository.changeMoney(fromcardid, card.getMoneyremaining() - money, brandService.getBrandidByShopOrStaff(user));
+        }
+
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,
                 times, hand, money, consumptioncategory, consumptionpattern, allocate, beautician1, beautician2, cardcategory,
                 consultant, checker, createtime, beautician3, beautician4, courses,pinpai,telephone);
         if (settlement_newService.addSettlement(settlement_new)) {
-            return ResponseGenerate.genSuccessResponse("添加成功");
+            return ResponseGenerate.genSuccessResponse("添加成功" + "当前卡可用余额为 " + (card.getMoneyremaining() - money) + " 元");
         } else {
             return ResponseGenerate.genFailResponse(1, "添加失败");
         }
@@ -578,12 +591,5 @@ public class Settlement_newController {
         }
     }
 
-    @PostMapping("/addcashcard")
-    @PreAuthorize("hasAnyRole('ROLE_SHOP,ROLE_REPORTER')")
-    public JSONObject addCashCard(UsernamePasswordAuthenticationToken token,
-                                  @RequestParam("customer")String customer,
-                                  @RequestParam("telephone")String telephone,
-                                  @RequestParam("money")Double money,
-                                  @RequestParam("beautician"))
 
 }
