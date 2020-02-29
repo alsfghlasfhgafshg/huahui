@@ -136,6 +136,7 @@ public class CardController {
      * @param cardnum
      * @return
      */
+    @Deprecated
     @PostMapping("/decreasetimes")
     @PreAuthorize("hasAnyRole('ROLE_SHOP,ROLE_REPORTER')")
     public JSONObject hexiao(UsernamePasswordAuthenticationToken token,

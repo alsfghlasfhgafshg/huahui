@@ -219,6 +219,9 @@ public class Settlement_newController {
             return ResponseGenerate.genFailResponse(1, "此账号无对应的店铺");
         }
 
+        if(time == null | time.equals("")) {
+            time=DateUtils.nowString();
+        }
         String createtime = DateUtils.getTimeStampStart(time).toString();
 
         Card card = cardRepository.selectCard(fromcardid, brandService.getBrandidByShopOrStaff((User) token.getPrincipal()));
@@ -235,6 +238,7 @@ public class Settlement_newController {
             kakoucard.setName(customer);
             kakoucard.setBrandid(brandService.getBrandidByShopOrStaff(user));
             kakoucard.setType(1);
+            kakoucard.setPrice(money / Double.valueOf(courses));
             kakoucard.setProjectname(projectname);
             kakoucard.setBrandname(brandname);
             kakoucard.setTimesremaining(Integer.valueOf(courses));
@@ -243,6 +247,11 @@ public class Settlement_newController {
             kakoucard.setCategory(projectRepository.findCategoryByProjectName(projectname,brandService.getBrandidByShopOrStaff(user)));
             kakoucard.setPinpai(pinpai);
             cardRepository.insertCard(kakoucard);
+        }
+
+        if (fromcreatekakoucard==true){
+            Card kakoucard=cardRepository.selectCard(fromcardid,brandService.getBrandidByShopOrStaff(user));
+            cardRepository.changeTimes(kakoucard.getId(),kakoucard.getTimesremaining()-1);
         }
 
         Settlement_new settlement_new = new Settlement_new(shopid, customer, classify, category, brandname, projectname,

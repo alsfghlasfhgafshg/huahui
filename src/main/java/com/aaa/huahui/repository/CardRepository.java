@@ -30,7 +30,7 @@ public interface CardRepository {
     @Update("update card set moneyremaining=#{money} where card.id=#{cardid} and brandid=#{brandid}")
     int changeMoney(@Param("cardid") int cardid, @Param("money") double money, @Param("brandid") int brandid);
 
-    @Update("update card set timesremaining=#{timesremaining} where brandid=#{brandid}")
-    int changeTimes(@Param("cardid") int cardid, @Param("brandid") int brandid);
+    @Update("update card set timesremaining=#{timesremaining} where card.id=#{cardid}")
+    int changeTimes(@Param("cardid") int cardid, @Param("timesremaining") int timesremaining);
 
 }

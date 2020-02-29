@@ -10,8 +10,7 @@ public class Card {
     String createtime;
     String projectname;
     int brandid;
-    int price;
-
+    double price;
     String classify;
     String category;
     String brandname;
@@ -50,11 +49,11 @@ public class Card {
         this.pinpai = pinpai;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
